@@ -30,7 +30,7 @@ class UpdateUserRequest extends FormRequest
             'shop_name' => 'required|max:255',
             'shop_address' => 'required|max:255',
             'phone' => 'required|numeric|unique:users,phone,'. auth('user-api')->id(),
-            'tax_number' => 'numeric',
+            'tax_number' => 'nullable|numeric',
             'password' => 'nullable|min:8',
         ];
     }

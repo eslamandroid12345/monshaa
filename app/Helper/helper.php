@@ -13,8 +13,9 @@ if(!function_exists('validationException')){
 
         throw new ValidationException($validator, response()->json([
             'data' => null,
-            'message' => $validator->errors()->first(),
             'code' => 422,
+            'message' => $validator->errors()->first(),
+            'status' => false,
 
         ], 422));
     }

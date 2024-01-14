@@ -29,8 +29,9 @@ class StoreUserRequest extends FormRequest
             'shop_name' => 'required|max:255',
             'shop_address' => 'required|max:255',
             'phone' => 'required|numeric|unique:users,phone',
-            'tax_number' => 'numeric',
+            'tax_number' => 'nullable|numeric',
             'password' => 'required|min:8',
+            'privacy_and_policy' => 'required|boolean',
         ];
     }
 
@@ -51,6 +52,8 @@ class StoreUserRequest extends FormRequest
             'tax_number.max' => 'الرقم الضريبي يجب ان لا يتعدي عن 255 حرف',
             'password.required' => 'كلمه المرور مطلوبه',
             'password.min' => 'كلمه المرور يجب ان لا تقل عن 8 احرف وارقام',
+            'privacy_and_policy.required' => 'يجب الموافقه علي الشروط والسياسات لتسجيل الحساب معنا',
+            'privacy_and_policy.boolean' => 'الموافقه علي الشروط والسياسات يجب ان تحتوي علي 0 او 1 وليس شيء اخر',
         ];
     }
 

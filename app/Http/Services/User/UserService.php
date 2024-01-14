@@ -23,6 +23,7 @@ class UserService
     protected UserRepositoryInterface $userRepository;
 
     protected FileManagerService $fileManagerService;
+
     public function __construct(UserRepositoryInterface $userRepository,FileManagerService $fileManagerService)
     {
 
@@ -35,23 +36,31 @@ class UserService
 
         try {
 
-            $inputs = $request->validated();
-            $inputs['password'] = Hash::make($inputs['password']);
-            $user = $this->userRepository->create($inputs);
+            if($request->privacy_and_policy == 1){
 
-            if($user->save()){
+                $inputs = $request->validated();
+                $inputs['password'] = Hash::make($inputs['password']);
+                $user = $this->userRepository->create($inputs);
 
-                $token = Auth::guard('user-api')->attempt($request->only('phone', 'password'));
+                if($user->save()){
 
-                $auth = Auth::guard('user-api')->user();
-                $auth['token'] = $token;
+                    $token = Auth::guard('user-api')->attempt($request->only('phone', 'password'));
 
-                return $this->responseSuccess(new UserResource($auth),200,'تم اضافه بيانات الشركه بنجاح');
+                    $auth = Auth::guard('user-api')->user();
+                    $auth['token'] = $token;
 
+                    return $this->responseSuccess(new UserResource($auth),200,'تم اضافه بيانات الشركه بنجاح');
+
+                }else{
+
+                    return $this->responseFail(null,500,'يوجد خطاء ما اثناء اضافه البيانات يرجي المحاوله مره اخري',500);
+                }
             }else{
 
-                return $this->responseFail(null,500,'يوجد خطاء ما اثناء اضافه البيانات يرجي المحاوله مره اخري',500);
+                return $this->responseFail(null,422,'يجب الموافقه علي الشروط والسياسات بقيمه 1',422);
+
             }
+
         }catch (\Exception $exception){
 
             return $this->responseFail(null,500,$exception->getMessage(),500);
@@ -150,7 +159,9 @@ class UserService
             $this->userRepository->update($user->id, $inputs);
 
             return $this->responseSuccess(new UserResource($auth), 200, 'تم تعديل بيانات الشركة بنجاح');
+
         } catch (\Exception $exception) {
+
             return $this->responseFail(null, 500, $exception->getMessage(), 500);
         }
 
@@ -182,5 +193,4 @@ class UserService
         }
 
     }
-
 }

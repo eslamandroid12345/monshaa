@@ -29,6 +29,7 @@ class CreateUsersTable extends Migration
             $table->enum('status',['active','not_active'])->default('not_active');
             $table->string('block_reason')->nullable()->comment('سبب الغاء تفعيل المكتب العقاري');
             $table->text('access_token')->nullable();
+            $table->boolean('privacy_and_policy')->default(1);
             $table->string('email')->nullable()->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
