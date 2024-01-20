@@ -33,9 +33,9 @@ class UserController extends Controller
     }
 
 
-    public function getProfile(Request $request): JsonResponse{
+    public function getProfile(): JsonResponse{
 
-        return $this->userService->getProfile($request);
+        return $this->userService->getProfile();
 
     }
 
@@ -46,7 +46,7 @@ class UserController extends Controller
     }
 
 
-    public function logout(Request $request): ?JsonResponse
+    public function logout(Request $request): JsonResponse
     {
 
 

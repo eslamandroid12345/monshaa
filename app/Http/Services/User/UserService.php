@@ -102,35 +102,12 @@ class UserService
     }
 
 
-    public function getProfile(Request $request): JsonResponse
+    public function getProfile(): JsonResponse
     {
 
-        $token = $request->bearerToken();
+        $auth = Auth::guard('user-api')->user();
 
-        if ($token) {
-            $guards = ['user-api', 'employee-api'];
-
-            foreach ($guards as $guard) {
-                if (Auth::guard($guard)->setToken($token)->check()) {
-                    $auth = Auth::guard($guard)->user();
-                    $auth['token'] = $token;
-
-                    $resource = $guard === 'user-api' ? new UserResource($auth) : new EmployeeResource($auth);
-
-                    $message = $guard === 'user-api'
-                        ? 'تم الحصول على بيانات بروفايل الشركة بنجاح'
-                        : 'تم الحصول على بيانات بروفايل الموظف بنجاح';
-
-                    return $this->responseSuccess($resource, 200, $message);
-                }
-            }
-
-
-            return $this->responseFail(null,401,'Invalid token or does not belong to any specified guard',401);
-
-        }
-
-        return $this->responseFail(null,401,'Token not present',401);
+        return $this->responseSuccess(new UserResource($auth), 200, 'تم الحصول على بيانات بروفايل الشركه بنجاح');
 
     }
 
@@ -156,7 +133,7 @@ class UserService
                 unset($inputs['password']);
             }
 
-            $this->userRepository->update($user->id, $inputs);
+            $this->userRepository->update($user->id,$inputs);
 
             return $this->responseSuccess(new UserResource($auth), 200, 'تم تعديل بيانات الشركة بنجاح');
 
@@ -165,32 +142,16 @@ class UserService
             return $this->responseFail(null, 500, $exception->getMessage(), 500);
         }
 
-
-
     }
 
 
-    public function logout(Request $request)
+    public function logout(Request $request): JsonResponse
     {
 
-        $token = $request->bearerToken();
+        auth('user-api')->logout();
 
-        if ($token) {
-            $guards = ['user-api', 'employee-api'];
+        return $this->responseSuccess(null, 200, 'تم تسجيل خروج الشركه بنجاح');
 
-            foreach ($guards as $guard) {
-                if (Auth::guard($guard)->setToken($token)->check()) {
-                     Auth::guard($guard)->logout();
-
-                    $message = $guard === 'user-api'
-                        ? 'تم تسجيل خروج الشركه بنجاح'
-                        : 'تم تسجيل خروج الموظف بنجاح';
-
-                    return $this->responseSuccess(null, 200, $message);
-                }
-            }
-
-        }
 
     }
 }

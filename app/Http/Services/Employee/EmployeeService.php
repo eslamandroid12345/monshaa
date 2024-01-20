@@ -6,11 +6,15 @@ use App\Http\Requests\ActiveEmployeeRequest;
 use App\Http\Requests\StoreEmployeeRequest;
 use App\Http\Requests\UpdateEmployeeRequest;
 use App\Http\Resources\EmployeeGetDataResource;
+use App\Http\Resources\EmployeeResource;
+use App\Http\Resources\UserResource;
 use App\Http\Services\Mutual\FileManagerService;
 use App\Http\Traits\Responser;
 use App\Repository\EmployeeRepositoryInterface;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class EmployeeService
@@ -145,6 +149,25 @@ class EmployeeService
       return $this->responseFail(null,404,'بيانات الموظف غير موجوده',404);
 
     }
+
+    }
+
+
+    public function getProfileEmployee(): JsonResponse
+    {
+
+        $auth = Auth::guard('employee-api')->user();
+
+        return $this->responseSuccess(new EmployeeResource($auth), 200, 'تم الحصول على بيانات بروفايل الموظف بنجاح');
+
+    }
+
+    public function logout(): JsonResponse
+    {
+
+        auth('employee-api')->logout();
+
+        return $this->responseSuccess(null, 200, 'تم تسجيل خروج الموظف بنجاح');
 
     }
 

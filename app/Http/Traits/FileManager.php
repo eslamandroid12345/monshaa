@@ -2,6 +2,8 @@
 
 namespace App\Http\Traits;
 
+use Illuminate\Http\UploadedFile;
+
 trait FileManager
 {
     /**
@@ -18,6 +20,43 @@ trait FileManager
         }
         return $path;
     }
+
+
+
+
+
+    public function uploadMultipleFiles(string $requestAttributeName = null, string $folder = '', string $disk = 'public',$oldPath = null): array
+    {
+        $uploadedFiles = [];
+
+        if (request()->hasFile($requestAttributeName) && request()->file($requestAttributeName)->isValid()) {
+            foreach (request()->file($requestAttributeName) as $file) {
+                if ($file instanceof UploadedFile) {
+                    $path = 'storage/'.$file->store($folder, $disk);
+                    $uploadedFiles[] = $path;
+
+                    ####### Delete Multiple Files Uploaded
+                    if($oldPath != null){
+                        $images = json_decode($oldPath);
+                        if($images != null){
+                            foreach ($images as $image){
+                                if(file_exists($image)) {
+                                    unlink($image);
+                                }
+                            }
+                        }
+
+                    }
+                }
+            }
+        }
+
+        return $uploadedFiles;
+    }
+
+
+
+
 
     /**
      * Validates the file from the request & persists it into storage then unlink old one
@@ -36,6 +75,9 @@ trait FileManager
         }
         return $path;
     }
+
+
+
 
     /**
      * Delete the file from the path

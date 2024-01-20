@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
@@ -53,6 +54,7 @@ abstract class Repository implements RepositoryInterface
     {
         return $this->model::query()->select($columns)->with($relations)->where($byColumn, $value)->paginate(10);
     }
+
 
     public function first(
         $byColumn,
@@ -169,6 +171,8 @@ abstract class Repository implements RepositoryInterface
 
         return $query->count();
     }
+
+
 
 
     /**

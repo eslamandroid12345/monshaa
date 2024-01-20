@@ -63,4 +63,5 @@ interface RepositoryInterface
     public function getCountModel($column = null,$value = null): int;
 
     public function getCountToday($column = null,$value = null): int;
-}
+
+    }

@@ -16,4 +16,10 @@ class FileManagerService
         return $path;
     }
 
+
+    public function handleMultipleImages($requestAttributeName, $folderName, $old = null): array
+    {
+        return $this->uploadMultipleFiles($requestAttributeName, $folderName ,$old);
+    }
+
 }
