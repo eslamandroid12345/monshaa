@@ -30,6 +30,7 @@ class StateTableSeeder extends Seeder
             'real_state_space' => 120,
             'real_state_price' => $i >= 15 ? 600000.00 : 3000000.00,
             'number_of_bathrooms' => $i <= 15 ? 1 : 2 ,
+            'number_of_rooms' => $i <= 15 ? 1 : 2 ,
             'user_id' => 20,
         ]);
       }

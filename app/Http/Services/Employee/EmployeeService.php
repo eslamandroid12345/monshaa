@@ -39,7 +39,7 @@ class EmployeeService
 
         $employees = $this->employeeRepository->get('user_id',auth('user-api')->id());
 
-        return $this->responseSuccess(EmployeeGetDataResource::collection($employees),200,'تم جلب جميع الموظفين التابعه للشركه العقاريه بنجاح');
+        return $this->responseSuccess(EmployeeGetDataResource::collection($employees)->response()->getData(true),200,'تم جلب جميع الموظفين التابعه للشركه العقاريه بنجاح');
 
     }
 

@@ -52,7 +52,7 @@ abstract class Repository implements RepositoryInterface
         array $relations = [],
     ): \Illuminate\Contracts\Pagination\LengthAwarePaginator
     {
-        return $this->model::query()->select($columns)->with($relations)->where($byColumn, $value)->paginate(10);
+        return $this->model::query()->latest()->select($columns)->with($relations)->where($byColumn, $value)->paginate(10);
     }
 
 
@@ -108,6 +108,14 @@ abstract class Repository implements RepositoryInterface
                 $this->deleteFile($model->$field);
             }
         }
+        return $model->delete();
+    }
+
+
+    public function deleteWithMultipleFiles($modelId,$oldPath): bool
+    {
+        $model = $this->getById($modelId);
+        $this->deleteFileMultiple($oldPath);
         return $model->delete();
     }
 

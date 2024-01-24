@@ -13,10 +13,6 @@ class State extends Model
 
     protected $guarded = [];
 
-    protected $casts = [
-        'real_state_images' => 'array',
-    ];
-
     public function user(): BelongsTo
     {
 

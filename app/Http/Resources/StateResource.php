@@ -17,6 +17,7 @@ class StateResource extends JsonResource
         return [
 
             'id'  => $this->id,
+            'status' => $this->status,
             'real_state_images' => $this->real_state_images,
             'building_number' => $this->building_number,
             'apartment_number' => $this->apartment_number,
@@ -29,11 +30,11 @@ class StateResource extends JsonResource
             'real_state_space' => $this->real_state_space,
             'real_state_price' =>$this->real_state_price,
             'number_of_bathrooms' => $this->number_of_bathrooms,
+            'number_of_rooms' => $this->number_of_rooms,
+            'advertise_details' => $this->advertise_details,
             'created_at' => $this->created_at->format('Y-m-d'),
             'updated_at' => $this->updated_at->format('Y-m-d')
         ];
 
-
-        //            $comments = CommentResource::collection($comments)->response()->getData(true);
     }
 }

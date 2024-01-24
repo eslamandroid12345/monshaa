@@ -25,42 +25,35 @@ class StateController extends Controller
     }
 
 
-    public function filterGetAllStates(){
-
-        return  $this->stateService->filterGetAllStates();
-
-    }
-
-
-    public function create(StateRequest $request){
+    public function create(StateRequest $request): JsonResponse{
 
         return  $this->stateService->create($request);
 
     }
 
 
-    public function update($id,StateRequest $request){
+    public function update($id,StateRequest $request): JsonResponse{
 
         return  $this->stateService->update($id,$request);
 
     }
 
 
-    public function show($id){
+    public function show($id): JsonResponse{
 
         return  $this->stateService->show($id);
 
     }
 
 
-    public function changeStatus($id){
+    public function changeStatus($id): JsonResponse{
 
         return  $this->stateService->changeStatus($id);
 
     }
 
 
-    public function delete($id){
+    public function delete($id): JsonResponse{
 
         return  $this->stateService->delete($id);
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StateRequest extends FormRequest
@@ -24,7 +25,7 @@ class StateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'real_state_images' => 'nullable|array',
+            'real_state_images' => 'nullable',
             'real_state_images.*' => 'image|mimes:jpeg,png,jpg',
             'building_number' => 'nullable',
             'apartment_number' => 'nullable',
@@ -37,7 +38,15 @@ class StateRequest extends FormRequest
             'real_state_space' => 'required|integer',
             'real_state_price' => 'required|numeric',
             'number_of_bathrooms' => 'nullable|integer',
+            'number_of_rooms' => 'required|integer',
+            'advertise_details' => 'nullable|max:20000',
         ];
+    }
+
+    protected function failedValidation(Validator $validator)
+    {
+
+        return validationException($validator);
     }
 
 }

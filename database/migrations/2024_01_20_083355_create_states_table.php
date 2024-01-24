@@ -29,6 +29,8 @@ class CreateStatesTable extends Migration
             $table->integer('real_state_space')->comment('المساحه');
             $table->double('real_state_price',10,2)->comment('السعر');
             $table->integer('number_of_bathrooms')->default(0)->comment('عدد الحمامات');
+            $table->integer('number_of_rooms')->comment('عدد الغرف');
+            $table->longText('advertise_details')->nullable()->comment('تفاصيل الاعلان');
             $table->enum('status',['waiting','sale','rent'])->default('waiting');
             $table->foreign('user_id')->references('id')->on('users')->cascadeOnUpdate()->cascadeOnDelete();
             $table->foreign('employee_id')->references('id')->on('employees')->cascadeOnUpdate()->cascadeOnDelete();

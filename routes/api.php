@@ -47,7 +47,6 @@ Route::group(['prefix' => 'employee','middleware' => 'jwt'], function (){
 Route::group(['prefix' => 'state','middleware' => ['jwt']], function (){
 
     Route::get('all-states',[StateController::class,'getAllStates']);
-    Route::get('filter-search',[StateController::class,'filterGetAllStates']);
     Route::post('create',[StateController::class,'create']);
     Route::get('show/{id}',[StateController::class,'show']);
     Route::post('update/{id}',[StateController::class,'update']);

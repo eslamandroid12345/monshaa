@@ -19,7 +19,11 @@ class FileManagerService
 
     public function handleMultipleImages($requestAttributeName, $folderName, $old = null): array
     {
-        return $this->uploadMultipleFiles($requestAttributeName, $folderName ,$old);
+
+        if (!is_null($old)) {
+            $this->deleteFileMultiple($old);
+        }
+        return $this->uploadMultipleFiles($requestAttributeName, $folderName);
     }
 
 }

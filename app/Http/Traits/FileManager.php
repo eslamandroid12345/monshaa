@@ -23,30 +23,15 @@ trait FileManager
 
 
 
-
-
-    public function uploadMultipleFiles(string $requestAttributeName = null, string $folder = '', string $disk = 'public',$oldPath = null): array
+    public function uploadMultipleFiles(string $requestAttributeName = null, string $folder = '', string $disk = 'public'): array
     {
         $uploadedFiles = [];
 
-        if (request()->hasFile($requestAttributeName) && request()->file($requestAttributeName)->isValid()) {
+        if (request()->hasFile($requestAttributeName) && is_array(request()->file($requestAttributeName))) {
             foreach (request()->file($requestAttributeName) as $file) {
-                if ($file instanceof UploadedFile) {
-                    $path = 'storage/'.$file->store($folder, $disk);
+                if ($file->isValid()) {
+                    $path = 'storage/' . $file->store($folder, $disk);
                     $uploadedFiles[] = $path;
-
-                    ####### Delete Multiple Files Uploaded
-                    if($oldPath != null){
-                        $images = json_decode($oldPath);
-                        if($images != null){
-                            foreach ($images as $image){
-                                if(file_exists($image)) {
-                                    unlink($image);
-                                }
-                            }
-                        }
-
-                    }
                 }
             }
         }
@@ -54,7 +39,21 @@ trait FileManager
         return $uploadedFiles;
     }
 
+    public function deleteFileMultiple($old): void
+    {
+        ####### Delete Multiple Files Uploaded
 
+            $images = json_decode($old,true);
+            if($images != null){
+                foreach ($images as $image){
+                    if(file_exists(public_path($image))) {
+                        unlink(public_path($image));
+                    }
+                }
+            }
+
+
+    }
 
 
 

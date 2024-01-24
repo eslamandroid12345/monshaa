@@ -25,6 +25,7 @@ class StateRepository extends Repository implements StateRepositoryInterface
     {
 
         return $this->model::query()
+            ->latest()
             ->select(['*'])
             ->with(['user'])
             ->where('user_id','=',$this->authService->checkGuard())
