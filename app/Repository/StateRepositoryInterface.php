@@ -1,8 +1,7 @@
 <?php
 
-namespace App\Repository\Eloquent;
+namespace App\Repository;
 
-use App\Repository\RepositoryInterface;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 interface StateRepositoryInterface extends RepositoryInterface

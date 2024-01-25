@@ -7,7 +7,7 @@ use App\Http\Resources\StateResource;
 use App\Http\Services\Mutual\AuthService;
 use App\Http\Services\Mutual\FileManagerService;
 use App\Http\Traits\Responser;
-use App\Repository\Eloquent\StateRepositoryInterface;
+use App\Repository\StateRepositoryInterface;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
 

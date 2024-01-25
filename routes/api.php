@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\Employee\EmployeeController;
+use App\Http\Controllers\Api\Land\LandController;
 use App\Http\Controllers\Api\State\StateController;
 use App\Http\Controllers\Api\User\UserController;
 use Illuminate\Http\Request;
@@ -52,4 +53,15 @@ Route::group(['prefix' => 'state','middleware' => ['jwt']], function (){
     Route::post('update/{id}',[StateController::class,'update']);
     Route::post('change-status/{id}',[StateController::class,'changeStatus']);
     Route::delete('delete/{id}',[StateController::class,'delete']);
+});
+
+
+Route::group(['prefix' => 'land','middleware' => ['jwt']], function (){
+
+    Route::get('all-lands',[LandController::class,'getAllLands']);
+    Route::post('create',[LandController::class,'create']);
+    Route::get('show/{id}',[LandController::class,'show']);
+    Route::post('update/{id}',[LandController::class,'update']);
+    Route::post('change-status/{id}',[LandController::class,'changeStatus']);
+    Route::delete('delete/{id}',[LandController::class,'delete']);
 });

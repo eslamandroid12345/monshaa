@@ -1,28 +1,26 @@
 <?php
 
 namespace App\Repository\Eloquent;
-
 use App\Http\Services\Mutual\AuthService;
-use App\Models\State;
-use App\Repository\StateRepositoryInterface;
+use App\Models\Land;
+use App\Repository\LandRepositoryInterface;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Model;
 
-class StateRepository extends Repository implements StateRepositoryInterface
+class LandRepository extends Repository implements LandRepositoryInterface
 {
 
     protected Model $model;
 
     protected AuthService $authService;
 
-
-    public function __construct(State $model,AuthService $authService)
+    public function __construct(Land $model,AuthService $authService)
     {
         $this->authService = $authService;
         parent::__construct($model);
     }
 
-    public function getAllStatusQuery(): LengthAwarePaginator
+    public function getAllLandsQuery(): LengthAwarePaginator
     {
 
         $query = $this->model::query();
