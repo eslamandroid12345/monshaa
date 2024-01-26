@@ -92,7 +92,7 @@ class UserService
 
                 return $this->responseSuccess($resource, 200, $message);
             } else {
-                return $this->responseFail(null, 404,'بيانات الدخول غير صحيحة برجاء إدخال البيانات صحيحة وحاول مرة أخرى', 404);
+                return $this->responseFail(null, 409,'بيانات الدخول غير صحيحة برجاء إدخال البيانات صحيحة وحاول مرة أخرى');
             }
         } catch (\Exception $exception) {
             return $this->responseFail(null, 500, $exception->getMessage(), 500);
@@ -145,7 +145,7 @@ class UserService
     }
 
 
-    public function logout(Request $request): JsonResponse
+    public function logout(): JsonResponse
     {
 
         auth('user-api')->logout();

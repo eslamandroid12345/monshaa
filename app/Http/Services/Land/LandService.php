@@ -15,10 +15,7 @@ use Illuminate\Http\JsonResponse;
 class LandService
 {
 
-
     use Responser;
-
-
     protected LandRepositoryInterface $landRepository;
 
     protected AuthService $authService;
@@ -91,7 +88,7 @@ class LandService
 
             $this->landRepository->update($land->id,$inputs);
 
-            return $this->responseSuccess(new StateResource($this->landRepository->getById($id)), 200, 'تم تعديل بيانات الارض  بنجاح');
+            return $this->responseSuccess(new LandResource($this->landRepository->getById($id)), 200, 'تم تعديل بيانات الارض  بنجاح');
 
         } catch (ModelNotFoundException $exception){
 
@@ -126,7 +123,7 @@ class LandService
 
             $this->landRepository->update($land->id,['status' => 'sale']);
 
-            return $this->responseSuccess(new LandResource($land), 200, 'تم تغيير حاله الارض  بنجاح');
+            return $this->responseSuccess(new LandResource($this->landRepository->getById($id)), 200, 'تم تغيير حاله الارض  بنجاح');
 
         } catch (ModelNotFoundException $exception){
 

@@ -46,11 +46,11 @@ class UserController extends Controller
     }
 
 
-    public function logout(Request $request): JsonResponse
+    public function logout(): JsonResponse
     {
 
 
-        return $this->userService->logout($request);
+        return $this->userService->logout();
     }
 
 }

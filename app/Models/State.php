@@ -19,6 +19,13 @@ class State extends Model
         return $this->belongsTo(User::class,'user_id','id');
     }
 
+
+    public function employee(): BelongsTo
+    {
+
+        return $this->belongsTo(Employee::class,'employee_id','id');
+    }
+
     public function realStateImages() : Attribute {
         return Attribute::get(get: function ($value) {
                 if ($value !== null) {

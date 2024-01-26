@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Land extends Model
 {
@@ -12,6 +13,18 @@ class Land extends Model
 
     protected $guarded = [];
 
+    public function user(): BelongsTo
+    {
+
+        return $this->belongsTo(User::class,'user_id','id');
+    }
+
+
+    public function employee(): BelongsTo
+    {
+
+        return $this->belongsTo(Employee::class,'employee_id','id');
+    }
 
     public function landImages() : Attribute {
         return Attribute::get(get: function ($value) {
@@ -22,4 +35,6 @@ class Land extends Model
         }
         );
     }
+
+
 }

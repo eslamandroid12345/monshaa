@@ -28,6 +28,7 @@ class LandTableSeeder extends Seeder
                 'seller_phone_number' => "0105329929".$i,
                 'advertiser_type' => $i >= 15 ? 'real_state_owner' : 'real_state_company',
                 'user_id' => 20,
+                'land_date_register' => date('Y-m-d')
             ]);
         }
     }

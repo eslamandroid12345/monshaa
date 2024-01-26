@@ -20,13 +20,14 @@ class CreateLandsTable extends Migration
             $table->unsignedBigInteger('employee_id')->nullable()->comment('رمز الموظف');
             $table->string('address')->comment('العنوان');
             $table->string('seller_name')->comment('اسم البائع');
-            $table->integer('size_in_metres');
-            $table->integer('price_of_one_meter');
+            $table->double('size_in_metres',10,2);
+            $table->double('price_of_one_meter',10,2);
             $table->double('total_cost')->comment('اجمالي السعر');
             $table->string('seller_phone_number');
             $table->enum('advertiser_type',['real_state_owner','real_state_company'])->comment('نوع المعلن');
             $table->longText('advertise_details')->nullable()->comment('تفاصيل الاعلان');
             $table->json('land_images')->nullable()->comment('صور الارض');
+            $table->date('land_date_register')->comment('تاريخ تسجيل قطعه الارض');
             $table->enum('status',['waiting','sale'])->default('waiting');
             $table->foreign('user_id')->references('id')->on('users')->cascadeOnUpdate()->cascadeOnDelete();
             $table->foreign('employee_id')->references('id')->on('employees')->cascadeOnUpdate()->cascadeOnDelete();

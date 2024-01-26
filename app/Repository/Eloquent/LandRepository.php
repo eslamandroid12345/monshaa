@@ -25,24 +25,18 @@ class LandRepository extends Repository implements LandRepositoryInterface
 
         $query = $this->model::query();
 
-        $query->when(request()->has('real_state_address') && request('real_state_address') != null, function ($q)  {
-            $q->where('real_state_address', 'like', '%' . request()->input('real_state_address') . '%');
+        $query->when(request()->has('address') && request('address') != null, function ($q)  {
+            $q->where('address', 'like', '%' . request()->input('address') . '%');
         });
 
-        $query->when(request()->has('department') && request('department') != null, function ($q)  {
-            $q->where('department', '=',  request()->input('department'));
-        });
-
-        $query->when(request()->has('advertised_phone_number') && request('advertised_phone_number') != null, function ($q)  {
-            $q->where('advertised_phone_number', '=', request()->input('advertised_phone_number'));
-        });
 
         $query->when(request()->has('lowest_price') && request()->has('highest_price') && request('lowest_price') != null && request('highest_price') != null, function ($q) {
-            $q->whereBetween('real_state_price', [request()->input('lowest_price'), request()->input('highest_price')]);
+            $q->whereBetween('price_of_one_meter', [request()->input('lowest_price'), request()->input('highest_price')]);
         });
 
+
         $query->when(request()->has('lowest_space') && request()->has('highest_space') && request('lowest_space') != null&& request('highest_space') != null, function ($q) {
-            $q->whereBetween('real_state_space', [request()->input('lowest_space'), request()->input('highest_space')]);
+            $q->whereBetween('size_in_metres', [request()->input('lowest_space'), request()->input('highest_space')]);
         });
 
         $query->when(request()->has('advertiser_type') && request('advertiser_type') != null, function ($q)  {
@@ -53,7 +47,6 @@ class LandRepository extends Repository implements LandRepositoryInterface
             $q->where('id', '=',  request()->input('code'));
         });
 
-//        dd($query->toSql());
         return $query
             ->latest()
             ->select(['*'])

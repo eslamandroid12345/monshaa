@@ -35,11 +35,13 @@ class StateRequest extends FormRequest
             'department' => 'required|in:rent,sale',
             'advertiser_type' => 'required|in:real_state_owner,real_state_company',
             'advertised_phone_number' => 'required|numeric',
-            'real_state_space' => 'required|integer',
+            'real_state_space' => 'required|numeric',
             'real_state_price' => 'required|numeric',
             'number_of_bathrooms' => 'nullable|integer',
             'number_of_rooms' => 'required|integer',
             'advertise_details' => 'nullable|max:20000',
+            'state_date_register' => 'required|date|date_format:Y-m-d',
+
         ];
     }
 
