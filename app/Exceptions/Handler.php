@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Throwable;
+use Illuminate\Validation\ValidationException;
 
 class Handler extends ExceptionHandler
 {
@@ -40,27 +41,6 @@ class Handler extends ExceptionHandler
      */
 
 
-    public function render($request, Throwable $exception)
-    {
-
-    if ($exception instanceof AuthorizationException) {
-        return $this->responseFail(null, 401, $exception->getMessage(), 401);
-
-    }
-
-    if ($exception instanceof ModelNotFoundException) {
-        return $this->responseFail(null, 404, 'بيانات العقار غير موجوده', 404);
-
-    }
-
-    if($exception instanceof \Exception) {
-
-        return $this->responseFail(null, 500, $exception->getMessage(), 500);
-
-    }
-
-        return parent::render($request, $exception);
-    }
     public function register()
     {
         $this->reportable(function (Throwable $e) {

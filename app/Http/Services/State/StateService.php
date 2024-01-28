@@ -36,15 +36,26 @@ class StateService
     public function getAllStates(): JsonResponse
     {
 
+        try {
             $states = $this->stateRepository->getAllStatusQuery();
 
             return $this->responseSuccess(StateResource::collection($states)->response()->getData(true), 200, 'تم الحصول على بيانات جميع العقارات بنجاح');
+
+        } catch (AuthorizationException $exception) {
+            return $this->responseFail(null, 401, $exception->getMessage(), 401);
+
+        } catch (\Exception $exception) {
+
+            return $this->responseFail(null, 500, $exception->getMessage(), 500);
+
+        }
 
     }
 
 
     public function create(StateRequest $request)
     {
+        try {
 
         $inputs = $request->validated();
 
@@ -54,6 +65,7 @@ class StateService
         if($request->hasFile('real_state_images')){
 
             $images = $this->fileManagerService->handleMultipleImages("real_state_images","states/images");
+//            dd($images);
             $inputs['real_state_images'] = json_encode($images);
         }
 
@@ -61,13 +73,17 @@ class StateService
 
         return $this->responseSuccess(new StateResource($state), 200, 'تم اضافه البيانات بنجاح');
 
+    } catch (\Exception $exception) {
 
+            return $this->responseFail(null, 401, $exception->getMessage(), $exception->getMessage() == "Unauthorized" ? 401 : 500);
+        }
     }
 
 
     public function update($id,StateRequest $request): JsonResponse
     {
 
+        try {
 
             $state = $this->stateRepository->getById($id);
 
@@ -86,40 +102,69 @@ class StateService
 
             return $this->responseSuccess(new StateResource($this->stateRepository->getById($id)), 200, 'تم تعديل بيانات العقار  بنجاح');
 
+        } catch (AuthorizationException $exception) {
+            return $this->responseFail(null, 401, $exception->getMessage(), 401);
+
+        } catch (ModelNotFoundException $exception) {
+            return $this->responseFail(null, 404, 'بيانات العقار غير موجوده', 404);
+
+        } catch (\Exception $exception) {
+
+            return $this->responseFail(null, 500, $exception->getMessage(), 500);
+
+        }
     }
 
 
     public function show($id): JsonResponse
     {
 
+        try {
 
-        $state = $this->stateRepository->getById($id);
+            $state = $this->stateRepository->getById($id);
 
-        return $this->responseSuccess(new StateResource($state), 200, 'تم عرض بيانات العقار  بنجاح');
+            return $this->responseSuccess(new StateResource($state), 200, 'تم عرض بيانات العقار  بنجاح');
 
+        } catch (ModelNotFoundException $exception){
+
+            return $this->responseFail(null,404,'بيانات العقار غير موجوده',404);
+
+        }
     }
 
 
     public function changeStatus($id): JsonResponse
     {
 
+        try {
             $state = $this->stateRepository->getById($id);
 
             $this->stateRepository->update($state->id,['status' => $state->department]);
 
             return $this->responseSuccess(new StateResource($this->stateRepository->getById($id)), 200, 'تم تغيير حاله العقار  بنجاح');
 
+        } catch (ModelNotFoundException $exception){
+
+            return $this->responseFail(null,404,'بيانات العقار غير موجوده',404);
+
+        }
     }
 
 
     public function delete($id): JsonResponse
     {
+        try {
             $state = $this->stateRepository->getById($id);
 
             $this->stateRepository->deleteWithMultipleFiles($state->id,$state->getRawOriginal('real_state_images'));
 
             return $this->responseSuccess(null, 200, 'تم حذف بيانات العقار  بنجاح');
 
+        } catch (ModelNotFoundException $exception){
+
+            return $this->responseFail(null,404,'بيانات العقار غير موجوده',404);
+
+        }
     }
 
 

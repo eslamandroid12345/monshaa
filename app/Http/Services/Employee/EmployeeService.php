@@ -11,6 +11,7 @@ use App\Http\Resources\UserResource;
 use App\Http\Services\Mutual\FileManagerService;
 use App\Http\Traits\Responser;
 use App\Repository\EmployeeRepositoryInterface;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -47,21 +48,31 @@ class EmployeeService
     public function create(StoreEmployeeRequest $request): JsonResponse
     {
 
-        $inputs = $request->validated();
+        try {
 
-        if ($request->hasFile('image')) {
-            $image = $this->fileManagerService->handle("image", "employees/images");
-            $inputs['image'] = $image;
+            $inputs = $request->validated();
+
+            if ($request->hasFile('image')) {
+                $image = $this->fileManagerService->handle("image", "employees/images");
+                $inputs['image'] = $image;
+            }
+
+            $inputs['user_id'] = auth('user-api')->id();
+            $inputs['password'] = Hash::make($inputs['password']);
+
+
+            $employee = $this->employeeRepository->create($inputs);
+
+            return $this->responseSuccess(new EmployeeGetDataResource($employee), 200, 'تم اضافه بيانات الموظف بنجاح');
+
+        }catch (AuthorizationException $exception) {
+            return $this->responseFail(null, 401, $exception->getMessage(), 401);
+
+        }  catch (\Exception $exception) {
+
+            return $this->responseFail(null, 500, $exception->getMessage(), 500);
+
         }
-
-        $inputs['user_id'] = auth('user-api')->id();
-        $inputs['password'] = Hash::make($inputs['password']);
-
-
-        $employee = $this->employeeRepository->create($inputs);
-
-        return $this->responseSuccess(new EmployeeGetDataResource($employee),200,'تم اضافه بيانات الموظف بنجاح');
-
     }
 
 
@@ -75,9 +86,15 @@ class EmployeeService
 
             return $this->responseSuccess(new EmployeeGetDataResource($employee),200,'تم عرض بيانات الموظف بنجاح');
 
-        }catch (ModelNotFoundException $exception){
+        }catch (AuthorizationException $exception) {
+            return $this->responseFail(null, 401, $exception->getMessage(), 401);
 
-            return $this->responseFail(null,404,'بيانات الموظف غير موجوده',404);
+        } catch (ModelNotFoundException $exception) {
+            return $this->responseFail(null, 404, 'بيانات الموظف غير موجوده', 404);
+
+        } catch (\Exception $exception) {
+
+            return $this->responseFail(null, 500, $exception->getMessage(), 500);
 
         }
 
@@ -105,11 +122,18 @@ class EmployeeService
 
         return $this->responseSuccess(new EmployeeGetDataResource($this->employeeRepository->getById($id)),200,'تم تعديل بيانات الموظف بنجاح');
 
-    }catch (ModelNotFoundException $exception){
+    }catch (AuthorizationException $exception) {
 
-     return $this->responseFail(null,404,'بيانات الموظف غير موجوده',404);
+            return $this->responseFail(null, 401, $exception->getMessage(), 401);
 
-    }
+        } catch (ModelNotFoundException $exception) {
+            return $this->responseFail(null, 404, 'بيانات الموظف غير موجوده', 404);
+
+        } catch (\Exception $exception) {
+
+            return $this->responseFail(null, 500, $exception->getMessage(), 500);
+
+        }
 
     }
 
@@ -124,11 +148,17 @@ class EmployeeService
 
         return $this->responseSuccess(null,200,'تم حذف الموظف بنجاح');
 
-    }catch (ModelNotFoundException $exception){
+    } catch (AuthorizationException $exception) {
+        return $this->responseFail(null, 401, $exception->getMessage(), 401);
 
-       return $this->responseFail(null,404,'بيانات الموظف غير موجوده',404);
+    } catch (ModelNotFoundException $exception) {
+        return $this->responseFail(null, 404, 'بيانات الموظف غير موجوده', 404);
 
-      }
+    } catch (\Exception $exception) {
+
+        return $this->responseFail(null, 500, $exception->getMessage(), 500);
+
+    }
 
     }
 
