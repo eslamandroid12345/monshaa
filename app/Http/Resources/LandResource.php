@@ -17,7 +17,7 @@ class LandResource extends JsonResource
 
         return [
             'id' => $this->id,
-            'land_images' => $this->land_images,
+            'land_images' => $this->getAllImages(),
             'address' => $this->address,
             'seller_name' => $this->seller_name,
             'size_in_metres' => $this->size_in_metres,
@@ -31,5 +31,17 @@ class LandResource extends JsonResource
             'updated_at' => $this->updated_at->format('Y-m-d')
 
         ];
+    }
+
+
+    private function getAllImages(): array
+    {
+
+        $imageUrls = [];
+        foreach (json_decode($this->land_images,true) as $path) {
+            $imageUrls[] = asset($path); // Assuming images are stored in the public directory
+        }
+
+        return $imageUrls;
     }
 }

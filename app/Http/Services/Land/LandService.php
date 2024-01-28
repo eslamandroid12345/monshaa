@@ -43,7 +43,6 @@ class LandService
 
     public function create(LandRequest $request): JsonResponse
     {
-        try {
 
             $inputs = $request->validated();
 
@@ -60,18 +59,13 @@ class LandService
 
             return $this->responseSuccess(new LandResource($land), 200, 'تم اضافه البيانات بنجاح');
 
-        } catch (\Exception $exception) {
 
-            return $this->responseFail(null, 500, $exception->getMessage(), 500);
-
-        }
     }
 
 
     public function update($id,LandRequest $request): JsonResponse
     {
 
-        try {
 
             $land = $this->landRepository->getById($id);
 
@@ -90,63 +84,42 @@ class LandService
 
             return $this->responseSuccess(new LandResource($this->landRepository->getById($id)), 200, 'تم تعديل بيانات الارض  بنجاح');
 
-        } catch (ModelNotFoundException $exception){
 
-            return $this->responseFail(null,404,'بيانات الارض غير موجوده',404);
-
-        }
     }
 
 
     public function show($id): JsonResponse
     {
 
-        try {
 
             $land = $this->landRepository->getById($id);
 
             return $this->responseSuccess(new LandResource($land), 200, 'تم عرض بيانات الارض  بنجاح');
 
-        } catch (ModelNotFoundException $exception){
-
-            return $this->responseFail(null,404,'بيانات الارض غير موجوده',404);
-
-        }
     }
 
 
     public function changeStatus($id): JsonResponse
     {
 
-        try {
             $land = $this->landRepository->getById($id);
 
             $this->landRepository->update($land->id,['status' => 'sale']);
 
             return $this->responseSuccess(new LandResource($this->landRepository->getById($id)), 200, 'تم تغيير حاله الارض  بنجاح');
 
-        } catch (ModelNotFoundException $exception){
 
-            return $this->responseFail(null,404,'بيانات الارض غير موجوده',404);
-
-        }
     }
 
 
     public function delete($id): JsonResponse
     {
-        try {
             $land = $this->landRepository->getById($id);
 
             $this->landRepository->deleteWithMultipleFiles($land->id,$land->getRawOriginal('land_images'));
 
             return $this->responseSuccess(null, 200, 'تم حذف بيانات الارض  بنجاح');
 
-        } catch (ModelNotFoundException $exception){
-
-            return $this->responseFail(null,404,'بيانات الارض غير موجوده',404);
-
-        }
     }
 
 

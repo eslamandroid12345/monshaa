@@ -26,13 +26,4 @@ class State extends Model
         return $this->belongsTo(Employee::class,'employee_id','id');
     }
 
-    public function realStateImages() : Attribute {
-        return Attribute::get(get: function ($value) {
-                if ($value !== null) {
-                    return url($value);
-                }
-                return [];
-            }
-        );
-    }
 }

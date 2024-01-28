@@ -26,15 +26,6 @@ class Land extends Model
         return $this->belongsTo(Employee::class,'employee_id','id');
     }
 
-    public function landImages() : Attribute {
-        return Attribute::get(get: function ($value) {
-            if ($value !== null) {
-                return url($value);
-            }
-            return [];
-        }
-        );
-    }
 
 
 }

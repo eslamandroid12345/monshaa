@@ -28,7 +28,7 @@ class CreateStatesTable extends Migration
             $table->string('advertised_phone_number')->comment('رقم الهاتف المعلن');
             $table->double('real_state_space',10,2)->comment('المساحه');
             $table->double('real_state_price',10,2)->comment('السعر');
-            $table->integer('number_of_bathrooms')->default(0)->comment('عدد الحمامات');
+            $table->integer('number_of_bathrooms')->nullable()->default(0)->comment('عدد الحمامات');
             $table->integer('number_of_rooms')->comment('عدد الغرف');
             $table->longText('advertise_details')->nullable()->comment('تفاصيل الاعلان');
             $table->date('state_date_register')->comment('تاريخ تسجيل العقار');

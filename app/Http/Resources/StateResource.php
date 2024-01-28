@@ -18,7 +18,7 @@ class StateResource extends JsonResource
 
             'id'  => $this->id,
             'status' => $this->status,
-            'real_state_images' => $this->real_state_images,
+            'real_state_images' => $this->getAllImages(),
             'building_number' => $this->building_number,
             'apartment_number' => $this->apartment_number,
             'real_state_address' => $this->real_state_address,
@@ -36,5 +36,17 @@ class StateResource extends JsonResource
             'updated_at' => $this->updated_at->format('Y-m-d')
         ];
 
+    }
+
+
+    private function getAllImages(): array
+    {
+
+        $imageUrls = [];
+        foreach (json_decode($this->real_state_images,true) as $path) {
+            $imageUrls[] = asset($path); // Assuming images are stored in the public directory
+        }
+
+        return $imageUrls;
     }
 }
