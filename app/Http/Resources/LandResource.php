@@ -37,11 +37,15 @@ class LandResource extends JsonResource
     private function getAllImages(): array
     {
 
-        $imageUrls = [];
-        foreach (json_decode($this->land_images,true) as $path) {
-            $imageUrls[] = asset($path); // Assuming images are stored in the public directory
+        if($this->land_images != null) {
+            $imageUrls = [];
+            foreach (json_decode($this->land_images, true) as $path) {
+                $imageUrls[] = asset($path);
+            }
+
+            return $imageUrls;
         }
 
-        return $imageUrls;
+        return [];
     }
 }
