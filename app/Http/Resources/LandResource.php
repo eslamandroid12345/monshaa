@@ -45,7 +45,6 @@ class LandResource extends JsonResource
 
             return $imageUrls;
         }
-
         return [];
     }
 }

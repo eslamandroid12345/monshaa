@@ -53,7 +53,7 @@ class LandRepository extends Repository implements LandRepositoryInterface
             ->with(['user'])
             ->where('user_id','=',$this->authService->checkGuard())
             ->where('status','=','waiting')
-            ->paginate(10);
+            ->paginate(16);
 
 
     }

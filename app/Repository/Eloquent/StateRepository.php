@@ -62,7 +62,7 @@ class StateRepository extends Repository implements StateRepositoryInterface
             ->with(['user'])
             ->where('user_id','=',$this->authService->checkGuard())
             ->where('status','=','waiting')
-            ->paginate(10);
+            ->paginate(16);
 
 
     }
