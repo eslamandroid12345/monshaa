@@ -162,7 +162,6 @@ class EmployeeService
 
     }
 
-
     public function active($id,ActiveEmployeeRequest $request): JsonResponse
     {
 

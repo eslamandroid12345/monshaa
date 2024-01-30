@@ -52,7 +52,6 @@ class StateService
 
     }
 
-
     public function create(StateRequest $request)
     {
         try {

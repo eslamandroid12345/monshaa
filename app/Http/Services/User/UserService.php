@@ -89,7 +89,6 @@ class UserService
                     ? new UserResource($auth)
                     : new EmployeeResource($auth);
 
-
                 return $this->responseSuccess($resource, 200, $message);
             } else {
                 return $this->responseFail(null, 409,'بيانات الدخول غير صحيحة برجاء إدخال البيانات صحيحة وحاول مرة أخرى');
