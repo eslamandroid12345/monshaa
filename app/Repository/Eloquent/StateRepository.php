@@ -35,8 +35,8 @@ class StateRepository extends Repository implements StateRepositoryInterface
             $q->where('department', '=',  request()->input('department'));
         });
 
-        $query->when(request()->has('advertised_phone_number') && request('advertised_phone_number') != null, function ($q)  {
-            $q->where('advertised_phone_number', '=', request()->input('advertised_phone_number'));
+        $query->when(request()->has('real_state_type') && request('real_state_type') != null, function ($q)  {
+            $q->where('real_state_type', '=', request()->input('real_state_type'));
         });
 
         $query->when(request()->has('lowest_price') && request()->has('highest_price') && request('lowest_price') != null && request('highest_price') != null, function ($q) {
