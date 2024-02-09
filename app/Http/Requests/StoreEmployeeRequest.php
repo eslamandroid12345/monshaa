@@ -25,11 +25,11 @@ class StoreEmployeeRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'image' => 'nullable|mimes:jpeg,png,jpg',
+            'employee_image' => 'nullable|mimes:jpeg,png,jpg',
             'name' => 'required',
-            'phone' => 'required|numeric|unique:employees,phone',
+            'phone' => 'required|numeric|unique:users,phone',
             'password' => 'required|min:8',
-            'address' => 'required',
+            'employee_address' => 'required',
             'card_number' => 'required|numeric',
         ];
     }
@@ -40,7 +40,7 @@ class StoreEmployeeRequest extends FormRequest
         return [
             'name.required' => 'اسم الموظف مطلوب',
             'name.max' => 'اسم الموظف يجب ان لا يتعدي 255 حرف',
-            'address.required' => 'عنوان الموظف مطلوب',
+            'employee_address.required' => 'عنوان الموظف مطلوب',
             'phone.required' => 'هاتف الموظف مطلوب',
             'phone.unique' => 'هذا الرقم مسجل لدينا من قبل',
             'phone.numeric' => 'الهاتف يجب ان يكون رقم وليس شيء اخر',
@@ -48,14 +48,11 @@ class StoreEmployeeRequest extends FormRequest
             'card_number.numeric' => 'رقم البطاقه يجب ان يكون رقم',
             'password.required' => 'كلمه المرور مطلوبه',
             'password.min' => 'كلمه المرور يجب ان لا تقل عن 8 احرف وارقام',
+            'employee_image.mimes' => 'الصوره يحب ان تكون jpeg,png,jpg',
 
         ];
     }
 
 
-    protected function failedValidation(Validator $validator)
-    {
 
-        return validationException($validator);
-    }
 }

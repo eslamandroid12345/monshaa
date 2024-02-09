@@ -13,10 +13,13 @@ class CreateStatesTable extends Migration
      */
     public function up()
     {
+        /*
+         * العقارات
+         */
         Schema::create('states', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('user_id')->comment('الشركه العقاريه');
-            $table->unsignedBigInteger('employee_id')->nullable()->comment('رمز الموظف');
+            $table->unsignedBigInteger('company_id');
+            $table->unsignedBigInteger('user_id')->comment('الموظف او المدير العام');
             $table->json('real_state_images')->nullable()->comment('صور العقار');
             $table->string('building_number')->nullable()->comment('رقم العماره');
             $table->string('apartment_number')->nullable()->comment('رقم الشقه');
@@ -33,8 +36,8 @@ class CreateStatesTable extends Migration
             $table->longText('advertise_details')->nullable()->comment('تفاصيل الاعلان');
             $table->date('state_date_register')->comment('تاريخ تسجيل العقار');
             $table->enum('status',['waiting','sale','rent'])->default('waiting');
+            $table->foreign('company_id')->references('id')->on('companies')->cascadeOnUpdate()->cascadeOnDelete();
             $table->foreign('user_id')->references('id')->on('users')->cascadeOnUpdate()->cascadeOnDelete();
-            $table->foreign('employee_id')->references('id')->on('employees')->cascadeOnUpdate()->cascadeOnDelete();
             $table->softDeletes();
             $table->timestamps();
         });

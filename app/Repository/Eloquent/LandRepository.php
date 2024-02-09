@@ -12,11 +12,8 @@ class LandRepository extends Repository implements LandRepositoryInterface
 
     protected Model $model;
 
-    protected AuthService $authService;
-
-    public function __construct(Land $model,AuthService $authService)
+    public function __construct(Land $model)
     {
-        $this->authService = $authService;
         parent::__construct($model);
     }
 
@@ -51,7 +48,7 @@ class LandRepository extends Repository implements LandRepositoryInterface
             ->latest()
             ->select(['*'])
             ->with(['user'])
-            ->where('user_id','=',$this->authService->checkGuard())
+            ->where('company_id','=',auth('user-api')->user()->company_id)
             ->where('status','=','waiting')
             ->paginate(16);
 

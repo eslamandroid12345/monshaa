@@ -13,11 +13,14 @@ class CreateLandsTable extends Migration
      */
     public function up()
     {
+        /*
+         * الاراضي
+         */
 
         Schema::create('lands', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('user_id')->comment('الشركه العقاريه');
-            $table->unsignedBigInteger('employee_id')->nullable()->comment('رمز الموظف');
+            $table->unsignedBigInteger('company_id');
+            $table->unsignedBigInteger('user_id')->comment('الموظف او المدير العام');
             $table->string('address')->comment('العنوان');
             $table->string('seller_name')->comment('اسم البائع');
             $table->double('size_in_metres',10,2);
@@ -29,8 +32,8 @@ class CreateLandsTable extends Migration
             $table->json('land_images')->nullable()->comment('صور الارض');
             $table->date('land_date_register')->comment('تاريخ تسجيل قطعه الارض');
             $table->enum('status',['waiting','sale'])->default('waiting');
+            $table->foreign('company_id')->references('id')->on('companies')->cascadeOnUpdate()->cascadeOnDelete();
             $table->foreign('user_id')->references('id')->on('users')->cascadeOnUpdate()->cascadeOnDelete();
-            $table->foreign('employee_id')->references('id')->on('employees')->cascadeOnUpdate()->cascadeOnDelete();
             $table->softDeletes();
             $table->timestamps();
         });

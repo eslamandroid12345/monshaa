@@ -14,27 +14,26 @@ class CreateUsersTable extends Migration
     public function up()
     {
         /*
-         * المؤسسه
+         بيانات المدير العام والموظفين
          */
         Schema::create('users', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('logo')->nullable()->comment('لوجو المؤسسسه');
             $table->string('name');
-            $table->date('date_start_subscription')->comment('تاريخ بدايه الاشتراك')->nullable();
-            $table->date('date_end_subscription')->nullable();
-            $table->string('shop_name');
-            $table->string('shop_address')->comment('عنوان المؤسسه');
             $table->string('phone');
-            $table->string('tax_number')->nullable()->comment('الرقم الضريبي');
-            $table->enum('status',['active','not_active'])->default('not_active');
-            $table->string('block_reason')->nullable()->comment('سبب الغاء تفعيل المكتب العقاري');
+            $table->string('password');
             $table->text('access_token')->nullable();
-            $table->boolean('privacy_and_policy')->default(1);
             $table->string('email')->nullable()->unique();
             $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
+            $table->boolean('is_active')->default(1);
+            $table->boolean('is_admin')->default(0);
+            $table->text('employee_image')->comment('صوره الموظف')->nullable();
+            $table->string('block_reason')->nullable()->comment('سبب الغاء تفعيل الموظف');
+            $table->string('employee_address')->nullable();
+            $table->string('card_number')->nullable()->comment('رقم بطاقه الهويه للموظف');
             $table->rememberToken();
             $table->softDeletes();
+            $table->unsignedBigInteger('company_id');
+            $table->foreign('company_id','company_id')->references('id')->on('companies')->cascadeOnUpdate()->cascadeOnDelete();
             $table->timestamps();
         });
     }

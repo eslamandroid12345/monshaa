@@ -2,7 +2,7 @@
 
 namespace App\Repository\Eloquent;
 
-use App\Models\Employee;
+use App\Models\User;
 use App\Repository\EmployeeRepositoryInterface;
 use Illuminate\Database\Eloquent\Model;
 
@@ -11,7 +11,7 @@ class EmployeeRepository extends Repository implements EmployeeRepositoryInterfa
 
     protected Model $model;
 
-    public function __construct(Employee $model)
+    public function __construct(User $model)
     {
         parent::__construct($model);
     }

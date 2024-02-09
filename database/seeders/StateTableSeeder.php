@@ -32,6 +32,7 @@ class StateTableSeeder extends Seeder
             'number_of_bathrooms' => $i <= 15 ? 1 : 2 ,
             'number_of_rooms' => $i <= 15 ? 1 : 2 ,
             'user_id' => 20,
+            'company_id' => 20,
             'state_date_register' => date('Y-m-d')
 
         ]);

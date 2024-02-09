@@ -17,14 +17,14 @@ class EmployeeResource extends JsonResource
         return [
 
              'id' => $this->id,
-            'logo' => $this->user->logo != null ? asset($this->user->logo) : null,
+            'logo' => $this->company->logo != null ? asset($this->company->logo) : null,
             'name' => $this->name,
             'user_type' => 'employee',
-            'shop_name' => $this->user->shop_name,
-            'shop_address' => $this->user->shop_address,
+            'company_name' => $this->user->company_name,
+            'company_phone' => $this->user->company_phone,
+            'company_address' => $this->user->company_address,
             'phone' => $this->phone,
-            'tax_number' => $this->user->tax_number,
-            'status' => $this->status,
+            'status' => $this->is_active == 1 ? 'active' : 'not_active',
             'token' => 'Bearer '.$this->token,
             'created_at' => $this->created_at->format('Y-m-d'),
             'updated_at' => $this->updated_at->format('Y-m-d')

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -18,22 +19,7 @@ class User extends Authenticatable implements JWTSubject
      *
      * @var array<int, string>
      */
-    protected $fillable = [
-        'logo',
-        'name',
-        'name',
-        'date_start_subscription',
-        'date_end_subscription',
-        'shop_name',
-        'shop_address',
-        'phone',
-        'tax_number',
-        'status',
-        'block_reason',
-        'access_token',
-        'password',
-    ];
-
+    protected $guarded = [];
 
 
     /**
@@ -55,6 +41,12 @@ class User extends Authenticatable implements JWTSubject
         'email_verified_at' => 'datetime',
     ];
 
+
+    public function company(): BelongsTo
+    {
+
+        return $this->belongsTo(Company::class,'company_id','id');
+    }
 
 
     public function getJWTIdentifier() {

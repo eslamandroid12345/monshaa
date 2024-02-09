@@ -41,8 +41,6 @@ trait FileManager
 
     public function deleteFileMultiple($old): void
     {
-        ####### Delete Multiple Files Uploaded
-
             $images = json_decode($old,true);
             if($images != null){
                 foreach ($images as $image){
@@ -51,8 +49,6 @@ trait FileManager
                     }
                 }
             }
-
-
     }
 
 

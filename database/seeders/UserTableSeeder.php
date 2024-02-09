@@ -19,16 +19,11 @@ class UserTableSeeder extends Seeder
         for ($i = 1 ; $i <= 20 ; $i++){
 
            User::create([
-               'logo' => 'storage/users/images/'.$i.'.png',
-               'name' => 'User '.$i,
-               'date_start_subscription' => Carbon::now()->format('Y-m-d'),
-               'date_end_subscription' =>   Carbon::now()->addYear()->format('Y-m-d'),
-               'shop_name' => 'Shop '.$i,
-               'shop_address' => 'القاهره - التجمع الخامس',
-               'phone' => "0105298871".$i,
-               'tax_number' => "746209125435".$i,
-               'status' => 'active',
-               'password' => Hash::make('123456'),
+                'name' => 'admin '.$i,
+                'phone' => '0106293318'.$i,
+                'password' => Hash::make('123456'),
+                'is_admin' => 1,
+                'company_id' => $i,
            ]);
 
         }

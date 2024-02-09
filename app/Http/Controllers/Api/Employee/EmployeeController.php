@@ -6,10 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\ActiveEmployeeRequest;
 use App\Http\Requests\StoreEmployeeRequest;
 use App\Http\Requests\UpdateEmployeeRequest;
-use App\Http\Resources\EmployeeResource;
 use App\Http\Services\Employee\EmployeeService;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Auth;
 
 class EmployeeController extends Controller
 {
@@ -37,10 +35,10 @@ class EmployeeController extends Controller
     }
 
 
-    public function getProfile($id): JsonResponse{
+    public function show($id): JsonResponse{
 
 
-        return $this->employeeService->getProfile($id);
+        return $this->employeeService->show($id);
 
     }
 
@@ -64,18 +62,5 @@ class EmployeeController extends Controller
 
     }
 
-    public function getProfileEmployee(): JsonResponse
-    {
 
-        return $this->employeeService->getProfileEmployee();
-
-    }
-
-
-    public function logout(): JsonResponse
-    {
-
-        return $this->employeeService->logout();
-
-    }
 }

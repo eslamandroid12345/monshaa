@@ -6,16 +6,12 @@ use App\Http\Requests\ActiveEmployeeRequest;
 use App\Http\Requests\StoreEmployeeRequest;
 use App\Http\Requests\UpdateEmployeeRequest;
 use App\Http\Resources\EmployeeGetDataResource;
-use App\Http\Resources\EmployeeResource;
-use App\Http\Resources\UserResource;
 use App\Http\Services\Mutual\FileManagerService;
 use App\Http\Traits\Responser;
 use App\Repository\EmployeeRepositoryInterface;
-use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 class EmployeeService
@@ -38,7 +34,7 @@ class EmployeeService
     public function getAllEmployees(): JsonResponse
     {
 
-        $employees = $this->employeeRepository->get('user_id',auth('user-api')->id());
+        $employees = $this->employeeRepository->get('company_id',auth('user-api')->user()->company_id);
 
         return $this->responseSuccess(EmployeeGetDataResource::collection($employees)->response()->getData(true),200,'تم جلب جميع الموظفين التابعه للشركه العقاريه بنجاح');
 
@@ -52,12 +48,12 @@ class EmployeeService
 
             $inputs = $request->validated();
 
-            if ($request->hasFile('image')) {
-                $image = $this->fileManagerService->handle("image", "employees/images");
-                $inputs['image'] = $image;
+            if ($request->hasFile('employee_image')) {
+                $image = $this->fileManagerService->handle("employee_image", "employees/images");
+                $inputs['employee_image'] = $image;
             }
 
-            $inputs['user_id'] = auth('user-api')->id();
+            $inputs['company_id'] = auth('user-api')->user()->company_id;
             $inputs['password'] = Hash::make($inputs['password']);
 
 
@@ -65,40 +61,13 @@ class EmployeeService
 
             return $this->responseSuccess(new EmployeeGetDataResource($employee), 200, 'تم اضافه بيانات الموظف بنجاح');
 
-        }catch (AuthorizationException $exception) {
-            return $this->responseFail(null, 401, $exception->getMessage(), 401);
-
-        }  catch (\Exception $exception) {
-
-            return $this->responseFail(null, 500, $exception->getMessage(), 500);
-
-        }
-    }
-
-
-
-    public function getProfile($id): JsonResponse
-    {
-
-        try {
-
-            $employee = $this->employeeRepository->getById($id);
-
-            return $this->responseSuccess(new EmployeeGetDataResource($employee),200,'تم عرض بيانات الموظف بنجاح');
-
-        }catch (AuthorizationException $exception) {
-            return $this->responseFail(null, 401, $exception->getMessage(), 401);
-
-        } catch (ModelNotFoundException $exception) {
-            return $this->responseFail(null, 404, 'بيانات الموظف غير موجوده', 404);
-
         } catch (\Exception $exception) {
 
             return $this->responseFail(null, 500, $exception->getMessage(), 500);
 
         }
-
     }
+
 
 
     public function update($id,UpdateEmployeeRequest $request): JsonResponse
@@ -106,27 +75,24 @@ class EmployeeService
 
         try {
 
-        $employee = $this->employeeRepository->getById($id);
+        $employee = $this->employeeRepository->getByIdWithCondition($id,'is_admin',0);
 
         $inputs = $request->validated();
 
-        if ($request->hasFile('image')) {
-            $image = $this->fileManagerService->handle("image", "employees/images",$employee->image);
-            $inputs['image'] = $image;
+        if ($request->hasFile('employee_image')) {
+            $image = $this->fileManagerService->handle("employee_image", "employees/images",$employee->employee_image);
+            $inputs['employee_image'] = $image;
         }
 
-        $inputs['password'] = Hash::make($inputs['password']);
+            $inputs['password'] = Hash::make($inputs['password']);
 
-        $this->employeeRepository->update($employee->id,$inputs);
+          $this->employeeRepository->update($employee->id,$inputs);
 
 
         return $this->responseSuccess(new EmployeeGetDataResource($this->employeeRepository->getById($id)),200,'تم تعديل بيانات الموظف بنجاح');
 
-    }catch (AuthorizationException $exception) {
+     } catch (ModelNotFoundException $exception) {
 
-            return $this->responseFail(null, 401, $exception->getMessage(), 401);
-
-        } catch (ModelNotFoundException $exception) {
             return $this->responseFail(null, 404, 'بيانات الموظف غير موجوده', 404);
 
         } catch (\Exception $exception) {
@@ -142,16 +108,14 @@ class EmployeeService
 
     try {
 
-        $employee = $this->employeeRepository->getById($id);
+        $employee = $this->employeeRepository->getByIdWithCondition($id,'is_admin',0);
 
          $this->employeeRepository->delete($employee->id);
 
         return $this->responseSuccess(null,200,'تم حذف الموظف بنجاح');
 
-    } catch (AuthorizationException $exception) {
-        return $this->responseFail(null, 401, $exception->getMessage(), 401);
-
     } catch (ModelNotFoundException $exception) {
+
         return $this->responseFail(null, 404, 'بيانات الموظف غير موجوده', 404);
 
     } catch (\Exception $exception) {
@@ -165,16 +129,21 @@ class EmployeeService
     public function active($id,ActiveEmployeeRequest $request): JsonResponse
     {
 
+        DB::beginTransaction();
         try {
 
-        $employee = $this->employeeRepository->getById($id);
+        $employee = $this->employeeRepository->getByIdWithCondition($id,'is_admin',0);
 
         $this->employeeRepository->update($employee->id,$request->validated());
 
+        $this->employeeRepository->update($employee->id,['access_token' => null]);
+
+        DB::commit();
         return $this->responseSuccess(new EmployeeGetDataResource($this->employeeRepository->getById($id)),200,'تم تعديل حاله الموظف بنجاح');
 
     }catch (ModelNotFoundException $exception){
 
+       DB::rollBack();
       return $this->responseFail(null,404,'بيانات الموظف غير موجوده',404);
 
     }
@@ -182,22 +151,20 @@ class EmployeeService
     }
 
 
-    public function getProfileEmployee(): JsonResponse
+    public function show($id): JsonResponse
     {
 
-        $auth = Auth::guard('employee-api')->user();
+        try {
 
-        return $this->responseSuccess(new EmployeeResource($auth), 200, 'تم الحصول على بيانات بروفايل الموظف بنجاح');
+            return $this->responseSuccess(new EmployeeGetDataResource($this->employeeRepository->getByIdWithCondition($id,'is_admin',0)),200,'تم عرض بيانات الموظف بنجاح');
 
+        }catch (ModelNotFoundException $exception){
+
+            return $this->responseFail(null,404,'بيانات الموظف غير موجوده',404);
+
+        }
     }
 
-    public function logout(): JsonResponse
-    {
 
-        auth('employee-api')->logout();
-
-        return $this->responseSuccess(null, 200, 'تم تسجيل خروج الموظف بنجاح');
-
-    }
 
 }

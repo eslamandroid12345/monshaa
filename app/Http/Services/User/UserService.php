@@ -9,10 +9,11 @@ use App\Http\Resources\EmployeeResource;
 use App\Http\Resources\UserResource;
 use App\Http\Services\Mutual\FileManagerService;
 use App\Http\Traits\Responser;
+use App\Repository\CompanyRepositoryInterface;
 use App\Repository\UserRepositoryInterface;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 class UserService
@@ -23,73 +24,85 @@ class UserService
     protected UserRepositoryInterface $userRepository;
 
     protected FileManagerService $fileManagerService;
+    protected CompanyRepositoryInterface $companyRepository;
 
-    public function __construct(UserRepositoryInterface $userRepository,FileManagerService $fileManagerService)
+    public function __construct(UserRepositoryInterface $userRepository,FileManagerService $fileManagerService,CompanyRepositoryInterface $companyRepository)
     {
 
         $this->userRepository = $userRepository;
         $this->fileManagerService = $fileManagerService;
+        $this->companyRepository = $companyRepository;
     }
 
     public function register(StoreUserRequest $request): JsonResponse{
 
 
+        DB::beginTransaction();
+
         try {
 
-            if($request->privacy_and_policy == 1){
+            $requestOfCompany = $request->only('company_phone','company_name','company_address','privacy_and_policy');
 
-                $inputs = $request->validated();
-                $inputs['password'] = Hash::make($inputs['password']);
-                $user = $this->userRepository->create($inputs);
+            $company = $this->companyRepository->create($requestOfCompany);
 
-                if($user->save()){
+            $requestOfUser = $request->only('name','phone','password');
 
-                    $token = Auth::guard('user-api')->attempt($request->only('phone', 'password'));
+            $requestOfUser['company_id'] = $company['id'];
 
-                    $auth = Auth::guard('user-api')->user();
-                    $auth['token'] = $token;
+            $requestOfUser['is_admin'] = 1;
 
-                    return $this->responseSuccess(new UserResource($auth),200,'تم اضافه بيانات الشركه بنجاح');
+            $requestOfUser['password'] = Hash::make($requestOfUser['password']);
 
-                }else{
+               $this->userRepository->create($requestOfUser);
 
-                    return $this->responseFail(null,500,'يوجد خطاء ما اثناء اضافه البيانات يرجي المحاوله مره اخري',500);
-                }
-            }else{
+               DB::commit();
 
-                return $this->responseFail(null,422,'يجب الموافقه علي الشروط والسياسات بقيمه 1',422);
+            $token = Auth::guard('user-api')->attempt($request->only('phone', 'password'));
 
-            }
+            $auth = Auth::guard('user-api')->user();
+            $auth['token'] = $token;
+
+            return $this->responseSuccess(new UserResource($auth),200,'تم اضافه بيانات الشركه والمدير العام بنجاح');
 
         }catch (\Exception $exception){
 
+            DB::rollBack();
             return $this->responseFail(null,500,$exception->getMessage(),500);
 
         }
-
     }
+
     public function login(LoginUserRequest $request): JsonResponse
     {
 
-
         try {
-            $guard = $request->user_type === 'user' ? 'user-api' : 'employee-api';
-            $token = auth($guard)->attempt($request->only('phone', 'password'));
-
+            $token = auth('user-api')->attempt($request->only('phone', 'password'));
 
             if ($token) {
-                $auth = Auth::guard($guard)->user();
-                $auth['token'] = $token;
 
-                $message = $request->user_type === 'user'
-                    ? 'تم تسجيل دخول المدير بنجاح'
-                    : 'تم تسجيل دخول الموظف بنجاح';
+                $auth = Auth::guard('user-api')->user();
 
-                 $resource = $request->user_type === 'user'
-                    ? new UserResource($auth)
-                    : new EmployeeResource($auth);
+                if($auth->is_admin == 1 && $auth->is_active == 0){
 
-                return $this->responseSuccess($resource, 200, $message);
+                    return $this->responseFail(null, 403,'الحساب غير مفعل يرجي التواصل مع مطور البرنامج',403);
+
+                }elseif ($auth->is_admin == 0 && $auth->is_active == 0){
+
+                    return $this->responseFail(null, 403,'الحساب غير مفعل يرجي التواصل مع مديرك المباشر لتفعيل الحساب',403);
+
+                }else{
+
+                    $auth['token'] = $token;
+
+                    $this->userRepository->update($auth->id,['access_token' => $token]);
+
+                    $message = $auth->is_admin == 1 ? 'تم تسجيل دخول المدير بنجاح' : 'تم تسجيل دخول الموظف بنجاح';
+
+                    $resource = $auth->is_admin == 1 ? new UserResource($auth) : new EmployeeResource($auth);
+
+                    return $this->responseSuccess($resource, 200, $message);
+                }
+
             } else {
                 return $this->responseFail(null, 409,'بيانات الدخول غير صحيحة برجاء إدخال البيانات صحيحة وحاول مرة أخرى');
             }
@@ -106,38 +119,52 @@ class UserService
 
         $auth = Auth::guard('user-api')->user();
 
-        return $this->responseSuccess(new UserResource($auth), 200, 'تم الحصول على بيانات بروفايل الشركه بنجاح');
+        $auth['token'] = request()->bearerToken();
+
+        return $this->responseSuccess($auth->is_admin == 1 ? new UserResource($auth) : new EmployeeResource($auth), 200, $auth->is_admin == 1 ? 'تم تسجيل دخول المدير بنجاح' : 'تم تسجيل دخول الموظف بنجاح');
 
     }
 
     public function updateProfile(UpdateUserRequest $request): JsonResponse
     {
 
+        DB::beginTransaction();
 
         try {
+
             $auth = Auth::guard('user-api')->user();
             $auth['token'] = $request->bearerToken();
 
-            $inputs = $request->validated();
+            $requestOfCompany = $request->only('company_phone','company_name','company_address','logo');
+
+            $requestOfUser = $request->only('name','phone','password');
+
             $user = $this->userRepository->getById($auth->id);
+
 
             if ($request->hasFile('logo')) {
                 $image = $this->fileManagerService->handle("logo", "users/images",$user->logo);
-                $inputs['logo'] = $image;
+                $requestOfCompany['logo'] = $image;
             }
+
 
             if ($request->filled('password')) {
-                $inputs['password'] = Hash::make($inputs['password']);
+                $requestOfUser['password'] = Hash::make($requestOfUser['password']);
             } else {
-                unset($inputs['password']);
+                unset($requestOfUser['password']);
             }
 
-            $this->userRepository->update($user->id,$inputs);
+            $this->companyRepository->update($auth->company_id,$requestOfCompany);
+
+            $this->userRepository->update($auth->id,$requestOfUser);
+
+            DB::commit();
 
             return $this->responseSuccess(new UserResource($auth), 200, 'تم تعديل بيانات الشركة بنجاح');
 
         } catch (\Exception $exception) {
 
+            DB::rollBack();
             return $this->responseFail(null, 500, $exception->getMessage(), 500);
         }
 
@@ -147,9 +174,13 @@ class UserService
     public function logout(): JsonResponse
     {
 
+        $auth = Auth::guard('user-api')->user();
+
+        $this->userRepository->update($auth->id,['access_token' => null]);
+
         auth('user-api')->logout();
 
-        return $this->responseSuccess(null, 200, 'تم تسجيل خروج الشركه بنجاح');
+        return $this->responseSuccess(null, 200, 'تم تسجيل الخروج بنجاح');
 
 
     }

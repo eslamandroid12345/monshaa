@@ -26,22 +26,10 @@ class LoginUserRequest extends FormRequest
     public function rules(): array
     {
 
-        if(request()->user_type == 'user'){
             return [
-                'user_type' => 'required|in:user,employee',
                 'phone' => 'required|numeric|exists:users,phone',
                 'password' => 'required'
             ];
-
-        }else{
-
-            return [
-                'user_type' => 'required|in:user,employee',
-                'phone' => 'required|numeric|exists:employees,phone',
-                'password' => 'required'
-
-            ];
-        }
 
     }
 
@@ -49,40 +37,15 @@ class LoginUserRequest extends FormRequest
     public function messages(): array
     {
 
-        if(request()->user_type == 'user') {
 
             return [
-
-                'user_type.required' => 'نوع المستخدم مطلوب للدخول',
-                'user_type.in' => 'نوع المستخدم يجب ان يكون user or employee للدخول',
                 'phone.required' => 'رقم هاتف صاحب الشركه مطلوب للدخول',
                 'phone.numeric'=> 'الهاتف يجب ان يكون رقم وليس شيء اخر',
                 'phone.exists' => 'هذا الرقم غير مسجل لدينا',
                 'password.required' => 'كلمه المرور مطلوبه',
 
-
             ];
-
-
-        }else{
-
-            return [
-                'user_type.required' => 'نوع المستخدم مطلوب للدخول',
-                'user_type.in' => 'نوع المستخدم يجب ان يكون user or employee للدخول',
-                'phone.required' => 'رقم هاتف الموظف مطلوب',
-                'phone.numeric'=> 'الهاتف يجب ان يكون رقم وليس شيء اخر',
-                'phone.exists' => 'هذا الرقم غير مسجل لدينا',
-                'password.required' => 'كلمه المرور مطلوبه',
-
-            ];
-
-        }
-
     }
 
-    protected function failedValidation(Validator $validator)
-    {
 
-        return validationException($validator);
-    }
 }

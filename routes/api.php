@@ -34,13 +34,10 @@ Route::group(['prefix' => 'employee','middleware' => 'jwt'], function (){
 
     Route::get('get-all-employees',[EmployeeController::class,'getAllEmployees']);
     Route::post('create',[EmployeeController::class,'create']);
-    Route::get('show-data/{id}',[EmployeeController::class,'getProfile']);
+    Route::get('show-data/{id}',[EmployeeController::class,'show']);
     Route::post('update/{id}',[EmployeeController::class,'update']);
     Route::delete('delete/{id}',[EmployeeController::class,'delete']);
     Route::put('active/{id}',[EmployeeController::class,'active']);
-
-    Route::post('logout',[EmployeeController::class,'logout'])->middleware('check-guard:employee-api');
-    Route::get('get-profile',[EmployeeController::class,'getProfileEmployee'])->middleware('check-guard:employee-api');
 });
 
 

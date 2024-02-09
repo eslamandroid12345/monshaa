@@ -17,14 +17,14 @@ class UserResource extends JsonResource
         return [
 
             'id' => $this->id,
-            'logo' => $this->logo != null ? asset($this->logo) : null,
+            'logo' => $this->company->logo != null ? asset($this->company->logo) : null,
             'name' => $this->name,
             'user_type' => 'manger',
-            'shop_name' => $this->shop_name,
-            'shop_address' => $this->shop_address,
+            'company_name' => $this->company->company_name,
+            'company_address' => $this->company->company_address,
+            'company_phone' => $this->company->company_phone,
             'phone' => $this->phone,
-            'tax_number' => $this->tax_number,
-            'status' => $this->status,
+            'status' => $this->is_active == 1 ? 'active' : 'not_active',
             'token' => 'Bearer '.$this->token,
             'created_at' => $this->created_at->format('Y-m-d'),
             'updated_at' => $this->updated_at->format('Y-m-d')

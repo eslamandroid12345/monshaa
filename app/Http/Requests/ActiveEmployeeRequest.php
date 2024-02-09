@@ -25,7 +25,7 @@ class ActiveEmployeeRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'status' => 'required|in:active,not_active',
+            'is_active' => 'required|boolean',
             'block_reason' => 'nullable',
         ];
     }
@@ -34,16 +34,11 @@ class ActiveEmployeeRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'status.required' => 'حقل تعديل الحاله مطلوب',
+            'is_active.required' => 'حقل تعديل الحاله مطلوب',
             'status.in' => 'حقل تعديل حاله الموظف يجب ان يكون active or not_active',
 
         ];
     }
 
 
-    protected function failedValidation(Validator $validator)
-    {
-
-        return validationException($validator);
-    }
 }

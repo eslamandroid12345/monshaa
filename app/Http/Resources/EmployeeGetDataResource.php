@@ -17,12 +17,12 @@ class EmployeeGetDataResource extends JsonResource
         return [
 
             'id' => $this->id,
-            'logo' => $this->image != null ? asset($this->image) : null,
+            'logo' => $this->company->logo != null ? asset($this->company->logo) : null,
             'name' => $this->name,
-            'address' => $this->address,
+            'address' => $this->employee_address,
             'phone' => $this->phone,
             'card_number' => $this->card_number,
-            'status' => $this->status,
+            'status' => $this->is_active == 1 ? 'active' : 'not_active',
             'created_at' => $this->created_at->format('Y-m-d'),
             'updated_at' => $this->updated_at->format('Y-m-d')
         ];

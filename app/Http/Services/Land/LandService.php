@@ -19,15 +19,12 @@ class LandService
     use Responser;
     protected LandRepositoryInterface $landRepository;
 
-    protected AuthService $authService;
-
     protected FileManagerService $fileManagerService;
 
-    public function __construct(LandRepositoryInterface $landRepository,AuthService $authService,FileManagerService $fileManagerService)
+    public function __construct(LandRepositoryInterface $landRepository,FileManagerService $fileManagerService)
     {
 
         $this->landRepository = $landRepository;
-        $this->authService = $authService;
         $this->fileManagerService = $fileManagerService;
     }
 
@@ -59,8 +56,8 @@ class LandService
 
             $inputs = $request->validated();
 
-            $inputs['user_id'] = $this->authService->checkGuard();
-            $inputs['employee_id'] = $this->authService->checkEmployeeGuard();
+            $inputs['user_id'] = auth('user-api')->id();
+            $inputs['company_id'] = auth('user-api')->user()->company_id;
 
             if ($request->hasFile('land_images')) {
 
@@ -72,9 +69,6 @@ class LandService
 
             return $this->responseSuccess(new LandResource($land), 200, 'تم اضافه البيانات بنجاح');
 
-
-        }catch (AuthorizationException $exception) {
-            return $this->responseFail(null, 401, $exception->getMessage(), 401);
 
         } catch (\Exception $exception) {
 
@@ -95,9 +89,6 @@ class LandService
 
             $inputs = $request->validated();
 
-            $inputs['user_id'] = $this->authService->checkGuard();
-            $inputs['employee_id'] = $this->authService->checkEmployeeGuard();
-
             if ($request->hasFile('land_images')) {
 
                 $images = $this->fileManagerService->handleMultipleImages("land_images", "land/images", $land->getRawOriginal('land_images'));
@@ -108,10 +99,8 @@ class LandService
 
             return $this->responseSuccess(new LandResource($this->landRepository->getById($id)), 200, 'تم تعديل بيانات الارض  بنجاح');
 
-        }catch (AuthorizationException $exception) {
-            return $this->responseFail(null, 401, $exception->getMessage(), 401);
+        }catch (ModelNotFoundException $exception) {
 
-        } catch (ModelNotFoundException $exception) {
             return $this->responseFail(null, 404, 'بيانات العقار غير موجوده', 404);
 
         } catch (\Exception $exception) {
@@ -131,10 +120,8 @@ class LandService
 
             return $this->responseSuccess(new LandResource($land), 200, 'تم عرض بيانات الارض  بنجاح');
 
-        }catch (AuthorizationException $exception) {
-            return $this->responseFail(null, 401, $exception->getMessage(), 401);
+        }catch (ModelNotFoundException $exception) {
 
-        } catch (ModelNotFoundException $exception) {
             return $this->responseFail(null, 404, 'بيانات العقار غير موجوده', 404);
 
         } catch (\Exception $exception) {
@@ -154,9 +141,6 @@ class LandService
             $this->landRepository->update($land->id, ['status' => 'sale']);
 
             return $this->responseSuccess(new LandResource($this->landRepository->getById($id)), 200, 'تم تغيير حاله الارض  بنجاح');
-
-        }catch (AuthorizationException $exception) {
-            return $this->responseFail(null, 401, $exception->getMessage(), 401);
 
         } catch (ModelNotFoundException $exception) {
             return $this->responseFail(null, 404, 'بيانات العقار غير موجوده', 404);
@@ -179,9 +163,6 @@ class LandService
             $this->landRepository->deleteWithMultipleFiles($land->id, $land->getRawOriginal('land_images'));
 
             return $this->responseSuccess(null, 200, 'تم حذف بيانات الارض  بنجاح');
-
-        }catch (AuthorizationException $exception) {
-            return $this->responseFail(null, 401, $exception->getMessage(), 401);
 
         } catch (ModelNotFoundException $exception) {
             return $this->responseFail(null, 404, 'بيانات العقار غير موجوده', 404);

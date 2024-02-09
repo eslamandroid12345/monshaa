@@ -27,6 +27,7 @@ class LandResource extends JsonResource
             'advertiser_type' => $this->advertiser_type,
             'advertise_details' => $this->advertise_details,
             'status' => $this->status,
+            'user_added' => $this->user->name,
             'created_at' => $this->created_at->format('Y-m-d'),
             'updated_at' => $this->updated_at->format('Y-m-d')
 

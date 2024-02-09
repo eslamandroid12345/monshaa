@@ -22,6 +22,14 @@ interface RepositoryInterface
         array $appends = []
     ): ?Model;
 
+    public function getByIdWithCondition(
+        $modelId,
+        $byColumn,
+        $byValue,
+        array $columns = ['*'],
+        array $relations = [],
+    ): ?Model;
+
     public function get(
         $byColumn,
         $value,

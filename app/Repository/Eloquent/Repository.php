@@ -45,6 +45,16 @@ abstract class Repository implements RepositoryInterface
         return $this->model->select($columns)->with($relations)->findOrFail($modelId)->append($appends);
     }
 
+    public function getByIdWithCondition(
+        $modelId,
+        $byColumn,
+        $byValue,
+        array $columns = ['*'],
+        array $relations = [],
+    ): ?Model {
+        return $this->model->where($byColumn,'=',$byValue)->select($columns)->with($relations)->findOrFail($modelId);
+    }
+
     public function get(
         $byColumn,
         $value,

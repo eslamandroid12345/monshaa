@@ -13,12 +13,8 @@ class StateRepository extends Repository implements StateRepositoryInterface
 
     protected Model $model;
 
-    protected AuthService $authService;
-
-
-    public function __construct(State $model,AuthService $authService)
+    public function __construct(State $model)
     {
-        $this->authService = $authService;
         parent::__construct($model);
     }
 
@@ -55,12 +51,11 @@ class StateRepository extends Repository implements StateRepositoryInterface
             $q->where('id', '=',  request()->input('code'));
         });
 
-//        dd($query->toSql());
         return $query
             ->latest()
             ->select(['*'])
             ->with(['user'])
-            ->where('user_id','=',$this->authService->checkGuard())
+            ->where('company_id','=',auth('user-api')->user()->company_id)
             ->where('status','=','waiting')
             ->paginate(16);
 

@@ -32,6 +32,7 @@ class StateResource extends JsonResource
             'number_of_bathrooms' => $this->number_of_bathrooms,
             'number_of_rooms' => $this->number_of_rooms,
             'advertise_details' => $this->advertise_details,
+            'user_added' => $this->user->name,
             'created_at' => $this->created_at->format('Y-m-d'),
             'updated_at' => $this->updated_at->format('Y-m-d')
         ];
