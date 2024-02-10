@@ -9,9 +9,11 @@ use App\Http\Resources\EmployeeGetDataResource;
 use App\Http\Services\Mutual\FileManagerService;
 use App\Http\Traits\Responser;
 use App\Repository\EmployeeRepositoryInterface;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Hash;
 
 class EmployeeService
@@ -77,7 +79,9 @@ class EmployeeService
 
         $employee = $this->employeeRepository->getByIdWithCondition($id,'is_admin',0);
 
-        $inputs = $request->validated();
+            Gate::authorize('check-company-auth',$employee);
+
+            $inputs = $request->validated();
 
         if ($request->hasFile('employee_image')) {
             $image = $this->fileManagerService->handle("employee_image", "employees/images",$employee->employee_image);
@@ -97,7 +101,11 @@ class EmployeeService
 
         } catch (\Exception $exception) {
 
-            return $this->responseFail(null, 500, $exception->getMessage(), 500);
+            return $this->responseFail(
+                null, $exception instanceof AuthorizationException ? 403 : 500,
+                $exception instanceof AuthorizationException ? 'غير مصرح لك للدخول لذلك الصفحه' : $exception->getMessage(),
+                $exception instanceof AuthorizationException ? 403 : 500
+            );
 
         }
 
@@ -110,17 +118,15 @@ class EmployeeService
 
         $employee = $this->employeeRepository->getByIdWithCondition($id,'is_admin',0);
 
-         $this->employeeRepository->delete($employee->id);
+        Gate::authorize('check-company-auth',$employee);
+
+        $this->employeeRepository->delete($employee->id);
 
         return $this->responseSuccess(null,200,'تم حذف الموظف بنجاح');
 
     } catch (ModelNotFoundException $exception) {
 
         return $this->responseFail(null, 404, 'بيانات الموظف غير موجوده', 404);
-
-    } catch (\Exception $exception) {
-
-        return $this->responseFail(null, 500, $exception->getMessage(), 500);
 
     }
 
@@ -134,7 +140,10 @@ class EmployeeService
 
         $employee = $this->employeeRepository->getByIdWithCondition($id,'is_admin',0);
 
-        $this->employeeRepository->update($employee->id,$request->validated());
+            Gate::authorize('check-company-auth',$employee);
+
+
+            $this->employeeRepository->update($employee->id,$request->validated());
 
         $this->employeeRepository->update($employee->id,['access_token' => null]);
 
@@ -156,7 +165,11 @@ class EmployeeService
 
         try {
 
-            return $this->responseSuccess(new EmployeeGetDataResource($this->employeeRepository->getByIdWithCondition($id,'is_admin',0)),200,'تم عرض بيانات الموظف بنجاح');
+            $employee = $this->employeeRepository->getByIdWithCondition($id,'is_admin',0);
+
+            Gate::authorize('check-company-auth',$employee);
+
+            return $this->responseSuccess(new EmployeeGetDataResource($employee),200,'تم عرض بيانات الموظف بنجاح');
 
         }catch (ModelNotFoundException $exception){
 
