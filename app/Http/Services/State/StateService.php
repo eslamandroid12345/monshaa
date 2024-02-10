@@ -4,13 +4,14 @@ namespace App\Http\Services\State;
 
 use App\Http\Requests\StateRequest;
 use App\Http\Resources\StateResource;
-use App\Http\Services\Mutual\AuthService;
 use App\Http\Services\Mutual\FileManagerService;
 use App\Http\Traits\Responser;
 use App\Repository\StateRepositoryInterface;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Gate;
+
 
 class StateService
 {
@@ -77,6 +78,8 @@ class StateService
 
             $state = $this->stateRepository->getById($id);
 
+            Gate::authorize('check-company-auth',$state);
+
             $inputs = $request->validated();
 
             if($request->hasFile('real_state_images')){
@@ -95,7 +98,11 @@ class StateService
 
         } catch (\Exception $exception) {
 
-            return $this->responseFail(null, 500, $exception->getMessage(), 500);
+            return $this->responseFail(
+                null, $exception instanceof AuthorizationException ? 403 : 500,
+                $exception instanceof AuthorizationException ? 'غير مصرح لك للدخول لذلك الصفحه' : $exception->getMessage(),
+                $exception instanceof AuthorizationException ? 403 : 500
+            );
 
         }
     }
@@ -107,6 +114,8 @@ class StateService
         try {
 
             $state = $this->stateRepository->getById($id);
+
+            Gate::authorize('check-company-auth',$state);
 
             return $this->responseSuccess(new StateResource($state), 200, 'تم عرض بيانات العقار  بنجاح');
 
@@ -122,7 +131,10 @@ class StateService
     {
 
         try {
+
             $state = $this->stateRepository->getById($id);
+
+            Gate::authorize('check-company-auth',$state);
 
             $this->stateRepository->update($state->id,['status' => $state->department]);
 
@@ -140,6 +152,8 @@ class StateService
     {
         try {
             $state = $this->stateRepository->getById($id);
+
+            Gate::authorize('check-company-auth',$state);
 
             $this->stateRepository->deleteWithMultipleFiles($state->id,$state->getRawOriginal('real_state_images'));
 

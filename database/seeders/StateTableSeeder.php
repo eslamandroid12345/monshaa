@@ -26,6 +26,7 @@ class StateTableSeeder extends Seeder
             'real_state_type' => $i >= 15 ? 'apartment' : 'villa',
             'department' => $i >= 15 ? 'sale' : 'rent',
             'advertiser_type' => $i >= 15 ? 'real_state_owner' : 'real_state_company',
+            'advertiser_name' => 'advertiser '.$i,
             'advertised_phone_number' => '0105298818'.$i,
             'real_state_space' => 120,
             'real_state_price' => $i >= 15 ? 600000.00 : 3000000.00,

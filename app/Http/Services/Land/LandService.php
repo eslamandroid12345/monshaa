@@ -4,14 +4,13 @@ namespace App\Http\Services\Land;
 
 use App\Http\Requests\LandRequest;
 use App\Http\Resources\LandResource;
-use App\Http\Resources\StateResource;
-use App\Http\Services\Mutual\AuthService;
 use App\Http\Services\Mutual\FileManagerService;
 use App\Http\Traits\Responser;
 use App\Repository\LandRepositoryInterface;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Gate;
 
 class LandService
 {
@@ -36,9 +35,6 @@ class LandService
             $lands = $this->landRepository->getAllLandsQuery();
 
             return $this->responseSuccess(LandResource::collection($lands)->response()->getData(true), 200, 'تم الحصول على بيانات جميع الاراضي بنجاح');
-
-        }catch (AuthorizationException $exception) {
-            return $this->responseFail(null, 401, $exception->getMessage(), 401);
 
         } catch (\Exception $exception) {
 
@@ -81,11 +77,12 @@ class LandService
     public function update($id,LandRequest $request): JsonResponse
     {
 
-
         try {
 
-
             $land = $this->landRepository->getById($id);
+
+            Gate::authorize('check-company-auth',$land);
+
 
             $inputs = $request->validated();
 
@@ -105,7 +102,11 @@ class LandService
 
         } catch (\Exception $exception) {
 
-            return $this->responseFail(null, 500, $exception->getMessage(), 500);
+            return $this->responseFail(
+                null, $exception instanceof AuthorizationException ? 403 : 500,
+                $exception instanceof AuthorizationException ? 'غير مصرح لك للدخول لذلك الصفحه' : $exception->getMessage(),
+                $exception instanceof AuthorizationException ? 403 : 500
+            );
 
         }
     }
@@ -117,6 +118,8 @@ class LandService
         try {
 
             $land = $this->landRepository->getById($id);
+
+            Gate::authorize('check-company-auth',$land);
 
             return $this->responseSuccess(new LandResource($land), 200, 'تم عرض بيانات الارض  بنجاح');
 
@@ -138,6 +141,8 @@ class LandService
 
             $land = $this->landRepository->getById($id);
 
+            Gate::authorize('check-company-auth',$land);
+
             $this->landRepository->update($land->id, ['status' => 'sale']);
 
             return $this->responseSuccess(new LandResource($this->landRepository->getById($id)), 200, 'تم تغيير حاله الارض  بنجاح');
@@ -147,7 +152,11 @@ class LandService
 
         } catch (\Exception $exception) {
 
-            return $this->responseFail(null, 500, $exception->getMessage(), 500);
+            return $this->responseFail(
+                null, $exception instanceof AuthorizationException ? 403 : 500,
+                $exception instanceof AuthorizationException ? 'غير مصرح لك للدخول لذلك الصفحه' : $exception->getMessage(),
+                $exception instanceof AuthorizationException ? 403 : 500
+            );
 
         }
 
@@ -160,16 +169,14 @@ class LandService
 
             $land = $this->landRepository->getById($id);
 
+            Gate::authorize('check-company-auth',$land);
+
             $this->landRepository->deleteWithMultipleFiles($land->id, $land->getRawOriginal('land_images'));
 
             return $this->responseSuccess(null, 200, 'تم حذف بيانات الارض  بنجاح');
 
         } catch (ModelNotFoundException $exception) {
             return $this->responseFail(null, 404, 'بيانات العقار غير موجوده', 404);
-
-        } catch (\Exception $exception) {
-
-            return $this->responseFail(null, 500, $exception->getMessage(), 500);
 
         }
     }

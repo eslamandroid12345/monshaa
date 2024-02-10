@@ -27,6 +27,7 @@ class CreateStatesTable extends Migration
             $table->string('real_state_address_details')->nullable()->comment('عنوان العقار تفصيلي');
             $table->enum('real_state_type',['apartment','villa','shop'])->comment('نوع العقار مثال شقه فيلا محل');
             $table->enum('department',['sale','rent'])->comment('القسم بيع ام ايجار');
+            $table->string('advertiser_name')->comment('اسم المعلن');
             $table->enum('advertiser_type',['real_state_owner','real_state_company'])->comment('نوع المعلن');
             $table->string('advertised_phone_number')->comment('رقم الهاتف المعلن');
             $table->double('real_state_space',10,2)->comment('المساحه');
