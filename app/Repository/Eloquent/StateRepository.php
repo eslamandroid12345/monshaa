@@ -2,7 +2,6 @@
 
 namespace App\Repository\Eloquent;
 
-use App\Http\Services\Mutual\AuthService;
 use App\Models\State;
 use App\Repository\StateRepositoryInterface;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;

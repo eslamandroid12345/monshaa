@@ -22,7 +22,7 @@ use Illuminate\Support\Facades\Route;
 Route::post('login',[UserController::class,'login']);
 Route::post('register',[UserController::class,'register']);
 
-Route::group(['prefix' => 'auth','middleware' => ['jwt','check-guard:user-api']], function (){
+Route::group(['prefix' => 'auth','middleware' => ['jwt']], function (){
 
     Route::post('logout',[UserController::class,'logout']);
     Route::get('get-profile',[UserController::class,'getProfile']);
