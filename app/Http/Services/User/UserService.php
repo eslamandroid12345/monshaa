@@ -96,7 +96,9 @@ class UserService
             $message = $auth->is_admin == 1 ? 'تم تسجيل دخول المدير بنجاح' : 'تم تسجيل دخول الموظف بنجاح';
 
             return $this->responseSuccess($resource, 200, $message);
+
         } catch (\Exception $exception) {
+
             return $this->responseFail(null, 500, $exception->getMessage(), 500);
         }
 

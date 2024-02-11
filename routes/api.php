@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\Employee\EmployeeController;
 use App\Http\Controllers\Api\Land\LandController;
 use App\Http\Controllers\Api\State\StateController;
+use App\Http\Controllers\Api\Tenant\TenantController;
 use App\Http\Controllers\Api\User\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -60,4 +61,14 @@ Route::group(['prefix' => 'land','middleware' => ['jwt','permission:lands']], fu
     Route::post('update/{id}',[LandController::class,'update']);
     Route::post('change-status/{id}',[LandController::class,'changeStatus']);
     Route::delete('delete/{id}',[LandController::class,'delete']);
+});
+
+
+Route::group(['prefix' => 'tenant','middleware' => ['jwt','permission:tenants']], function (){
+
+    Route::get('all-tenants',[TenantController::class,'getAllTenants']);
+    Route::post('create',[TenantController::class,'create']);
+    Route::get('show/{id}',[TenantController::class,'show']);
+    Route::post('update/{id}',[TenantController::class,'update']);
+    Route::delete('delete/{id}',[TenantController::class,'delete']);
 });

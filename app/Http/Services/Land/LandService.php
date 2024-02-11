@@ -38,7 +38,11 @@ class LandService
 
         } catch (\Exception $exception) {
 
-            return $this->responseFail(null, 500, $exception->getMessage(), 500);
+            return $this->responseFail(
+                null, $exception instanceof AuthorizationException ? 403 : 500,
+                $exception instanceof AuthorizationException ? 'غير مصرح لك للدخول لذلك الصفحه' : $exception->getMessage(),
+                $exception instanceof AuthorizationException ? 403 : 500
+            );
 
         }
 
@@ -66,9 +70,13 @@ class LandService
             return $this->responseSuccess(new LandResource($land), 200, 'تم اضافه البيانات بنجاح');
 
 
-        } catch (\Exception $exception) {
+        }catch (\Exception $exception) {
 
-            return $this->responseFail(null, 500, $exception->getMessage(), 500);
+            return $this->responseFail(
+                null, $exception instanceof AuthorizationException ? 403 : 500,
+                $exception instanceof AuthorizationException ? 'غير مصرح لك للدخول لذلك الصفحه' : $exception->getMessage(),
+                $exception instanceof AuthorizationException ? 403 : 500
+            );
 
         }
     }
