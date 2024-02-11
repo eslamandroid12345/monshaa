@@ -12,11 +12,18 @@ class TenantResource extends JsonResource
      * @param  \Illuminate\Http\Request  $request
      * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
      */
+
+    private static int $order = 1;
+
     public function toArray($request)
     {
+
+        $ordered = self::$order++;
+
         return [
 
             'id' => $this->id,
+            'number' => $ordered,
             'name' => $this->name,
             'phone' => $this->phone,
             'card_number' => $this->card_number,
@@ -25,7 +32,10 @@ class TenantResource extends JsonResource
             'nationality' => $this->nationality,
             'created_at' => $this->created_at->format('Y-m-d'),
             'updated_at' => $this->updated_at->format('Y-m-d')
-
         ];
+
+
     }
+
+
 }
