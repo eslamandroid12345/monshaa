@@ -133,8 +133,8 @@ class UserService
         try {
 
             $auth = Auth::guard('user-api')->user();
-            $auth['token'] = $request->bearerToken();
 
+            $auth['token'] = $request->bearerToken();
             $requestOfCompany = $request->only('company_phone','company_name','company_address','logo');
 
             $requestOfUser = $request->only('name','phone','password');

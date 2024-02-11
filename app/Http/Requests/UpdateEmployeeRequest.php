@@ -31,7 +31,7 @@ class UpdateEmployeeRequest extends FormRequest
             'password' => 'required|min:8',
             'employee_address' => 'required',
             'card_number' => 'required|numeric',
-            'employee_permissions' => 'nullable|array|in:states,lands,employees,expenses,tenants,notifications,financial_receipt,financial_cash,technical_support,setting',
+            'employee_permissions' => 'nullable|array|in:states,lands,employees,expenses,tenants,notifications,financial_receipt,financial_cash,technical_support',
 
         ];
     }
@@ -52,7 +52,7 @@ class UpdateEmployeeRequest extends FormRequest
             'password.min' => 'كلمه المرور يجب ان لا تقل عن 8 احرف وارقام',
             'employee_image.mimes' => 'الصوره يحب ان تكون jpeg,png,jpg',
             'employee_permissions.array' => 'صلاحيات الموظف يجب ان تكون مصفوفه',
-            'employee_permissions.in' => 'states,lands,employees,expenses,tenants,notifications,financial_receipt,financial_cash,technical_support,setting صلاحيات الموظف يجب ان تحتوي علي هذه الشاشات ',
+            'employee_permissions.in' => 'states,lands,employees,expenses,tenants,notifications,financial_receipt,financial_cash,technical_support صلاحيات الموظف يجب ان تحتوي علي هذه الشاشات ',
 
         ];
     }
