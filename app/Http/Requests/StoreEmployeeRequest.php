@@ -31,7 +31,7 @@ class StoreEmployeeRequest extends FormRequest
             'password' => 'required|min:8',
             'employee_address' => 'required',
             'card_number' => 'required|numeric',
-            'employee_permissions' => 'required|array|in:states,lands,employees,expenses,tenants,notifications,financial_receipt,financial_cash,technical_support',
+            'employee_permissions' => 'required|array|in:states,lands,employees,expenses,tenants,tenant_contracts,notifications,financial_receipt,financial_cash,technical_support',
         ];
     }
 
@@ -51,7 +51,7 @@ class StoreEmployeeRequest extends FormRequest
             'password.min' => 'كلمه المرور يجب ان لا تقل عن 8 احرف وارقام',
             'employee_permissions.required' => 'يرجي ادخال صلاحيات للموظف',
             'employee_permissions.array' => 'صلاحيات الموظف يجب ان تكون مصفوفه',
-            'employee_permissions.in' => 'states,lands,employees,expenses,tenants,notifications,financial_receipt,financial_cash,technical_support صلاحيات الموظف يجب ان تحتوي علي هذه الشاشات ',
+            'employee_permissions.in' => 'states,lands,employees,expenses,tenants,tenant_contracts,notifications,financial_receipt,financial_cash,technical_support صلاحيات الموظف يجب ان تحتوي علي هذه الشاشات ',
         ];
     }
 

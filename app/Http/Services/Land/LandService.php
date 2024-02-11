@@ -98,7 +98,7 @@ class LandService
 
         }catch (ModelNotFoundException $exception) {
 
-            return $this->responseFail(null, 404, 'بيانات العقار غير موجوده', 404);
+            return $this->responseFail(null, 404, 'بيانات الارض غير موجوده', 404);
 
         } catch (\Exception $exception) {
 
@@ -125,11 +125,7 @@ class LandService
 
         }catch (ModelNotFoundException $exception) {
 
-            return $this->responseFail(null, 404, 'بيانات العقار غير موجوده', 404);
-
-        } catch (\Exception $exception) {
-
-            return $this->responseFail(null, 500, $exception->getMessage(), 500);
+            return $this->responseFail(null, 404, 'بيانات الارض غير موجوده', 404);
 
         }
     }
@@ -148,7 +144,7 @@ class LandService
             return $this->responseSuccess(new LandResource($this->landRepository->getById($id)), 200, 'تم تغيير حاله الارض  بنجاح');
 
         } catch (ModelNotFoundException $exception) {
-            return $this->responseFail(null, 404, 'بيانات العقار غير موجوده', 404);
+            return $this->responseFail(null, 404, 'بيانات الارض غير موجوده', 404);
 
         } catch (\Exception $exception) {
 
@@ -176,7 +172,8 @@ class LandService
             return $this->responseSuccess(null, 200, 'تم حذف بيانات الارض  بنجاح');
 
         } catch (ModelNotFoundException $exception) {
-            return $this->responseFail(null, 404, 'بيانات العقار غير موجوده', 404);
+
+            return $this->responseFail(null, 404, 'بيانات الارض غير موجوده', 404);
 
         }
     }

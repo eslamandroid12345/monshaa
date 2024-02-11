@@ -4,7 +4,6 @@ use App\Http\Controllers\Api\Employee\EmployeeController;
 use App\Http\Controllers\Api\Land\LandController;
 use App\Http\Controllers\Api\State\StateController;
 use App\Http\Controllers\Api\User\UserController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
