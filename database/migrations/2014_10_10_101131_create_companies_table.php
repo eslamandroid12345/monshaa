@@ -19,6 +19,7 @@ class CreateCompaniesTable extends Migration
         Schema::create('companies', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('logo')->nullable()->comment('لوجو المؤسسسه');
+            $table->string('currency')->nullable();
             $table->string('company_name');
             $table->string('company_address')->comment('عنوان المؤسسه');
             $table->string('company_phone')->comment('رقم هاتف الشركه');

@@ -135,7 +135,7 @@ class UserService
             $auth = Auth::guard('user-api')->user();
 
             $auth['token'] = $request->bearerToken();
-            $requestOfCompany = $request->only('company_phone','company_name','company_address','logo');
+            $requestOfCompany = $request->only('company_phone','company_name','company_address','logo','currency');
 
             $requestOfUser = $request->only('name','phone','password');
 
