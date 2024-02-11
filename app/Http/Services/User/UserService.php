@@ -96,11 +96,7 @@ class UserService
 
                     $this->userRepository->update($auth->id,['access_token' => $token]);
 
-                    $message = $auth->is_admin == 1 ? 'تم تسجيل دخول المدير بنجاح' : 'تم تسجيل دخول الموظف بنجاح';
-
-                    $resource = $auth->is_admin == 1 ? new UserResource($auth) : new EmployeeResource($auth);
-
-                    return $this->responseSuccess($resource, 200, $message);
+                    return $this->responseSuccess($auth->is_admin == 1 ? new UserResource($auth) : new EmployeeResource($auth), 200, $auth->is_admin == 1 ? 'تم تسجيل دخول المدير بنجاح' : 'تم تسجيل دخول الموظف بنجاح');
                 }
 
             } else {
