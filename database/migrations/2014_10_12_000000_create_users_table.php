@@ -30,6 +30,7 @@ class CreateUsersTable extends Migration
             $table->string('block_reason')->nullable()->comment('سبب الغاء تفعيل الموظف');
             $table->string('employee_address')->nullable();
             $table->string('card_number')->nullable()->comment('رقم بطاقه الهويه للموظف');
+            $table->json('employee_permissions')->nullable();
             $table->rememberToken();
             $table->softDeletes();
             $table->unsignedBigInteger('company_id');

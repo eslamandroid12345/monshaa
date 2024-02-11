@@ -29,7 +29,7 @@ class UpdateUserRequest extends FormRequest
             'name' => 'required|max:255',
             'company_name' => 'required|max:255',
             'company_address' => 'required|max:255',
-            'company_phone' => 'required|numeric|unique:companies,company_phone,'. auth('user-api')->id(),
+            'company_phone' => 'required|numeric|unique:companies,company_phone,'. auth('user-api')->user()->company_id,
             'phone' => 'required|numeric|unique:users,phone,'. auth('user-api')->id(),
             'password' => 'nullable|min:8',
         ];

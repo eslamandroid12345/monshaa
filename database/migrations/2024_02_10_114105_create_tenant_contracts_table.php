@@ -19,6 +19,7 @@ class CreateTenantContractsTable extends Migration
         Schema::create('tenant_contracts', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('company_id');
+            $table->unsignedBigInteger('user_id')->comment('الموظف او المدير العام');
             $table->unsignedBigInteger('tenant_id');
             $table->string('owner_name')->comment('اسم المالك');
             $table->string('owner_phone');
@@ -42,6 +43,7 @@ class CreateTenantContractsTable extends Migration
             $table->double('insurance_total',10,2)->comment('التامين');
             $table->integer('period_of_delay')->nullable()->comment('مده التاخير');
             $table->foreign('company_id')->references('id')->on('companies')->cascadeOnUpdate()->cascadeOnDelete();
+            $table->foreign('user_id')->references('id')->on('users')->cascadeOnUpdate()->cascadeOnDelete();
             $table->foreign('tenant_id')->references('id')->on('tenants')->cascadeOnUpdate()->cascadeOnDelete();
             $table->timestamps();
         });

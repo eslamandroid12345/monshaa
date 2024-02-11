@@ -21,6 +21,7 @@ class EmployeeGetDataResource extends JsonResource
             'name' => $this->name,
             'address' => $this->employee_address,
             'phone' => $this->phone,
+            'user_type' => $this->is_admin == 1 ? 'manger' : 'employee',
             'card_number' => $this->card_number,
             'status' => $this->is_active == 1 ? 'active' : 'not_active',
             'created_at' => $this->created_at->format('Y-m-d'),

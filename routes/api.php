@@ -30,7 +30,7 @@ Route::group(['prefix' => 'auth','middleware' => ['jwt']], function (){
 });
 
 
-Route::group(['prefix' => 'employee','middleware' => 'jwt'], function (){
+Route::group(['prefix' => 'employee','middleware' => ['jwt','permission:employees']], function (){
 
     Route::get('get-all-employees',[EmployeeController::class,'getAllEmployees']);
     Route::post('create',[EmployeeController::class,'create']);
@@ -42,7 +42,7 @@ Route::group(['prefix' => 'employee','middleware' => 'jwt'], function (){
 
 
 
-Route::group(['prefix' => 'state','middleware' => ['jwt']], function (){
+Route::group(['prefix' => 'state','middleware' => ['jwt','permission:states']], function (){
 
     Route::get('all-states',[StateController::class,'getAllStates']);
     Route::post('create',[StateController::class,'create']);
@@ -53,7 +53,7 @@ Route::group(['prefix' => 'state','middleware' => ['jwt']], function (){
 });
 
 
-Route::group(['prefix' => 'land','middleware' => ['jwt']], function (){
+Route::group(['prefix' => 'land','middleware' => ['jwt','permission:lands']], function (){
 
     Route::get('all-lands',[LandController::class,'getAllLands']);
     Route::post('create',[LandController::class,'create']);

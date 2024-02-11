@@ -56,6 +56,7 @@ class EmployeeService
             }
 
             $inputs['company_id'] = auth('user-api')->user()->company_id;
+            $inputs['employee_permissions'] = json_encode( $inputs['employee_permissions']);
             $inputs['password'] = Hash::make($inputs['password']);
 
 
@@ -87,6 +88,11 @@ class EmployeeService
             $image = $this->fileManagerService->handle("employee_image", "employees/images",$employee->employee_image);
             $inputs['employee_image'] = $image;
         }
+
+
+            $inputs['employee_permissions'] = $request->employee_permissions !== null
+                ? json_encode($request->employee_permissions)
+                : null;
 
             $inputs['password'] = Hash::make($inputs['password']);
 
