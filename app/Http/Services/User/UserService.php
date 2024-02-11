@@ -78,34 +78,27 @@ class UserService
         try {
             $token = auth('user-api')->attempt($request->only('phone', 'password'));
 
-            if ($token) {
-
-                $auth = Auth::guard('user-api')->user();
-
-                if($auth->is_admin == 1 && $auth->is_active == 0){
-
-                    return $this->responseFail(null, 403,'الحساب غير مفعل يرجي التواصل مع مطور البرنامج',403);
-
-                }elseif ($auth->is_admin == 0 && $auth->is_active == 0){
-
-                    return $this->responseFail(null, 403,'الحساب غير مفعل يرجي التواصل مع مديرك المباشر لتفعيل الحساب',403);
-
-                }else{
-
-                    $auth['token'] = $token;
-
-                    $this->userRepository->update($auth->id,['access_token' => $token]);
-
-                    return $this->responseSuccess($auth->is_admin == 1 ? new UserResource($auth) : new EmployeeResource($auth), 200, $auth->is_admin == 1 ? 'تم تسجيل دخول المدير بنجاح' : 'تم تسجيل دخول الموظف بنجاح');
-                }
-
-            } else {
-                return $this->responseFail(null, 409,'بيانات الدخول غير صحيحة برجاء إدخال البيانات صحيحة وحاول مرة أخرى');
+            if (!$token) {
+                return $this->responseFail(null, 409, 'بيانات الدخول غير صحيحة برجاء إدخال البيانات صحيحة وحاول مرة أخرى');
             }
+
+            $auth = Auth::guard('user-api')->user();
+
+            if ($auth->is_active == 0) {
+                $message = $auth->is_admin == 1 ? 'الحساب غير مفعل يرجي التواصل مع مطور البرنامج' : 'الحساب غير مفعل يرجي التواصل مع مديرك المباشر لتفعيل الحساب';
+                return $this->responseFail(null, 403, $message, 403);
+            }
+
+            $auth['token'] = $token;
+            $this->userRepository->update($auth->id, ['access_token' => $token]);
+
+            $resource = $auth->is_admin == 1 ? new UserResource($auth) : new EmployeeResource($auth);
+            $message = $auth->is_admin == 1 ? 'تم تسجيل دخول المدير بنجاح' : 'تم تسجيل دخول الموظف بنجاح';
+
+            return $this->responseSuccess($resource, 200, $message);
         } catch (\Exception $exception) {
             return $this->responseFail(null, 500, $exception->getMessage(), 500);
         }
-
 
     }
 
@@ -116,7 +109,6 @@ class UserService
         $auth = Auth::guard('user-api')->user();
 
         $auth['token'] = request()->bearerToken();
-
         return $this->responseSuccess($auth->is_admin == 1 ? new UserResource($auth) : new EmployeeResource($auth), 200, $auth->is_admin == 1 ? 'تم تسجيل دخول المدير بنجاح' : 'تم تسجيل دخول الموظف بنجاح');
 
     }
