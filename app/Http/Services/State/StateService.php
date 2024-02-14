@@ -44,7 +44,6 @@ class StateService
                 $exception instanceof AuthorizationException ? 'غير مصرح لك للدخول لذلك الصفحه' : $exception->getMessage(),
                 $exception instanceof AuthorizationException ? 403 : 500
             );
-
         }
 
     }

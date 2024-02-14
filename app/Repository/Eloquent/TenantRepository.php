@@ -31,7 +31,6 @@ class TenantRepository extends Repository implements TenantRepositoryInterface
             $q->where('phone', '=',request()->input('phone'));
         });
 
-
         return $query
             ->latest()
             ->select(['*'])

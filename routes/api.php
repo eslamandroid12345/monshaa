@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\Employee\EmployeeController;
 use App\Http\Controllers\Api\Land\LandController;
 use App\Http\Controllers\Api\State\StateController;
 use App\Http\Controllers\Api\Tenant\TenantController;
+use App\Http\Controllers\Api\TenantContract\TenantContractController;
 use App\Http\Controllers\Api\User\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -72,3 +73,14 @@ Route::group(['prefix' => 'tenant','middleware' => ['jwt','permission:tenants']]
     Route::post('update/{id}',[TenantController::class,'update']);
     Route::delete('delete/{id}',[TenantController::class,'delete']);
 });
+
+
+Route::group(['prefix' => 'tenant-contract','middleware' => ['jwt','permission:tenant_contracts']], function (){
+
+    Route::get('all-tenant-contracts',[TenantContractController::class,'allTenantContracts']);
+    Route::post('create',[TenantContractController::class,'create']);
+    Route::get('show/{id}',[TenantContractController::class,'show']);
+    Route::post('update/{id}',[TenantContractController::class,'update']);
+    Route::delete('delete/{id}',[TenantContractController::class,'delete']);
+});
+
