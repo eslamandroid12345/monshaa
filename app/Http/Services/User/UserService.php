@@ -34,47 +34,51 @@ class UserService
         $this->companyRepository = $companyRepository;
     }
 
-    public function register(StoreUserRequest $request): JsonResponse{
-
-
+    public function register(StoreUserRequest $request): JsonResponse
+    {
         DB::beginTransaction();
 
         try {
-
-
-            $permissions = ["home_page", "states", "lands", "tenants", "tenant_contracts", "financial_receipt", "financial_cash", "expenses", "employees", "reports", "notifications", "setting", "technical_support", "expired_contracts", "revenues", "profits", "tenant_stats", "selling_states",];
-            $requestOfCompany = $request->only('company_phone','company_name','company_address','privacy_and_policy');
-            $requestOfCompany['currency'] = 'الجنيه المصري';
-            $company = $this->companyRepository->create($requestOfCompany);
-            $requestOfUser = $request->only('name','phone','password');
-
-            $requestOfUser['company_id'] = $company['id'];
-            $requestOfUser['is_admin'] = 1;
-            $requestOfUser['employee_permissions'] = json_encode($permissions);
-            $requestOfUser['password'] = Hash::make($requestOfUser['password']);
-
-            $this->userRepository->create($requestOfUser);
+            $company = $this->createCompany($request);
+            $user = $this->createUser($request,$company);
 
             DB::commit();
 
             $token = Auth::guard('user-api')->attempt($request->only('phone', 'password'));
+            $user['token'] = $token;
 
-            $auth = Auth::guard('user-api')->user();
-            $auth['token'] = $token;
+            return $this->responseSuccess(new UserResource($user), 200, 'تم إضافة بيانات الشركة والمدير العام بنجاح');
 
-            return $this->responseSuccess(new UserResource($auth),200,'تم اضافه بيانات الشركه والمدير العام بنجاح');
-
-        }catch (\Exception $exception){
-
+        } catch (\Exception $exception) {
             DB::rollBack();
-            return $this->responseFail(null,500,$exception->getMessage(),500);
-
+            return $this->responseFail(null, 500, $exception->getMessage(), 500);
         }
+    }
+
+    protected function createCompany(StoreUserRequest $request): ?\Illuminate\Database\Eloquent\Model
+    {
+
+        $companyData = $request->only('company_phone', 'company_name', 'company_address', 'privacy_and_policy');
+        $companyData['currency'] = 'الجنيه المصري';
+
+        return $this->companyRepository->create($companyData);
+    }
+
+    protected function createUser(StoreUserRequest $request,$company): ?\Illuminate\Database\Eloquent\Model
+    {
+        $userPermissions = ["home_page", "states", "lands", "tenants", "tenant_contracts", "financial_receipt", "financial_cash", "expenses", "employees", "reports", "notifications", "setting", "technical_support", "expired_contracts", "revenues", "profits", "tenant_stats", "selling_states"];
+
+        $userData = $request->only('name', 'phone', 'password');
+        $userData['company_id'] = $company['id'];
+        $userData['is_admin'] = 1;
+        $userData['employee_permissions'] = json_encode($userPermissions);
+        $userData['password'] = Hash::make($userData['password']);
+
+        return $this->userRepository->create($userData);
     }
 
     public function login(LoginUserRequest $request): JsonResponse
     {
-
         try {
             $token = auth('user-api')->attempt($request->only('phone', 'password'));
 
@@ -84,25 +88,48 @@ class UserService
 
             $auth = Auth::guard('user-api')->user();
 
-            if ($auth->is_active == 0) {
-                $message = $auth->is_admin == 1 ? 'الحساب غير مفعل يرجي التواصل مع مطور البرنامج' : 'الحساب غير مفعل يرجي التواصل مع مديرك المباشر لتفعيل الحساب';
+            if (!$this->isActiveUser($auth)) {
+                $message = $this->getActivationMessage($auth);
                 return $this->responseFail(null, 403, $message, 403);
             }
 
-            $auth['token'] = $token;
-            $this->userRepository->update($auth->id, ['access_token' => $token]);
+            $this->updateUserToken($auth->id,$token);
 
-            $resource = $auth->is_admin == 1 ? new UserResource($auth) : new EmployeeResource($auth);
-            $message = $auth->is_admin == 1 ? 'تم تسجيل دخول المدير بنجاح' : 'تم تسجيل دخول الموظف بنجاح';
+            $resource = $this->getResourceBasedOnRole($auth);
+            $message = $this->getLoginSuccessMessage($auth);
 
             return $this->responseSuccess($resource, 200, $message);
-
         } catch (\Exception $exception) {
-
             return $this->responseFail(null, 500, $exception->getMessage(), 500);
+
+        }
+     }
+
+        protected function isActiveUser($auth): bool
+        {
+            return $auth->is_active == 1;
         }
 
-    }
+        protected function getActivationMessage($auth): string
+        {
+            return $auth->is_admin == 1 ? 'الحساب غير مفعل يرجى التواصل مع مطور البرنامج' : 'الحساب غير مفعل يرجى التواصل مع مديرك المباشر لتفعيل الحساب';
+        }
+
+        protected function updateUserToken($userId, $token): void
+        {
+            $this->userRepository->update($userId, ['access_token' => $token]);
+        }
+
+        protected function getResourceBasedOnRole($auth): UserResource|EmployeeResource
+        {
+            return $auth->is_admin == 1 ? new UserResource($auth) : new EmployeeResource($auth);
+        }
+
+        protected function getLoginSuccessMessage($auth): string
+        {
+            return $auth->is_admin == 1 ? 'تم تسجيل دخول المدير بنجاح' : 'تم تسجيل دخول الموظف بنجاح';
+        }
+
 
 
     public function getProfile(): JsonResponse
