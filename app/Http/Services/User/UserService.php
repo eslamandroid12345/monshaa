@@ -41,7 +41,8 @@ class UserService
 
         try {
 
-            $permissions = ["home_page", "states", "lands", "tenants", "tenant_contracts", "financial_receipt", "financial_cash", "expenses", "employees", "reports", "notifications", "setting", "technical_support", "expired_contracts"];
+
+            $permissions = ["home_page", "states", "lands", "tenants", "tenant_contracts", "financial_receipt", "financial_cash", "expenses", "employees", "reports", "notifications", "setting", "technical_support", "expired_contracts", "revenues", "profits", "tenant_stats", "selling_states",];
             $requestOfCompany = $request->only('company_phone','company_name','company_address','privacy_and_policy');
             $requestOfCompany['currency'] = 'الجنيه المصري';
             $company = $this->companyRepository->create($requestOfCompany);
