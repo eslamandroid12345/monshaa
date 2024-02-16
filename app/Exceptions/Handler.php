@@ -43,12 +43,9 @@ class Handler extends ExceptionHandler
 
 
     if($exception instanceof  AuthorizationException){
-
         return $this->responseFail(null,403,'غير مصرح لك للدخول لذلك الصفحه',403);
 
-
     }
-
 
         return parent::render($request, $exception);
     }

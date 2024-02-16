@@ -25,6 +25,7 @@ class CompanyTableSeeder extends Seeder
                 'date_start_subscription' => Carbon::now()->format('Y-m-d'),
                 'date_end_subscription' =>   Carbon::now()->addYear()->format('Y-m-d'),
                 'company_phone' => "0105298871".$i,
+                'currency' => 'الجنيه المصري',
             ]);
         }
     }

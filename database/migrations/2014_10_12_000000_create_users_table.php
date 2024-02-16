@@ -19,6 +19,7 @@ class CreateUsersTable extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name');
+            $table->string('job_title')->nullable()->comment('المسمي الوظيفي');
             $table->string('phone');
             $table->string('password');
             $table->text('access_token')->nullable();
@@ -30,7 +31,7 @@ class CreateUsersTable extends Migration
             $table->string('block_reason')->nullable()->comment('سبب الغاء تفعيل الموظف');
             $table->string('employee_address')->nullable();
             $table->string('card_number')->nullable()->comment('رقم بطاقه الهويه للموظف');
-            $table->json('employee_permissions')->nullable();
+            $table->json('employee_permissions');
             $table->rememberToken();
             $table->softDeletes();
             $table->unsignedBigInteger('company_id');

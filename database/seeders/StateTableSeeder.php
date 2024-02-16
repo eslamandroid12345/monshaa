@@ -23,7 +23,7 @@ class StateTableSeeder extends Seeder
             'apartment_number' => 10,
             'real_state_address' => 'Real State Address '. $i,
             'real_state_address_details' => 'Real State Address Details'. $i,
-            'real_state_type' => $i >= 15 ? 'apartment' : 'villa',
+            'real_state_type' => $i >= 15 ? 'empty_apartment' : 'empty_villa',
             'department' => $i >= 15 ? 'sale' : 'rent',
             'advertiser_type' => $i >= 15 ? 'real_state_owner' : 'real_state_company',
             'advertiser_name' => 'advertiser '.$i,

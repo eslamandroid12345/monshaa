@@ -27,11 +27,12 @@ class StoreEmployeeRequest extends FormRequest
         return [
             'employee_image' => 'nullable|mimes:jpeg,png,jpg',
             'name' => 'required',
+            'job_title' => 'required|max:255',
             'phone' => 'required|numeric|unique:users,phone',
             'password' => 'required|min:8',
             'employee_address' => 'required',
             'card_number' => 'required|numeric',
-            'employee_permissions' => 'required|array|in:states,lands,employees,expenses,tenants,tenant_contracts,notifications,financial_receipt,financial_cash,technical_support',
+            'employee_permissions' => 'required|array|in:states,lands,employees,expenses,tenants,tenant_contracts,notifications,financial_receipt,financial_cash,technical_support,reports,home_page,setting,expired_contracts',
         ];
     }
 
@@ -41,6 +42,8 @@ class StoreEmployeeRequest extends FormRequest
         return [
             'name.required' => 'اسم الموظف مطلوب',
             'name.max' => 'اسم الموظف يجب ان لا يتعدي 255 حرف',
+            'job_title.required' => 'المسمي الوظيفي للموظف مطلوب',
+            'job_title.max' => 'المسمي الوظيفي يجب ان لا يتعدي 255 حرف',
             'employee_address.required' => 'عنوان الموظف مطلوب',
             'phone.required' => 'هاتف الموظف مطلوب',
             'phone.unique' => 'هذا الرقم مسجل لدينا من قبل',
@@ -51,7 +54,7 @@ class StoreEmployeeRequest extends FormRequest
             'password.min' => 'كلمه المرور يجب ان لا تقل عن 8 احرف وارقام',
             'employee_permissions.required' => 'يرجي ادخال صلاحيات للموظف',
             'employee_permissions.array' => 'صلاحيات الموظف يجب ان تكون مصفوفه',
-            'employee_permissions.in' => 'states,lands,employees,expenses,tenants,tenant_contracts,notifications,financial_receipt,financial_cash,technical_support صلاحيات الموظف يجب ان تحتوي علي هذه الشاشات ',
+            'employee_permissions.in' => 'states,lands,employees,expenses,tenants,tenant_contracts,notifications,financial_receipt,financial_cash,technical_support,reports,home_page,setting صلاحيات الموظف يجب ان تحتوي علي هذه الشاشات ',
         ];
     }
 

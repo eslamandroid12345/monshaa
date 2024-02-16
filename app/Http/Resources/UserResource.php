@@ -19,8 +19,10 @@ class UserResource extends JsonResource
             'id' => $this->id,
             'logo' => $this->company->logo != null ? asset($this->company->logo) : null,
             'name' => $this->name,
+            'job_title' => 'Manger Of Company',
             'currency' => $this->company->currency,
             'user_type' => 'manger',
+            'permissions' => $this->getAllPermissions(),
             'company_name' => $this->company->company_name,
             'company_address' => $this->company->company_address,
             'company_phone' => $this->company->company_phone,
@@ -31,5 +33,17 @@ class UserResource extends JsonResource
             'updated_at' => $this->updated_at->format('Y-m-d')
 
         ];
+
+    }
+
+    private function getAllPermissions(): array
+    {
+
+        $permissions = [];
+        foreach (json_decode($this->employee_permissions,true) as $permission) {
+            $permissions[] = $permission;
+        }
+        return $permissions;
+
     }
 }

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\Employee\EmployeeController;
+use App\Http\Controllers\Api\Expense\ExpenseController;
 use App\Http\Controllers\Api\Land\LandController;
 use App\Http\Controllers\Api\State\StateController;
 use App\Http\Controllers\Api\Tenant\TenantController;
@@ -84,3 +85,13 @@ Route::group(['prefix' => 'tenant-contract','middleware' => ['jwt','permission:t
     Route::delete('delete/{id}',[TenantContractController::class,'delete']);
 });
 
+
+
+Route::group(['prefix' => 'expenses','middleware' => ['jwt','permission:expenses']], function (){
+
+    Route::get('all-expenses',[ExpenseController::class,'getAllExpenses']);
+    Route::post('create',[ExpenseController::class,'create']);
+    Route::get('show/{id}',[ExpenseController::class,'show']);
+    Route::post('update/{id}',[ExpenseController::class,'update']);
+    Route::delete('delete/{id}',[ExpenseController::class,'delete']);
+});

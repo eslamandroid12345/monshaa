@@ -41,21 +41,20 @@ class UserService
 
         try {
 
+            $permissions = ["home_page", "states", "lands", "tenants", "tenant_contracts", "financial_receipt", "financial_cash", "expenses", "employees", "reports", "notifications", "setting", "technical_support", "expired_contracts"];
             $requestOfCompany = $request->only('company_phone','company_name','company_address','privacy_and_policy');
-
+            $requestOfCompany['currency'] = 'الجنيه المصري';
             $company = $this->companyRepository->create($requestOfCompany);
-
             $requestOfUser = $request->only('name','phone','password');
 
             $requestOfUser['company_id'] = $company['id'];
-
             $requestOfUser['is_admin'] = 1;
-
+            $requestOfUser['employee_permissions'] = json_encode($permissions);
             $requestOfUser['password'] = Hash::make($requestOfUser['password']);
 
-               $this->userRepository->create($requestOfUser);
+            $this->userRepository->create($requestOfUser);
 
-               DB::commit();
+            DB::commit();
 
             $token = Auth::guard('user-api')->attempt($request->only('phone', 'password'));
 

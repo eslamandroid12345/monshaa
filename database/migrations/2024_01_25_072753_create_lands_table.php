@@ -22,6 +22,7 @@ class CreateLandsTable extends Migration
             $table->unsignedBigInteger('company_id');
             $table->unsignedBigInteger('user_id')->comment('الموظف او المدير العام');
             $table->string('address')->comment('العنوان');
+            $table->string('address_details')->comment('العنوان بالتفصيلي');
             $table->string('seller_name')->comment('اسم البائع');
             $table->double('size_in_metres',10,2);
             $table->double('price_of_one_meter',10,2);

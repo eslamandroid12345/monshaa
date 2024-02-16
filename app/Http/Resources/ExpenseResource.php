@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class TenantResource extends JsonResource
+class ExpenseResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -12,25 +12,20 @@ class TenantResource extends JsonResource
      * @param  \Illuminate\Http\Request  $request
      * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
      */
-
-
     public function toArray($request)
     {
-
         return [
             'id' => $this->id,
-            'name' => $this->name,
-            'phone' => $this->phone,
-            'card_number' => $this->card_number,
-            'card_address' => $this->card_address,
-            'job_title' => $this->job_title,
-            'nationality' => $this->nationality,
+            'total_money' => $this->total_money,
+            'user' => [
+              'id' => $this->user->id,
+              'name' => $this->user->name,
+              'phone' => $this->user->phone,
+            ],
+            'description' => $this->description,
+            'transaction_date' => $this->transaction_date,
             'created_at' => $this->created_at->format('Y-m-d'),
             'updated_at' => $this->updated_at->format('Y-m-d')
         ];
-
-
     }
-
-
 }

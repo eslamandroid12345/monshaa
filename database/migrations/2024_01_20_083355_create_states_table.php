@@ -24,8 +24,8 @@ class CreateStatesTable extends Migration
             $table->string('building_number')->nullable()->comment('رقم العماره');
             $table->string('apartment_number')->nullable()->comment('رقم الشقه');
             $table->string('real_state_address')->nullable()->comment('عنوان العقار');
-            $table->string('real_state_address_details')->nullable()->comment('عنوان العقار تفصيلي');
-            $table->enum('real_state_type',['apartment','villa','shop'])->comment('نوع العقار مثال شقه فيلا محل');
+            $table->string('real_state_address_details')->comment('عنوان العقار تفصيلي');
+            $table->enum('real_state_type',['furnished_apartment','empty_apartment','furnished_villa','empty_villa','shop'])->comment('نوع العقار مثال شقه(مفروشه-فارغه) فيلا(مفروشه-فارغه) محل');
             $table->enum('department',['sale','rent'])->comment('القسم بيع ام ايجار');
             $table->string('advertiser_name')->comment('اسم المعلن');
             $table->enum('advertiser_type',['real_state_owner','real_state_company'])->comment('نوع المعلن');

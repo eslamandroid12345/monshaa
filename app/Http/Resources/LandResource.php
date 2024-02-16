@@ -17,8 +17,14 @@ class LandResource extends JsonResource
 
         return [
             'id' => $this->id,
+            'user' => [
+                'id' => $this->user->id,
+                'name' => $this->user->name,
+                'phone' => $this->user->phone,
+            ],
             'land_images' => $this->getAllImages(),
             'address' => $this->address,
+            'address_details' => $this->address_details,
             'seller_name' => $this->seller_name,
             'size_in_metres' => $this->size_in_metres,
             'price_of_one_meter' => $this->price_of_one_meter,
@@ -27,7 +33,6 @@ class LandResource extends JsonResource
             'advertiser_type' => $this->advertiser_type,
             'advertise_details' => $this->advertise_details,
             'status' => $this->status,
-            'user_added' => $this->user->name,
             'created_at' => $this->created_at->format('Y-m-d'),
             'updated_at' => $this->updated_at->format('Y-m-d')
 

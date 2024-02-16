@@ -21,6 +21,7 @@ class LandTableSeeder extends Seeder
 
             Land::create([
                 'address' => "address ".$i,
+                'address_details' => 'Land Address Details'. $i,
                 'seller_name' => "seller ".$i,
                 'size_in_metres' => 400,
                 'price_of_one_meter' => 3000,

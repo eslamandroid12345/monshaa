@@ -19,12 +19,13 @@ class Land extends Model
         return $this->belongsTo(User::class,'user_id','id');
     }
 
-
-    public function employee(): BelongsTo
+    public function company(): BelongsTo
     {
 
-        return $this->belongsTo(Employee::class,'employee_id','id');
+        return $this->belongsTo(Company::class,'company_id','id');
     }
+
+
 
 
 
