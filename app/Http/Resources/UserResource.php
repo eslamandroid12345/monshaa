@@ -22,7 +22,26 @@ class UserResource extends JsonResource
             'job_title' => 'Manger Of Company',
             'currency' => $this->company->currency,
             'user_type' => 'manger',
-            'permissions' => $this->getAllPermissions(),
+            'permissions' => [
+                "home_page",
+                "states",
+                "lands",
+                "tenants",
+                "tenant_contracts",
+                "financial_receipt",
+                "financial_cash",
+                "expenses",
+                "employees",
+                "reports",
+                "notifications",
+                "setting",
+                "technical_support",
+                "expired_contracts",
+                "revenues",
+                "profits",
+                "tenant_stats",
+                "selling_states"
+            ],
             'company_name' => $this->company->company_name,
             'company_address' => $this->company->company_address,
             'company_phone' => $this->company->company_phone,
@@ -36,14 +55,6 @@ class UserResource extends JsonResource
 
     }
 
-    private function getAllPermissions(): array
-    {
 
-        $permissions = [];
-        foreach (json_decode($this->employee_permissions,true) as $permission) {
-            $permissions[] = $permission;
-        }
-        return $permissions;
 
-    }
 }

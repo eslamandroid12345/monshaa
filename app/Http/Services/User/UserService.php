@@ -39,6 +39,7 @@ class UserService
         DB::beginTransaction();
 
         try {
+
             $company = $this->createCompany($request);
             $user = $this->createUser($request,$company);
 
@@ -66,12 +67,9 @@ class UserService
 
     protected function createUser(StoreUserRequest $request,$company): ?\Illuminate\Database\Eloquent\Model
     {
-        $userPermissions = ["home_page", "states", "lands", "tenants", "tenant_contracts", "financial_receipt", "financial_cash", "expenses", "employees", "reports", "notifications", "setting", "technical_support", "expired_contracts", "revenues", "profits", "tenant_stats", "selling_states"];
-
         $userData = $request->only('name', 'phone', 'password');
         $userData['company_id'] = $company['id'];
         $userData['is_admin'] = 1;
-        $userData['employee_permissions'] = json_encode($userPermissions);
         $userData['password'] = Hash::make($userData['password']);
 
         return $this->userRepository->create($userData);
@@ -87,6 +85,7 @@ class UserService
             }
 
             $auth = Auth::guard('user-api')->user();
+            $auth['token'] = $token;
 
             if (!$this->isActiveUser($auth)) {
                 $message = $this->getActivationMessage($auth);

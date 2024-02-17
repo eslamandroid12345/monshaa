@@ -36,7 +36,7 @@ class EmployeeService
     public function getAllEmployees(): JsonResponse
     {
 
-        $employees = $this->employeeRepository->get('company_id',auth('user-api')->user()->company_id);
+        $employees = $this->employeeRepository->getByTwoColumns('company_id',auth('user-api')->user()->company_id,'is_admin',0);
 
         return $this->responseSuccess(EmployeeGetDataResource::collection($employees)->response()->getData(true),200,'تم جلب جميع الموظفين التابعه للشركه العقاريه بنجاح');
 

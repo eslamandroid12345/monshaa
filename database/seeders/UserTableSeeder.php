@@ -16,7 +16,6 @@ class UserTableSeeder extends Seeder
      */
     public function run()
     {
-        $permissions = ["home_page", "states", "lands", "tenants", "tenant_contracts", "financial_receipt", "financial_cash", "expenses", "employees", "reports", "notifications", "setting", "technical_support", "expired_contracts", "revenues", "profits", "tenant_stats", "selling_states"];
 
         for ($i = 1 ; $i <= 20 ; $i++){
 
@@ -26,7 +25,6 @@ class UserTableSeeder extends Seeder
                 'phone' => '0106293318'.$i,
                 'password' => Hash::make('123456'),
                 'is_admin' => 1,
-                'employee_permissions' => json_encode($permissions),
                 'company_id' => $i,
            ]);
 
