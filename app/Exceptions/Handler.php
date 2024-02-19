@@ -5,6 +5,7 @@ namespace App\Exceptions;
 use App\Http\Traits\Responser;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Throwable;
 
@@ -49,6 +50,15 @@ class Handler extends ExceptionHandler
 
         return parent::render($request, $exception);
     }
+
+
+    protected function convertValidationExceptionToResponse(ValidationException $e, $request): \Illuminate\Http\Response|\Illuminate\Http\JsonResponse|\Symfony\Component\HttpFoundation\Response
+    {
+        $errors = $e->validator->errors()->all();
+
+        return $this->responseFail($errors,422,"Validation error");
+    }
+
 
     public function register()
     {

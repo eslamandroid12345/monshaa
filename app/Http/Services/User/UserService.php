@@ -137,7 +137,7 @@ class UserService
         $auth = Auth::guard('user-api')->user();
 
         $auth['token'] = request()->bearerToken();
-        return $this->responseSuccess($auth->is_admin == 1 ? new UserResource($auth) : new EmployeeResource($auth), 200, $auth->is_admin == 1 ? 'تم تسجيل دخول المدير بنجاح' : 'تم تسجيل دخول الموظف بنجاح');
+        return $this->responseSuccess($auth->is_admin == 1 ? new UserResource($auth) : new EmployeeResource($auth), 200, $auth->is_admin == 1 ? 'تم عرض بيانات المدير العام والشركه بنجاح' : 'تم عرض بيانات الموظف بنجاح');
 
     }
 
@@ -171,7 +171,6 @@ class UserService
             }
 
             $this->companyRepository->update($auth->company_id,$requestOfCompany);
-
             $this->userRepository->update($auth->id,$requestOfUser);
 
             DB::commit();
