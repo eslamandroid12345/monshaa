@@ -11,6 +11,7 @@ use App\Http\Services\Mutual\FileManagerService;
 use App\Http\Traits\Responser;
 use App\Repository\CompanyRepositoryInterface;
 use App\Repository\UserRepositoryInterface;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -56,7 +57,7 @@ class UserService
         }
     }
 
-    protected function createCompany(StoreUserRequest $request): ?\Illuminate\Database\Eloquent\Model
+    protected function createCompany(StoreUserRequest $request): ?Model
     {
 
         $companyData = $request->only('company_phone', 'company_name', 'company_address', 'privacy_and_policy');
@@ -65,7 +66,7 @@ class UserService
         return $this->companyRepository->create($companyData);
     }
 
-    protected function createUser(StoreUserRequest $request,$company): ?\Illuminate\Database\Eloquent\Model
+    protected function createUser(StoreUserRequest $request,$company): ?Model
     {
         $userData = $request->only('name', 'phone', 'password');
         $userData['company_id'] = $company['id'];
@@ -149,19 +150,10 @@ class UserService
         try {
 
             $auth = Auth::guard('user-api')->user();
-
             $auth['token'] = $request->bearerToken();
-            $requestOfCompany = $request->only('company_phone','company_name','company_address','logo','currency');
 
             $requestOfUser = $request->only('name','phone','password');
-
             $user = $this->userRepository->getById($auth->id);
-
-
-            if ($request->hasFile('logo')) {
-                $image = $this->fileManagerService->handle("logo", "users/images",$user->logo);
-                $requestOfCompany['logo'] = $image;
-            }
 
 
             if ($request->filled('password')) {
@@ -170,7 +162,7 @@ class UserService
                 unset($requestOfUser['password']);
             }
 
-            $this->companyRepository->update($auth->company_id,$requestOfCompany);
+            $this->updateCompanyProfile($request,$user);
             $this->userRepository->update($auth->id,$requestOfUser);
 
             DB::commit();
@@ -182,6 +174,20 @@ class UserService
             DB::rollBack();
             return $this->responseFail(null, 500, $exception->getMessage(), 500);
         }
+
+    }
+
+    protected function updateCompanyProfile($request,$user): bool
+    {
+
+        $requestOfCompany = $request->only('company_phone','company_name','company_address','logo','currency');
+
+        if ($request->hasFile('logo')) {
+            $image = $this->fileManagerService->handle("logo", "users/images",$user->logo);
+            $requestOfCompany['logo'] = $image;
+        }
+
+        return $this->companyRepository->update($user->company_id,$requestOfCompany);
 
     }
 

@@ -5,7 +5,6 @@ namespace App\Http\Middleware;
 use App\Http\Traits\Responser;
 use Closure;
 use Illuminate\Http\Request;
-use Tymon\JWTAuth\Facades\JWTAuth;
 
 class CheckEmployeePermissions
 {
