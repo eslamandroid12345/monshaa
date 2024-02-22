@@ -17,7 +17,8 @@ class EmployeeResource extends JsonResource
         return [
 
              'id' => $this->id,
-            'logo' => $this->company->logo != null ? asset($this->company->logo) : null,
+            'logo' => $this->company->logo,
+            'employee_image' => $this->employee_image,
             'name' => $this->name,
             'job_title' => $this->job_title,
             'currency' => $this->company->currency,
@@ -41,6 +42,9 @@ class EmployeeResource extends JsonResource
         foreach (json_decode($this->employee_permissions,true) as $permission) {
             $permissions[] = $permission;
         }
+        $permissions[] = 'setting';
+        $permissions[0] = 'home_page';
+
         return $permissions;
 
     }

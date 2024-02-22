@@ -142,6 +142,7 @@ class UserService
 
     }
 
+
     public function updateProfile(UpdateUserRequest $request): JsonResponse
     {
 
@@ -198,7 +199,6 @@ class UserService
         $auth = Auth::guard('user-api')->user();
 
         $this->userRepository->update($auth->id,['access_token' => null]);
-
         auth('user-api')->logout();
 
         return $this->responseSuccess(null, 200, 'تم تسجيل الخروج بنجاح');

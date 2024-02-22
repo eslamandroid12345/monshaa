@@ -17,7 +17,7 @@ class UserResource extends JsonResource
         return [
 
             'id' => $this->id,
-            'logo' => $this->company->logo != null ? asset($this->company->logo) : null,
+            'logo' => $this->company->logo,
             'name' => $this->name,
             'job_title' => 'Manger Of Company',
             'currency' => $this->company->currency,
