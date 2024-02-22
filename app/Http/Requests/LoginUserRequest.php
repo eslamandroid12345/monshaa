@@ -27,7 +27,7 @@ class LoginUserRequest extends FormRequest
     {
 
             return [
-                'phone' => 'required|numeric|exists:users,phone',
+                'phone' => 'required|numeric',
                 'password' => 'required'
             ];
 
@@ -41,7 +41,6 @@ class LoginUserRequest extends FormRequest
             return [
                 'phone.required' => 'رقم هاتف صاحب الشركه مطلوب للدخول',
                 'phone.numeric'=> 'الهاتف يجب ان يكون رقم وليس شيء اخر',
-                'phone.exists' => 'هذا الرقم غير مسجل لدينا',
                 'password.required' => 'كلمه المرور مطلوبه',
 
             ];
