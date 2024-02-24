@@ -1,8 +1,10 @@
 <?php
 
+use App\Http\Controllers\Api\Cash\CashController;
 use App\Http\Controllers\Api\Employee\EmployeeController;
 use App\Http\Controllers\Api\Expense\ExpenseController;
 use App\Http\Controllers\Api\Land\LandController;
+use App\Http\Controllers\Api\Receipt\ReceiptController;
 use App\Http\Controllers\Api\State\StateController;
 use App\Http\Controllers\Api\Tenant\TenantController;
 use App\Http\Controllers\Api\TenantContract\TenantContractController;
@@ -94,6 +96,27 @@ Route::group(['prefix' => 'expenses','middleware' => ['jwt','permission:expenses
     Route::get('show/{id}',[ExpenseController::class,'show']);
     Route::post('update/{id}',[ExpenseController::class,'update']);
     Route::delete('delete/{id}',[ExpenseController::class,'delete']);
+});
+
+
+Route::group(['prefix' => 'receipt','middleware' => ['jwt','permission:financial_receipt']], function (){
+
+    Route::get('get-all-receipts',[ReceiptController::class,'getAllReceipts']);
+    Route::post('create/{id}',[ReceiptController::class,'create']);
+    Route::get('show/{id}',[ReceiptController::class,'show']);
+    Route::post('update/{id}',[ReceiptController::class,'update']);
+    Route::delete('delete/{id}',[ReceiptController::class,'delete']);
+});
+
+
+
+Route::group(['prefix' => 'cash','middleware' => ['jwt','permission:financial_cash']], function (){
+
+    Route::get('get-all-cashes',[CashController::class,'getAllCashes']);
+    Route::post('create/{id}',[CashController::class,'create']);
+    Route::get('show/{id}',[CashController::class,'show']);
+    Route::post('update/{id}',[CashController::class,'update']);
+    Route::delete('delete/{id}',[CashController::class,'delete']);
 });
 
 

@@ -5,49 +5,29 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class TenantContract extends Model
+class Receipt extends Model
 {
     use HasFactory;
 
-
     protected $guarded = [];
 
-
-    public function tenant(): BelongsTo
+    public function tenant_contract(): BelongsTo
     {
 
-        return $this->belongsTo(Tenant::class,'tenant_id','id');
+        return $this->belongsTo(TenantContract::class,'tenant_contract_id','id');
     }
 
     public function user(): BelongsTo
     {
 
         return $this->belongsTo(User::class,'user_id','id');
-
     }
-
 
     public function company(): BelongsTo
     {
 
         return $this->belongsTo(Company::class,'company_id','id');
-
     }
-
-    public function receipts(): HasMany
-    {
-
-        return $this->hasMany(Receipt::class,'tenant_contract_id','id');
-    }
-
-
-    public function cashes(): HasMany
-    {
-
-        return $this->hasMany(Cash::class,'tenant_contract_id','id');
-    }
-
 
 }

@@ -37,13 +37,14 @@ class StateService
 
             return $this->responseSuccess(StateResource::collection($states)->response()->getData(true), 200, 'تم الحصول على بيانات جميع العقارات بنجاح');
 
-        }  catch (\Exception $exception) {
+        }  catch (AuthorizationException $exception){
 
-            return $this->responseFail(
-                null, $exception instanceof AuthorizationException ? 403 : 500,
-                $exception instanceof AuthorizationException ? 'غير مصرح لك للدخول لذلك الصفحه' : $exception->getMessage(),
-                $exception instanceof AuthorizationException ? 403 : 500
-            );
+            return $this->responseFail(null, 403, 'غير مصرح لك للدخول لذلك الصفحه',403);
+
+        } catch (\Exception $e) {
+
+            return $this->responseFail(null, 500, $e->getMessage(), 500);
+
         }
 
     }
@@ -67,9 +68,14 @@ class StateService
 
         return $this->responseSuccess(new StateResource($state), 200, 'تم اضافه البيانات بنجاح');
 
-    } catch (\Exception $exception) {
+    } catch (AuthorizationException $exception){
 
-            return $this->responseFail(null, 401, $exception->getMessage(), $exception->getMessage() == "Unauthorized" ? 401 : 500);
+            return $this->responseFail(null, 403, 'غير مصرح لك للدخول لذلك الصفحه',403);
+
+        } catch (\Exception $e) {
+
+            return $this->responseFail(null, 500, $e->getMessage(), 500);
+
         }
     }
 
@@ -99,13 +105,13 @@ class StateService
 
             return $this->responseFail(null, 404, 'بيانات العقار غير موجوده', 404);
 
-        } catch (\Exception $exception) {
+        } catch (AuthorizationException $exception){
 
-            return $this->responseFail(
-                null, $exception instanceof AuthorizationException ? 403 : 500,
-                $exception instanceof AuthorizationException ? 'غير مصرح لك للدخول لذلك الصفحه' : $exception->getMessage(),
-                $exception instanceof AuthorizationException ? 403 : 500
-            );
+            return $this->responseFail(null, 403, 'غير مصرح لك للدخول لذلك الصفحه',403);
+
+        } catch (\Exception $e) {
+
+            return $this->responseFail(null, 500, $e->getMessage(), 500);
 
         }
     }

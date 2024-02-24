@@ -2,11 +2,14 @@
 
 namespace App\Providers;
 
+use App\Repository\CashRepositoryInterface;
 use App\Repository\CompanyRepositoryInterface;
+use App\Repository\Eloquent\CashRepository;
 use App\Repository\Eloquent\CompanyRepository;
 use App\Repository\Eloquent\EmployeeRepository;
 use App\Repository\Eloquent\ExpenseRepository;
 use App\Repository\Eloquent\LandRepository;
+use App\Repository\Eloquent\ReceiptRepository;
 use App\Repository\Eloquent\Repository;
 use App\Repository\Eloquent\StateRepository;
 use App\Repository\Eloquent\TenantContractRepository;
@@ -15,6 +18,7 @@ use App\Repository\Eloquent\UserRepository;
 use App\Repository\EmployeeRepositoryInterface;
 use App\Repository\ExpenseRepositoryInterface;
 use App\Repository\LandRepositoryInterface;
+use App\Repository\ReceiptRepositoryInterface;
 use App\Repository\RepositoryInterface;
 use App\Repository\StateRepositoryInterface;
 use App\Repository\TenantContractRepositoryInterface;
@@ -40,6 +44,8 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(TenantRepositoryInterface::class, TenantRepository::class);
         $this->app->bind(TenantContractRepositoryInterface::class, TenantContractRepository::class);
         $this->app->bind(ExpenseRepositoryInterface::class, ExpenseRepository::class);
+        $this->app->bind(ReceiptRepositoryInterface::class, ReceiptRepository::class);
+        $this->app->bind(CashRepositoryInterface::class, CashRepository::class);
 
     }
 

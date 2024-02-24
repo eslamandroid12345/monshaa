@@ -36,13 +36,13 @@ class LandService
 
             return $this->responseSuccess(LandResource::collection($lands)->response()->getData(true), 200, 'تم الحصول على بيانات جميع الاراضي بنجاح');
 
-        } catch (\Exception $exception) {
+        } catch (AuthorizationException $exception){
 
-            return $this->responseFail(
-                null, $exception instanceof AuthorizationException ? 403 : 500,
-                $exception instanceof AuthorizationException ? 'غير مصرح لك للدخول لذلك الصفحه' : $exception->getMessage(),
-                $exception instanceof AuthorizationException ? 403 : 500
-            );
+            return $this->responseFail(null, 403, 'غير مصرح لك للدخول لذلك الصفحه',403);
+
+        } catch (\Exception $e) {
+
+            return $this->responseFail(null, 500, $e->getMessage(), 500);
 
         }
 
@@ -70,13 +70,13 @@ class LandService
             return $this->responseSuccess(new LandResource($land), 200, 'تم اضافه البيانات بنجاح');
 
 
-        }catch (\Exception $exception) {
+        }catch (AuthorizationException $exception){
 
-            return $this->responseFail(
-                null, $exception instanceof AuthorizationException ? 403 : 500,
-                $exception instanceof AuthorizationException ? 'غير مصرح لك للدخول لذلك الصفحه' : $exception->getMessage(),
-                $exception instanceof AuthorizationException ? 403 : 500
-            );
+            return $this->responseFail(null, 403, 'غير مصرح لك للدخول لذلك الصفحه',403);
+
+        } catch (\Exception $e) {
+
+            return $this->responseFail(null, 500, $e->getMessage(), 500);
 
         }
     }
@@ -108,13 +108,13 @@ class LandService
 
             return $this->responseFail(null, 404, 'بيانات الارض غير موجوده', 404);
 
-        } catch (\Exception $exception) {
+        } catch (AuthorizationException $exception){
 
-            return $this->responseFail(
-                null, $exception instanceof AuthorizationException ? 403 : 500,
-                $exception instanceof AuthorizationException ? 'غير مصرح لك للدخول لذلك الصفحه' : $exception->getMessage(),
-                $exception instanceof AuthorizationException ? 403 : 500
-            );
+            return $this->responseFail(null, 403, 'غير مصرح لك للدخول لذلك الصفحه',403);
+
+        } catch (\Exception $e) {
+
+            return $this->responseFail(null, 500, $e->getMessage(), 500);
 
         }
     }
@@ -135,6 +135,10 @@ class LandService
 
             return $this->responseFail(null, 404, 'بيانات الارض غير موجوده', 404);
 
+        }catch (AuthorizationException $exception){
+
+            return $this->responseFail(null, 403, 'غير مصرح لك للدخول لذلك الصفحه',403);
+
         }
     }
 
@@ -152,15 +156,16 @@ class LandService
             return $this->responseSuccess(new LandResource($this->landRepository->getById($id)), 200, 'تم تغيير حاله الارض  بنجاح');
 
         } catch (ModelNotFoundException $exception) {
+
             return $this->responseFail(null, 404, 'بيانات الارض غير موجوده', 404);
 
-        } catch (\Exception $exception) {
+        } catch (AuthorizationException $exception){
 
-            return $this->responseFail(
-                null, $exception instanceof AuthorizationException ? 403 : 500,
-                $exception instanceof AuthorizationException ? 'غير مصرح لك للدخول لذلك الصفحه' : $exception->getMessage(),
-                $exception instanceof AuthorizationException ? 403 : 500
-            );
+            return $this->responseFail(null, 403, 'غير مصرح لك للدخول لذلك الصفحه',403);
+
+        } catch (\Exception $e) {
+
+            return $this->responseFail(null, 500, $e->getMessage(), 500);
 
         }
 
@@ -182,6 +187,10 @@ class LandService
         } catch (ModelNotFoundException $exception) {
 
             return $this->responseFail(null, 404, 'بيانات الارض غير موجوده', 404);
+
+        }catch (AuthorizationException $exception){
+
+            return $this->responseFail(null, 403, 'غير مصرح لك للدخول لذلك الصفحه',403);
 
         }
     }
