@@ -95,3 +95,5 @@ Route::group(['prefix' => 'expenses','middleware' => ['jwt','permission:expenses
     Route::post('update/{id}',[ExpenseController::class,'update']);
     Route::delete('delete/{id}',[ExpenseController::class,'delete']);
 });
+
+

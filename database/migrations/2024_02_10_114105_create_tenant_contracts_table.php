@@ -29,7 +29,7 @@ class CreateTenantContractsTable extends Migration
             $table->string('owner_nationality');
             $table->string('real_state_address')->comment('عنوان العقار');
             $table->string('governorate')->comment('المحافظه التابع لها العقار');
-            $table->enum('real_state_type',['apartment','villa','shop'])->comment('نوع العقار مثال شقه فيلا محل');
+            $table->enum('real_state_type',['furnished_apartment','empty_apartment','furnished_villa','empty_villa','shop'])->comment('نوع العقار مثال شقه(مفروشه-فارغه) فيلا(مفروشه-فارغه) محل');
             $table->double('real_state_space',10,2)->comment('المساحه');
             $table->string('real_state_address_details')->comment('عنوان العقار تفصيلي');
             $table->string('building_number')->comment('رقم العماره');

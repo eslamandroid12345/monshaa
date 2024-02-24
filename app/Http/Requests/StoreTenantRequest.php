@@ -26,8 +26,8 @@ class StoreTenantRequest extends FormRequest
         return [
 
             'name' => 'required|max:255',
-            'phone' => 'required|numeric|unique:tenants,phone',
-            'card_number' => 'required|numeric|unique:tenants,card_number',
+            'phone' => 'required|numeric|unique:tenants,phone,' . request('tenant_id'),
+            'card_number' => 'required|numeric|unique:tenants,card_number,' . request('tenant_id'),
             'card_address' => 'required|max:255',
             'job_title' => 'required|max:255',
             'nationality' => 'required|max:255',
@@ -43,7 +43,7 @@ class StoreTenantRequest extends FormRequest
             'name.required' => 'اسم المستاجر مطلوب',
             'name.max' => 'عدد حروف اسم المستاجر يجب ان لا تتعدي عن 255 حرف',
             'phone.required' => 'هاتف المستاجر مطلوب',
-            'phone.unique' => 'هذا الهاتف مسجل لدينا من قبل',
+            'phone.unique' => 'رقم هاتف المستاجر مسجل لدينا من قبل',
             'phone.numeric' => 'هاتف المستاجر يحب ان يكون رقم',
             'card_number.required' => 'رقم بطاقه المستاجر مطلوبه',
             'card_number.unique' => 'رقم بطاقه المستاجر مسجله من قبل',

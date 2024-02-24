@@ -4,6 +4,7 @@ namespace App\Exceptions;
 
 use App\Http\Traits\Responser;
 use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
@@ -47,6 +48,7 @@ class Handler extends ExceptionHandler
         return $this->responseFail(null,403,'غير مصرح لك للدخول لذلك الصفحه',403);
 
     }
+
 
         return parent::render($request, $exception);
     }
