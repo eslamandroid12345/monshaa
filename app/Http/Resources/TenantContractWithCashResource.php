@@ -19,6 +19,7 @@ class TenantContractWithCashResource extends JsonResource
             'id' => $this->id,
             'tenant' => $this->tenant->name,
             'owner_name' => $this->owner_name,
+            'real_state_address' => $this->real_state_address,
             'contract_total' => $this->contract_total,
             'receipts' => CashResource::collection($this->cashes)
         ];
