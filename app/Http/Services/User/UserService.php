@@ -10,6 +10,7 @@ use App\Http\Resources\UserResource;
 use App\Http\Services\Mutual\FileManagerService;
 use App\Http\Traits\Responser;
 use App\Repository\CompanyRepositoryInterface;
+use App\Repository\FcmTokenRepositoryInterface;
 use App\Repository\UserRepositoryInterface;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\JsonResponse;
@@ -27,9 +28,12 @@ class UserService
     protected FileManagerService $fileManagerService;
     protected CompanyRepositoryInterface $companyRepository;
 
-    public function __construct(UserRepositoryInterface $userRepository,FileManagerService $fileManagerService,CompanyRepositoryInterface $companyRepository)
+    protected FcmTokenRepositoryInterface $fcmTokenRepository;
+
+    public function __construct( FcmTokenRepositoryInterface $fcmTokenRepository,UserRepositoryInterface $userRepository,FileManagerService $fileManagerService,CompanyRepositoryInterface $companyRepository)
     {
 
+        $this->fcmTokenRepository = $fcmTokenRepository;
         $this->userRepository = $userRepository;
         $this->fileManagerService = $fileManagerService;
         $this->companyRepository = $companyRepository;
@@ -97,6 +101,11 @@ class UserService
 
             $resource = $this->getResourceBasedOnRole($auth);
             $message = $this->getLoginSuccessMessage($auth);
+
+            $requestOfFcmToken = $request->only(['token','device_type']);
+            $requestOfFcmToken['user_id'] = $auth->id;
+
+            $this->fcmTokenRepository->create($requestOfFcmToken);//create new device token when user login
 
             return $this->responseSuccess($resource, 200, $message);
         } catch (\Exception $exception) {

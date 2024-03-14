@@ -7,6 +7,7 @@ use App\Http\Requests\StoreEmployeeRequest;
 use App\Http\Requests\UpdateEmployeeRequest;
 use App\Http\Resources\EmployeeGetDataResource;
 use App\Http\Services\Mutual\FileManagerService;
+use App\Http\Traits\FirebaseNotification;
 use App\Http\Traits\Responser;
 use App\Repository\EmployeeRepositoryInterface;
 use Illuminate\Auth\Access\AuthorizationException;
@@ -20,6 +21,7 @@ class EmployeeService
 {
 
     use Responser;
+    use FirebaseNotification;
     protected EmployeeRepositoryInterface $employeeRepository;
 
     protected FileManagerService $fileManagerService;
@@ -62,6 +64,7 @@ class EmployeeService
 
             $employee = $this->employeeRepository->create($inputs);
 
+            $this->sendNotification(['title' => 'اشعار جديد لديك','body' => 'نم اضافه موظف جديد' ],auth('user-api')->user());
             return $this->responseSuccess(new EmployeeGetDataResource($employee), 200, 'تم اضافه بيانات الموظف بنجاح');
 
         } catch (\Exception $exception) {

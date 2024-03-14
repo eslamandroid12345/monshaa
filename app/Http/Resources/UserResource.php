@@ -22,6 +22,14 @@ class UserResource extends JsonResource
             'job_title' => 'Manger Of Company',
             'currency' => $this->company->currency,
             'user_type' => 'manger',
+            'company_name' => $this->company->company_name,
+            'company_address' => $this->company->company_address,
+            'company_phone' => $this->company->company_phone,
+            'phone' => $this->phone,
+            'status' => $this->is_active == 1 ? 'active' : 'not_active',
+            'token' => 'Bearer '.$this->token,
+            'created_at' => $this->created_at->format('Y-m-d'),
+            'updated_at' => $this->updated_at->format('Y-m-d'),
             'permissions' => [
                 "home_page",
                 "states",
@@ -42,14 +50,86 @@ class UserResource extends JsonResource
                 "selling_states",
                 "setting",
             ],
-            'company_name' => $this->company->company_name,
-            'company_address' => $this->company->company_address,
-            'company_phone' => $this->company->company_phone,
-            'phone' => $this->phone,
-            'status' => $this->is_active == 1 ? 'active' : 'not_active',
-            'token' => 'Bearer '.$this->token,
-            'created_at' => $this->created_at->format('Y-m-d'),
-            'updated_at' => $this->updated_at->format('Y-m-d')
+            'home' => [
+
+                [
+                  'key' => 'states',
+                  'name' => 'العقارات',
+                  'icon' => asset('icons/states.png'),
+                  'count' => 30,
+                ],
+
+                [
+                    'key' => 'lands',
+                    'name' => 'الاراضي',
+                    'icon' => asset('icons/lands.png'),
+                    'count' => 10,
+                ],
+
+                [
+                    'key' => 'tenants',
+                    'name' => 'المستاجرين',
+                    'icon' => asset('icons/tenants.png'),
+                    'count' => 4,
+                ],
+
+                [
+                    'key' => 'tenant_contracts',
+                    'name' => 'عقود الايجار',
+                    'icon' => asset('icons/tenant_contracts.png'),
+                    'count' => 2,
+                ],
+
+                [
+                    'key' => 'financial_receipt',
+                    'name' => 'سندات الصرف',
+                    'icon' => asset('icons/financial_receipt.png'),
+                    'count' => 1,
+                ],
+
+                [
+                    'key' => 'financial_cash',
+                    'name' => 'سندات القبض',
+                    'icon' => asset('icons/financial_cash.png'),
+                    'count' => 2,
+                ],
+
+                [
+                    'key' => 'expenses',
+                    'name' => 'المصروفات',
+                    'icon' => asset('icons/expenses.png'),
+                    'count' => 300,
+                ],
+
+                [
+                    'key' => 'employees',
+                    'name' => 'الموظفين',
+                    'icon' => asset('icons/employees.png'),
+                    'count' => 1,
+                ],
+
+                [
+                    'key' => 'profits',
+                    'name' => 'الايردات',
+                    'icon' => asset('icons/profits.png'),
+                    'count' => 2,
+                ],
+
+                [
+                    'key' => 'tenant_stats',
+                    'name' => 'عقارات الايجار',
+                    'icon' => asset('icons/tenant_stats.png'),
+                    'count' => 2,
+                ],
+
+                [
+                    'key' => 'selling_states',
+                    'name' => 'عقارات البيع',
+                    'icon' => asset('icons/selling_states.png'),
+                    'count' => 3,
+                ],
+            ],
+
 
         ];
 

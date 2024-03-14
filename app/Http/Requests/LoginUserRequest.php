@@ -28,7 +28,9 @@ class LoginUserRequest extends FormRequest
 
             return [
                 'phone' => 'required|numeric',
-                'password' => 'required'
+                'password' => 'required',
+                'token' => 'required',
+                'device_type' => 'required|in:android,ios,web'
             ];
 
     }
@@ -42,6 +44,9 @@ class LoginUserRequest extends FormRequest
                 'phone.required' => 'رقم هاتف صاحب الشركه مطلوب للدخول',
                 'phone.numeric'=> 'الهاتف يجب ان يكون رقم وليس شيء اخر',
                 'password.required' => 'كلمه المرور مطلوبه',
+                'token.required' => 'معرف الجهاز مطلوب اثناء الدخول',
+                'device_type.required' => 'نوع معرف الجهاز مطلوب',
+                'device_type.in' => 'نوع معرف الجهاز بجب ان يكون android,ios,web'
 
             ];
     }
