@@ -21,7 +21,7 @@ class UpdateTenantRequest extends FormRequest
             'phone' => [
                 'required',
                 'numeric',
-                Rule::unique('tenants', 'phone')->ignore($userId, 'company_id'),
+                 Rule::unique('tenants', 'phone')->ignore($userId, 'company_id'),
             ],
             'card_number' => [
                 'required',

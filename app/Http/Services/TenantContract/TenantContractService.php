@@ -56,7 +56,8 @@ class TenantContractService
         DB::beginTransaction();
 
         try {
-            $inputs = $this->extractInputs($request);
+
+            $inputs = $this->storeTenantContract($request);
 
             if (!is_null($request->input('tenant_id'))) {
 
@@ -74,10 +75,12 @@ class TenantContractService
 
         }catch (ModelNotFoundException $exception) {
 
+            DB::rollBack();
             return $this->responseFail(null, 404, 'بيانات المستاجر غير موجوده', 404);
 
         } catch (AuthorizationException $exception) {
 
+            DB::rollBack();
             return $this->responseFail(null, 403, 'غير مصرح لك للدخول لذلك الصفحه',403);
 
         } catch (\Exception $e) {
@@ -88,7 +91,7 @@ class TenantContractService
         }
     }
 
-    protected function extractInputs(StoreTenantContractRequest $request): array{
+    protected function storeTenantContract(StoreTenantContractRequest $request): array{
 
         $inputs = $request->validated();
         $inputs['user_id'] = auth('user-api')->id();
@@ -187,6 +190,7 @@ class TenantContractService
 
         } catch (ModelNotFoundException $exception) {
 
+            DB::rollBack();
             return $this->responseFail(null, 404, 'بيانات عقد الايجار غير موجوده', 404);
 
         }catch (\Exception $e) {

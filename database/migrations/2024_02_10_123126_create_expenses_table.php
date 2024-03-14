@@ -14,7 +14,7 @@ class CreateExpensesTable extends Migration
     public function up()
     {
         /*
-         * المصروفات
+         والايردات * المصروفات
          */
         Schema::create('expenses', function (Blueprint $table) {
             $table->bigIncrements('id');
@@ -23,6 +23,7 @@ class CreateExpensesTable extends Migration
             $table->double('total_money',10,2);
             $table->string('description');
             $table->date('transaction_date');
+            $table->enum('type',['expense','revenue']);
             $table->foreign('company_id')->references('id')->on('companies')->cascadeOnUpdate()->cascadeOnDelete();
             $table->foreign('user_id')->references('id')->on('users')->cascadeOnUpdate()->cascadeOnDelete();
             $table->timestamps();

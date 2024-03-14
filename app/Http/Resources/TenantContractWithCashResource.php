@@ -15,7 +15,6 @@ class TenantContractWithCashResource extends JsonResource
     public function toArray($request)
     {
         return [
-
             'id' => $this->id,
             'tenant' => $this->tenant->name,
             'owner_name' => $this->owner_name,
