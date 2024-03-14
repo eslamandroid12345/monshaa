@@ -92,6 +92,7 @@ Route::group(['prefix' => 'tenant-contract','middleware' => ['jwt','permission:t
 Route::group(['prefix' => 'expenses','middleware' => ['jwt','permission:expenses']], function (){
 
     Route::get('all-expenses',[ExpenseController::class,'getAllExpenses']);
+    Route::get('all-revenues',[ExpenseController::class,'getAllRevenues']);
     Route::post('create',[ExpenseController::class,'create']);
     Route::get('show/{id}',[ExpenseController::class,'show']);
     Route::post('update/{id}',[ExpenseController::class,'update']);

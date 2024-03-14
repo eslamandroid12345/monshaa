@@ -43,6 +43,26 @@ class ExpenseService
     }
 
 
+    public function getAllRevenues(): JsonResponse{
+
+        try {
+            $expenses = $this->expenseRepository->getAllRevenues();
+
+            return $this->responseSuccess(ExpenseResource::collection($expenses)->response()->getData(true), 200, 'تم الحصول على بيانات جميع الايردات بنجاح');
+
+        }catch (AuthorizationException $exception){
+
+            return $this->responseFail(null, 403, 'غير مصرح لك للدخول لذلك الصفحه',403);
+
+        } catch (\Exception $e) {
+
+            return $this->responseFail(null, 500, $e->getMessage(), 500);
+
+        }
+
+    }
+
+
     public function create(ExpenseRequest $request): JsonResponse{
 
 
