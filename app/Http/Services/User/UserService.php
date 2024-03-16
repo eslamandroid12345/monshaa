@@ -106,7 +106,7 @@ class UserService
             $requestOfFcmToken = $request->only(['token','device_type']);
             $requestOfFcmToken['user_id'] = $auth->id;
 
-            $this->fcmTokenRepository->createO($requestOfFcmToken);//create new device token when user login
+            $this->fcmTokenRepository->create($requestOfFcmToken);//create new device token when user login
 
             return $this->responseSuccess($resource, 200, $message);
         } catch (\Exception $exception) {
