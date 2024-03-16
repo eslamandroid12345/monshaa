@@ -49,6 +49,11 @@ class Handler extends ExceptionHandler
 
     }
 
+        if($exception instanceof  ModelNotFoundException){
+            return $this->responseFail(null,404,'البيانات غير موجوده',404);
+
+        }
+
         return parent::render($request, $exception);
     }
 

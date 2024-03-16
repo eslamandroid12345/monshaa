@@ -3,8 +3,10 @@
 namespace App\Providers;
 
 use App\Repository\CashRepositoryInterface;
+use App\Repository\ClientRepositoryInterface;
 use App\Repository\CompanyRepositoryInterface;
 use App\Repository\Eloquent\CashRepository;
+use App\Repository\Eloquent\ClientRepository;
 use App\Repository\Eloquent\CompanyRepository;
 use App\Repository\Eloquent\EmployeeRepository;
 use App\Repository\Eloquent\ExpenseRepository;
@@ -49,6 +51,7 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(ReceiptRepositoryInterface::class, ReceiptRepository::class);
         $this->app->bind(CashRepositoryInterface::class, CashRepository::class);
         $this->app->bind(FcmTokenRepositoryInterface::class, FcmTokenRepository::class);
+        $this->app->bind(ClientRepositoryInterface::class, ClientRepository::class);
 
     }
 

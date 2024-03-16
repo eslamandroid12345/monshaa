@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\User;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\DestroyDeviceTokenRequest;
 use App\Http\Requests\LoginUserRequest;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateProfileRequest;
@@ -46,11 +47,11 @@ class UserController extends Controller
     }
 
 
-    public function logout(): JsonResponse
+    public function logout(DestroyDeviceTokenRequest $request): JsonResponse
     {
 
 
-        return $this->userService->logout();
+        return $this->userService->logout($request);
     }
 
 }

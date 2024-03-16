@@ -28,110 +28,209 @@ class UserResource extends JsonResource
             'phone' => $this->phone,
             'status' => $this->is_active == 1 ? 'active' : 'not_active',
             'token' => 'Bearer '.$this->token,
-            'created_at' => $this->created_at->format('Y-m-d'),
-            'updated_at' => $this->updated_at->format('Y-m-d'),
-            'permissions' => [
-                "home_page",
-                "states",
-                "lands",
-                "tenants",
-                "tenant_contracts",
-                "financial_receipt",
-                "financial_cash",
-                "expenses",
-                "employees",
-                "reports",
-                "notifications",
-                "technical_support",
-                "expired_contracts",
-                "revenues",
-                "profits",
-                "tenant_stats",
-                "selling_states",
-                "setting",
-            ],
-            'home' => [
+            'sidebar' => [
 
                 [
-                  'key' => 'states',
-                  'name' => 'العقارات',
-                  'icon' => asset('icons/states.png'),
-                  'count' => 30,
+                    'key' => 'home_page',
+                    'name' => 'الصفحه الرئيسيه',
+                    'icon' => 'home',
+                    'count' => 0
                 ],
 
                 [
-                    'key' => 'lands',
+                    'key' => 'states',
+                    'name' => 'العقارات',
+                    'icon' => 'holiday_village_outlined',
+                    'count' => 0
+                ],
+
+
+               [
+                    'key' => 'states',
                     'name' => 'الاراضي',
-                    'icon' => asset('icons/lands.png'),
-                    'count' => 10,
+                    'icon' => 'landscape_outlined',
+                    'count' => 0
                 ],
+
 
                 [
                     'key' => 'tenants',
                     'name' => 'المستاجرين',
-                    'icon' => asset('icons/tenants.png'),
-                    'count' => 4,
+                    'icon' => 'verified_user_outlined',
+                    'count' => 0
                 ],
 
                 [
                     'key' => 'tenant_contracts',
                     'name' => 'عقود الايجار',
-                    'icon' => asset('icons/tenant_contracts.png'),
-                    'count' => 2,
+                    'icon' => 'book',
+                    'count' => 0
                 ],
 
+
                 [
-                    'key' => 'financial_receipt',
-                    'name' => 'سندات الصرف',
-                    'icon' => asset('icons/financial_receipt.png'),
-                    'count' => 1,
+                    'key' => 'expired_contracts',
+                    'name' => 'العقود المنتهيه',
+                    'icon' => 'book',
+                    'count' => 0
                 ],
 
                 [
                     'key' => 'financial_cash',
                     'name' => 'سندات القبض',
-                    'icon' => asset('icons/financial_cash.png'),
-                    'count' => 2,
+                    'icon' => 'receipt_long_outlined',
+                    'count' => 0
+                ],
+
+                [
+                    'key' => 'financial_receipt',
+                    'name' => 'سندات الصرف',
+                    'icon' => 'long_receipt',
+                    'count' => 0
+                ],
+
+                [
+                    'key' => 'revenue',
+                    'name' => 'الايردات',
+                    'icon' => 'price_change_outlined',
+                    'count' => 0
                 ],
 
                 [
                     'key' => 'expenses',
                     'name' => 'المصروفات',
-                    'icon' => asset('icons/expenses.png'),
-                    'count' => 300,
+                    'icon' => 'monetization_on_outlined',
+                    'count' => 0
                 ],
+
 
                 [
                     'key' => 'employees',
                     'name' => 'الموظفين',
-                    'icon' => asset('icons/employees.png'),
-                    'count' => 1,
+                    'icon' => 'supervised_user_circle_rounded',
+                    'count' => 0
                 ],
 
                 [
-                    'key' => 'profits',
-                    'name' => 'الايردات',
-                    'icon' => asset('icons/profits.png'),
-                    'count' => 2,
+                    'key' => 'clients',
+                    'name' => 'العملاء',
+                    'icon' => 'people_alt_outlined',
+                    'count' => 0
+                ],
+
+
+
+                [
+                    'key' => 'notifications',
+                    'name' => 'الاشعارات',
+                    'icon' => 'notification_add',
+                    'count' => 3
+                ],
+
+
+                [
+                    'key' => 'reports',
+                    'name' => 'التقارير',
+                    'icon' => 'leaderboard_outlined',
+                    'count' => 0
                 ],
 
                 [
-                    'key' => 'tenant_stats',
-                    'name' => 'عقارات الايجار',
-                    'icon' => asset('icons/tenant_stats.png'),
-                    'count' => 2,
+                    'key' => 'setting',
+                    'name' => 'الاعدادات',
+                    'icon' => 'settings',
+                    'count' => 0
+                ],
+                [
+                    'key' => 'technical_support',
+                    'name' => 'الدعم الفني',
+                    'icon' => 'mail_contact',
+                    'count' => 0
                 ],
 
+
+
+
+            ],//end sidebar
+
+
+            'home' =>  [
+
                 [
-                    'key' => 'selling_states',
-                    'name' => 'عقارات البيع',
-                    'icon' => asset('icons/selling_states.png'),
-                    'count' => 3,
-                ],
+                'key' => 'selling_states',
+                'name' => 'عقارات البيع',
+                'icon' => 'images/building.png',
+                'count' =>  $this->company->selling_states_count
+            ],
+
+            [
+                'key' => 'tenant_states',
+                'name' => 'عقارات الايجار',
+                'icon' => 'images/house.png',
+                'count' => $this->company->tenant_states_count,
+            ],
+
+            [
+                'key' => 'shops',
+                'name' => 'العملاء',
+                'icon' => 'images/people.png',
+                'count' =>  $this->company->clients_count
+            ],
+
+            [
+                'key' => 'lands',
+                'name' => 'الاراضي',
+                'icon' => 'images/land.png',
+                'count' =>  $this->company->lands_count
+            ],
+
+            [
+                'key' => 'tenants',
+                'name' => 'المستاجرين',
+                'icon' => 'images/person.png',
+                'count' => $this->company->tenants_count
+            ],
+
+            [
+                'key' => 'tenant_contracts',
+                'name' => 'عقود الايجار',
+                'icon' => 'images/lease.png',
+                'count' => $this->company->tenant_contracts_count
+            ],
+
+            [
+                'key' => 'employees',
+                'name' => 'الموظفين',
+                'icon' => 'images/people.png',
+                'count' => $this->company->employees_count
+            ],
+            [
+                'key' => 'revenue',
+                'name' => 'الايردات',
+                'icon' => 'images/hu.png',
+                'count' => $this->company->revenues_count,
+            ],
+
+            [
+                'key' => 'expenses',
+                'name' => 'المصروفات',
+                'icon' => 'images/give.png',
+                'count' => $this->company->expenses_count
             ],
 
 
-        ];
+            [
+                'key' => 'profits',
+                'name' => 'الارباح',
+                'icon' => 'images/mo.png',
+                'count' => $this->company->profitsCount
+            ],
+
+        ],//end home
+             'created_at' => $this->created_at->format('Y-m-d'),
+            'updated_at' => $this->updated_at->format('Y-m-d'),
+            ];
+
 
     }
 

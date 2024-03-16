@@ -146,6 +146,7 @@ class Company extends Model
     }
 
 
+    ############ Sum total revenue of company ##############################
 
     public function revenues(): HasMany
     {
@@ -154,11 +155,21 @@ class Company extends Model
 
 
 
-    ############ Sum total revenue of company ##############################
     public function revenuesCount() : Attribute {
         return Attribute::get(
             get: function () {
-                return $this->revenues()->sum('total_money');
+
+                return $this->revenues()?->sum('total_money');
+            }
+        );
+    }
+
+
+    public function profitsCount() : Attribute {
+        return Attribute::get(
+            get: function () {
+
+                return ($this->revenues()?->sum('total_money') + $this->tenantContracts()?->sum('commission') + $this->receipts()?->sum('commission')) - $this->expenses()?->sum('total_money');
             }
         );
     }
@@ -170,10 +181,43 @@ class Company extends Model
         return $this->hasMany(State::class,'company_id','id')->where('department','=','rent');
     }
 
+    public function tenantStatesCount() : Attribute {
+        return Attribute::get(
+            get: function () {
+
+                return $this->tenantStates()->count();
+            }
+        );
+    }
 
     public function sellingStates(): HasMany
     {
         return $this->hasMany(State::class,'company_id','id')->where('department','=','sale');
+    }
+
+
+    public function sellingStatesCount() : Attribute {
+        return Attribute::get(
+            get: function () {
+
+                return $this->sellingStates()->count();
+            }
+        );
+    }
+
+
+    public function clients(): HasMany
+    {
+        return $this->hasMany(Client::class,'company_id','id');
+    }
+
+
+    public function clientsCount() : Attribute {
+        return Attribute::get(
+            get: function () {
+                return $this->clients()->count();
+            }
+        );
     }
 
 

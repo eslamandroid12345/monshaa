@@ -2,6 +2,7 @@
 
 namespace App\Http\Services\User;
 
+use App\Http\Requests\DestroyDeviceTokenRequest;
 use App\Http\Requests\LoginUserRequest;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
@@ -105,7 +106,7 @@ class UserService
             $requestOfFcmToken = $request->only(['token','device_type']);
             $requestOfFcmToken['user_id'] = $auth->id;
 
-            $this->fcmTokenRepository->create($requestOfFcmToken);//create new device token when user login
+            $this->fcmTokenRepository->createO($requestOfFcmToken);//create new device token when user login
 
             return $this->responseSuccess($resource, 200, $message);
         } catch (\Exception $exception) {
@@ -202,12 +203,16 @@ class UserService
     }
 
 
-    public function logout(): JsonResponse
+    public function logout(DestroyDeviceTokenRequest $request): JsonResponse
     {
 
         $auth = Auth::guard('user-api')->user();
 
         $this->userRepository->update($auth->id,['access_token' => null]);
+
+       $token = $this->fcmTokenRepository->getByColumn('token',$request->token);
+
+       $this->fcmTokenRepository->delete($token->id);
         auth('user-api')->logout();
 
         return $this->responseSuccess(null, 200, 'تم تسجيل الخروج بنجاح');

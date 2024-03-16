@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\Cash\CashController;
+use App\Http\Controllers\Api\Client\ClientController;
 use App\Http\Controllers\Api\Employee\EmployeeController;
 use App\Http\Controllers\Api\Expense\ExpenseController;
 use App\Http\Controllers\Api\Land\LandController;
@@ -120,4 +121,14 @@ Route::group(['prefix' => 'cash','middleware' => ['jwt','permission:financial_ca
     Route::delete('delete/{id}',[CashController::class,'delete']);
 });
 
+
+Route::group(['prefix' => 'clients','middleware' => ['jwt','permission:clients']], function (){
+
+    Route::get('get-all-clients',[ClientController::class,'getAllClients']);
+    Route::get('get-all-employees',[ClientController::class,'getAllEmployees']);
+    Route::post('create',[ClientController::class,'create']);
+    Route::get('show/{id}',[ClientController::class,'show']);
+    Route::post('update/{id}',[ClientController::class,'update']);
+    Route::delete('delete/{id}',[ClientController::class,'delete']);
+});
 

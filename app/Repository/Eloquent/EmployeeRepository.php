@@ -16,4 +16,16 @@ class EmployeeRepository extends Repository implements EmployeeRepositoryInterfa
         parent::__construct($model);
     }
 
+
+    public function getAllEmployees(): \Illuminate\Database\Eloquent\Collection|array
+    {
+
+        return $this->model::query()
+        ->latest()
+            ->select(['id','name','company_id'])
+            ->with(['company'])
+            ->where('company_id','=',auth('user-api')->user()->company_id)
+            ->get();
+    }
+
 }
