@@ -7,7 +7,6 @@ use App\Http\Requests\LoginUserRequest;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Http\Resources\EmployeeResource;
-use App\Http\Resources\ExpenseResource;
 use App\Http\Resources\HomePage\HomePageAdminResource;
 use App\Http\Resources\HomePage\HomePageEmployeeResource;
 use App\Http\Resources\UserResource;

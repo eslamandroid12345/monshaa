@@ -70,7 +70,7 @@ abstract class Repository implements RepositoryInterface
         array $relations = [],
     ): \Illuminate\Contracts\Pagination\LengthAwarePaginator
     {
-        return $this->model::query()->latest()->select($columns)->with($relations)->where($byColumn, $value)->paginate(10);
+        return $this->model::query()->latest()->select($columns)->with($relations)->where($byColumn, $value)->paginate(16);
     }
 
     public function getByTwoColumns(

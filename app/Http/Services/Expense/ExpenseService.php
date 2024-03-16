@@ -35,12 +35,11 @@ class ExpenseService
             return $this->getService->handle(resource: ExpenseResource::class,repository: $this->expenseRepository,method: 'getAllExpenses',message:'تم الحصول على بيانات جميع المصروفات بنجاح' );
 
         }catch (AuthorizationException $exception){
-
             return $this->responseFail(null, 403, 'غير مصرح لك للدخول لذلك الصفحه',403);
 
         } catch (\Exception $e) {
+            return $this->responseFail(null, 500, 'يوجد خطاء ما في بيانات الارسال بالسيرفر', 500);
 
-            return $this->responseFail(null, 500, $e->getMessage(), 500);
 
         }
 
@@ -54,12 +53,10 @@ class ExpenseService
             return $this->getService->handle(resource: ExpenseResource::class,repository: $this->expenseRepository,method: 'getAllRevenues',message:'تم الحصول على بيانات جميع الايردات بنجاح' );
 
         }catch (AuthorizationException $exception){
-
             return $this->responseFail(null, 403, 'غير مصرح لك للدخول لذلك الصفحه',403);
 
         } catch (\Exception $e) {
-
-            return $this->responseFail(null, 500, $e->getMessage(), 500);
+            return $this->responseFail(null, 500, 'يوجد خطاء ما في بيانات الارسال بالسيرفر', 500);
 
         }
 
@@ -77,18 +74,14 @@ class ExpenseService
             $inputs['user_id'] = employeeId();
 
             $expense = $this->expenseRepository->create($inputs);
-
             $this->sendFirebaseNotification(data:['title' => 'اشعار جديد لديك','body' => ' تم اضافه مصروف جديد لديك بواسطه '. employee() ],userId: employeeId(),permission: 'expenses');
 
-            return $this->responseSuccess(new ExpenseResource($expense), 200, 'تم اضافه البيانات بنجاح');
-
+            return $this->getService->handle(resource: ExpenseResource::class,repository: $this->expenseRepository,method: 'getById',parameters: [$expense->id],is_instance: true,message:'تم اضافه البيانات بنجاح' );
         }catch (AuthorizationException $exception){
-
             return $this->responseFail(null, 403, 'غير مصرح لك للدخول لذلك الصفحه',403);
 
         } catch (\Exception $e) {
-
-            return $this->responseFail(null, 500, $e->getMessage(), 500);
+            return $this->responseFail(null, 500, 'يوجد خطاء ما في بيانات الارسال بالسيرفر', 500);
 
         }
     }
@@ -103,14 +96,11 @@ class ExpenseService
             Gate::authorize('check-company-auth',$expense);
 
             $inputs = $request->validated();
-
-
             $this->expenseRepository->update($expense->id,$inputs);
 
             $this->sendFirebaseNotification(data:['title' => 'اشعار جديد لديك','body' => ' تم تعديل مصروف  لديك بواسطه '. employee() ],userId:employeeId(),permission: 'expenses');
 
-
-            return $this->responseSuccess(new ExpenseResource($this->expenseRepository->getById($id)), 200, 'تم تعديل المصروف بنجاح');
+            return $this->getService->handle(resource: ExpenseResource::class,repository: $this->expenseRepository,method: 'getById',parameters: [$id],is_instance: true,message: 'تم تعديل البيانات بنجاح' );
 
         }catch (ModelNotFoundException $exception) {
 
@@ -134,20 +124,14 @@ class ExpenseService
         try {
 
             $expense = $this->expenseRepository->getById($id);
-
             Gate::authorize('check-company-auth',$expense);
-
             return $this->getService->handle(resource: ExpenseResource::class,repository: $this->expenseRepository,method: 'getById',parameters: [$id],is_instance: true,message:'تم عرض بيانات المصروف بنجاح' );
 
-
         }catch (ModelNotFoundException $exception) {
-
             return $this->responseFail(null, 404, 'بيانات المصروف غير موجوده', 404);
 
         }catch (AuthorizationException $exception){
-
             return $this->responseFail(null, 403, 'غير مصرح لك للدخول لذلك الصفحه',403);
-
         }
 
     }

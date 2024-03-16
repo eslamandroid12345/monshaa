@@ -21,7 +21,8 @@ class EmployeeController extends Controller
         $this->employeeService = $employeeService;
     }
 
-    public function getAllEmployees(): JsonResponse{
+    public function getAllEmployees(): JsonResponse
+    {
 
         return $this->employeeService->getAllEmployees();
 

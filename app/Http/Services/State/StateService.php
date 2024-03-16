@@ -5,6 +5,8 @@ namespace App\Http\Services\State;
 use App\Http\Requests\StateRequest;
 use App\Http\Resources\StateResource;
 use App\Http\Services\Mutual\FileManagerService;
+use App\Http\Services\Mutual\GetService;
+use App\Http\Traits\FirebaseNotification;
 use App\Http\Traits\Responser;
 use App\Repository\StateRepositoryInterface;
 use Illuminate\Auth\Access\AuthorizationException;
@@ -16,16 +18,18 @@ use Illuminate\Support\Facades\Gate;
 class StateService
 {
 
-    use Responser;
+    use Responser,FirebaseNotification;
     protected StateRepositoryInterface $stateRepository;
 
     protected FileManagerService $fileManagerService;
+    protected GetService $getService;
 
-    public function __construct(StateRepositoryInterface $stateRepository,FileManagerService $fileManagerService)
+    public function __construct(StateRepositoryInterface $stateRepository,FileManagerService $fileManagerService,GetService $getService)
     {
 
         $this->stateRepository = $stateRepository;
         $this->fileManagerService = $fileManagerService;
+        $this->getService = $getService;
     }
 
 
@@ -33,9 +37,8 @@ class StateService
     {
 
         try {
-            $states = $this->stateRepository->getAllStatusQuery();
 
-            return $this->responseSuccess(StateResource::collection($states)->response()->getData(true), 200, 'تم الحصول على بيانات جميع العقارات بنجاح');
+            return $this->getService->handle(resource: StateResource::class,repository: $this->stateRepository,method: 'getAllStatusQuery',message:'تم الحصول على بيانات جميع العقارات بنجاح' );
 
         }  catch (AuthorizationException $exception){
 
@@ -43,8 +46,7 @@ class StateService
 
         } catch (\Exception $e) {
 
-            return $this->responseFail(null, 500, $e->getMessage(), 500);
-
+            return $this->responseFail(null, 500, 'يوجد خطاء ما في بيانات الارسال بالسيرفر', 500);
         }
 
     }
@@ -55,8 +57,8 @@ class StateService
 
         $inputs = $request->validated();
 
-        $inputs['user_id'] = auth('user-api')->id();
-        $inputs['company_id'] = auth('user-api')->user()->company_id;
+        $inputs['user_id'] = employeeId();
+        $inputs['company_id'] = companyId();
 
         if($request->hasFile('real_state_images')){
 
@@ -66,15 +68,16 @@ class StateService
 
         $state = $this->stateRepository->create($inputs);
 
-        return $this->responseSuccess(new StateResource($state), 200, 'تم اضافه البيانات بنجاح');
+        $this->sendFirebaseNotification(data:['title' => 'اشعار جديد لديك','body' => ' تم اضافه بيانات عقار جديد لديك بواسطه   ' . employee() ],userId: employeeId(),permission: 'states');
+
+        return $this->getService->handle(resource: StateResource::class,repository: $this->stateRepository,method: 'getById',parameters: [$state->id],is_instance: true,message:'تم اضافه البيانات بنجاح' );
 
     } catch (AuthorizationException $exception){
-
             return $this->responseFail(null, 403, 'غير مصرح لك للدخول لذلك الصفحه',403);
 
         } catch (\Exception $e) {
 
-            return $this->responseFail(null, 500, $e->getMessage(), 500);
+            return $this->responseFail(null, 500, 'يوجد خطاء ما في بيانات الارسال بالسيرفر', 500);
 
         }
     }
@@ -99,7 +102,7 @@ class StateService
 
             $this->stateRepository->update($state->id,$inputs);
 
-            return $this->responseSuccess(new StateResource($this->stateRepository->getById($id)), 200, 'تم تعديل بيانات العقار  بنجاح');
+            return $this->getService->handle(resource: StateResource::class,repository: $this->stateRepository,method: 'getById',parameters: [$id],is_instance: true,message:'تم تعديل بيانات العقار  بنجاح' );
 
         } catch (ModelNotFoundException $exception) {
 
@@ -111,8 +114,7 @@ class StateService
 
         } catch (\Exception $e) {
 
-            return $this->responseFail(null, 500, $e->getMessage(), 500);
-
+            return $this->responseFail(null, 500, 'يوجد خطاء ما في بيانات الارسال بالسيرفر', 500);
         }
     }
 
@@ -126,7 +128,7 @@ class StateService
 
             Gate::authorize('check-company-auth',$state);
 
-            return $this->responseSuccess(new StateResource($state), 200, 'تم عرض بيانات العقار  بنجاح');
+            return $this->getService->handle(resource: StateResource::class,repository: $this->stateRepository,method: 'getById',parameters: [$id],is_instance: true,message:'تم عرض بيانات العقار  بنجاح' );
 
         } catch (ModelNotFoundException $exception){
 
@@ -147,7 +149,8 @@ class StateService
 
             $this->stateRepository->update($state->id,['status' => $state->department]);
 
-            return $this->responseSuccess(new StateResource($this->stateRepository->getById($id)), 200, 'تم تغيير حاله العقار  بنجاح');
+            return $this->getService->handle(resource: StateResource::class,repository: $this->stateRepository,method: 'getById',parameters: [$id],is_instance: true,message:'تم تغيير حاله العقار  بنجاح' );
+
 
         } catch (ModelNotFoundException $exception){
 

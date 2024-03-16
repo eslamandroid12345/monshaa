@@ -4,7 +4,10 @@ namespace App\Http\Services\Land;
 
 use App\Http\Requests\LandRequest;
 use App\Http\Resources\LandResource;
+use App\Http\Resources\StateResource;
 use App\Http\Services\Mutual\FileManagerService;
+use App\Http\Services\Mutual\GetService;
+use App\Http\Traits\FirebaseNotification;
 use App\Http\Traits\Responser;
 use App\Repository\LandRepositoryInterface;
 use Illuminate\Auth\Access\AuthorizationException;
@@ -15,16 +18,18 @@ use Illuminate\Support\Facades\Gate;
 class LandService
 {
 
-    use Responser;
+    use Responser,FirebaseNotification;
     protected LandRepositoryInterface $landRepository;
 
     protected FileManagerService $fileManagerService;
+    protected GetService $getService;
 
-    public function __construct(LandRepositoryInterface $landRepository,FileManagerService $fileManagerService)
+    public function __construct(LandRepositoryInterface $landRepository,FileManagerService $fileManagerService,GetService $getService)
     {
 
         $this->landRepository = $landRepository;
         $this->fileManagerService = $fileManagerService;
+        $this->getService = $getService;
     }
 
 
@@ -32,17 +37,13 @@ class LandService
     {
 
         try {
-            $lands = $this->landRepository->getAllLandsQuery();
-
-            return $this->responseSuccess(LandResource::collection($lands)->response()->getData(true), 200, 'تم الحصول على بيانات جميع الاراضي بنجاح');
+            return $this->getService->handle(resource: LandResource::class,repository: $this->landRepository,method: 'getAllLandsQuery',message:'تم الحصول على بيانات جميع الاراضي بنجاح' );
 
         } catch (AuthorizationException $exception){
-
             return $this->responseFail(null, 403, 'غير مصرح لك للدخول لذلك الصفحه',403);
 
         } catch (\Exception $e) {
-
-            return $this->responseFail(null, 500, $e->getMessage(), 500);
+            return $this->responseFail(null, 500, 'يوجد خطاء ما في بيانات الارسال بالسيرفر', 500);
 
         }
 
@@ -56,8 +57,8 @@ class LandService
 
             $inputs = $request->validated();
 
-            $inputs['user_id'] = auth('user-api')->id();
-            $inputs['company_id'] = auth('user-api')->user()->company_id;
+            $inputs['user_id'] = employeeId();
+            $inputs['company_id'] = companyId();
 
             if ($request->hasFile('land_images')) {
 
@@ -67,7 +68,9 @@ class LandService
 
             $land = $this->landRepository->create($inputs);
 
-            return $this->responseSuccess(new LandResource($land), 200, 'تم اضافه البيانات بنجاح');
+            $this->sendFirebaseNotification(data:['title' => 'اشعار جديد لديك','body' => ' تم اضافه بيانات ارض جديده لديك بواسطه   ' . employee() ],userId: employeeId(),permission: 'lands');
+
+            return $this->getService->handle(resource: LandResource::class,repository: $this->landRepository,method: 'getById',parameters: [$land->id],is_instance: true,message:'تم اضافه البيانات بنجاح' );
 
 
         }catch (AuthorizationException $exception){
@@ -75,8 +78,8 @@ class LandService
             return $this->responseFail(null, 403, 'غير مصرح لك للدخول لذلك الصفحه',403);
 
         } catch (\Exception $e) {
+            return $this->responseFail(null, 500, 'يوجد خطاء ما في بيانات الارسال بالسيرفر', 500);
 
-            return $this->responseFail(null, 500, $e->getMessage(), 500);
 
         }
     }
@@ -102,19 +105,19 @@ class LandService
 
             $this->landRepository->update($land->id, $inputs);
 
-            return $this->responseSuccess(new LandResource($this->landRepository->getById($id)), 200, 'تم تعديل بيانات الارض  بنجاح');
+
+            return $this->getService->handle(resource: LandResource::class,repository: $this->landRepository,method: 'getById',parameters: [$id],is_instance: true,message: 'تم تعديل بيانات الارض  بنجاح' );
+
 
         }catch (ModelNotFoundException $exception) {
-
             return $this->responseFail(null, 404, 'بيانات الارض غير موجوده', 404);
 
         } catch (AuthorizationException $exception){
-
             return $this->responseFail(null, 403, 'غير مصرح لك للدخول لذلك الصفحه',403);
 
         } catch (\Exception $e) {
+            return $this->responseFail(null, 500, 'يوجد خطاء ما في بيانات الارسال بالسيرفر', 500);
 
-            return $this->responseFail(null, 500, $e->getMessage(), 500);
 
         }
     }
@@ -129,7 +132,7 @@ class LandService
 
             Gate::authorize('check-company-auth',$land);
 
-            return $this->responseSuccess(new LandResource($land), 200, 'تم عرض بيانات الارض  بنجاح');
+            return $this->getService->handle(resource: LandResource::class,repository: $this->landRepository,method: 'getById',parameters: [$id],is_instance: true,message:'تم عرض بيانات الارض  بنجاح' );
 
         }catch (ModelNotFoundException $exception) {
 
@@ -153,7 +156,9 @@ class LandService
 
             $this->landRepository->update($land->id, ['status' => 'sale']);
 
-            return $this->responseSuccess(new LandResource($this->landRepository->getById($id)), 200, 'تم تغيير حاله الارض  بنجاح');
+
+            return $this->getService->handle(resource: LandResource::class,repository: $this->landRepository,method: 'getById',parameters: [$id],is_instance: true,message:'تم تغيير حاله الارض  بنجاح' );
+
 
         } catch (ModelNotFoundException $exception) {
 
@@ -164,8 +169,8 @@ class LandService
             return $this->responseFail(null, 403, 'غير مصرح لك للدخول لذلك الصفحه',403);
 
         } catch (\Exception $e) {
+            return $this->responseFail(null, 500, 'يوجد خطاء ما في بيانات الارسال بالسيرفر', 500);
 
-            return $this->responseFail(null, 500, $e->getMessage(), 500);
 
         }
 

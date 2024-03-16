@@ -7,6 +7,7 @@ use App\Http\Resources\Client\ClientResource;
 use App\Http\Resources\Client\ClientShowResource;
 use App\Http\Resources\Client\ListEmployeeResource;
 use App\Http\Services\Mutual\GetService;
+use App\Http\Traits\FirebaseNotification;
 use App\Http\Traits\Responser;
 use App\Repository\ClientRepositoryInterface;
 use App\Repository\EmployeeRepositoryInterface;
@@ -19,7 +20,7 @@ use Illuminate\Support\Facades\Gate;
 class ClientService
 {
 
-    use Responser;
+    use Responser,FirebaseNotification;
     protected ClientRepositoryInterface $clientRepository;
     protected EmployeeRepositoryInterface $employeeRepository;
     protected GetService $getService;
@@ -42,7 +43,7 @@ class ClientService
             return $this->responseFail(null, 403, 'غير مصرح لك للدخول لذلك الصفحه',403);
 
         } catch (\Exception $e) {
-            return $this->responseFail(null, 500, $e->getMessage(), 500);
+            return $this->responseFail(null, 500, 'يوجد خطاء ما في بيانات الارسال بالسيرفر', 500);
 
         }
 
@@ -59,7 +60,7 @@ class ClientService
             return $this->responseFail(null, 403, 'غير مصرح لك للدخول لذلك الصفحه',403);
 
         } catch (\Exception $e) {
-            return $this->responseFail(null, 500, $e->getMessage(), 500);
+            return $this->responseFail(null, 500, 'يوجد خطاء ما في بيانات الارسال بالسيرفر', 500);
 
         }
 
@@ -73,17 +74,20 @@ class ClientService
 
             $inputs = $request->validated();
 
-            $inputs['company_id'] = auth('user-api')->user()->company_id;
-            $inputs['user_id'] = auth('user-api')->id();
+            $inputs['company_id'] = companyId();
+            $inputs['user_id'] = employeeId();
 
             $client = $this->clientRepository->create($inputs);
 
-            return $this->responseSuccess(new ClientShowResource($client), 200, 'تم اضافه البيانات بنجاح');
+            $this->sendFirebaseNotification(data:['title' => 'اشعار جديد لديك','body' => ' تم اضافه عميل لمعاينه لديك بواسطه   ' . employee() ],userId: employeeId(),permission: 'clients');
+
+            return $this->getService->handle(resource: ClientShowResource::class,repository: $this->clientRepository,method: 'getById',parameters: [$client->id],is_instance: true,message:'تم اضافه البيانات بنجاح' );
+
 
         }catch (AuthorizationException $exception){
             return $this->responseFail(null, 403, 'غير مصرح لك للدخول لذلك الصفحه',403);
         } catch (\Exception $e) {
-            return $this->responseFail(null, 500, $e->getMessage(), 500);
+            return $this->responseFail(null, 500, 'يوجد خطاء ما في بيانات الارسال بالسيرفر', 500);
 
         }
     }
@@ -103,7 +107,8 @@ class ClientService
 
             DB::commit();
 
-            return $this->responseSuccess(new ClientShowResource($this->clientRepository->getById($id)), 200, 'تم تعديل بيانات العميل بنجاح');
+            return $this->getService->handle(resource: ClientShowResource::class,repository: $this->clientRepository,method: 'getById',parameters: [$id],is_instance: true,message: 'تم تعديل بيانات العميل بنجاح');
+
 
         }catch (ModelNotFoundException $exception) {
             DB::rollBack();
@@ -124,11 +129,10 @@ class ClientService
 
     public function show($id): JsonResponse{
 
+    $client = $this->clientRepository->getById($id);
+    Gate::authorize('check-company-auth',$client);
 
-            $client = $this->clientRepository->getById($id);
-            Gate::authorize('check-company-auth',$client);
-
-            return $this->getService->handle(resource: ClientShowResource::class,repository: $this->clientRepository, method: 'getById',parameters: [$id], is_instance: true, message: 'تم الحصول على بيانات العميل بنجاح');
+    return $this->getService->handle(resource: ClientShowResource::class,repository: $this->clientRepository, method: 'getById',parameters: [$id], is_instance: true, message: 'تم الحصول على بيانات العميل بنجاح');
 
     }
 
@@ -153,7 +157,7 @@ class ClientService
             return $this->responseFail(null, 403, 'غير مصرح لك للدخول لذلك الصفحه',403);
 
         }catch (\Exception $e) {
-            return $this->responseFail(null, 500, $e->getMessage(), 500);
+            return $this->responseFail(null, 500, 'يوجد خطاء ما في بيانات الارسال بالسيرفر', 500);
 
         }
 

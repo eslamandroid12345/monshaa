@@ -5,6 +5,8 @@ namespace App\Http\Services\Cash;
 use App\Http\Requests\CashRequest;
 use App\Http\Resources\CashResource;
 use App\Http\Resources\TenantContractWithCashResource;
+use App\Http\Services\Mutual\GetService;
+use App\Http\Traits\FirebaseNotification;
 use App\Http\Traits\Responser;
 use App\Repository\CashRepositoryInterface;
 use App\Repository\TenantContractRepositoryInterface;
@@ -17,36 +19,32 @@ class CashService
 {
 
 
-    use Responser;
+    use Responser,FirebaseNotification;
     protected CashRepositoryInterface $cashRepository;
 
     protected TenantContractRepositoryInterface $tenantContractRepository;
 
+    protected GetService $getService;
 
-    public function __construct(CashRepositoryInterface $cashRepository,TenantContractRepositoryInterface $tenantContractRepository)
+    public function __construct(CashRepositoryInterface $cashRepository,TenantContractRepositoryInterface $tenantContractRepository,GetService $getService)
     {
 
         $this->cashRepository = $cashRepository;
         $this->tenantContractRepository = $tenantContractRepository;
+        $this->getService = $getService;
     }
 
 
     public function getAllCashes(): JsonResponse
     {
-
         try {
-            $tenantContracts = $this->tenantContractRepository->allTenantContracts();
-
-            return $this->responseSuccess(TenantContractWithCashResource::collection($tenantContracts)->response()->getData(true), 200, 'تم الحصول على بيانات جميع سندات القبض بنجاح');
+            return $this->getService->handle(resource: TenantContractWithCashResource::class,repository: $this->tenantContractRepository,method: 'allTenantContracts',message:'تم الحصول على بيانات جميع سندات القبض بنجاح' );
 
         }  catch (AuthorizationException $exception){
-
             return $this->responseFail(null, 403, 'غير مصرح لك للدخول لذلك الصفحه',403);
 
         } catch (\Exception $e) {
-
-            return $this->responseFail(null, 500, $e->getMessage(), 500);
-
+            return $this->responseFail(null, 500, 'يوجد خطاء ما في بيانات الارسال بالسيرفر', 500);
         }
 
     }
@@ -62,25 +60,24 @@ class CashService
 
             $inputs = $request->validated();
 
-            $inputs['user_id'] = auth('user-api')->id();
-            $inputs['company_id'] = auth('user-api')->user()->company_id;
+            $inputs['user_id'] = employeeId();
+            $inputs['company_id'] = companyId();
             $inputs['tenant_contract_id'] = $tenantContract->id;
 
             $cash = $this->cashRepository->create($inputs);
 
-            return $this->responseSuccess(new CashResource($cash), 200, 'تم اضافه البيانات بنجاح');
+            $this->sendFirebaseNotification(data:['title' => 'اشعار جديد لديك','body' => ' تم اضافه سند قبض جديد لديك بواسطه   ' . employee() ],userId: employeeId(),permission: 'financial_cash');
+
+            return $this->getService->handle(resource: CashResource::class,repository: $this->cashRepository,method: 'getById',parameters: [$cash->id],is_instance: true,message:'تم اضافه البيانات بنجاح' );
 
         }catch (ModelNotFoundException $exception) {
-
             return $this->responseFail(null, 404, 'بيانات عقد الايجار غير موجوده', 404);
 
         } catch (AuthorizationException $exception){
-
             return $this->responseFail(null, 403, 'غير مصرح لك للدخول لذلك الصفحه',403);
 
         } catch (\Exception $e) {
-
-            return $this->responseFail(null, 500, $e->getMessage(), 500);
+            return $this->responseFail(null, 500, 'يوجد خطاء ما في بيانات الارسال بالسيرفر', 500);
 
         }
     }
@@ -100,19 +97,19 @@ class CashService
 
             $this->cashRepository->update($cash->id,$inputs);
 
-            return $this->responseSuccess(new CashResource($this->cashRepository->getById($id)), 200, 'تم تعديل بيانات سند القبض  بنجاح');
+            $this->sendFirebaseNotification(data:['title' => 'اشعار جديد لديك','body' => ' تم تعديل سند قبض  لديك بواسطه   ' . employee() ],userId: employeeId(),permission: 'financial_cash');
+
+            return $this->getService->handle(resource: CashResource::class,repository: $this->cashRepository,method: 'getById',parameters: [$id],is_instance: true,message: 'تم تعديل بيانات سند القبض  بنجاح' );
+
 
         } catch (ModelNotFoundException $exception) {
-
             return $this->responseFail(null, 404, 'بيانات سند القبض غير موجوده', 404);
 
         } catch (AuthorizationException $exception){
-
             return $this->responseFail(null, 403, 'غير مصرح لك للدخول لذلك الصفحه',403);
 
         } catch (\Exception $e) {
-
-            return $this->responseFail(null, 500, $e->getMessage(), 500);
+            return $this->responseFail(null, 500, 'يوجد خطاء ما في بيانات الارسال بالسيرفر', 500);
 
         }
     }
@@ -120,14 +117,13 @@ class CashService
 
     public function show($id): JsonResponse
     {
-
         try {
 
             $cash = $this->cashRepository->getById($id);
 
             Gate::authorize('check-company-auth',$cash);
 
-            return $this->responseSuccess(new CashResource($cash), 200, 'تم عرض بيانات سند القبض  بنجاح');
+            return $this->getService->handle(resource: CashResource::class, repository: $this->cashRepository, method: 'getById', parameters: [$id], is_instance: true, message: 'تم عرض بيانات سند القبض  بنجاح');
 
         } catch (ModelNotFoundException $exception){
 
@@ -147,6 +143,8 @@ class CashService
             Gate::authorize('check-company-auth',$cash);
 
             $this->cashRepository->delete($cash->id);
+
+            $this->sendFirebaseNotification(data:['title' => 'اشعار جديد لديك','body' => ' تم حذف سند قبض  لديك بواسطه ' . employee() ],userId: employeeId(),permission: 'financial_cash');
 
             return $this->responseSuccess(null, 200, 'تم حذف بيانات سند القبض  بنجاح');
 

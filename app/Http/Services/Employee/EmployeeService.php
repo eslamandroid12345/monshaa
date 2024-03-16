@@ -7,6 +7,7 @@ use App\Http\Requests\StoreEmployeeRequest;
 use App\Http\Requests\UpdateEmployeeRequest;
 use App\Http\Resources\EmployeeGetDataResource;
 use App\Http\Services\Mutual\FileManagerService;
+use App\Http\Services\Mutual\GetService;
 use App\Http\Traits\FirebaseNotification;
 use App\Http\Traits\Responser;
 use App\Repository\EmployeeRepositoryInterface;
@@ -24,12 +25,14 @@ class EmployeeService
     protected EmployeeRepositoryInterface $employeeRepository;
 
     protected FileManagerService $fileManagerService;
+    protected GetService $getService;
 
-    public function __construct(EmployeeRepositoryInterface $employeeRepository,FileManagerService $fileManagerService)
+    public function __construct(EmployeeRepositoryInterface $employeeRepository,FileManagerService $fileManagerService, GetService $getService)
     {
 
         $this->employeeRepository = $employeeRepository;
         $this->fileManagerService = $fileManagerService;
+        $this->getService = $getService;
 
     }
 
@@ -37,9 +40,7 @@ class EmployeeService
     public function getAllEmployees(): JsonResponse
     {
 
-        $employees = $this->employeeRepository->getByTwoColumns('company_id',companyId(),'is_admin',0);
-
-        return $this->responseSuccess(EmployeeGetDataResource::collection($employees)->response()->getData(true),200,'تم جلب جميع الموظفين التابعه للشركه العقاريه بنجاح');
+        return $this->getService->handle(resource: EmployeeGetDataResource::class,repository: $this->employeeRepository,method: 'getByTwoColumns',parameters: ['company_id',companyId(),'is_admin',0],message:'تم جلب جميع الموظفين التابعه للشركه العقاريه بنجاح' );
 
     }
 
@@ -60,11 +61,12 @@ class EmployeeService
             $inputs['employee_permissions'] = json_encode( $inputs['employee_permissions']);
             $inputs['password'] = Hash::make($inputs['password']);
 
-
             $employee = $this->employeeRepository->create($inputs);
 
             $this->sendFirebaseNotification(data:['title' => 'اشعار جديد لديك','body' => ' تم اضافه موظف جديد لديك بواسطه   ' . employee() ],userId: employeeId(),permission: 'employees');
-            return $this->responseSuccess(new EmployeeGetDataResource($employee), 200, 'تم اضافه بيانات الموظف بنجاح');
+
+            return $this->getService->handle(resource: EmployeeGetDataResource::class,repository: $this->employeeRepository,method: 'getById',parameters: [$employee->id],is_instance: true,message:'تم اضافه البيانات بنجاح' );
+
 
         } catch (\Exception $exception) {
 
@@ -86,11 +88,10 @@ class EmployeeService
 
             $inputs = $request->validated();
 
-        if ($request->hasFile('employee_image')) {
-            $image = $this->fileManagerService->handle("employee_image", "employees/images",$employee->employee_image);
-            $inputs['employee_image'] = $image;
-        }
-
+            if ($request->hasFile('employee_image')) {
+                $image = $this->fileManagerService->handle("employee_image", "employees/images",$employee->employee_image);
+                $inputs['employee_image'] = $image;
+            }
 
             $inputs['employee_permissions'] = $request->employee_permissions !== null
                 ? json_encode($request->employee_permissions)
@@ -100,19 +101,15 @@ class EmployeeService
 
           $this->employeeRepository->update($employee->id,$inputs);
 
+            return $this->getService->handle(resource: EmployeeGetDataResource::class,repository: $this->employeeRepository,method: 'getById',parameters: [$id],is_instance: true,message: 'تم تعديل بيانات الموظف بنجاح' );
 
-        return $this->responseSuccess(new EmployeeGetDataResource($this->employeeRepository->getById($id)),200,'تم تعديل بيانات الموظف بنجاح');
-
-     } catch (ModelNotFoundException $exception) {
-
+       } catch (ModelNotFoundException $exception) {
             return $this->responseFail(null, 404, 'بيانات الموظف غير موجوده', 404);
 
         } catch (AuthorizationException $exception){
-
             return $this->responseFail(null, 403, 'غير مصرح لك للدخول لذلك الصفحه',403);
 
         } catch (\Exception $e) {
-
             return $this->responseFail(null, 500, $e->getMessage(), 500);
 
         }
@@ -133,11 +130,9 @@ class EmployeeService
         return $this->responseSuccess(null,200,'تم حذف الموظف بنجاح');
 
     } catch (ModelNotFoundException $exception) {
-
         return $this->responseFail(null, 404, 'بيانات الموظف غير موجوده', 404);
 
     }catch (AuthorizationException $exception){
-
         return $this->responseFail(null, 403, 'غير مصرح لك للدخول لذلك الصفحه',403);
 
     }
@@ -153,21 +148,18 @@ class EmployeeService
         $employee = $this->employeeRepository->getByIdWithCondition($id,'is_admin',0);
 
             Gate::authorize('check-company-auth',$employee);
-
-
             $this->employeeRepository->update($employee->id,$request->validated());
 
-        $this->employeeRepository->update($employee->id,['access_token' => null]);
+           $this->employeeRepository->update($employee->id,['access_token' => null]);
 
-        DB::commit();
-        return $this->responseSuccess(new EmployeeGetDataResource($this->employeeRepository->getById($id)),200,'تم تعديل حاله الموظف بنجاح');
+           DB::commit();
+            return $this->getService->handle(resource: EmployeeGetDataResource::class,repository: $this->employeeRepository,method: 'getByIdWithCondition',parameters: [$id,'is_admin',0],is_instance: true,message: 'تم تعديل حاله الموظف بنجاح');
 
-    }catch (ModelNotFoundException $exception){
 
+        }catch (ModelNotFoundException $exception){
       return $this->responseFail(null,404,'بيانات الموظف غير موجوده',404);
 
     }catch (AuthorizationException $exception){
-
             return $this->responseFail(null, 403, 'غير مصرح لك للدخول لذلك الصفحه',403);
 
         } catch (\Exception $e) {
@@ -182,21 +174,17 @@ class EmployeeService
 
     public function show($id): JsonResponse
     {
-
         try {
 
             $employee = $this->employeeRepository->getByIdWithCondition($id,'is_admin',0);
 
             Gate::authorize('check-company-auth',$employee);
-
-            return $this->responseSuccess(new EmployeeGetDataResource($employee),200,'تم عرض بيانات الموظف بنجاح');
+            return $this->getService->handle(resource: EmployeeGetDataResource::class,repository: $this->employeeRepository,method: 'getByIdWithCondition',parameters: [$id,'is_admin',0],is_instance: true,message:'تم عرض بيانات الموظف بنجاح' );
 
         }catch (ModelNotFoundException $exception){
-
             return $this->responseFail(null,404,'بيانات الموظف غير موجوده',404);
 
         }catch (AuthorizationException $exception){
-
             return $this->responseFail(null, 403, 'غير مصرح لك للدخول لذلك الصفحه',403);
 
         }

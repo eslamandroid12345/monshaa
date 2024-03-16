@@ -6,7 +6,9 @@ use App\Http\Requests\StoreTenantContractRequest;
 use App\Http\Requests\StoreTenantRequest;
 use App\Http\Requests\UpdateTenantContractRequest;
 use App\Http\Requests\UpdateTenantRequest;
+use App\Http\Resources\StateResource;
 use App\Http\Resources\TenantContractResource;
+use App\Http\Services\Mutual\GetService;
 use App\Http\Traits\Responser;
 use App\Repository\TenantContractRepositoryInterface;
 use App\Repository\TenantRepositoryInterface;
@@ -24,27 +26,28 @@ class TenantContractService
     protected TenantContractRepositoryInterface $tenantContractRepository;
     protected TenantRepositoryInterface $tenantRepository;
 
-    public function __construct(TenantContractRepositoryInterface $tenantContractRepository,TenantRepositoryInterface $tenantRepository)
+    protected GetService $getService;
+
+
+    public function __construct(TenantContractRepositoryInterface $tenantContractRepository,TenantRepositoryInterface $tenantRepository,GetService $getService)
     {
         $this->tenantContractRepository = $tenantContractRepository;
         $this->tenantRepository = $tenantRepository;
+        $this->getService = $getService;
     }
 
 
     public function allTenantContracts(): JsonResponse{
 
         try {
-            $tenantContracts = $this->tenantContractRepository->allTenantContracts();
 
-            return $this->responseSuccess(TenantContractResource::collection($tenantContracts)->response()->getData(true), 200, 'تم الحصول على بيانات جميع عقود الايجار بنجاح');
+            return $this->getService->handle(resource: TenantContractResource::class,repository: $this->tenantContractRepository,method: 'allTenantContracts',message:'تم الحصول على بيانات جميع عقود الايجار بنجاح' );
 
         }catch (AuthorizationException $exception){
-
             return $this->responseFail(null, 403, 'غير مصرح لك للدخول لذلك الصفحه',403);
 
         } catch (\Exception $e) {
-
-            return $this->responseFail(null, 500, $e->getMessage(), 500);
+            return $this->responseFail(null, 500, 'يوجد خطاء ما في بيانات الارسال بالسيرفر', 500);
 
         }
 
@@ -71,22 +74,21 @@ class TenantContractService
             $tenantContract = $this->tenantContractRepository->create($inputs);
 
             DB::commit();
-            return $this->responseSuccess(new TenantContractResource($tenantContract), 200, 'تم إضافة البيانات بنجاح');
+
+            return $this->getService->handle(resource: TenantContractResource::class,repository: $this->tenantContractRepository,method: 'getById',parameters: [$tenantContract->id],is_instance: true,message:'تم اضافه البيانات بنجاح' );
+
 
         }catch (ModelNotFoundException $exception) {
-
             DB::rollBack();
             return $this->responseFail(null, 404, 'بيانات المستاجر غير موجوده', 404);
 
         } catch (AuthorizationException $exception) {
-
             DB::rollBack();
             return $this->responseFail(null, 403, 'غير مصرح لك للدخول لذلك الصفحه',403);
 
         } catch (\Exception $e) {
-
             DB::rollBack();
-            return $this->responseFail(null, 500, $e->getMessage(), 500);
+            return $this->responseFail(null, 500, 'يوجد خطاء ما في بيانات الارسال بالسيرفر', 500);
 
         }
     }
@@ -94,8 +96,8 @@ class TenantContractService
     protected function storeTenantContract(StoreTenantContractRequest $request): array{
 
         $inputs = $request->validated();
-        $inputs['user_id'] = auth('user-api')->id();
-        $inputs['company_id'] = auth('user-api')->user()->company_id;
+        $inputs['user_id'] = employeeId();
+        $inputs['company_id'] = companyId();
         return $inputs;
     }
 
@@ -133,21 +135,20 @@ class TenantContractService
            $this->tenantContractRepository->update($tenantContract->id,$tenantContractRequests);
 
             DB::commit();
+            return $this->getService->handle(resource: TenantContractResource::class,repository: $this->tenantContractRepository,method: 'getById',parameters: [$id],is_instance: true,message: 'تم تعديل بيانات عقد الايجار  بنجاح');
 
-            return $this->responseSuccess(new TenantContractResource($this->tenantContractRepository->getById($id)), 200, 'تم تعديل بيانات عقد الايجار  بنجاح');
 
         }catch (ModelNotFoundException $exception) {
-
+            DB::rollBack();
             return $this->responseFail(null, 404, 'بيانات عقد الايجار غير موجوده', 404);
 
         } catch (AuthorizationException $exception) {
-
+            DB::rollBack();
             return $this->responseFail(null, 403, 'غير مصرح لك للدخول لذلك الصفحه',403);
 
         } catch (\Exception $e) {
-
             DB::rollBack();
-            return $this->responseFail(null, 500, $e->getMessage(), 500);
+            return $this->responseFail(null, 500, 'يوجد خطاء ما في بيانات الارسال بالسيرفر', 500);
 
         }
 
@@ -159,14 +160,13 @@ class TenantContractService
         try {
 
             $tenantContract = $this->tenantContractRepository->getById($id);
-
             Gate::authorize('check-company-auth',$tenantContract);
 
-            return $this->responseSuccess(new TenantContractResource($this->tenantContractRepository->getById($id)), 200, 'تم عرض بيانات عقد الايجار بنجاح');
+            return $this->getService->handle(resource: TenantContractResource::class,repository: $this->tenantContractRepository,method: 'getById',parameters: [$id],is_instance: true,message: 'تم عرض بيانات عقد الايجار بنجاح');
 
         }catch (ModelNotFoundException $exception) {
 
-            return $this->responseFail(null, 404, 'بيانات المستاجر غير موجوده', 404);
+            return $this->responseFail(null, 404, 'بيانات عقد الايجار غير موجوده', 404);
 
         }
 
@@ -196,7 +196,7 @@ class TenantContractService
         }catch (\Exception $e) {
 
             DB::rollBack();
-            return $this->responseFail(null, 500, $e->getMessage(), 500);
+            return $this->responseFail(null, 500, 'يوجد خطاء ما في بيانات الارسال بالسيرفر', 500);
         }
 
 
