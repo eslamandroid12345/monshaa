@@ -59,7 +59,7 @@ class EmployeeResource extends JsonResource
 
 
             [
-                'key' => 'states',
+                'key' => 'lands',
                 'name' => 'الاراضي',
                 'icon' => 'landscape_outlined',
                 'count' => 0

@@ -14,7 +14,7 @@ trait FirebaseNotification
 
     public function sendFirebaseNotification($data, $userId): bool
     {
-        $user = User::findOrFail($userId);
+        $user = User::query()->findOrFail($userId);
 
         if ($user) {
             $users = $this->getCompanyUsers($user->company_id);
