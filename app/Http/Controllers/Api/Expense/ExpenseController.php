@@ -3,7 +3,8 @@
 namespace App\Http\Controllers\Api\Expense;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\ExpenseRequest;
+use App\Http\Requests\Expense\StoreExpenseRequest;
+use App\Http\Requests\Expense\UpdateExpenseRequest;
 use App\Http\Services\Expense\ExpenseService;
 use Illuminate\Http\JsonResponse;
 
@@ -31,14 +32,14 @@ class ExpenseController extends Controller
     }
 
 
-    public function create(ExpenseRequest $request): JsonResponse{
+    public function create(StoreExpenseRequest $request): JsonResponse{
 
         return  $this->expenseService->create($request);
 
     }
 
 
-    public function update($id,ExpenseRequest $request): JsonResponse{
+    public function update($id, UpdateExpenseRequest $request): JsonResponse{
 
         return  $this->expenseService->update($id,$request);
 

@@ -54,4 +54,12 @@ class UserController extends Controller
         return $this->userService->logout($request);
     }
 
+
+    public function home(): JsonResponse
+    {
+
+
+        return $this->userService->home();
+    }
+
 }

@@ -45,6 +45,11 @@ Route::group(['prefix' => 'employee','middleware' => ['jwt','permission:employee
     Route::put('active/{id}',[EmployeeController::class,'active']);
 });
 
+Route::group(['middleware' => ['jwt','permission:home_page']], function (){
+
+    Route::get('home',[UserController::class,'home']);
+
+});
 
 
 Route::group(['prefix' => 'state','middleware' => ['jwt','permission:states']], function (){

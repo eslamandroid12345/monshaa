@@ -20,8 +20,7 @@ use Illuminate\Support\Facades\Hash;
 class EmployeeService
 {
 
-    use Responser;
-    use FirebaseNotification;
+    use Responser,FirebaseNotification;
     protected EmployeeRepositoryInterface $employeeRepository;
 
     protected FileManagerService $fileManagerService;
@@ -38,7 +37,7 @@ class EmployeeService
     public function getAllEmployees(): JsonResponse
     {
 
-        $employees = $this->employeeRepository->getByTwoColumns('company_id',auth('user-api')->user()->company_id,'is_admin',0);
+        $employees = $this->employeeRepository->getByTwoColumns('company_id',companyId(),'is_admin',0);
 
         return $this->responseSuccess(EmployeeGetDataResource::collection($employees)->response()->getData(true),200,'تم جلب جميع الموظفين التابعه للشركه العقاريه بنجاح');
 
@@ -57,14 +56,14 @@ class EmployeeService
                 $inputs['employee_image'] = $image;
             }
 
-            $inputs['company_id'] = auth('user-api')->user()->company_id;
+            $inputs['company_id'] = companyId();
             $inputs['employee_permissions'] = json_encode( $inputs['employee_permissions']);
             $inputs['password'] = Hash::make($inputs['password']);
 
 
             $employee = $this->employeeRepository->create($inputs);
 
-            $this->sendNotification(['title' => 'اشعار جديد لديك','body' => 'نم اضافه موظف جديد' ],auth('user-api')->user());
+            $this->sendFirebaseNotification(data:['title' => 'اشعار جديد لديك','body' => ' تم اضافه موظف جديد لديك بواسطه   ' . employee() ],userId: employeeId(),permission: 'employees');
             return $this->responseSuccess(new EmployeeGetDataResource($employee), 200, 'تم اضافه بيانات الموظف بنجاح');
 
         } catch (\Exception $exception) {

@@ -1,22 +1,25 @@
 <?php
 
 
-use Illuminate\Contracts\Validation\Validator;
-use Illuminate\Validation\ValidationException;
 
-if(!function_exists('validationException')){
+if(!function_exists('employee')){
+    function employee(){
 
-    /**
-     * @throws ValidationException
-     */
-    function validationException(Validator $validator){
+        return auth('user-api')->user()->name;
+    }
+}
 
-        throw new ValidationException($validator, response()->json([
-            'data' => null,
-            'code' => 422,
-            'message' => $validator->errors()->first(),
-            'status' => false,
 
-        ], 422));
+if(!function_exists('employeeId')){
+    function employeeId(): int|string|null
+    {
+        return auth('user-api')->id();
+    }
+}
+
+if(!function_exists('companyId')){
+    function companyId(){
+
+        return auth('user-api')->user()->company_id;
     }
 }

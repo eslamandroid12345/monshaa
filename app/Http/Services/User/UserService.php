@@ -7,8 +7,13 @@ use App\Http\Requests\LoginUserRequest;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Http\Resources\EmployeeResource;
+use App\Http\Resources\ExpenseResource;
+use App\Http\Resources\HomePage\HomePageAdminResource;
+use App\Http\Resources\HomePage\HomePageEmployeeResource;
 use App\Http\Resources\UserResource;
 use App\Http\Services\Mutual\FileManagerService;
+use App\Http\Services\Mutual\GetService;
+use App\Http\Traits\FirebaseNotification;
 use App\Http\Traits\Responser;
 use App\Repository\CompanyRepositoryInterface;
 use App\Repository\FcmTokenRepositoryInterface;
@@ -22,7 +27,7 @@ use Illuminate\Support\Facades\Hash;
 class UserService
 {
 
-    use Responser;
+    use Responser,FirebaseNotification;
 
     protected UserRepositoryInterface $userRepository;
 
@@ -30,15 +35,20 @@ class UserService
     protected CompanyRepositoryInterface $companyRepository;
 
     protected FcmTokenRepositoryInterface $fcmTokenRepository;
+    protected GetService $getService;
 
-    public function __construct( FcmTokenRepositoryInterface $fcmTokenRepository,UserRepositoryInterface $userRepository,FileManagerService $fileManagerService,CompanyRepositoryInterface $companyRepository)
+    public function __construct( FcmTokenRepositoryInterface $fcmTokenRepository,UserRepositoryInterface $userRepository,FileManagerService $fileManagerService,CompanyRepositoryInterface $companyRepository,GetService $getService)
     {
 
         $this->fcmTokenRepository = $fcmTokenRepository;
         $this->userRepository = $userRepository;
         $this->fileManagerService = $fileManagerService;
         $this->companyRepository = $companyRepository;
+        $this->getService = $getService;
+
     }
+
+
 
     public function register(StoreUserRequest $request): JsonResponse
     {
@@ -114,6 +124,19 @@ class UserService
 
         }
      }
+
+
+        public function home(): JsonResponse
+        {
+
+            $user = auth('user-api')->user();
+
+            $resource = $user->is_admin ? new HomePageAdminResource($user) : new HomePageEmployeeResource($user);
+            $message = $user->is_admin ? 'تم عرض بيانات الصفحه الرئيسيه بنجاح للادمن' : 'تم عرض بيانات الصفحه الرئيسيه بنجاح للموظف';
+
+            return $this->responseSuccess($resource, 200, $message);
+
+        }
 
         protected function isActiveUser($auth): bool
         {

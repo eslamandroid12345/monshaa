@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Expense;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class ExpenseRequest extends FormRequest
+class UpdateExpenseRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -27,7 +27,7 @@ class ExpenseRequest extends FormRequest
             'total_money' => 'required|numeric',
             'description' => 'required|max:255',
             'transaction_date' => 'required|date|date_format:Y-m-d',
-            'type' => 'required|in:expense,revenue'
+            'type' => 'nullable|in:expense,revenue'
         ];
     }
 
@@ -42,13 +42,8 @@ class ExpenseRequest extends FormRequest
             'transaction_date.required' => 'تاريخ المعاملة مطلوب.',
             'transaction_date.date' => 'يجب أن يكون تاريخ المعاملة تاريخًا صحيحًا.',
             'transaction_date.date_format' => 'يجب أن يكون تاريخ المعاملة بالصيغة التالية: YYYY-MM-DD.',
-            'type.required' => 'نوع الحركه مصروف ولا ايراد جديد مطلوب',
             'type.in' => 'نوع الحركه مصروف ولا ايراد جديد للشركه'
 
         ];
     }
-
-    /*
-     * Make validation messages for this validation by arabic language
-     */
 }

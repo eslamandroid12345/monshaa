@@ -18,7 +18,7 @@ class GetService
 
             $data = $repository->$method(...$parameters);
             $records = $is_instance ? new $resource($data) : ($dataType == 'pagination' ? $resource::collection($data)->response()->getData(true) : $resource::collection($data));
-            return $this->responseSuccess($records,$message,200);
+            return $this->responseSuccess(data: $records, code: 200, message: $message);
         }
         catch (Exception $exception) {
             return $this->responseFail([],500,$exception->getMessage(),500);
