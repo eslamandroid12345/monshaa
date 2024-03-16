@@ -21,7 +21,7 @@ class CreateClientsTable extends Migration
             $table->string('phone');
             $table->string('code');
             $table->enum('department',['state_sale','state_rent','land_sale'])->comment('عقارات بيع او عقارات ايجار او ارض بيع');
-            $table->date('inspection_date')->comment('تاريخ المعاينه');
+            $table->date('inspection_date')->nullable()->comment('تاريخ المعاينه');
             $table->enum('status',['waiting','inspection','inspection_accepted','inspection_refused'])->default('waiting')->comment('حاله المعاينه');
             $table->text('notes')->comment('الملاحظات')->nullable();
             $table->timestamps();

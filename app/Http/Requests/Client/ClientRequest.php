@@ -28,7 +28,7 @@ class ClientRequest extends FormRequest
             'phone' => 'required|numeric',
             'code' => 'required',
             'department' => 'required|string|in:state_sale,state_rent,land_sale',
-            'inspection_date' => 'required|date|date_format:Y-m-d',
+            'inspection_date' => 'nullable|date|date_format:Y-m-d',
             'notes' => 'nullable',
             'status' => 'nullable|in:waiting,inspection,inspection_accepted,inspection_refused',
         ];
@@ -43,7 +43,6 @@ class ClientRequest extends FormRequest
             'code.required' => 'حقل الكود مطلوب.',
             'department.required' => 'حقل القسم مطلوب.',
             'department.in' => 'قيمة حقل القسم غير صالحة.',
-            'inspection_date.required' => 'حقل تاريخ المعاينه مطلوب.',
             'inspection_date.date' => 'يجب أن يكون حقل تاريخ المعاينه تاريخًا صحيحًا.',
             'inspection_date.date_format' => 'تنسيق تاريخ المعاينه غير صالح. يجب أن يكون بتنسيق: Y-m-d.',
             'status.in' => 'القيمة المدخلة في حقل الحالة غير صالحة.',
