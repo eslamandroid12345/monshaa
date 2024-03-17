@@ -22,7 +22,7 @@ class LandResource extends JsonResource
                 'name' => $this->user->name,
                 'phone' => $this->user->phone,
             ],
-            'land_images' => $this->getAllImages(),
+            'land_images' => $this->land_images,
             'address' => $this->address,
             'address_details' => $this->address_details,
             'seller_name' => $this->seller_name,
@@ -40,17 +40,4 @@ class LandResource extends JsonResource
     }
 
 
-    private function getAllImages(): array
-    {
-
-        if($this->land_images != null) {
-            $imageUrls = [];
-            foreach (json_decode($this->land_images, true) as $path) {
-                $imageUrls[] = asset($path);
-            }
-
-            return $imageUrls;
-        }
-        return [];
-    }
 }

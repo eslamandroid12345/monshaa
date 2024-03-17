@@ -25,8 +25,6 @@ class StateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'real_state_images' => 'nullable',
-            'real_state_images.*' => 'image|mimes:jpeg,png,jpg',
             'building_number' => 'nullable',
             'apartment_number' => 'nullable',
             'real_state_address' => 'required',
@@ -42,7 +40,6 @@ class StateRequest extends FormRequest
             'number_of_rooms' => 'required|integer',
             'advertise_details' => 'nullable|max:20000',
             'state_date_register' => 'required|date|date_format:Y-m-d',
-
         ];
     }
 
@@ -50,9 +47,6 @@ class StateRequest extends FormRequest
     public function messages(): array
     {
         return [
-
-            'real_state_images.*.image' => 'صور العقار المرفقه يجب ان تكون صوره وليس شئ اخر',
-            'real_state_images.*.mimes' => 'صور العقار يجب ان تكون من نوع jpeg,png,jpg',
             'real_state_address.required' => 'عنوان العقار مطلوب',
             'real_state_address_details' => 'عنوان العقار تفصيلي مطلوب',
             'real_state_type.required' => 'نوع العقار مطلوب',

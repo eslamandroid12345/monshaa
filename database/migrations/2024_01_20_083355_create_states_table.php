@@ -20,7 +20,6 @@ class CreateStatesTable extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('company_id');
             $table->unsignedBigInteger('user_id')->comment('الموظف او المدير العام');
-            $table->json('real_state_images')->nullable()->comment('صور العقار');
             $table->string('building_number')->nullable()->comment('رقم العماره');
             $table->string('apartment_number')->nullable()->comment('رقم الشقه');
             $table->string('real_state_address')->nullable()->comment('عنوان العقار');

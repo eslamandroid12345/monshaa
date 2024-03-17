@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Repository\Eloquent;
-use App\Http\Services\Mutual\AuthService;
 use App\Models\Land;
 use App\Repository\LandRepositoryInterface;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;

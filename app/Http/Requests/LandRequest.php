@@ -23,8 +23,6 @@ class LandRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'land_images' => 'nullable',
-            'land_images.*' => 'image|mimes:jpeg,png,jpg,webp',
             'address' => 'required',
             'address_details' => 'required',
             'seller_name' => 'required',
@@ -42,8 +40,6 @@ class LandRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'land_images.*.image' => 'يجب أن تكون الصورة من نوع صورة.',
-            'land_images.*.mimes' => 'يجب أن تكون الصورة من الأنواع: jpeg، png، jpg، webp.',
             'address.required' => 'العنوان مطلوب.',
             'address_details.required' => 'تفاصيل العنوان مطلوبة.',
             'seller_name.required' => 'اسم البائع مطلوب.',

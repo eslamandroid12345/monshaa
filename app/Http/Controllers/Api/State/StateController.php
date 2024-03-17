@@ -25,7 +25,7 @@ class StateController extends Controller
     }
 
 
-    public function create(StateRequest $request): JsonResponse{
+    public function create(StateRequest $request){
 
         return  $this->stateService->create($request);
 

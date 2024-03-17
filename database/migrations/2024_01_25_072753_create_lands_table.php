@@ -30,7 +30,6 @@ class CreateLandsTable extends Migration
             $table->string('seller_phone_number');
             $table->enum('advertiser_type',['real_state_owner','real_state_company'])->comment('نوع المعلن');
             $table->longText('advertise_details')->nullable()->comment('تفاصيل الاعلان');
-            $table->json('land_images')->nullable()->comment('صور الارض');
             $table->date('land_date_register')->comment('تاريخ تسجيل قطعه الارض');
             $table->enum('status',['waiting','sale'])->default('waiting');
             $table->foreign('company_id')->references('id')->on('companies')->cascadeOnUpdate()->cascadeOnDelete();

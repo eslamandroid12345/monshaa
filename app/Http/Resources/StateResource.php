@@ -23,7 +23,7 @@ class StateResource extends JsonResource
                 'phone' => $this->user->phone,
             ],
             'status' => $this->status,
-            'real_state_images' => $this->getAllImages(),
+            'real_state_images' => $this->state_images,
             'building_number' => $this->building_number,
             'apartment_number' => $this->apartment_number,
             'real_state_address' => $this->real_state_address,
@@ -44,19 +44,4 @@ class StateResource extends JsonResource
 
     }
 
-
-    private function getAllImages(): array
-    {
-
-        if($this->real_state_images != null){
-            $imageUrls = [];
-            foreach (json_decode($this->real_state_images,true) as $path) {
-                $imageUrls[] = asset($path);
-            }
-            return $imageUrls;
-        }
-
-        return [];
-
-    }
 }

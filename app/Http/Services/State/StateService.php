@@ -8,6 +8,7 @@ use App\Http\Services\Mutual\FileManagerService;
 use App\Http\Services\Mutual\GetService;
 use App\Http\Traits\FirebaseNotification;
 use App\Http\Traits\Responser;
+use App\Repository\StateImageRepositoryInterface;
 use App\Repository\StateRepositoryInterface;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -23,29 +24,27 @@ class StateService
 
     protected FileManagerService $fileManagerService;
     protected GetService $getService;
+    protected StateImageRepositoryInterface $stateImageRepository;
 
-    public function __construct(StateRepositoryInterface $stateRepository,FileManagerService $fileManagerService,GetService $getService)
+    public function __construct(StateRepositoryInterface $stateRepository,FileManagerService $fileManagerService,GetService $getService,StateImageRepositoryInterface $stateImageRepository)
     {
 
         $this->stateRepository = $stateRepository;
         $this->fileManagerService = $fileManagerService;
         $this->getService = $getService;
+        $this->stateImageRepository = $stateImageRepository;
     }
 
 
     public function getAllStates(): JsonResponse
     {
-
         try {
-
             return $this->getService->handle(resource: StateResource::class,repository: $this->stateRepository,method: 'getAllStatusQuery',message:'تم الحصول على بيانات جميع العقارات بنجاح' );
 
         }  catch (AuthorizationException $exception){
-
             return $this->responseFail(null, 403, 'غير مصرح لك للدخول لذلك الصفحه',403);
 
         } catch (\Exception $e) {
-
             return $this->responseFail(null, 500, 'يوجد خطاء ما في بيانات الارسال بالسيرفر', 500);
         }
 
@@ -60,13 +59,9 @@ class StateService
         $inputs['user_id'] = employeeId();
         $inputs['company_id'] = companyId();
 
-        if($request->hasFile('real_state_images')){
-
-            $images = $this->fileManagerService->handleMultipleImages("real_state_images","states/images");
-            $inputs['real_state_images'] = json_encode($images);
-        }
-
         $state = $this->stateRepository->create($inputs);
+
+        $this->uploadImages($request,$state);
 
         $this->sendFirebaseNotification(data:['title' => 'اشعار جديد لديك','body' => ' تم اضافه بيانات عقار جديد لديك بواسطه   ' . employee() ],userId: employeeId(),permission: 'states');
 
@@ -77,8 +72,38 @@ class StateService
 
         } catch (\Exception $e) {
 
-            return $this->responseFail(null, 500, 'يوجد خطاء ما في بيانات الارسال بالسيرفر', 500);
+            return $this->responseFail(null, 500, $e->getMessage(), 500);
 
+        }
+    }
+
+    protected function uploadImages(StateRequest $request,$state): void
+    {
+        if ($request->hasFile('real_state_images'))
+        {
+            foreach ($request->real_state_images as $index => $image)
+            {
+                $newImage = $this->fileManagerService->handle("real_state_images.$index", "states/images");
+                $this->stateImageRepository->create(['image' => $newImage, 'state_id' => $state->id]);
+            }
+        }
+    }
+
+    protected function updateImages(StateRequest $request, $state): void
+    {
+        if ($request->hasFile('real_state_images'))
+        {
+            $this->deleteExistingImages($state);
+            $this->uploadImages($request, $state);
+        }
+    }
+
+    protected function deleteExistingImages($state): void
+    {
+        foreach ($state->images as $image)
+        {
+            $this->fileManagerService->deleteFile($image->getRawOriginal('image'));
+            $this->stateImageRepository->delete($image->id);
         }
     }
 
@@ -94,13 +119,9 @@ class StateService
 
             $inputs = $request->validated();
 
-            if($request->hasFile('real_state_images')){
-
-                $images = $this->fileManagerService->handleMultipleImages("real_state_images","states/images",$state->getRawOriginal('real_state_images'));
-                $inputs['real_state_images'] = json_encode($images);
-            }
-
             $this->stateRepository->update($state->id,$inputs);
+
+            $this->updateImages($request,$state);
 
             return $this->getService->handle(resource: StateResource::class,repository: $this->stateRepository,method: 'getById',parameters: [$id],is_instance: true,message:'تم تعديل بيانات العقار  بنجاح' );
 
@@ -121,7 +142,6 @@ class StateService
 
     public function show($id): JsonResponse
     {
-
         try {
 
             $state = $this->stateRepository->getById($id);
@@ -140,17 +160,13 @@ class StateService
 
     public function changeStatus($id): JsonResponse
     {
-
         try {
 
             $state = $this->stateRepository->getById($id);
-
             Gate::authorize('check-company-auth',$state);
 
             $this->stateRepository->update($state->id,['status' => $state->department]);
-
             return $this->getService->handle(resource: StateResource::class,repository: $this->stateRepository,method: 'getById',parameters: [$id],is_instance: true,message:'تم تغيير حاله العقار  بنجاح' );
-
 
         } catch (ModelNotFoundException $exception){
 

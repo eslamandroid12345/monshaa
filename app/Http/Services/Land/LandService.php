@@ -4,11 +4,11 @@ namespace App\Http\Services\Land;
 
 use App\Http\Requests\LandRequest;
 use App\Http\Resources\LandResource;
-use App\Http\Resources\StateResource;
 use App\Http\Services\Mutual\FileManagerService;
 use App\Http\Services\Mutual\GetService;
 use App\Http\Traits\FirebaseNotification;
 use App\Http\Traits\Responser;
+use App\Repository\LandImageRepositoryInterface;
 use App\Repository\LandRepositoryInterface;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -23,13 +23,15 @@ class LandService
 
     protected FileManagerService $fileManagerService;
     protected GetService $getService;
+    protected LandImageRepositoryInterface $landImageRepository;
 
-    public function __construct(LandRepositoryInterface $landRepository,FileManagerService $fileManagerService,GetService $getService)
+    public function __construct(LandRepositoryInterface $landRepository,FileManagerService $fileManagerService,GetService $getService,LandImageRepositoryInterface $landImageRepository)
     {
 
         $this->landRepository = $landRepository;
         $this->fileManagerService = $fileManagerService;
         $this->getService = $getService;
+        $this->landImageRepository = $landImageRepository;
     }
 
 
@@ -46,9 +48,7 @@ class LandService
             return $this->responseFail(null, 500, 'يوجد خطاء ما في بيانات الارسال بالسيرفر', 500);
 
         }
-
     }
-
 
     public function create(LandRequest $request): JsonResponse
     {
@@ -60,13 +60,9 @@ class LandService
             $inputs['user_id'] = employeeId();
             $inputs['company_id'] = companyId();
 
-            if ($request->hasFile('land_images')) {
-
-                $images = $this->fileManagerService->handleMultipleImages("land_images", "lands/images");
-                $inputs['land_images'] = json_encode($images);
-            }
-
             $land = $this->landRepository->create($inputs);
+
+            $this->uploadImages($request,$land);
 
             $this->sendFirebaseNotification(data:['title' => 'اشعار جديد لديك','body' => ' تم اضافه بيانات ارض جديده لديك بواسطه   ' . employee() ],userId: employeeId(),permission: 'lands');
 
@@ -80,7 +76,37 @@ class LandService
         } catch (\Exception $e) {
             return $this->responseFail(null, 500, 'يوجد خطاء ما في بيانات الارسال بالسيرفر', 500);
 
+        }
+    }
 
+
+    protected function uploadImages(LandRequest $request,$land): void
+    {
+        if ($request->hasFile('land_images'))
+        {
+            foreach ($request->land_images as $index => $image)
+            {
+                $newImage = $this->fileManagerService->handle("land_images.$index", "lands/images");
+                $this->landImageRepository->create(['image' => $newImage, 'land_id' => $land->id]);
+            }
+        }
+    }
+
+    protected function updateImages(LandRequest $request, $land): void
+    {
+        if ($request->hasFile('land_images'))
+        {
+            $this->deleteExistingImages($land);
+            $this->uploadImages($request, $land);
+        }
+    }
+
+    protected function deleteExistingImages($land): void
+    {
+        foreach ($land->images as $image)
+        {
+            $this->fileManagerService->deleteFile($image->getRawOriginal('image'));
+            $this->landImageRepository->delete($image->id);
         }
     }
 
@@ -94,17 +120,12 @@ class LandService
 
             Gate::authorize('check-company-auth',$land);
 
-
             $inputs = $request->validated();
-
-            if ($request->hasFile('land_images')) {
-
-                $images = $this->fileManagerService->handleMultipleImages("land_images", "land/images", $land->getRawOriginal('land_images'));
-                $inputs['land_images'] = json_encode($images);
-            }
 
             $this->landRepository->update($land->id, $inputs);
 
+
+            $this->updateImages($request,$land);
 
             return $this->getService->handle(resource: LandResource::class,repository: $this->landRepository,method: 'getById',parameters: [$id],is_instance: true,message: 'تم تعديل بيانات الارض  بنجاح' );
 

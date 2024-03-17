@@ -18,3 +18,17 @@ Route::get('/', function () {
 
     return view('welcome');
 });
+/*
+ *  protected function uploadImages(StoreProductRequest $request, $product): void
+    {
+        if ($request->hasFile('images'))
+        {
+            foreach ($request->images as $index => $image)
+            {
+                $newImage = $this->fileManagerService->handle("images.$index", "product/images");
+                $this->productImageRepository->create(['image' => $newImage, 'product_id' => $product->id]);
+            }
+        }
+    }
+
+ */

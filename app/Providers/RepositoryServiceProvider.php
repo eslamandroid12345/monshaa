@@ -11,9 +11,11 @@ use App\Repository\Eloquent\CompanyRepository;
 use App\Repository\Eloquent\EmployeeRepository;
 use App\Repository\Eloquent\ExpenseRepository;
 use App\Repository\Eloquent\FcmTokenRepository;
+use App\Repository\Eloquent\LandImageRepository;
 use App\Repository\Eloquent\LandRepository;
 use App\Repository\Eloquent\ReceiptRepository;
 use App\Repository\Eloquent\Repository;
+use App\Repository\Eloquent\StateImageRepository;
 use App\Repository\Eloquent\StateRepository;
 use App\Repository\Eloquent\TenantContractRepository;
 use App\Repository\Eloquent\TenantRepository;
@@ -21,9 +23,11 @@ use App\Repository\Eloquent\UserRepository;
 use App\Repository\EmployeeRepositoryInterface;
 use App\Repository\ExpenseRepositoryInterface;
 use App\Repository\FcmTokenRepositoryInterface;
+use App\Repository\LandImageRepositoryInterface;
 use App\Repository\LandRepositoryInterface;
 use App\Repository\ReceiptRepositoryInterface;
 use App\Repository\RepositoryInterface;
+use App\Repository\StateImageRepositoryInterface;
 use App\Repository\StateRepositoryInterface;
 use App\Repository\TenantContractRepositoryInterface;
 use App\Repository\TenantRepositoryInterface;
@@ -52,6 +56,8 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(CashRepositoryInterface::class, CashRepository::class);
         $this->app->bind(FcmTokenRepositoryInterface::class, FcmTokenRepository::class);
         $this->app->bind(ClientRepositoryInterface::class, ClientRepository::class);
+        $this->app->bind(StateImageRepositoryInterface::class, StateImageRepository::class);
+        $this->app->bind(LandImageRepositoryInterface::class, LandImageRepository::class);
 
     }
 
