@@ -15,20 +15,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
 
+    return \App\Models\User::query()->pluck('id')->toArray();
 
-    return view('welcome');
+//    return view('welcome');
 });
-/*
- *  protected function uploadImages(StoreProductRequest $request, $product): void
-    {
-        if ($request->hasFile('images'))
-        {
-            foreach ($request->images as $index => $image)
-            {
-                $newImage = $this->fileManagerService->handle("images.$index", "product/images");
-                $this->productImageRepository->create(['image' => $newImage, 'product_id' => $product->id]);
-            }
-        }
-    }
 
- */

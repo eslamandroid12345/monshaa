@@ -64,7 +64,7 @@ class LandService
 
             $this->uploadImages($request,$land);
 
-            $this->sendFirebaseNotification(data:['title' => 'اشعار جديد لديك','body' => ' تم اضافه بيانات ارض جديده لديك بواسطه   ' . employee() ],userId: employeeId(),permission: 'lands');
+            $this->sendFirebaseNotification(data:['title' => 'اشعار جديد لديك','body' => ' تم اضافه بيانات ارض جديده لديك بواسطه ' . employee() ],userId: employeeId(),permission: 'lands');
 
             return $this->getService->handle(resource: LandResource::class,repository: $this->landRepository,method: 'getById',parameters: [$land->id],is_instance: true,message:'تم اضافه البيانات بنجاح' );
 
@@ -206,7 +206,9 @@ class LandService
 
             Gate::authorize('check-company-auth',$land);
 
-            $this->landRepository->deleteWithMultipleFiles($land->id, $land->getRawOriginal('land_images'));
+            $this->deleteExistingImages($land);
+
+            $this->landRepository->delete($land->id);
 
             return $this->responseSuccess(null, 200, 'تم حذف بيانات الارض  بنجاح');
 

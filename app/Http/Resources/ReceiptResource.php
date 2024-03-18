@@ -23,7 +23,6 @@ class ReceiptResource extends JsonResource
             ],
             'owner_name' => $this->tenant_contract->owner_name,
             'owner_phone' => $this->tenant_contract->owner_phone,
-            'installment_number' => $this->installment_number,
             'total_amount' => $this->total_amount,
             'commission' => $this->commission,
             'transaction_date' => $this->transaction_date,

@@ -25,7 +25,6 @@ class ReceiptRequest extends FormRequest
     {
         return [
             'total_amount' => 'required|numeric|min:0',
-            'installment_number' => 'required|max:255',
             'commission_type' => 'required|in:per,val',
             'commission' => 'required|numeric|min:0',
             'transaction_date' => 'required|date|date_format:Y-m-d',
@@ -40,8 +39,6 @@ class ReceiptRequest extends FormRequest
             'total_amount.required' => 'المبلغ الإجمالي مطلوب.',
             'total_amount.numeric' => 'المبلغ الإجمالي يجب أن يكون رقمًا.',
             'total_amount.min' => 'المبلغ الإجمالي يجب أن لا يكون أقل من 0.',
-            'installment_number.required' => 'رقم القسط مطلوب.',
-            'installment_number.max' => 'رقم القسط يجب ألا يتجاوز 255 حرفًا.',
             'commission_type.required' => 'نوع العمولة مطلوب.',
             'commission_type.in' => 'نوع العمولة يجب أن يكون "per" أو "val".',
             'commission.required' => 'العمولة مطلوبة".',

@@ -18,6 +18,7 @@ class CreateNotificationViewsTable extends Migration
             $table->unsignedBigInteger('company_id')->comment('الشركه');
             $table->unsignedBigInteger('user_id')->comment('الموظف او المدير العام');
             $table->unsignedBigInteger('notification_id');
+            $table->boolean('is_view')->default(0);
             $table->foreign('company_id')->references('id')->on('companies')->cascadeOnUpdate()->cascadeOnDelete();
             $table->foreign('notification_id')->references('id')->on('notifications')->cascadeOnUpdate()->cascadeOnDelete();
             $table->foreign('user_id')->references('id')->on('users')->cascadeOnUpdate()->cascadeOnDelete();

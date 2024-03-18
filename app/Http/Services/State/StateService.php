@@ -63,7 +63,7 @@ class StateService
 
         $this->uploadImages($request,$state);
 
-        $this->sendFirebaseNotification(data:['title' => 'اشعار جديد لديك','body' => ' تم اضافه بيانات عقار جديد لديك بواسطه   ' . employee() ],userId: employeeId(),permission: 'states');
+        $this->sendFirebaseNotification(data:['title' => 'اشعار جديد لديك','body' => ' تم اضافه بيانات عقار جديد لديك بواسطه ' . employee() ],userId: employeeId(),permission: 'states');
 
         return $this->getService->handle(resource: StateResource::class,repository: $this->stateRepository,method: 'getById',parameters: [$state->id],is_instance: true,message:'تم اضافه البيانات بنجاح' );
 
@@ -183,7 +183,9 @@ class StateService
 
             Gate::authorize('check-company-auth',$state);
 
-            $this->stateRepository->deleteWithMultipleFiles($state->id,$state->getRawOriginal('real_state_images'));
+            $this->deleteExistingImages($state);
+
+            $this->stateRepository->delete($state->id);
 
             return $this->responseSuccess(null, 200, 'تم حذف بيانات العقار  بنجاح');
 

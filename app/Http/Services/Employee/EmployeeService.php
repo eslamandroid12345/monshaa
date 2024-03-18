@@ -47,7 +47,6 @@ class EmployeeService
 
     public function create(StoreEmployeeRequest $request): JsonResponse
     {
-
         try {
 
             $inputs = $request->validated();
@@ -63,7 +62,7 @@ class EmployeeService
 
             $employee = $this->employeeRepository->create($inputs);
 
-            $this->sendFirebaseNotification(data:['title' => 'اشعار جديد لديك','body' => ' تم اضافه موظف جديد لديك بواسطه   ' . employee() ],userId: employeeId(),permission: 'employees');
+            $this->sendFirebaseNotification(data:['title' => 'اشعار جديد لديك','body' => ' تم اضافه موظف جديد لديك بواسطه ' . employee() ],userId: employeeId(),permission: 'employees');
 
             return $this->getService->handle(resource: EmployeeGetDataResource::class,repository: $this->employeeRepository,method: 'getById',parameters: [$employee->id],is_instance: true,message:'تم اضافه البيانات بنجاح' );
 

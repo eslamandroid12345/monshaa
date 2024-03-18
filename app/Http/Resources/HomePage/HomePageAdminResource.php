@@ -116,7 +116,7 @@ class HomePageAdminResource extends JsonResource
                     'key' => 'notifications',
                     'name' => 'الاشعارات',
                     'icon' => 'notification_add',
-                    'count' => 3
+                    'count' => $this->company->notifications_count
                 ],
 
 

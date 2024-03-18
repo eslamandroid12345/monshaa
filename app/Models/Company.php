@@ -221,4 +221,20 @@ class Company extends Model
     }
 
 
+    public function notifications(): HasMany
+    {
+        return $this->hasMany(Notification::class,'company_id','id');
+    }
+
+
+
+    public function notificationsCount() : Attribute {
+        return Attribute::get(
+            get: function () {
+
+                return $this->notifications()->count();
+            }
+        );
+    }
+
 }

@@ -6,9 +6,9 @@ use App\Http\Requests\StoreTenantContractRequest;
 use App\Http\Requests\StoreTenantRequest;
 use App\Http\Requests\UpdateTenantContractRequest;
 use App\Http\Requests\UpdateTenantRequest;
-use App\Http\Resources\StateResource;
 use App\Http\Resources\TenantContractResource;
 use App\Http\Services\Mutual\GetService;
+use App\Http\Traits\FirebaseNotification;
 use App\Http\Traits\Responser;
 use App\Repository\TenantContractRepositoryInterface;
 use App\Repository\TenantRepositoryInterface;
@@ -22,7 +22,7 @@ use Illuminate\Support\Facades\Gate;
 class TenantContractService
 {
 
-    use Responser;
+    use Responser,FirebaseNotification;
     protected TenantContractRepositoryInterface $tenantContractRepository;
     protected TenantRepositoryInterface $tenantRepository;
 
@@ -73,6 +73,8 @@ class TenantContractService
 
             $tenantContract = $this->tenantContractRepository->create($inputs);
 
+            $this->sendFirebaseNotification(data:['title' => 'اشعار جديد لديك','body' => ' تم اضافه بيانات عقد ايجار لديك بواسطه ' . employee() ],userId: employeeId(),permission: 'states');
+
             DB::commit();
 
             return $this->getService->handle(resource: TenantContractResource::class,repository: $this->tenantContractRepository,method: 'getById',parameters: [$tenantContract->id],is_instance: true,message:'تم اضافه البيانات بنجاح' );
@@ -88,7 +90,7 @@ class TenantContractService
 
         } catch (\Exception $e) {
             DB::rollBack();
-            return $this->responseFail(null, 500, 'يوجد خطاء ما في بيانات الارسال بالسيرفر', 500);
+            return $this->responseFail(null, 500, $e->getMessage(), 500);
 
         }
     }
@@ -110,7 +112,7 @@ class TenantContractService
     protected function createNewTenant(StoreTenantRequest $request): ?Model{
 
          $tenantRequests = $request->validated();
-         $tenantRequests['company_id'] = auth('user-api')->user()->company_id;
+         $tenantRequests['company_id'] = companyId();
 
         return $this->tenantRepository->create($tenantRequests);
     }

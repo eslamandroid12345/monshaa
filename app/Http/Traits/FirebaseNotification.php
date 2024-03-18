@@ -3,6 +3,7 @@
 namespace App\Http\Traits;
 use App\Models\FcmToken;
 use App\Models\Notification;
+use App\Models\NotificationView;
 use App\Models\User;
 
 trait FirebaseNotification
@@ -20,7 +21,7 @@ trait FirebaseNotification
         $tokens = $this->getUsersFcmTokens($users);
 
         // Create notification for the company
-        $this->createNotification($user->company_id, $data['title'], $data['body']);
+        $this->createNotification($user->company_id, $data['title'], $data['body'],$users);
 
         // Send notification to users
         $this->sendNotification($tokens, $data);
@@ -55,9 +56,19 @@ trait FirebaseNotification
             ->toArray();
     }
 
-    protected function createNotification($companyId, $title, $body): void
+    protected function createNotification($companyId, $title, $body,$users): void
     {
-        Notification::create(['company_id' => $companyId, 'title' => $title, 'body' => $body,]);
+        $notification = Notification::create(['company_id' => $companyId, 'title' => $title, 'body' => $body,]);
+
+        ####### Users Get All Ids of users belongs to companyId
+        foreach ($users as $user){
+            NotificationView::create([
+                'user_id' => $user,
+                'company_id' => $companyId,
+                'notification_id' => $notification->id,
+            ]);
+        }
+
     }
 
     protected function sendNotification($tokens, $data)
