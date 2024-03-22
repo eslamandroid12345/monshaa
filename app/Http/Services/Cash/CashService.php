@@ -13,6 +13,7 @@ use App\Repository\TenantContractRepositoryInterface;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 
 class CashService
@@ -38,7 +39,7 @@ class CashService
     public function getAllCashes(): JsonResponse
     {
         try {
-            return $this->getService->handle(resource: TenantContractWithCashResource::class,repository: $this->tenantContractRepository,method: 'allTenantContracts',message:'تم الحصول على بيانات جميع سندات القبض بنجاح' );
+            return $this->getService->handle(resource: TenantContractWithCashResource::class,repository: $this->tenantContractRepository,method: 'TenantContractsByFinancialBonds',message:'تم الحصول على بيانات جميع سندات القبض بنجاح' );
 
         }  catch (AuthorizationException $exception){
             return $this->responseFail(null, 403, 'غير مصرح لك للدخول لذلك الصفحه',403);
@@ -51,6 +52,8 @@ class CashService
 
     public function create($id,CashRequest $request): JsonResponse
     {
+
+        DB::beginTransaction();
 
         try {
 
@@ -66,17 +69,21 @@ class CashService
 
             $cash = $this->cashRepository->create($inputs);
 
-            $this->sendFirebaseNotification(data:['title' => 'اشعار جديد لديك','body' => ' تم اضافه سند قبض جديد لديك بواسطه   ' . employee() ],userId: employeeId(),permission: 'financial_cash');
+            $this->sendFirebaseNotification(data:['title' => 'اشعار جديد لديك','body' => ' تم اضافه سند قبض جديد لديك بواسطه ' . employee() ],userId: employeeId(),permission: 'financial_cash');
 
+            DB::commit();
             return $this->getService->handle(resource: CashResource::class,repository: $this->cashRepository,method: 'getById',parameters: [$cash->id],is_instance: true,message:'تم اضافه البيانات بنجاح' );
 
         }catch (ModelNotFoundException $exception) {
+            DB::rollBack();
             return $this->responseFail(null, 404, 'بيانات عقد الايجار غير موجوده', 404);
 
         } catch (AuthorizationException $exception){
+            DB::rollBack();
             return $this->responseFail(null, 403, 'غير مصرح لك للدخول لذلك الصفحه',403);
 
         } catch (\Exception $e) {
+            DB::rollBack();
             return $this->responseFail(null, 500, 'يوجد خطاء ما في بيانات الارسال بالسيرفر', 500);
 
         }
@@ -97,7 +104,7 @@ class CashService
 
             $this->cashRepository->update($cash->id,$inputs);
 
-            $this->sendFirebaseNotification(data:['title' => 'اشعار جديد لديك','body' => ' تم تعديل سند قبض  لديك بواسطه   ' . employee() ],userId: employeeId(),permission: 'financial_cash');
+            $this->sendFirebaseNotification(data:['title' => 'اشعار جديد لديك','body' => ' تم تعديل سند قبض  لديك بواسطه ' . employee() ],userId: employeeId(),permission: 'financial_cash');
 
             return $this->getService->handle(resource: CashResource::class,repository: $this->cashRepository,method: 'getById',parameters: [$id],is_instance: true,message: 'تم تعديل بيانات سند القبض  بنجاح' );
 

@@ -45,6 +45,7 @@ class StoreTenantContractRequest extends FormRequest
             'commission' => 'required|numeric',
             'insurance_total' => 'required|numeric',
             'period_of_delay' => 'nullable|numeric',
+            'cash_type' => 'required|in:owner,company',
         ];
     }
 
@@ -95,6 +96,8 @@ class StoreTenantContractRequest extends FormRequest
             'insurance_total.required' => 'إجمالي التأمين مطلوب ويجب أن يكون رقمًا.',
             'insurance_total.numeric' => 'إجمالي التأمين يجب أن يكون رقمًا.',
             'period_of_delay.numeric' => 'فترة التأخير يجب أن تكون قيمة رقمية.',
+            'cash_type.required' => 'نوع تحصيل الايجار مطلوب',
+            'cash_type.in' => 'نوع تحصيل الايجار يجب ان يكون من خلال المالك او الشركه العقاريه وليس شيء اخر',
         ];
     }
 

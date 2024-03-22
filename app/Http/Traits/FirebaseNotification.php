@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Traits;
+use App\Models\Company;
 use App\Models\FcmToken;
 use App\Models\Notification;
 use App\Models\NotificationView;
@@ -30,6 +31,53 @@ trait FirebaseNotification
 
 
     }
+
+
+    public function sendFirebaseForCompany($data, $companyId,$permission): bool
+    {
+        $company = Company::query()->findOrFail($companyId);
+
+        $employees = User::query()
+            ->where('company_id','=',$company->id)
+            ->get();//get all user of company
+
+        $users = $this->getCompanyEmployees($employees,$permission);
+        $tokens = $this->getUsersFcmTokens($users);
+
+        // Create notification for the company
+        $this->createNotification($companyId, $data['title'], $data['body'],$users);
+
+        // Send notification to users
+        $this->sendNotification($tokens, $data);
+
+        return true;
+
+    }//Send firebase notification for company
+
+
+    protected function getCompanyEmployees($users,$permission): array
+    {
+        $ids = [];
+        foreach ($users as $user){
+            if ($user->is_admin == 0 && !in_array($permission, json_decode($user->employee_permissions, true))) {
+                $ids[] =  User::query()
+                    ->where('company_id', $user->company_id)
+                    ->where('user_id','!=',$user->id)
+                    ->first()->id;
+            }else{
+                // Return all users of the company
+                $ids[] =  User::query()
+                    ->where('company_id', $user->company_id)
+                    ->where('id','=',$user->id)
+                    ->first()
+                    ->id;
+            }
+
+        }
+
+        return $ids;
+
+    }//Get all employees of company
 
     protected function getCompanyUsers($user,$permission): array
     {

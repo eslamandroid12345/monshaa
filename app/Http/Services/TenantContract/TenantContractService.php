@@ -53,6 +53,22 @@ class TenantContractService
 
     }
 
+    public function tenantContractsExpired(): JsonResponse{
+
+        try {
+
+            return $this->getService->handle(resource: TenantContractResource::class,repository: $this->tenantContractRepository,method: 'tenantContractsExpired',message:'تم الحصول على بيانات جميع عقود الايجار المنتهيه بنجاح' );
+
+        }catch (AuthorizationException $exception){
+            return $this->responseFail(null, 403, 'غير مصرح لك للدخول لذلك الصفحه',403);
+
+        } catch (\Exception $e) {
+            return $this->responseFail(null, 500, 'يوجد خطاء ما في بيانات الارسال بالسيرفر', 500);
+
+        }
+
+    }
+
     public function create(StoreTenantRequest $tenantRequest,StoreTenantContractRequest $request): JsonResponse{
 
 

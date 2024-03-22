@@ -3,7 +3,6 @@
 namespace App\Repository\Eloquent;
 
 use App\Models\Cash;
-use App\Models\TenantContract;
 use App\Repository\CashRepositoryInterface;
 use Illuminate\Database\Eloquent\Model;
 
@@ -17,5 +16,14 @@ class CashRepository extends Repository implements CashRepositoryInterface
         parent::__construct($model);
     }
 
+
+    public function countCash($tenantContractId): int
+    {
+
+        return $this->model::query()
+            ->where('company_id','=',companyId())
+            ->where('tenant_contract_id','=',$tenantContractId)
+            ->count();
+    }
 
 }

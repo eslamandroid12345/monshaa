@@ -17,4 +17,14 @@ class ReceiptRepository extends Repository implements ReceiptRepositoryInterface
 
 
 
+    public function receiptCount($tenantContractId): int
+    {
+
+        return $this->model::query()
+            ->where('company_id','=',companyId())
+            ->where('tenant_contract_id','=',$tenantContractId)
+            ->count();
+    }
+
+
 }

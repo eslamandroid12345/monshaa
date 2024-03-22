@@ -21,6 +21,7 @@ class CreateTenantContractsTable extends Migration
             $table->unsignedBigInteger('company_id');
             $table->unsignedBigInteger('user_id')->comment('الموظف او المدير العام');
             $table->unsignedBigInteger('tenant_id');
+            $table->boolean('is_show')->default(1)->comment('هل تريد ظهور هذا العقد في شاشه العقود المنتهيه');
             $table->string('owner_name')->comment('اسم المالك');
             $table->string('owner_phone');
             $table->string('owner_card_number');
@@ -42,10 +43,11 @@ class CreateTenantContractsTable extends Migration
             $table->double('commission',10,2)->comment('عموله الشركه');
             $table->double('insurance_total',10,2)->comment('التامين');
             $table->integer('period_of_delay')->nullable()->comment('مده التاخير');
+            $table->enum('cash_type',['owner','company'])->comment('تحصيل الايجار من خلال المالك او الشركه العقاريه');
+            $table->timestamps();
             $table->foreign('company_id')->references('id')->on('companies')->cascadeOnUpdate()->cascadeOnDelete();
             $table->foreign('user_id')->references('id')->on('users')->cascadeOnUpdate()->cascadeOnDelete();
             $table->foreign('tenant_id')->references('id')->on('tenants')->cascadeOnUpdate()->cascadeOnDelete();
-            $table->timestamps();
         });
     }
 

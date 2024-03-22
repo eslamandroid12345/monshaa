@@ -19,7 +19,6 @@ use App\Repository\FcmTokenRepositoryInterface;
 use App\Repository\UserRepositoryInterface;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -39,7 +38,6 @@ class UserService
 
     public function __construct( FcmTokenRepositoryInterface $fcmTokenRepository,UserRepositoryInterface $userRepository,FileManagerService $fileManagerService,CompanyRepositoryInterface $companyRepository,GetService $getService)
     {
-
         $this->fcmTokenRepository = $fcmTokenRepository;
         $this->userRepository = $userRepository;
         $this->fileManagerService = $fileManagerService;

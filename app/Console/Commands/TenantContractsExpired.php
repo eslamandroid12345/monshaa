@@ -3,13 +3,10 @@
 namespace App\Console\Commands;
 
 use App\Http\Traits\FirebaseNotification;
-use App\Http\Traits\Responser;
-use App\Models\Notification;
+use App\Models\Company;
 use App\Models\TenantContract;
-use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Log;
 
 class TenantContractsExpired extends Command
 {
@@ -49,13 +46,21 @@ class TenantContractsExpired extends Command
     {
 
 
-        $tenantContracts = TenantContract::query()
-            ->where('company_id','=',companyId())
-            ->whereDate('contract_date_to','=',Carbon::now()->format('Y-m-d'))
-            ->count();
+        $companies = Company::query()->pluck('id')->toArray();
 
+        foreach ($companies as $companyId){
 
-        $this->sendFirebaseNotification(data:['title' => 'اشعار جديد لديك','body' => ' يجب عليك الاطلاع علي جميع العقود المنتهيه ' ],userId: $employeeId,permission: 'expired_contracts');
+            $tenantContractsExpired = TenantContract::query()
+                ->where('company_id','=',$companyId)
+                ->whereDate('contract_date_to','=',Carbon::now()->addDays(90)->format('Y-m-d'))
+                ->count();
+
+            if($tenantContractsExpired > 0){
+                $this->sendFirebaseForCompany(data:['title' => 'اشعار جديد لديك','body' => ' يجب عليك الاطلاع علي جميع العقود المنتهيه ' ],companyId: $companyId,permission: 'expired_contracts');
+
+            }
+
+        }
 
     }
 }

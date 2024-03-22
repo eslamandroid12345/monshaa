@@ -50,6 +50,10 @@ class StateRepository extends Repository implements StateRepositoryInterface
             $q->where('id', '=',  request()->input('code'));
         });
 
+        $query->when(request()->has('user_id') && request()->input('user_id') != null, function ($q)  {
+            $q->where('user_id', '=',  request()->input('user_id'));
+        });
+
         return $query
             ->latest()
             ->select(['*'])
