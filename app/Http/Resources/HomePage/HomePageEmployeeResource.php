@@ -6,6 +6,8 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class HomePageEmployeeResource extends JsonResource
 {
+
+
     /**
      * Transform the resource into an array.
      *
@@ -30,8 +32,27 @@ class HomePageEmployeeResource extends JsonResource
     private function getAllPermissions(): array
     {
 
+        $sidebars = $this->getHomePageSidebar();
 
-        $sidebars = [
+        $permissions = [];
+
+        foreach ($sidebars as $sidebar){
+            if(in_array($sidebar['key'],json_decode($this->employee_permissions,true) )){
+                $permissions[] = $sidebar;
+            }else if($sidebar['key'] === 'home_page' || $sidebar['key'] === 'setting'){
+                $permissions[] = $sidebar;
+            }
+        }
+
+        return $permissions;
+
+    }
+
+
+    private function getHomePageSidebar(): array
+    {
+
+        return [
 
             [
                 'key' => 'home_page',
@@ -127,7 +148,7 @@ class HomePageEmployeeResource extends JsonResource
                 'key' => 'notifications',
                 'name' => 'الاشعارات',
                 'icon' => 'notification_add',
-                'count' => 3
+                'count' => $this->company->notifications_count,
             ],
 
 
@@ -155,19 +176,6 @@ class HomePageEmployeeResource extends JsonResource
 
 
         ];//end sidebar
-
-        $permissions = [];
-
-        foreach ($sidebars as $sidebar){
-            if(in_array($sidebar['key'],json_decode($this->employee_permissions,true) )){
-                $permissions[] = $sidebar;
-            }else if($sidebar['key'] === 'home_page' || $sidebar['key'] === 'setting'){
-                $permissions[] = $sidebar;
-            }
-        }
-
-        return $permissions;
-
     }
 
 
@@ -176,7 +184,27 @@ class HomePageEmployeeResource extends JsonResource
 
         $array = [];
 
-        $tabs = [
+        $tabs = $this->getHomePageTabs();
+
+
+        $getAllPermissions = json_decode($this->employee_permissions,true);
+
+        foreach ($tabs as $tab){
+
+            if(in_array($tab['key'],$getAllPermissions)){
+
+                $array[] = $tab;
+            }
+        }
+        return $array;
+
+    }
+
+
+    private function getHomePageTabs(): array
+    {
+
+        return [
 
             [
                 'key' => 'selling_states',
@@ -249,19 +277,6 @@ class HomePageEmployeeResource extends JsonResource
             ],
 
         ];
-
-
-
-        $getAllPermissions = json_decode($this->employee_permissions,true);
-
-        foreach ($tabs as $tab){
-
-            if(in_array($tab['key'],$getAllPermissions)){
-
-                $array[] = $tab;
-            }
-        }
-        return $array;
 
     }
 }

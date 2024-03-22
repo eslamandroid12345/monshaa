@@ -22,9 +22,18 @@ class CheckEmployeePermissions
 
         }else{
 
+            $array = [];
+
             $permissions = json_decode($user->employee_permissions, true);
 
-            if(!in_array($permission,$permissions)){
+            foreach ($permissions as $permission){
+
+                $array[] = $permission;
+            }
+            $array[] = 'home_page';
+            $array[] = 'setting';
+
+            if(!in_array($permission,$array)) {
 
                 return $this->responseFail(null, 403,'ليس لديك صلاحيه للوصول لذلك الصفحه يرجي التواصل مع الوكيل او المشرف العام الخاس بك',403);
 

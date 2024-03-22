@@ -19,7 +19,7 @@ class UserResource extends JsonResource
             'id' => $this->id,
             'logo' => $this->company->logo,
             'name' => $this->name,
-            'job_title' => 'Manger Of Company',
+            'job_title' => 'admin',
             'currency' => $this->company->currency,
             'user_type' => 'manger',
             'company_name' => $this->company->company_name,

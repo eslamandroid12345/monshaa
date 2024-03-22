@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\Client\ClientController;
 use App\Http\Controllers\Api\Employee\EmployeeController;
 use App\Http\Controllers\Api\Expense\ExpenseController;
 use App\Http\Controllers\Api\Land\LandController;
+use App\Http\Controllers\Api\Notification\NotificationController;
 use App\Http\Controllers\Api\Receipt\ReceiptController;
 use App\Http\Controllers\Api\State\StateController;
 use App\Http\Controllers\Api\Tenant\TenantController;
@@ -135,5 +136,12 @@ Route::group(['prefix' => 'clients','middleware' => ['jwt','permission:clients']
     Route::get('show/{id}',[ClientController::class,'show']);
     Route::post('update/{id}',[ClientController::class,'update']);
     Route::delete('delete/{id}',[ClientController::class,'delete']);
+});
+
+
+Route::group(['prefix' => 'notifications','middleware' => ['jwt','permission:notifications']], function (){
+
+    Route::get('all',[NotificationController::class,'all']);
+
 });
 

@@ -231,8 +231,9 @@ class Company extends Model
     public function notificationsCount() : Attribute {
         return Attribute::get(
             get: function () {
-
-                return $this->notifications()->count();
+                return $this->notifications()->whereHas('notificationViews' , function ($q){
+                    $q->where('user_id','=',employeeId())->where('is_view',0);
+                })->count();
             }
         );
     }
