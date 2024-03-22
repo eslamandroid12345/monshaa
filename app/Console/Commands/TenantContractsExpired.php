@@ -21,7 +21,7 @@ class TenantContractsExpired extends Command
      * @var string
      */
 
-    protected $signature = 'contracts:expired {employeeId}';
+    protected $signature = 'contracts:expired';
 
     /**
      * The console command description.
@@ -49,12 +49,11 @@ class TenantContractsExpired extends Command
     {
 
 
-//        $tenantContracts = TenantContract::query()
-//            ->where('company_id','=',companyId())
-//            ->whereDate('contract_date_to','=',Carbon::now()->format('Y-m-d'))
-//            ->count();
+        $tenantContracts = TenantContract::query()
+            ->where('company_id','=',companyId())
+            ->whereDate('contract_date_to','=',Carbon::now()->format('Y-m-d'))
+            ->count();
 
-        $employeeId = $this->argument('employeeId');
 
         $this->sendFirebaseNotification(data:['title' => 'اشعار جديد لديك','body' => ' يجب عليك الاطلاع علي جميع العقود المنتهيه ' ],userId: $employeeId,permission: 'expired_contracts');
 

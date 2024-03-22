@@ -171,7 +171,11 @@ class UserService
         $auth = Auth::guard('user-api')->user();
 
         $auth['token'] = request()->bearerToken();
-        return $this->responseSuccess($auth->is_admin == 1 ? new UserResource($auth) : new EmployeeResource($auth), 200, $auth->is_admin == 1 ? 'تم عرض بيانات المدير العام والشركه بنجاح' : 'تم عرض بيانات الموظف بنجاح');
+
+        $resource = $auth->is_admin == 1 ? new UserResource($auth) : new EmployeeResource($auth);
+        $message = $auth->is_admin == 1 ? 'تم عرض بيانات المدير العام والشركه بنجاح' : 'تم عرض بيانات الموظف بنجاح';
+
+        return $this->responseSuccess($resource, 200, $message);
 
     }
 
