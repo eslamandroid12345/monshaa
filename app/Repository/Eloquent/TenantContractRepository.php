@@ -80,12 +80,12 @@ class TenantContractRepository extends Repository implements TenantContractRepos
     public function tenantContractsExpired(): LengthAwarePaginator
     {
        return TenantContract::query()
-            ->where('company_id','=',companyId())
-            ->whereDate('contract_date_to','=',Carbon::now()->addDays(90)->format('Y-m-d'))
-            ->latest()
-            ->select(['*'])
+           ->latest()
+           ->select(['*'])
+           ->where('company_id','=',companyId())
+            ->where('is_expired','=',1)
+            ->where('is_show','=',1)
             ->with(['company'])
-            ->where('company_id','=',companyId())
             ->paginate(16);
     }
 

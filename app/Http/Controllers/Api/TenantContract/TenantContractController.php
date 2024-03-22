@@ -31,6 +31,11 @@ class TenantContractController extends Controller
         return $this->tenantContractService->tenantContractsExpired();
     }
 
+    public function  removeFromScreen($id): JsonResponse{
+
+        return $this->tenantContractService->removeFromScreen($id);
+    }
+
     public function create(StoreTenantRequest $tenantRequest,StoreTenantContractRequest $request): JsonResponse{
 
         return $this->tenantContractService->create($tenantRequest,$request);

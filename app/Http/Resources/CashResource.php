@@ -23,7 +23,6 @@ class CashResource extends JsonResource
             ],
             'tenant_name' => $this->tenant_contract->tenant->name,
             'tenant_phone' => $this->tenant_contract->tenant->phone,
-            'installment_number' => $this->installment_number,
             'total_amount' => $this->total_amount,
             'transaction_date' => $this->transaction_date,
             'contract_date_from' => $this->contract_date_from,

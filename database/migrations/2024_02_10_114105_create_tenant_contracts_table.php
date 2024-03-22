@@ -22,6 +22,7 @@ class CreateTenantContractsTable extends Migration
             $table->unsignedBigInteger('user_id')->comment('الموظف او المدير العام');
             $table->unsignedBigInteger('tenant_id');
             $table->boolean('is_show')->default(1)->comment('هل تريد ظهور هذا العقد في شاشه العقود المنتهيه');
+            $table->boolean('is_expired')->default(0);
             $table->string('owner_name')->comment('اسم المالك');
             $table->string('owner_phone');
             $table->string('owner_card_number');

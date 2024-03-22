@@ -98,6 +98,7 @@ Route::group(['prefix' => 'tenant-contract','middleware' => ['jwt','permission:t
 Route::group(['prefix' => 'tenant-contracts-expired','middleware' => ['jwt','permission:expired_contracts']], function (){
 
     Route::get('all',[TenantContractController::class,'tenantContractsExpired']);
+    Route::post('remove-from-screen/{id}',[TenantContractController::class,'removeFromScreen']);
 
 });
 

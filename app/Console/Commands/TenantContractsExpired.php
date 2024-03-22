@@ -7,6 +7,7 @@ use App\Models\Company;
 use App\Models\TenantContract;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\DB;
 
 class TenantContractsExpired extends Command
 {
@@ -56,6 +57,10 @@ class TenantContractsExpired extends Command
                 ->count();
 
             if($tenantContractsExpired > 0){
+                DB::table('tenant_contracts')
+                    ->where('company_id','=',$companyId)
+                    ->whereDate('contract_date_to','=',Carbon::now()->addDays(90)->format('Y-m-d'))
+                    ->update(['is_expired' => 1]);
                 $this->sendFirebaseForCompany(data:['title' => 'اشعار جديد لديك','body' => ' يجب عليك الاطلاع علي جميع العقود المنتهيه ' ],companyId: $companyId,permission: 'expired_contracts');
 
             }

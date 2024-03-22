@@ -69,6 +69,21 @@ class TenantContractService
 
     }
 
+
+    public function  removeFromScreen($id): JsonResponse
+    {
+        $tenantContract = $this->tenantContractRepository->getById($id);
+
+        if($tenantContract->is_expired == 0){
+
+            return $this->responseFail(null, 418, 'هذا العقد غير منتهي!');
+        }
+
+        $this->tenantContractRepository->update($tenantContract->id,['is_show' => 0]);
+
+        return  $this->responseSuccess(data: null,code: 200,message: 'تم حذف العقد المنتهي من القائمه');
+    }
+
     public function create(StoreTenantRequest $tenantRequest,StoreTenantContractRequest $request): JsonResponse{
 
 
