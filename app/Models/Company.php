@@ -169,7 +169,7 @@ class Company extends Model
         return Attribute::get(
             get: function () {
 
-                return ($this->revenues()?->sum('total_money') + $this->tenantContracts()?->sum('commission') + $this->receipts()?->sum('commission')) - $this->expenses()?->sum('total_money');
+                return ($this->revenues()?->sum('total_money') - $this->expenses()?->sum('total_money'));
             }
         );
     }

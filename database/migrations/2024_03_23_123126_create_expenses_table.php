@@ -18,12 +18,16 @@ class CreateExpensesTable extends Migration
          */
         Schema::create('expenses', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->enum('type',['expense','revenue'])->comment('مصروف-ايراد');
             $table->unsignedBigInteger('company_id');
             $table->unsignedBigInteger('user_id')->comment('الموظف او المدير العام');
+            $table->unsignedBigInteger('tenant_contract_id')->nullable()->comment('عقد الايجار');
+            $table->unsignedBigInteger('receipt_id')->nullable()->comment('سند الصرف');
             $table->double('total_money',10,2);
             $table->string('description');
             $table->date('transaction_date');
-            $table->enum('type',['expense','revenue']);
+            $table->foreign('tenant_contract_id')->references('id')->on('tenant_contracts')->cascadeOnUpdate()->cascadeOnDelete();
+            $table->foreign('receipt_id')->references('id')->on('receipts')->cascadeOnUpdate()->cascadeOnDelete();
             $table->foreign('company_id')->references('id')->on('companies')->cascadeOnUpdate()->cascadeOnDelete();
             $table->foreign('user_id')->references('id')->on('users')->cascadeOnUpdate()->cascadeOnDelete();
             $table->timestamps();

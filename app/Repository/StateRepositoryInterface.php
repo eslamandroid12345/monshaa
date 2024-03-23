@@ -8,4 +8,6 @@ interface StateRepositoryInterface extends RepositoryInterface
 {
 
     public function getAllStatusQuery() : LengthAwarePaginator;
+    public function statesReports(): LengthAwarePaginator;
+
 }

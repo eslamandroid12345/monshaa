@@ -89,4 +89,26 @@ class TenantContractRepository extends Repository implements TenantContractRepos
             ->paginate(16);
     }
 
+
+    public function tenantContractsReports(): LengthAwarePaginator
+    {
+
+        $query = $this->model::query();
+
+
+        $query->when(request()->has('date_from') && request()->has('date_to') && request('date_from') != null&& request('date_to') != null, function ($q) {
+            $q->whereBetween('contract_date', [request()->input('date_from'), request()->input('date_to')]);
+        });
+
+
+        return $query
+            ->latest()
+            ->select(['*'])
+            ->with(['user','company'])
+            ->where('company_id','=',companyId())
+            ->paginate(16);
+
+
+    }
+
 }

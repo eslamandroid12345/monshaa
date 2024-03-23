@@ -57,8 +57,31 @@ class StateRepository extends Repository implements StateRepositoryInterface
         return $query
             ->latest()
             ->select(['*'])
-            ->with(['user'])
-            ->where('company_id','=',auth('user-api')->user()->company_id)
+            ->with(['user','company'])
+            ->where('company_id','=',companyId())
+            ->where('status','=','waiting')
+            ->paginate(16);
+
+
+    }
+
+
+    public function statesReports(): LengthAwarePaginator
+    {
+
+        $query = $this->model::query();
+
+
+        $query->when(request()->has('date_from') && request()->has('date_to') && request('date_from') != null&& request('date_to') != null, function ($q) {
+            $q->whereBetween('state_date_register', [request()->input('date_from'), request()->input('date_to')]);
+        });
+
+
+        return $query
+            ->latest()
+            ->select(['*'])
+            ->with(['user','company'])
+            ->where('company_id','=',companyId())
             ->where('status','=','waiting')
             ->paginate(16);
 

@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\Expense\ExpenseController;
 use App\Http\Controllers\Api\Land\LandController;
 use App\Http\Controllers\Api\Notification\NotificationController;
 use App\Http\Controllers\Api\Receipt\ReceiptController;
+use App\Http\Controllers\Api\Report\ReportController;
 use App\Http\Controllers\Api\State\StateController;
 use App\Http\Controllers\Api\Tenant\TenantController;
 use App\Http\Controllers\Api\TenantContract\TenantContractController;
@@ -96,13 +97,22 @@ Route::group(['prefix' => 'tenant-contract','middleware' => ['jwt','permission:t
 
 
 Route::group(['prefix' => 'tenant-contracts-expired','middleware' => ['jwt','permission:expired_contracts']], function (){
-
     Route::get('all',[TenantContractController::class,'tenantContractsExpired']);
     Route::post('remove-from-screen/{id}',[TenantContractController::class,'removeFromScreen']);
 
 });
 
 
+Route::group(['prefix' => 'reports','middleware' => ['jwt','permission:reports']], function (){
+
+    Route::get('states',[ReportController::class,'states']);
+    Route::get('lands',[ReportController::class,'lands']);
+    Route::get('tenant-contracts',[ReportController::class,'tenantContracts']);
+    Route::get('revenues',[ReportController::class,'revenues']);
+    Route::get('expenses',[ReportController::class,'expenses']);
+    Route::get('profits',[ReportController::class,'profits']);
+
+});
 
 Route::group(['prefix' => 'expenses','middleware' => ['jwt','permission:expenses']], function (){
 

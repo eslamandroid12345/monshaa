@@ -9,6 +9,7 @@ use App\Http\Services\Mutual\GetService;
 use App\Http\Traits\FirebaseNotification;
 use App\Http\Traits\Responser;
 use App\Repository\CashRepositoryInterface;
+use App\Repository\ExpenseRepositoryInterface;
 use App\Repository\ReceiptRepositoryInterface;
 use App\Repository\TenantContractRepositoryInterface;
 use Illuminate\Auth\Access\AuthorizationException;
@@ -28,14 +29,17 @@ class ReceiptService
 
     protected GetService $getService;
 
+    protected ExpenseRepositoryInterface $expenseRepository;
 
-    public function __construct(ReceiptRepositoryInterface $receiptRepository,TenantContractRepositoryInterface $tenantContractRepository,GetService $getService,CashRepositoryInterface $cashRepository)
+
+    public function __construct(ReceiptRepositoryInterface $receiptRepository,TenantContractRepositoryInterface $tenantContractRepository,GetService $getService,CashRepositoryInterface $cashRepository,ExpenseRepositoryInterface $expenseRepository)
     {
 
         $this->receiptRepository = $receiptRepository;
         $this->tenantContractRepository = $tenantContractRepository;
         $this->getService = $getService;
         $this->cashRepository = $cashRepository;
+        $this->expenseRepository = $expenseRepository;
     }
 
 
@@ -86,6 +90,9 @@ class ReceiptService
 
                 $receipt = $this->receiptRepository->create($inputs);
 
+                $this->expenseRepository->create(['type' => 'revenue', 'company_id' => companyId(), 'user_id' => employeeId(), 'receipt_id' => $receipt->id, 'total_money' => $receipt->commission, 'description' => 'سند صرف', 'transaction_date' => $receipt->transaction_date,]);
+
+
                 $this->sendFirebaseNotification(data:['title' => 'اشعار جديد لديك','body' => ' تم اضافه سند صرف لمالك لديك بواسطه ' . employee() ],userId: employeeId(),permission: 'financial_receipt');
 
                 DB::commit();
@@ -122,6 +129,9 @@ class ReceiptService
             $inputs = $request->validated();
 
             $this->receiptRepository->update($receipt->id,$inputs);
+
+            $revenue = $this->expenseRepository->getByColumn('receipt_id',$id);
+            $this->expenseRepository->update($revenue->id,['total_money' => $request->commission]);
 
             $this->sendFirebaseNotification(data:['title' => 'اشعار جديد لديك','body' => ' تم تعديل سند صرف لمالك لديك بواسطه ' . employee() ],userId: employeeId(),permission: 'financial_receipt');
 
