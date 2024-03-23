@@ -44,7 +44,7 @@ class ClientRepository  extends Repository implements ClientRepositoryInterface
             ->latest()
             ->select(['*'])
             ->with(['user','company'])
-            ->where('company_id','=',auth('user-api')->user()->company_id)
+            ->where('company_id','=',companyId())
             ->paginate(16);
 
 

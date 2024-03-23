@@ -2,14 +2,17 @@
 
 namespace App\Repository\Eloquent;
 
+use App\Http\Traits\Responser;
 use App\Models\Expense;
 use App\Repository\ExpenseRepositoryInterface;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\JsonResponse;
 
 class ExpenseRepository  extends Repository implements ExpenseRepositoryInterface
 {
 
+    use Responser;
     protected Model $model;
 
     public function __construct(Expense $model)
@@ -33,7 +36,7 @@ class ExpenseRepository  extends Repository implements ExpenseRepositoryInterfac
             ->where('type','=','expense')
             ->select(['*'])
             ->with(['company','user'])
-            ->where('company_id','=',auth('user-api')->user()->company_id)
+            ->where('company_id','=',companyId())
             ->paginate(16);
 
     }
@@ -54,7 +57,7 @@ class ExpenseRepository  extends Repository implements ExpenseRepositoryInterfac
             ->where('type','=','revenue')
             ->select(['*'])
             ->with(['company','user'])
-            ->where('company_id','=',auth('user-api')->user()->company_id)
+            ->where('company_id','=',companyId())
             ->paginate(16);
 
     }
@@ -107,7 +110,7 @@ class ExpenseRepository  extends Repository implements ExpenseRepositoryInterfac
     }
 
 
-    public function profits()
+    public function profits(): JsonResponse
     {
 
 
@@ -126,8 +129,8 @@ class ExpenseRepository  extends Repository implements ExpenseRepositoryInterfac
             ->where('type','=','expense')
             ->sum('total_money');
 
+        return $this->responseSuccess(data: ['total_revenue' => $totalRevenues, 'total_expense' => $totalExpenses, 'total_profits' => ($totalRevenues - $totalExpenses),],code: 200,message: 'تم الحصول علي بيانات ارباح وايردات ومصروفات الشركه');
 
-        return $totalRevenues - $totalExpenses;
 
 
     }

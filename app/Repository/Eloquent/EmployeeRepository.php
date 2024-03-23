@@ -24,7 +24,7 @@ class EmployeeRepository extends Repository implements EmployeeRepositoryInterfa
         ->latest()
             ->select(['id','name','company_id'])
             ->with(['company'])
-            ->where('company_id','=',auth('user-api')->user()->company_id)
+            ->where('company_id','=',companyId())
             ->get();
     }
 

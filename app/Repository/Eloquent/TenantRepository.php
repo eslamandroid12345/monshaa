@@ -35,7 +35,7 @@ class TenantRepository extends Repository implements TenantRepositoryInterface
             ->latest()
             ->select(['*'])
             ->with(['company'])
-            ->where('company_id','=',auth('user-api')->user()->company_id)
+            ->where('company_id','=',companyId())
             ->paginate(16);
 
     }

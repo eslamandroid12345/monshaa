@@ -51,7 +51,7 @@ class LandRepository extends Repository implements LandRepositoryInterface
             ->latest()
             ->select(['*'])
             ->with(['user','company'])
-            ->where('company_id','=',auth('user-api')->user()->company_id)
+            ->where('company_id','=',companyId())
             ->where('status','=','waiting')
             ->paginate(16);
 
