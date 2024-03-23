@@ -23,3 +23,4 @@ if(!function_exists('companyId')){
         return auth('user-api')->user()->company_id;
     }
 }
+

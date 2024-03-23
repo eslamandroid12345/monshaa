@@ -23,9 +23,10 @@ class CreateCompaniesTable extends Migration
             $table->string('company_name');
             $table->string('company_address')->comment('عنوان المؤسسه');
             $table->string('company_phone')->comment('رقم هاتف الشركه');
-            $table->date('date_start_subscription')->comment('تاريخ بدايه الاشتراك')->nullable();
-            $table->date('date_end_subscription')->nullable();
+            $table->date('date_start_subscription')->comment('تاريخ بدايه الاشتراك');
+            $table->date('date_end_subscription');
             $table->boolean('is_active')->default(1);
+            $table->integer('number_of_employees')->default(5);
             $table->string('block_reason')->nullable()->comment('سبب الغاء تفعيل المكتب العقاري');
             $table->boolean('privacy_and_policy')->default(1);
             $table->timestamps();

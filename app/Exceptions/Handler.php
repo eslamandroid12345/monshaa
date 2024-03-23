@@ -58,12 +58,13 @@ class Handler extends ExceptionHandler
     }
 
 
-    protected function convertValidationExceptionToResponse(ValidationException $e, $request): \Illuminate\Http\Response|\Illuminate\Http\JsonResponse|\Symfony\Component\HttpFoundation\Response
+    protected function convertValidationExceptionToResponse(ValidationException $e, $request)
     {
         $errors = $e->validator->errors()->all();
 
         return $this->responseFail($errors,422,"Validation error");
     }
+
 
 
     public function register()

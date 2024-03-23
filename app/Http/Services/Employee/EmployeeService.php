@@ -10,6 +10,7 @@ use App\Http\Services\Mutual\FileManagerService;
 use App\Http\Services\Mutual\GetService;
 use App\Http\Traits\FirebaseNotification;
 use App\Http\Traits\Responser;
+use App\Repository\CompanyRepositoryInterface;
 use App\Repository\EmployeeRepositoryInterface;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -25,14 +26,18 @@ class EmployeeService
     protected EmployeeRepositoryInterface $employeeRepository;
 
     protected FileManagerService $fileManagerService;
+
     protected GetService $getService;
 
-    public function __construct(EmployeeRepositoryInterface $employeeRepository,FileManagerService $fileManagerService, GetService $getService)
+    protected  CompanyRepositoryInterface $companyRepository;
+
+    public function __construct(EmployeeRepositoryInterface $employeeRepository,FileManagerService $fileManagerService, GetService $getService,CompanyRepositoryInterface $companyRepository)
     {
 
         $this->employeeRepository = $employeeRepository;
         $this->fileManagerService = $fileManagerService;
         $this->getService = $getService;
+        $this->companyRepository = $companyRepository;
 
     }
 
@@ -51,26 +56,31 @@ class EmployeeService
 
             $inputs = $request->validated();
 
-            if ($request->hasFile('employee_image')) {
-                $image = $this->fileManagerService->handle("employee_image", "employees/images");
-                $inputs['employee_image'] = $image;
-            }
+           if($this->companyRepository->countEmployees() <= $this->companyRepository->checkCompanyLimit()){
 
-            $inputs['company_id'] = companyId();
-            $inputs['employee_permissions'] = json_encode( $inputs['employee_permissions']);
-            $inputs['password'] = Hash::make($inputs['password']);
+               if ($request->hasFile('employee_image')) {
+                   $image = $this->fileManagerService->handle("employee_image", "employees/images");
+                   $inputs['employee_image'] = $image;
+               }
 
-            $employee = $this->employeeRepository->create($inputs);
+               $inputs['company_id'] = companyId();
+               $inputs['employee_permissions'] = json_encode( $inputs['employee_permissions']);
+               $inputs['password'] = Hash::make($inputs['password']);
 
-            $this->sendFirebaseNotification(data:['title' => 'اشعار جديد لديك','body' => ' تم اضافه موظف جديد لديك بواسطه ' . employee() ],userId: employeeId(),permission: 'employees');
+               $employee = $this->employeeRepository->create($inputs);
 
-            return $this->getService->handle(resource: EmployeeGetDataResource::class,repository: $this->employeeRepository,method: 'getById',parameters: [$employee->id],is_instance: true,message:'تم اضافه البيانات بنجاح' );
+               $this->sendFirebaseNotification(data:['title' => 'اشعار جديد لديك','body' => ' تم اضافه موظف جديد لديك بواسطه ' . employee() ],userId: employeeId(),permission: 'employees');
 
+               return $this->getService->handle(resource: EmployeeGetDataResource::class,repository: $this->employeeRepository,method: 'getById',parameters: [$employee->id],is_instance: true,message:'تم اضافه البيانات بنجاح' );
+
+           }else{
+
+               return $this->responseFail(null, 411, message: 'لقد نعديت الحد الاقصي لاضافه للموظفين يرجي التواصل مع الادمن !');
+           }
 
         } catch (\Exception $exception) {
 
             return $this->responseFail(null, 500, $exception->getMessage(), 500);
-
         }
     }
 

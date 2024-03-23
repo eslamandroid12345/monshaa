@@ -17,6 +17,7 @@ use App\Http\Traits\Responser;
 use App\Repository\CompanyRepositoryInterface;
 use App\Repository\FcmTokenRepositoryInterface;
 use App\Repository\UserRepositoryInterface;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
@@ -62,7 +63,7 @@ class UserService
             $token = Auth::guard('user-api')->attempt($request->only('phone', 'password'));
             $user['token'] = $token;
 
-            return $this->responseSuccess(new UserResource($user), 200, 'تم إضافة بيانات الشركة والمدير العام بنجاح');
+            return $this->responseSuccess(new UserResource($user), 200, 'تم إضافة بيانات الشركة والمدير العام بنجاح والنسخه مفعله لمده ثلاث ايام من يوم التسجيل');
 
         } catch (\Exception $exception) {
             DB::rollBack();
@@ -75,6 +76,8 @@ class UserService
 
         $companyData = $request->only('company_phone', 'company_name', 'company_address', 'privacy_and_policy');
         $companyData['currency'] = 'الجنيه المصري';
+        $companyData['date_start_subscription'] = Carbon::now()->format('Y-m-d');
+        $companyData['date_end_subscription'] = Carbon::now()->addDays(2)->format('Y-m-d');
 
         return $this->companyRepository->create($companyData);
     }
@@ -85,6 +88,7 @@ class UserService
         $userData['company_id'] = $company['id'];
         $userData['is_admin'] = 1;
         $userData['password'] = Hash::make($userData['password']);
+
 
         return $this->userRepository->create($userData);
     }
@@ -106,7 +110,7 @@ class UserService
                 return $this->responseFail(null, 403, $message, 403);
             }
 
-            $this->updateUserToken($auth->id,$token);
+            $this->updateUserToken($auth->id,$token);//Update access_token of user
 
             $resource = $this->getResourceBasedOnRole($auth);
             $message = $this->getLoginSuccessMessage($auth);
