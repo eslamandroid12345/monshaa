@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\Notification\NotificationController;
 use App\Http\Controllers\Api\Receipt\ReceiptController;
 use App\Http\Controllers\Api\Report\ReportController;
 use App\Http\Controllers\Api\State\StateController;
+use App\Http\Controllers\Api\TechnicalSupport\TechnicalSupportController;
 use App\Http\Controllers\Api\Tenant\TenantController;
 use App\Http\Controllers\Api\TenantContract\TenantContractController;
 use App\Http\Controllers\Api\User\UserController;
@@ -111,6 +112,13 @@ Route::group(['prefix' => 'reports','middleware' => ['jwt','permission:reports']
     Route::get('revenues',[ReportController::class,'revenues']);
     Route::get('expenses',[ReportController::class,'expenses']);
     Route::get('profits',[ReportController::class,'profits']);
+
+});
+
+Route::group(['prefix' => 'technical_support','middleware' => ['jwt','permission:technical_support']], function (){
+
+    Route::post('create',[TechnicalSupportController::class,'create']);
+
 
 });
 
