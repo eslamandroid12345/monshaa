@@ -237,7 +237,6 @@ class TenantContractService
             return $this->responseFail(null, 500, 'يوجد خطاء ما في بيانات الارسال بالسيرفر', 500);
         }
 
-
     }
 
 }

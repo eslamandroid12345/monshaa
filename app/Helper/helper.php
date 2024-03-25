@@ -1,7 +1,5 @@
 <?php
 
-
-
 if(!function_exists('employee')){
     function employee(){
 
@@ -11,7 +9,7 @@ if(!function_exists('employee')){
 
 
 if(!function_exists('employeeId')){
-    function employeeId(): int|string|null
+    function employeeId()
     {
         return auth('user-api')->id();
     }
