@@ -26,7 +26,7 @@ class TenantContractsExpired extends Command
      *
      * @var string
      */
-    protected $description = 'TenantContracts expired';
+    protected $description = 'TenantContracts:expired';
 
     /**
      * Create a new command instance.
