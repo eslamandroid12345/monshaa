@@ -66,7 +66,7 @@ interface RepositoryInterface
     public function deleteWithMultipleFiles($modelId,$oldPath): bool;
     public function forceDelete($modelId, array $filesFields = []);
 
-    public function paginate(int $perPage = 10, array $relations = [], $orderBy = 'ASC', $columns = ['*']);
+    public function paginate(int $perPage = 8, array $relations = [], $orderBy = 'ASC', $columns = ['*']);
 
     public function paginateWithQuery(
         $query,

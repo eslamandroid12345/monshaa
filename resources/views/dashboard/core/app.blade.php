@@ -43,5 +43,45 @@ to get the desired effect
 @foreach($errors->all() as $message)
     @include('dashboard.core.alerts.error', compact('message'))
 @endforeach
+
+
+<script>
+    $(document).ready(function() {
+        $(window).scroll(function() {
+            if($(window).scrollTop() + $(window).height() >= $(document).height()) {
+                var nextPageUrl = $('ul.pagination .next > a').attr('href');
+
+                if (nextPageUrl) {
+                    // Display loading indicator
+                    $('#load-more').html('<i class="fa fa-spinner fa-spin"></i> Loading...');
+
+                    $.ajax({
+                        url: nextPageUrl,
+                        type: 'get',
+                        dataType: 'json',
+                        success: function(response) {
+                            // Append new data to the container
+                            $('#data-container').append(response.data);
+
+                            // Update the next page URL
+                            var nextPage = $(response.links).filter('.next').find('a').attr('href');
+                            if (nextPage) {
+                                $('ul.pagination .next > a').attr('href', nextPage);
+                            } else {
+                                // Remove load more button or loading indicator when there is no more data
+                                $('#load-more').remove();
+                            }
+                        },
+                        error: function(xhr) {
+                            console.log(xhr.responseText);
+                        }
+                    });
+                }
+            }
+        });
+    });
+
+</script>
+
 </body>
 </html>

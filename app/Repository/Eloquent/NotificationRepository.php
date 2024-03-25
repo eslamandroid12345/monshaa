@@ -26,6 +26,7 @@ class NotificationRepository extends Repository implements NotificationRepositor
             ->update(['is_view' => 1]);
 
         return $this->model::query()
+            ->latest()
             ->where('company_id','=',companyId())
             ->paginate(16);
     }

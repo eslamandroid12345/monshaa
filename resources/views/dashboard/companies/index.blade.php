@@ -145,7 +145,7 @@
                                     </li>
                                 @endif
                             </ul>
-                        </div>{{--end pagination--}}
+                        </div>
                     </div>
                     <!-- /.card -->
                 </div>
