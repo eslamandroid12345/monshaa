@@ -15,4 +15,14 @@ class FcmTokenRepository extends Repository implements FcmTokenRepositoryInterfa
     {
         parent::__construct($model);
     }
+
+
+    public function getAllDeviceTokenBelongsToCompany($companyId){
+
+        return $this->model::query()
+            ->whereHas('user', function ($q) use($companyId){
+                $q->where('company_id','=',$companyId);
+            })
+            ->get();
+    }
 }

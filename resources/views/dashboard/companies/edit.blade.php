@@ -103,7 +103,7 @@
                                     <div class="form-group clearfix col-12">
                                         <div class="icheck-wetasphalt d-inline">
                                             <input name="is_active" type="checkbox" value="1" id="checkboxPrimary3" {{$company->is_active == 1 ? 'checked' : ''}}>
-                                            <label for="checkboxPrimary3">   {{$company->is_active == 1 ? 'الغاء تفعيل حساب الشركه' : 'تفعيل الحساب للشركه'}}</label>
+                                            <label for="checkboxPrimary3">   {{$company->is_active == 1 ? 'الغاء تفعيل حساب الشركه ..... (في حاله الغاء تفعيل الحساب سوف يتم تسجيل خروج الادمن الرئيسي وموظفين الشركه من التطبيق)' : 'تفعيل الحساب للشركه'}}</label>
                                         </div>
                                     </div>
 

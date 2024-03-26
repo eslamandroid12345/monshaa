@@ -31,7 +31,7 @@ class StoreEmployeeRequest extends FormRequest
             'phone' => 'required|numeric|unique:users,phone',
             'password' => 'required|min:8',
             'employee_address' => 'required',
-            'card_number' => 'required|numeric',
+            'card_number' => 'required|numeric|unique:users,card_number',
             'employee_permissions' => 'required|array|in:states,lands,employees,expenses,tenants,tenant_contracts,notifications,financial_receipt,financial_cash,technical_support,reports,expired_contracts,revenues,profits,tenant_states,selling_states,profits,revenue,clients',
         ];
     }

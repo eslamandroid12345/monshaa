@@ -130,6 +130,10 @@ abstract class Repository implements RepositoryInterface
         return $model->update($payload);
     }
 
+    public function updateOrCreate(array $keysUnique, array $payload)
+    {
+        return $this->model->updateOrCreate($keysUnique,$payload);
+    }
     public function delete($modelId, array $filesFields = []): bool
     {
         $model = $this->getById($modelId);

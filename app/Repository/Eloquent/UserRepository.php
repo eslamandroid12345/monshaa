@@ -14,4 +14,11 @@ class UserRepository extends Repository implements UserRepositoryInterface
     {
         parent::__construct($model);
     }
+
+    public function getAllUsersOfCompany($companyId){
+
+        return $this->model::query()
+            ->where('company_id','=',$companyId)
+            ->get();
+    }
 }

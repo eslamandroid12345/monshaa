@@ -1,20 +1,27 @@
 <?php
 
 namespace App\Http\Services\Dashboard\Admin\Company;
-
 use App\Repository\CompanyRepositoryInterface;
+use App\Repository\FcmTokenRepositoryInterface;
+use App\Repository\UserRepositoryInterface;
 use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class CompanyService
 {
 
     protected CompanyRepositoryInterface $companyRepository;
+    protected UserRepositoryInterface $userRepository;
+    protected FcmTokenRepositoryInterface $fcmTokenRepository;
 
-    public function __construct(CompanyRepositoryInterface $companyRepository)
+    public function __construct(CompanyRepositoryInterface $companyRepository,UserRepositoryInterface $userRepository,FcmTokenRepositoryInterface $fcmTokenRepository)
     {
         $this->companyRepository = $companyRepository;
+        $this->userRepository = $userRepository;
+        $this->fcmTokenRepository = $fcmTokenRepository;
     }
 
     public function getAllCompanies(){
@@ -31,8 +38,8 @@ class CompanyService
 
        $company =  $this->companyRepository->getById($id);
 
-        $date1 = Carbon::parse($company->date_start_subscription); // First date
-        $date2 = Carbon::parse($company->date_end_subscription); // Second date
+        $date1 = Carbon::parse($company->date_start_subscription);
+        $date2 = Carbon::parse($company->date_end_subscription);
 
         $numberOfDays = $date1->diffInDays($date2);
 
@@ -44,20 +51,74 @@ class CompanyService
     public function update($id,Request $request): RedirectResponse
     {
 
-        $company = $this->companyRepository->getById($id);
+        DB::beginTransaction();
+        try {
 
-        $numberOfEmployees = $request->input('number_of_employees');
+            $company = $this->companyRepository->getById($id);
 
-        $this->companyRepository->update($company->id,[
-            'date_end_subscription' => $company->date_end,
-            'number_of_employees' => $numberOfEmployees,
-            'is_active' =>  $request->is_active ?? false,
-        ]);
+            $numberOfEmployees = $request->input('number_of_employees');
 
-        toastr()->error('نم تعديل بيانات الشركه بنجاح','تعديل');
+            $isActive = $request->input('is_active', false);
 
-        return redirect()->route('admin.companies');
 
+            $this->companyRepository->update($company->id,[
+                'date_end_subscription' => $company->date_end,
+                'number_of_employees' => $numberOfEmployees,
+                'is_active' =>  $isActive
+            ]);
+
+            if (!$isActive) {
+                $this->deactivateUsers($company->id);
+            } else {
+                $this->activateUsers($company->id);
+            }
+
+            DB::commit();
+            toastr()->error('نم تعديل بيانات الشركه بنجاح','تعديل');
+
+            return redirect()->route('admin.companies');
+
+        }catch (\Exception $e){
+
+            DB::rollBack();
+
+            toastr()->error('يوجد خطاء ما بالسيرفر','خطاء');
+
+            return redirect()->back();
+
+        }
+
+    }
+
+    private function deactivateUsers($companyId): void
+    {
+
+        $users = $this->userRepository->getAllUsersOfCompany($companyId);
+        $fcmTokens = $this->fcmTokenRepository->getAllDeviceTokenBelongsToCompany($companyId);
+        foreach ($users as $user) {
+            if ($user->access_token) {
+                JWTAuth::setToken($user->access_token)->invalidate();
+            }
+            $this->userRepository->update($user->id, [
+                'access_token' => null,
+                'is_active' => 0,
+            ]);
+        }
+
+        foreach ($fcmTokens as $token){
+
+            $this->fcmTokenRepository->delete($token->id);
+        }
+
+    }
+
+    private function activateUsers($companyId): void
+    {
+        $users = $this->userRepository->getAllUsersOfCompany($companyId);
+
+        foreach ($users as $user) {
+            $this->userRepository->update($user->id, ['is_active' => 1]);
+        }
     }
 
     public function destroy($id): RedirectResponse
@@ -66,7 +127,6 @@ class CompanyService
         $this->companyRepository->delete($id);
 
         toastr()->error('تم حذف بيانات الشركه بنجاح','حذف');
-
         return redirect()->back();
     }
 
