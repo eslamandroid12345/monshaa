@@ -10,7 +10,7 @@ use App\Models\User;
 trait FirebaseNotification
 {
 
-    private $serverKey = 'AAAACU4u4H0:APA91bEXAEsNfWLwsfUQeTrWnHSDY8XS5BwvEZCuWPl6oxSqub2X6mSKCmwIhu7PgSnzHp9jdlhdD_RoUiwI3PE4dtKMOGjJdbjUetAu3W_-AIlS242XLJShG-L6J_wMIB2SwTVNhann';
+    private $serverKey = 'AAAAxbaq9XA:APA91bGEIOCAkAg4h9BD7vjWrmR9rFOFzmYNQemiyt1R0a3WyiCLaKzLFVj5vMqtknsNTjGpfCbkG7FSUx_ZxffY9gFKuF7z-SBYLCLzXQqlxV9HAQSgWu1a2o9i7lHqTSW5szy0lg4-';
 
 
     public function sendFirebaseNotification($data, $userId,$permission): bool
@@ -29,9 +29,7 @@ trait FirebaseNotification
 
         return true;
 
-
     }
-
 
     public function sendFirebaseForCompany($data, $companyId,$permission): bool
     {

@@ -70,6 +70,7 @@
                                     <th>حاله الحساب</th>
                                     <th>عدد الموظفين</th>
                                     <th>العمله</th>
+                                    <th>نوع الحساب</th>
                                     <th>العمليات</th>
                                 </tr>
                                 </thead>
@@ -83,9 +84,10 @@
                                         <td>{{$company->company_phone}}</td>
                                         <td>{{$company->date_start_subscription}}</td>
                                         <td>{{$company->date_end_subscription}}</td>
-                                      <td><button class="btn  {{$company->is_active == 1 ? 'btn-info' : 'btn-danger'}}">{{$company->is_active == 1 ? 'الحساب مفعل' : 'غير مفعل'}}</button></td>
+                                      <td>{{$company->is_active == 1 ? ' مفعل' : 'غير مفعل'}}</td>
                                         <td>{{$company->number_of_employees}}</td>
                                         <td>{{$company->currency}}</td>
+                                        <td>{{checkAccountType($company->id) == 3 ? 'حساب تجريبي' : 'باقه اشتراك'}}</td>
 
 
                                         <td>

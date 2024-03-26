@@ -38,18 +38,15 @@
                     </a>
                 </li>
 
-
-
                 <li class="nav-item">
                     <a href="{{route('admin.technical_support')}}" class="nav-link">
                         <i class="fas fa-envelope nav-icon"></i>
                         <p>
                             الدعم الفني
-                            <span class="badge badge-danger right">0</span>
+                            <span class="badge badge-danger right">{{messagesCount()}}</span>
                         </p>
                     </a>
                 </li>
-
 
             </ul>
         </nav>
