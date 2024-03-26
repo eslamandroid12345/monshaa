@@ -77,7 +77,7 @@ class UserService
         $companyData = $request->only('company_phone', 'company_name', 'company_address', 'privacy_and_policy');
         $companyData['currency'] = 'الجنيه المصري';
         $companyData['date_start_subscription'] = Carbon::now()->format('Y-m-d');
-        $companyData['date_end_subscription'] = Carbon::now()->addDays(2)->format('Y-m-d');
+        $companyData['date_end_subscription'] = Carbon::now()->addDays(3)->format('Y-m-d');
 
         return $this->companyRepository->create($companyData);
     }

@@ -52,44 +52,5 @@
 
 
 
-    <style>
-        .edu-pagination {
-            list-style: none;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-top: 10px;
-            margin-bottom: 10px;
-        }
-
-        .edu-pagination li {
-            margin: 0 5px; /* Add spacing between pagination items */
-        }
-
-        .edu-pagination li a {
-            text-decoration: none;
-            color: #007bff;
-            padding: 5px 10px;
-            border: 1px solid #007bff;
-            border-radius: 5px;
-        }
-
-        .edu-pagination li.disabled a {
-            color: #aaa;
-            cursor: not-allowed;
-        }
-
-        .edu-pagination li a:hover {
-            background-color: #f0f0f0;
-        }
-
-        /* Responsive styles */
-        @media (max-width: 768px) {
-            .edu-pagination li {
-                margin: 5px 0; /* Adjust spacing for smaller screens */
-            }
-        }
-    </style>
 
 </head>

@@ -18,7 +18,7 @@ class AuthService
 
         $credentials = $request->validated();
         if (auth('admin')->attempt($credentials)) {
-            toastr()->error('اهلا بك ايها الادمن في لوحه التحكم');
+            toastr()->success('اهلا بك ايها الادمن في لوحه التحكم','دخول الادمن');
             return redirect()->route('admin.companies');
         } else {
 
@@ -30,7 +30,7 @@ class AuthService
     public function logout(): RedirectResponse
     {
         auth('admin')->logout();
-        toastr()->error('تم تسجيل الخروج بنجاح');
+        toastr()->error('تم تسجيل الخروج بنجاح','تسجيل خروج');
 
         return redirect()->route('login');
     }

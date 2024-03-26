@@ -19,7 +19,6 @@ class CompanyTableSeeder extends Seeder
         for ($i = 1; $i <= 20 ; $i++){
 
             Company::create([
-                'logo' => 'storage/companies/images/'.$i.'.png',
                 'company_name' => 'Company '.$i,
                 'company_address' => 'القاهره - التجمع الخامس',
                 'date_start_subscription' => Carbon::now()->format('Y-m-d'),

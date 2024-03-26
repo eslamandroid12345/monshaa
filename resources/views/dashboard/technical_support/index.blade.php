@@ -1,4 +1,3 @@
-@php use Illuminate\Support\Facades\Gate; @endphp
 
 @extends('dashboard.core.app')
 @section('title', __('titles.Courses'))
@@ -8,7 +7,7 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>جميع الحجوزات</h1>
+                    <h1>رسائل الدعم الفني</h1>
                 </div>
             </div>
         </div><!-- /.container-fluid -->
@@ -21,10 +20,8 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title">جميع الحجوزات</h3>
+                            <h3 class="card-title">جميع الرسائل</h3>
                             <div class="card-tools">
-                                    <a href="{{url('create')}}" class="btn  btn-dark">حجوزات اليوم</a>
-
                                 {{--start search model--}}
                                 <button class="btn btn-dark waves-effect waves-light" data-toggle="modal" data-target="#delete-modal-0">بحث</button>
                                 <div id="delete-modal-0" class="modal fade modal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">                                                    <div class="modal-dialog">
@@ -33,18 +30,14 @@
                                                 <h5 class="modal-title">يرجي ادخال بيانات البحث</h5>
                                             </div>
 
-                                            <form action="#" method="post">
-                                            <div class="modal-body">
-                                                <div class="form-group col-md-12 col-12">
-                                                    <label for="exampleInputName1">رقم الحجز</label>
-                                                    <input name="name_ar" type="text" class="form-control" id="exampleInputName1">
-                                                </div>
+                                            <form action="{{route('admin.technical_support')}}" method="GET">
+                                                <div class="modal-body">
+                                                    <div class="form-group col-md-12 col-12">
+                                                        <label for="exampleInputName1">رقم هاتف الشركه</label>
+                                                        <input name="company_phone" type="text" class="form-control" id="exampleInputName1">
+                                                    </div>
 
-                                                <div class="form-group col-md-12 col-12">
-                                                    <label for="exampleInputName1">اسم العميل</label>
-                                                    <input  name="name_en" type="text" class="form-control" id="exampleInputName1">
                                                 </div>
-                                            </div>
 
                                                 <div class="modal-footer">
                                                     <button type="submit" class="btn btn-danger">بحث</button>
@@ -67,283 +60,37 @@
                             <table class="table table-bordered">
                                 <thead>
                                 <tr>
-                                    <th style="width: 10px">رقم الحجز</th>
-                                    <th>اسم العميل</th>
-                                    <th>نوع الغرفه</th>
-                                    <th>تاريخ الوصول</th>
-                                    <th>تاريخ المغادره</th>
-                                    <th>قيمه الحجز</th>
-                                    <th>ضريبه القبمه المضافه</th>
-                                    <th>ضريبه البلديه</th>
-                                    <th>ضريبه السياحه</th>
-                                    <th>العموله + 5%</th>
-                                    <th>هاتف العميل</th>
-                                    <th>الاطفال</th>
-                                    <th>البالغين</th>
-                                    <th>عدد الغرف</th>
-                                    <th>عدد الليالي</th>
-                                    <th>حاله الحجز</th>
-                                    <th>حاله الزبون</th>
-                                    <th>العمليات</th>
-{{--                                    <th>@lang('dashboard.Operations')</th>--}}
+                                    <th style="width: 10px">لوجو الشركه</th>
+                                    <th>الموظف الذي ارسل الرساله</th>
+                                    <th>اسم الشركه</th>
+                                    <th>رقم هاتف الشركه</th>
+                                    <td>عنوان الرساله</td>
+                                    <td>محتوي الرساله</td>
+                                    <td></td>
                                 </tr>
                                 </thead>
                                 <tbody>
-{{--                                @forelse($courses as $key => $course)--}}
+                                @forelse($messages as $message)
                                     <tr>
-                                        <td>4738098</td>
-                                        <td>علي محمد</td>
-                                        <td>Double room</td>
-                                        <td>2024-02-20</td>
-                                        <td>2024-02-24</td>
-                                        <td>300 ريال عماني</td>
-                                        <td>5 ريال عماني</td>
-                                        <td>4 ريال عماني</td>
-                                        <td>4 ريال عماني</td>
-                                        <td>10 ريال عماني</td>
-                                        <td>96629363576</td>
-                                        <td>2</td>
-                                        <td>1</td>
-                                        <td>2</td>
-                                        <td>3</td>
-                                        <td>في الانتطار ...</td>
-                                        <td>غير مقيم</td>
-
-                                        <td>
-                                            <div class="operations-btns" style="">
-                                                    <a href="#" class="btn  btn-info">تعديل</a>
-                                                    <a href="#" class="btn  btn-info">عرض</a>
-
-                                                        <button class="btn btn-danger waves-effect waves-light" data-toggle="modal" data-target="#delete-modal-1">حذف</button>
-                                                        <div id="delete-modal-1" class="modal fade modal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">                                                    <div class="modal-dialog">
-                                                                <div class="modal-content float-left">
-                                                                    <div class="modal-header">
-                                                                        <h5 class="modal-title">تأكيد الحذف</h5>
-                                                                    </div>
-                                                                    <div class="modal-body">
-                                                                        <p>هل انت متاكد من حذف البيانات</p>
-                                                                    </div>
-                                                                    <div class="modal-footer">
-                                                                        <button type="button" data-dismiss="modal" class="btn btn-dark waves-effect waves-light m-l-5 mr-1 ml-1">
-                                                                            غلق
-                                                                        </button>
-                                                                        <form action="#" method="post">
-                                                                            @csrf
-                                                                            {{method_field('DELETE')}}
-                                                                            <button type="submit" class="btn btn-danger">حذف</button>
-                                                                        </form>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                            </div>
-                                        </td>
+                                        <td><img src="{{$message->user->company->logo}}" style="width: 60px;" /></td>
+                                        <td>{{$message->user->name}}</td>
+                                        <td>{{$message->user->company->company_name}}</td>
+                                        <td>{{$message->user->company->company_phone}}</td>
+                                        <td>{{$message->subject}}</td>
+                                        <td>{{$message->message}}</td>
                                     </tr>
-                                    <tr>
-                                        <td>74387478</td>
-                                        <td>جمال السيد</td>
-                                        <td>Double room</td>
-                                        <td>2024-02-20</td>
-                                        <td>2024-02-24</td>
-                                        <td>230 ريال عماني</td>
-                                        <td>5 ريال عماني</td>
-                                        <td>4 ريال عماني</td>
-                                        <td>4 ريال عماني</td>
-                                        <td>10 ريال عماني</td>
-                                        <td>96629363576</td>
-                                        <td>2</td>
-                                        <td>1</td>
-                                        <td>1</td>
-                                        <td>4</td>
-                                        <td>في الانتطار ...</td>
-                                        <td>غير مقيم</td>
 
-                                        <td>
-                                            <div class="operations-btns" style="">
-                                                    <a href="#" class="btn  btn-info">تعديل</a>
-                                                    <a href="#" class="btn  btn-info">عرض</a>
-
-                                                        <button class="btn btn-danger waves-effect waves-light" data-toggle="modal" data-target="#delete-modal-1">حذف</button>
-                                                        <div id="delete-modal-1" class="modal fade modal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">                                                    <div class="modal-dialog">
-                                                                <div class="modal-content float-left">
-                                                                    <div class="modal-header">
-                                                                        <h5 class="modal-title">تأكيد الحذف</h5>
-                                                                    </div>
-                                                                    <div class="modal-body">
-                                                                        <p>هل انت متاكد من حذف البيانات</p>
-                                                                    </div>
-                                                                    <div class="modal-footer">
-                                                                        <button type="button" data-dismiss="modal" class="btn btn-dark waves-effect waves-light m-l-5 mr-1 ml-1">
-                                                                            غلق
-                                                                        </button>
-                                                                        <form action="#" method="post">
-                                                                            @csrf
-                                                                            {{method_field('DELETE')}}
-                                                                            <button type="submit" class="btn btn-danger">حذف</button>
-                                                                        </form>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>7343667</td>
-                                        <td>مصطفي حسن</td>
-                                        <td>Double room</td>
-                                        <td>2024-02-20</td>
-                                        <td>2024-02-24</td>
-                                        <td>340 ريال عماني</td>
-                                        <td>5 ريال عماني</td>
-                                        <td>4 ريال عماني</td>
-                                        <td>4 ريال عماني</td>
-                                        <td>10 ريال عماني</td>
-                                        <td>96629363576</td>
-                                        <td>2</td>
-                                        <td>1</td>
-                                        <td>2</td>
-                                        <td>3</td>
-                                        <td>في الانتطار ...</td>
-                                        <td>غير مقيم</td>
-
-                                        <td>
-                                            <div class="operations-btns" style="">
-                                                    <a href="#" class="btn  btn-info">تعديل</a>
-                                                    <a href="#" class="btn  btn-info">عرض</a>
-
-                                                        <button class="btn btn-danger waves-effect waves-light" data-toggle="modal" data-target="#delete-modal-1">حذف</button>
-                                                        <div id="delete-modal-1" class="modal fade modal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">                                                    <div class="modal-dialog">
-                                                                <div class="modal-content float-left">
-                                                                    <div class="modal-header">
-                                                                        <h5 class="modal-title">تأكيد الحذف</h5>
-                                                                    </div>
-                                                                    <div class="modal-body">
-                                                                        <p>هل انت متاكد من حذف البيانات</p>
-                                                                    </div>
-                                                                    <div class="modal-footer">
-                                                                        <button type="button" data-dismiss="modal" class="btn btn-dark waves-effect waves-light m-l-5 mr-1 ml-1">
-                                                                            غلق
-                                                                        </button>
-                                                                        <form action="#" method="post">
-                                                                            @csrf
-                                                                            {{method_field('DELETE')}}
-                                                                            <button type="submit" class="btn btn-danger">حذف</button>
-                                                                        </form>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>6634</td>
-                                        <td>شادي محمد</td>
-                                        <td>Double room</td>
-                                        <td>2024-02-20</td>
-                                        <td>2024-02-24</td>
-                                        <td>300 ريال عماني</td>
-                                        <td>5 ريال عماني</td>
-                                        <td>4 ريال عماني</td>
-                                        <td>4 ريال عماني</td>
-                                        <td>20 ريال عماني</td>
-                                        <td>96629363576</td>
-                                        <td>2</td>
-                                        <td>1</td>
-                                        <td>2</td>
-                                        <td>2</td>
-                                        <td>في الانتطار ...</td>
-                                        <td>غير مقيم</td>
-
-                                        <td>
-                                            <div class="operations-btns" style="">
-                                                    <a href="#" class="btn  btn-info">تعديل</a>
-                                                    <a href="#" class="btn  btn-info">عرض</a>
-
-                                                        <button class="btn btn-danger waves-effect waves-light" data-toggle="modal" data-target="#delete-modal-1">حذف</button>
-                                                        <div id="delete-modal-1" class="modal fade modal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">                                                    <div class="modal-dialog">
-                                                                <div class="modal-content float-left">
-                                                                    <div class="modal-header">
-                                                                        <h5 class="modal-title">تأكيد الحذف</h5>
-                                                                    </div>
-                                                                    <div class="modal-body">
-                                                                        <p>هل انت متاكد من حذف البيانات</p>
-                                                                    </div>
-                                                                    <div class="modal-footer">
-                                                                        <button type="button" data-dismiss="modal" class="btn btn-dark waves-effect waves-light m-l-5 mr-1 ml-1">
-                                                                            غلق
-                                                                        </button>
-                                                                        <form action="#" method="post">
-                                                                            @csrf
-                                                                            {{method_field('DELETE')}}
-                                                                            <button type="submit" class="btn btn-danger">حذف</button>
-                                                                        </form>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>63534</td>
-                                        <td>راضي علي</td>
-                                        <td>Double room</td>
-                                        <td>2024-02-20</td>
-                                        <td>2024-02-24</td>
-                                        <td>100 ريال عماني</td>
-                                        <td>5 ريال عماني</td>
-                                        <td>4 ريال عماني</td>
-                                        <td>4 ريال عماني</td>
-                                        <td>5 ريال عماني</td>
-                                        <td>96629363576</td>
-                                        <td>2</td>
-                                        <td>1</td>
-                                        <td>2</td>
-                                        <td>4</td>
-                                        <td>في الانتطار ...</td>
-                                        <td>غير مقيم</td>
-
-                                        <td>
-                                            <div class="operations-btns" style="">
-                                                    <a href="#" class="btn  btn-info">تعديل</a>
-                                                    <a href="#" class="btn  btn-info">عرض</a>
-
-                                                        <button class="btn btn-danger waves-effect waves-light" data-toggle="modal" data-target="#delete-modal-1">حذف</button>
-                                                        <div id="delete-modal-1" class="modal fade modal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">                                                    <div class="modal-dialog">
-                                                                <div class="modal-content float-left">
-                                                                    <div class="modal-header">
-                                                                        <h5 class="modal-title">تأكيد الحذف</h5>
-                                                                    </div>
-                                                                    <div class="modal-body">
-                                                                        <p>هل انت متاكد من حذف البيانات</p>
-                                                                    </div>
-                                                                    <div class="modal-footer">
-                                                                        <button type="button" data-dismiss="modal" class="btn btn-dark waves-effect waves-light m-l-5 mr-1 ml-1">
-                                                                            غلق
-                                                                        </button>
-                                                                        <form action="#" method="post">
-                                                                            @csrf
-                                                                            {{method_field('DELETE')}}
-                                                                            <button type="submit" class="btn btn-danger">حذف</button>
-                                                                        </form>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-{{--                                @empty--}}
-{{--                                    @include('dashboard.core.includes.no-entries', ['columns' => 6])--}}
-{{--                                @endforelse--}}
+                                @empty
+                                    @include('dashboard.core.includes.no-entries', ['columns' => 6])
+                                @endforelse
                                 </tbody>
                             </table>
+
                         </div>
                         <!-- /.card-body -->
                         <div class="card-footer">
-{{--                            {{ $courses->appends(request()->all())->links() }}--}}
+
+                            <div class="my-5">{{$messages->links()}}</div>
                         </div>
                     </div>
                     <!-- /.card -->

@@ -65,6 +65,15 @@ class User extends Authenticatable implements JWTSubject
         );
     }
 
+    public function phoneOfCompany() : Attribute {
+        return Attribute::get(
+            get: function () {
+                    return $this->company()->company_phone;
+
+            }
+        );
+    }
+
 
     public function getJWTCustomClaims(): array
     {

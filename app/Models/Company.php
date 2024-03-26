@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -20,7 +21,7 @@ class Company extends Model
                 if ($value !== null) {
                     return url($value);
                 }
-                return null;
+                return url('logo/logo.PNG');
             }
         );
     }
@@ -216,6 +217,16 @@ class Company extends Model
         return Attribute::get(
             get: function () {
                 return $this->clients()->count();
+            }
+        );
+    }
+
+
+    public function dateEnd() : Attribute {
+        return Attribute::get(
+            get: function () {
+                return Carbon::parse($this->date_start_subscription)->addYear();
+
             }
         );
     }
