@@ -22,7 +22,11 @@ class TechnicalSupportRepository extends Repository implements TechnicalSupportR
         $query = $this->model::query();
 
         $query->when(request()->has('company_phone') && request('company_phone') != null, function ($q)  {
-            $q ->whereRelation('user','phone_of_company','=',request()->input('company_phone'));
+            $q->whereHas('user', function ($q){
+                $q ->whereHas('company',function ($query){
+                    $query->where('company_phone','=',request()->input('company_phone'));
+                });
+            });
         });
 
         return $query
