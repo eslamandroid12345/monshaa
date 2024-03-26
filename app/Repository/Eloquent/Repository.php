@@ -162,7 +162,7 @@ abstract class Repository implements RepositoryInterface
 
     public function paginate(int $perPage = 8, array $relations = [], $orderBy = 'ASC', $columns = ['*'])
     {
-        return $this->model::query()->latest()->select($columns)->with($relations)->orderBy('id', $orderBy)->paginate($perPage);
+        return $this->model::query()->latest()->select($columns)->with($relations)->orderBy('id', $orderBy)->cursorPaginate($perPage);
     }
 
     public function paginateWithQuery(

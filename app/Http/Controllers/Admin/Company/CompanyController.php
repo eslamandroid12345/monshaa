@@ -21,4 +21,9 @@ class CompanyController extends Controller
 
         return $this->companyService->getAllCompanies();
     }
+
+    public function destroy($id){
+
+        return $this->companyService->destroy($id);
+    }
 }

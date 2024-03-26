@@ -27,6 +27,7 @@ Route::get('/logout',[AuthController::class,'logout'])->name('logout');
 Route::group(['prefix' => 'admin','middleware' => 'auth:admin'], function (){
 
     Route::get('companies',[CompanyController::class,'getAllCompanies'])->name('admin.companies');
+    Route::delete('companies/destroy/{id}',[CompanyController::class,'destroy'])->name('admin.companies.destroy');
 
 });
 

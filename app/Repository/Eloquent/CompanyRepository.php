@@ -5,6 +5,7 @@ namespace App\Repository\Eloquent;
 use App\Models\Company;
 use App\Models\User;
 use App\Repository\CompanyRepositoryInterface;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Model;
 
 class CompanyRepository extends Repository implements CompanyRepositoryInterface
@@ -15,6 +16,21 @@ class CompanyRepository extends Repository implements CompanyRepositoryInterface
     public function __construct(Company $model)
     {
         parent::__construct($model);
+    }
+
+    public function getAllCompanies()
+    {
+
+        $query = $this->model::query();
+
+        $query->when(request()->has('company_phone') && request('company_phone') != null, function ($q)  {
+            $q->where('company_phone', '=',request()->input('company_phone'));
+        });
+
+        return $query
+            ->latest()
+            ->simplePaginate(8);
+
     }
 
     public function countEmployees(): int
