@@ -55,11 +55,9 @@ class CompanyService
         try {
 
             $company = $this->companyRepository->getById($id);
-
             $numberOfEmployees = $request->input('number_of_employees');
 
             $isActive = $request->input('is_active', false);
-
 
             $this->companyRepository->update($company->id,[
                 'date_end_subscription' => $company->date_end,
@@ -106,7 +104,6 @@ class CompanyService
         }
 
         foreach ($fcmTokens as $token){
-
             $this->fcmTokenRepository->delete($token->id);
         }
 
