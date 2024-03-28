@@ -1,6 +1,6 @@
 
 @extends('dashboard.core.app')
-@section('title', __('titles.Courses'))
+@section('title', 'جميع الشركات')
 @section('content')
     <!-- Content Header (Page header) -->
     <section class="content-header">
@@ -121,7 +121,7 @@
                                     </tr>
 
                                 @empty
-                                    @include('dashboard.core.includes.no-entries', ['columns' => 6])
+                                  لا يوجد اي بيانات
                                 @endforelse
                                 </tbody>
                             </table>

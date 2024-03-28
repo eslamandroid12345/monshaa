@@ -3,7 +3,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
 
-    <title>@lang('dashboard.Courses') | @lang('dashboard.Dashboard') | @yield('title')</title>
+    <title> @yield('title')</title>
 
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="{{asset("plugins/fontawesome-free/css/all.min.css")}}">
