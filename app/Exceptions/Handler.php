@@ -62,9 +62,18 @@ class Handler extends ExceptionHandler
     {
         $errors = $e->validator->errors()->all();
 
+        if($this->isFrontend($request))
+        {
+            return $request->ajax() ? response()->json($errors , 422) : redirect()->back()->withInput($request->input())->withErrors($errors);
+        }
         return $this->responseFail($errors,422,"Validation error");
     }
 
+
+    private function isFrontend($request)
+    {
+        return $request->acceptsHtml() && collect($request->route()->middleware())->contains('web');
+    }
 
 
     public function register()

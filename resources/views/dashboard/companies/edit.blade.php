@@ -1,5 +1,5 @@
 @extends('dashboard.core.app')
-@section('title', __('titles.Create') . " " . __('titles.Course'))
+@section('title', 'تعديل بيانات الشركه')
 
 @section('css_addons')
     <link rel="stylesheet" href="{{ asset('plugins/icheck-bootstrap/icheck-bootstrap.min.css') }}">
