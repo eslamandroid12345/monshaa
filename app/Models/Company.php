@@ -221,7 +221,6 @@ class Company extends Model
         );
     }
 
-
     public function dateEnd() : Attribute {
         return Attribute::get(
             get: function () {

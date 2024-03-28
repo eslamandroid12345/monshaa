@@ -46,9 +46,7 @@ class UserService
         $this->getService = $getService;
 
     }
-
-
-
+    
     public function register(StoreUserRequest $request): JsonResponse
     {
         DB::beginTransaction();

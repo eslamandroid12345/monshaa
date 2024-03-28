@@ -57,10 +57,12 @@ class CompanyService
             $company = $this->companyRepository->getById($id);
             $numberOfEmployees = $request->input('number_of_employees');
 
+            $date_end_subscription =  $request->one_year == 365 ? $company->date_end : $company->date_end_subscription;
+
             $isActive = $request->input('is_active', false);
 
             $this->companyRepository->update($company->id,[
-                'date_end_subscription' => $company->date_end,
+                'date_end_subscription' => $date_end_subscription,
                 'number_of_employees' => $numberOfEmployees,
                 'is_active' =>  $isActive
             ]);
