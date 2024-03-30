@@ -5,6 +5,7 @@ namespace App\Repository\Eloquent;
 use App\Http\Traits\Responser;
 use App\Models\Expense;
 use App\Repository\ExpenseRepositoryInterface;
+use Carbon\Carbon;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\JsonResponse;
@@ -114,22 +115,38 @@ class ExpenseRepository  extends Repository implements ExpenseRepositoryInterfac
     {
 
 
-        $totalRevenues = $this->model::query()->when(request()->has('month') && request()->has('year') && request('month') != null&& request('year') != null, function ($q) {
-        $q->whereMonth('transaction_date','=', request()->input('month'))->whereYear('transaction_date','=', request()->input('year'));
+        $totalRevenues = $this->model::query()
+            ->when(request()->has('month') && request()->has('year') && request('month') != null && request('year') != null, function ($q) {
+        $q->whereMonth('transaction_date','=', request()->input('month'))
+            ->whereYear('transaction_date','=', request()->input('year'));
              })
+
+            ->when(request('month') == null && request('year') == null, function ($q) {
+                $q->whereMonth('transaction_date','=', Carbon::now()->format('m'))
+                    ->whereYear('transaction_date','=', Carbon::now()->format('Y'));
+            })
             ->where('company_id','=',companyId())
             ->where('type','=','revenue')
             ->sum('total_money');
 
         $totalExpenses = $this->model::query()
-            ->when(request()->has('month') && request()->has('year') && request('month') != null&& request('year') != null, function ($q) {
-                $q->whereMonth('transaction_date','=', request()->input('month'))->whereYear('transaction_date','=', request()->input('year'));
+            ->when(request()->has('month') && request()->has('year') && request('month') != null && request('year') != null, function ($q) {
+                $q->whereMonth('transaction_date','=', request()->input('month'))
+                    ->whereYear('transaction_date','=', request()->input('year'));
             })
-             ->where('company_id','=',companyId())
+            ->when(request('month') == null && request('year') == null, function ($q) {
+                $q->whereMonth('transaction_date','=', Carbon::now()->format('m'))
+                    ->whereYear('transaction_date','=', Carbon::now()->format('Y'));
+            })
+            ->where('company_id','=',companyId())
             ->where('type','=','expense')
             ->sum('total_money');
 
-        return $this->responseSuccess(data: ['total_revenue' => $totalRevenues, 'total_expense' => $totalExpenses, 'total_profits' => ($totalRevenues - $totalExpenses),],code: 200,message: 'تم الحصول علي بيانات ارباح وايردات ومصروفات الشركه');
+        $date = request('month') == null && request('year') == null ?
+            Carbon::now()->format('Y-m') :
+            Carbon::now()->format(request('year').'-'. request('month'));
+
+        return $this->responseSuccess(data: ['total_revenue' => $totalRevenues, 'total_expense' => $totalExpenses, 'total_profits' => ($totalRevenues - $totalExpenses),'date' => $date ],code: 200,message: 'تم الحصول علي بيانات ارباح وايردات ومصروفات الشركه');
 
 
 
