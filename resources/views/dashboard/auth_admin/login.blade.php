@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="{{asset('auth/css/login.css')}}">
     <title>تسجيل دخول الادمن</title>
 
-    <link rel="icon" type="{{asset('auth/imag/Logo.png')}}" href="{{asset('auth/images/MainLogo.png')}}" />
+    <link rel="icon" type="{{asset('logo/logo.PNG')}}" href="{{asset('logo/logo.PNG')}}" />
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
