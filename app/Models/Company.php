@@ -170,7 +170,9 @@ class Company extends Model
         return Attribute::get(
             get: function () {
 
-                return ($this->revenues()?->sum('total_money') - $this->expenses()?->sum('total_money'));
+                $totalRevenues = $this->revenues()?->sum('total_money');
+                $totalExpenses =  $this->expenses()?->sum('total_money');
+                return $totalRevenues > $totalExpenses ? ($totalRevenues - $totalExpenses) : 0;
             }
         );
     }

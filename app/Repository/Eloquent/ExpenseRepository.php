@@ -100,7 +100,6 @@ class ExpenseRepository  extends Repository implements ExpenseRepositoryInterfac
             $q->whereBetween('transaction_date', [request()->input('date_from'), request()->input('date_to')]);
         });
 
-
         return $query
             ->latest()
             ->select(['*'])
@@ -149,7 +148,7 @@ class ExpenseRepository  extends Repository implements ExpenseRepositoryInterfac
 
         $response['total_revenue'] = $totalRevenues;
         $response['total_expense'] = $totalExpenses;
-        $response['total_profits'] = ($totalRevenues - $totalExpenses);
+        $response['total_profits'] = $totalRevenues > $totalExpenses ? ($totalRevenues - $totalExpenses) : 0;
         $response['date'] = $date;
 
 
