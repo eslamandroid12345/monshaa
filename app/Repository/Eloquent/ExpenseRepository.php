@@ -146,11 +146,15 @@ class ExpenseRepository  extends Repository implements ExpenseRepositoryInterfac
             Carbon::now()->format('Y-m') :
             Carbon::now()->format(request('year').'-'. request('month'));
 
-        return $this->responseSuccess(data: ['total_revenue' => $totalRevenues, 'total_expense' => $totalExpenses, 'total_profits' => ($totalRevenues - $totalExpenses),'date' => $date ],code: 200,message: 'تم الحصول علي بيانات ارباح وايردات ومصروفات الشركه');
+        $response['total_revenue'] = $totalRevenues;
+        $response['total_expense'] = $totalExpenses;
+        $response['total_profits'] = ($totalRevenues - $totalExpenses);
+        $response['date'] = $date;
 
-
+        return $this->responseSuccess(data: $response, code: 200, message: 'تم الحصول علي بيانات ارباح وايردات ومصروفات الشركه');
 
     }
+
 
 
 }
