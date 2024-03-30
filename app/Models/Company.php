@@ -119,7 +119,9 @@ class Company extends Model
 
     public function expenses(): HasMany
     {
-        return $this->hasMany(Expense::class,'company_id','id')->where('type','=','expense');
+        return $this->hasMany(Expense::class,'company_id','id')->where('type','=','expense')
+            ->whereMonth('transaction_date','=', Carbon::now()->format('m'))
+            ->whereYear('transaction_date','=', Carbon::now()->format('Y'));
     }
 
     public function expensesCount() : Attribute {
@@ -140,7 +142,6 @@ class Company extends Model
     public function employeesCount() : Attribute {
         return Attribute::get(
             get: function () {
-
                 return $this->employees()->count();
             }
         );
@@ -151,7 +152,9 @@ class Company extends Model
 
     public function revenues(): HasMany
     {
-        return $this->hasMany(Expense::class,'company_id','id')->where('type','=','revenue');
+        return $this->hasMany(Expense::class,'company_id','id')->where('type','=','revenue')
+            ->whereMonth('transaction_date','=', Carbon::now()->format('m'))
+        ->whereYear('transaction_date','=', Carbon::now()->format('Y'));
     }
 
 
