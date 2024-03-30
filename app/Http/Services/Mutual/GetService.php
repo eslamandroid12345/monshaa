@@ -5,7 +5,6 @@ namespace App\Http\Services\Mutual;
 use App\Http\Traits\Responser;
 use App\Repository\RepositoryInterface;
 use Exception;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
 
 class GetService

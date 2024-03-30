@@ -78,6 +78,7 @@ class ReportService
     public function profits(){
 
         return $this->expenseRepository->profits();
+
     }
 
 }

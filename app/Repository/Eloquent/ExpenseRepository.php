@@ -2,6 +2,7 @@
 
 namespace App\Repository\Eloquent;
 
+use App\Http\Resources\ProfitResource;
 use App\Http\Traits\Responser;
 use App\Models\Expense;
 use App\Repository\ExpenseRepositoryInterface;
@@ -151,7 +152,8 @@ class ExpenseRepository  extends Repository implements ExpenseRepositoryInterfac
         $response['total_profits'] = ($totalRevenues - $totalExpenses);
         $response['date'] = $date;
 
-        return $this->responseSuccess(data: $response, code: 200, message: 'تم الحصول علي بيانات ارباح وايردات ومصروفات الشركه');
+
+        return $this->responseSuccess(data: new ProfitResource($response), code: 200, message: 'تم الحصول علي بيانات ارباح وايردات ومصروفات الشركه');
 
     }
 
