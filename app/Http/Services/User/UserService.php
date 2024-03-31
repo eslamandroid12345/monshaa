@@ -2,7 +2,6 @@
 
 namespace App\Http\Services\User;
 
-use App\Http\Requests\DestroyDeviceTokenRequest;
 use App\Http\Requests\LoginUserRequest;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
@@ -46,7 +45,7 @@ class UserService
         $this->getService = $getService;
 
     }
-    
+
     public function register(StoreUserRequest $request): JsonResponse
     {
         DB::beginTransaction();
@@ -113,10 +112,10 @@ class UserService
             $resource = $this->getResourceBasedOnRole($auth);
             $message = $this->getLoginSuccessMessage($auth);
 
-            $requestOfFcmToken = $request->only(['token','device_type']);
-            $requestOfFcmToken['user_id'] = $auth->id;
+            if ($request->filled('token')) {
+                $this->updateOrCreateFCMToken($auth->id, $request->only(['token', 'device_type']));
+            }
 
-            $this->fcmTokenRepository->updateOrCreate(['token' => $requestOfFcmToken['token']],$requestOfFcmToken);
 
             return $this->responseSuccess($resource, 200, $message);
         } catch (\Exception $exception) {
@@ -124,6 +123,11 @@ class UserService
 
         }
      }
+
+    private function updateOrCreateFCMToken($userId, $data): void
+    {
+        $this->fcmTokenRepository->updateOrCreate(['token' => $data['token']], array_merge($data, ['user_id' => $userId]));
+    }
 
 
         public function home(): JsonResponse
@@ -230,16 +234,20 @@ class UserService
     }
 
 
-    public function logout(DestroyDeviceTokenRequest $request): JsonResponse
+    public function logout(): JsonResponse
     {
 
         $auth = Auth::guard('user-api')->user();
 
         $this->userRepository->update($auth->id,['access_token' => null]);
 
-       $token = $this->fcmTokenRepository->getByColumn('token',$request->token);
+        if (request()->has('token')) {
+            $token = $this->fcmTokenRepository->getByColumn('token', request('token'));
+            if ($token) {
+                $this->fcmTokenRepository->delete($token->id);
+            }
+        }
 
-       $this->fcmTokenRepository->delete($token->id);
         auth('user-api')->logout();
 
         return $this->responseSuccess(null, 200, 'تم تسجيل الخروج بنجاح');
