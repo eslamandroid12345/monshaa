@@ -13,7 +13,7 @@ class UpdateTenantRequest extends FormRequest
     public function rules(): array
     {
 
-        $userId = auth('user-api')->user()->company_id;
+        $userId = companyId();
 
         return [
 
@@ -46,6 +46,7 @@ class UpdateTenantRequest extends FormRequest
             'phone.unique' => 'هذا الهاتف مسجل لدينا من قبل',
             'phone.numeric' => 'هاتف المستاجر يحب ان يكون رقم',
             'card_number.required' => 'رقم بطاقه المستاجر مطلوبه',
+            'card_number.unique' => 'رقم بطاقه المستاجر موجوده من قبل',
             'card_number.numeric' => 'رقم بطاقه المستاجر يجب ان تكون رقم',
             'card_address.required' => 'عنوان المستاجر المسجل بالبطاقه مطلوب',
             'card_address.max' => 'عنوان المستاجر المسجل بالبطاقه يجب ان لا يتعدي عن 255 حرف',

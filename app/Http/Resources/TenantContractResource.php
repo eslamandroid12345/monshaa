@@ -38,6 +38,7 @@ class TenantContractResource extends JsonResource
             'commission' => $this->commission,
             'insurance_total' => $this->insurance_total,
             'period_of_delay' => $this->period_of_delay,
+            'cash_type' => $this->cash_type_text,
         ];
     }
 }

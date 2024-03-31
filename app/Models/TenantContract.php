@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -50,4 +51,12 @@ class TenantContract extends Model
     }
 
 
+    public function cashTypeText() : Attribute {
+        return Attribute::get(
+            get: function () {
+                return $this->cash_type == 'company' ? 'تحصيل الايجار من خلال الشركه' : 'تحصيل الايجار من خلال المالك';
+
+            }
+        );
+    }
 }
