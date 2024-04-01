@@ -23,7 +23,7 @@ class HomePageEmployeeResource extends JsonResource
             'name' => $this->name,
             'user_type' => 'employee',
             'company_name' => $this->company->company_name,
-            'permissions' => $this->getAllPermissions(),
+            'sidebar' => $this->getAllPermissions(),
             'home' => $this->checkHomePage(),
 
         ];
