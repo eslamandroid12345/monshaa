@@ -62,7 +62,7 @@ Route::group(['prefix' => 'state','middleware' => ['jwt','permission:states']], 
     Route::get('show/{id}',[StateController::class,'show']);
     Route::post('update/{id}',[StateController::class,'update']);
     Route::post('change-status/{id}',[StateController::class,'changeStatus']);
-    Route::post('delete/{id}',[StateController::class,'delete']);
+    Route::delete('delete/{id}',[StateController::class,'delete']);
 });
 
 
