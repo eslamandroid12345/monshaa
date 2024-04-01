@@ -146,7 +146,7 @@ class StateService
 
             $state = $this->stateRepository->getById($id);
 
-//            Gate::authorize('check-company-auth',$state);
+            Gate::authorize('check-company-auth',$state);
 
             return $this->getService->handle(resource: StateResource::class,repository: $this->stateRepository,method: 'getById',parameters: [$id],is_instance: true,message:'تم عرض بيانات العقار  بنجاح' );
 
