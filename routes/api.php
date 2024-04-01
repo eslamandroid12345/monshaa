@@ -44,7 +44,7 @@ Route::group(['prefix' => 'employee','middleware' => ['jwt','permission:employee
     Route::post('create',[EmployeeController::class,'create']);
     Route::get('show-data/{id}',[EmployeeController::class,'show']);
     Route::post('update/{id}',[EmployeeController::class,'update']);
-    Route::delete('delete/{id}',[EmployeeController::class,'delete']);
+    Route::post('delete/{id}',[EmployeeController::class,'delete']);
     Route::put('active/{id}',[EmployeeController::class,'active']);
 });
 
@@ -62,7 +62,7 @@ Route::group(['prefix' => 'state','middleware' => ['jwt','permission:states']], 
     Route::get('show/{id}',[StateController::class,'show']);
     Route::post('update/{id}',[StateController::class,'update']);
     Route::post('change-status/{id}',[StateController::class,'changeStatus']);
-    Route::delete('delete/{id}',[StateController::class,'delete']);
+    Route::post('delete/{id}',[StateController::class,'delete']);
 });
 
 
@@ -73,7 +73,7 @@ Route::group(['prefix' => 'land','middleware' => ['jwt','permission:lands']], fu
     Route::get('show/{id}',[LandController::class,'show']);
     Route::post('update/{id}',[LandController::class,'update']);
     Route::post('change-status/{id}',[LandController::class,'changeStatus']);
-    Route::delete('delete/{id}',[LandController::class,'delete']);
+    Route::post('delete/{id}',[LandController::class,'delete']);
 });
 
 
@@ -83,7 +83,7 @@ Route::group(['prefix' => 'tenant','middleware' => ['jwt','permission:tenants']]
     Route::post('create',[TenantController::class,'create']);
     Route::get('show/{id}',[TenantController::class,'show']);
     Route::post('update/{id}',[TenantController::class,'update']);
-    Route::delete('delete/{id}',[TenantController::class,'delete']);
+    Route::post('delete/{id}',[TenantController::class,'delete']);
 });
 
 
@@ -93,7 +93,7 @@ Route::group(['prefix' => 'tenant-contract','middleware' => ['jwt','permission:t
     Route::post('create',[TenantContractController::class,'create']);
     Route::get('show/{id}',[TenantContractController::class,'show']);
     Route::post('update/{id}',[TenantContractController::class,'update']);
-    Route::delete('delete/{id}',[TenantContractController::class,'delete']);
+    Route::post('delete/{id}',[TenantContractController::class,'delete']);
 });
 
 
@@ -127,7 +127,7 @@ Route::group(['prefix' => 'expenses','middleware' => ['jwt','permission:expenses
     Route::post('create',[ExpenseController::class,'create']);
     Route::get('show/{id}',[ExpenseController::class,'show']);
     Route::post('update/{id}',[ExpenseController::class,'update']);
-    Route::delete('delete/{id}',[ExpenseController::class,'delete']);
+    Route::post('delete/{id}',[ExpenseController::class,'delete']);
 });
 
 
@@ -137,7 +137,7 @@ Route::group(['prefix' => 'receipt','middleware' => ['jwt','permission:financial
     Route::post('create/{id}',[ReceiptController::class,'create']);
     Route::get('show/{id}',[ReceiptController::class,'show']);
     Route::post('update/{id}',[ReceiptController::class,'update']);
-    Route::delete('delete/{id}',[ReceiptController::class,'delete']);
+    Route::post('delete/{id}',[ReceiptController::class,'delete']);
 });
 
 
@@ -148,7 +148,7 @@ Route::group(['prefix' => 'cash','middleware' => ['jwt','permission:financial_ca
     Route::post('create/{id}',[CashController::class,'create']);
     Route::get('show/{id}',[CashController::class,'show']);
     Route::post('update/{id}',[CashController::class,'update']);
-    Route::delete('delete/{id}',[CashController::class,'delete']);
+    Route::post('delete/{id}',[CashController::class,'delete']);
 });
 
 
@@ -159,7 +159,7 @@ Route::group(['prefix' => 'clients','middleware' => ['jwt','permission:clients']
     Route::post('create',[ClientController::class,'create']);
     Route::get('show/{id}',[ClientController::class,'show']);
     Route::post('update/{id}',[ClientController::class,'update']);
-    Route::delete('delete/{id}',[ClientController::class,'delete']);
+    Route::post('delete/{id}',[ClientController::class,'delete']);
 });
 
 
