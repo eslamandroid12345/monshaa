@@ -34,7 +34,7 @@ Route::group(['prefix' => 'auth','middleware' => ['jwt']], function (){
 
     Route::post('logout',[UserController::class,'logout']);
     Route::get('get-profile',[UserController::class,'getProfile']);
-    Route::post('update-profile',[UserController::class,'updateProfile'])->middleware('check-user');
+    Route::post('update-profile',[UserController::class,'updateProfile'])->middleware('check-user');//hh
 });
 
 
