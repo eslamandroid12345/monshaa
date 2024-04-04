@@ -29,7 +29,7 @@ class CompanyRepository extends Repository implements CompanyRepositoryInterface
 
         return $query
             ->latest()
-            ->simplePaginate(8);
+            ->paginate(16);
 
     }
 

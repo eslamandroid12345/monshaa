@@ -30,13 +30,33 @@
 
 
                 <li class="nav-item">
-                    <a href="{{route('admin.companies')}}" class="nav-link">
+                    <a href="#" class="nav-link">
+                        <i class="fa fa-home nav-icon"></i>
+                        <p>
+                           الرئيسيه
+                        </p>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
                         <i class="fa fa-users nav-icon"></i>
+                        <p>
+                           موظفين الاداره
+                        </p>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="{{route('admin.companies')}}" class="nav-link">
+                        <i class="fa fa-building nav-icon"></i>
                         <p>
                             الشركات
                         </p>
                     </a>
                 </li>
+
+
 
                 <li class="nav-item">
                     <a href="{{route('admin.technical_support')}}" class="nav-link">

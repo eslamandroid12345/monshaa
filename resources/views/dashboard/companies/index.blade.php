@@ -60,7 +60,7 @@
                             <table class="table table-bordered">
                                 <thead>
                                 <tr>
-                                    <th>رمز الشركه</th>
+                                    <th>#</th>
                                     <th style="width: 10px">لوجو الشركه</th>
                                     <th>اسم الشركه</th>
                                     <th>عنوان الشركه</th>
@@ -93,8 +93,8 @@
                                         <td>
                                             <div class="operations-btns" style="">
 
-                                                <a href="{{route('admin.companies.edit' , $company->id)}}"> <button class="btn btn-info waves-effect waves-light"><i class="fa fa-edit"></i></button></a>
-                                                        <button class="btn btn-danger waves-effect waves-light" data-toggle="modal" data-target="#delete-modal{{$company->id}}"><i class="fa fa-trash"></i></button>
+                                                <a href="{{route('admin.companies.edit' , $company->id)}}"> <button class="btn btn-dark waves-effect waves-light">تعديل</button></a>
+                                                        <button class="btn btn-dark waves-effect waves-light" data-toggle="modal" data-target="#delete-modal{{$company->id}}">حذف</button>
                                                         <div id="delete-modal{{$company->id}}" class="modal fade modal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">                                                    <div class="modal-dialog">
                                                                 <div class="modal-content float-left">
                                                                     <div class="modal-header">
@@ -129,7 +129,7 @@
                         </div>
                         <!-- /.card-body -->
                         <div class="card-footer">
-                            <div class="my-5">{{$companies->links()}}</div>
+                            <div>{{$companies->links()}}</div>
                         </div>
                     </div>
                     <!-- /.card -->
