@@ -53,13 +53,13 @@ class TenantContractsExpired extends Command
 
             $tenantContractsExpired = TenantContract::query()
                 ->where('company_id','=',$companyId)
-                ->whereDate('contract_date_to','=',Carbon::now()->addDays(90)->format('Y-m-d'))
+                ->whereDate('contract_date_to','=',Carbon::now()->addDays(2)->format('Y-m-d'))
                 ->count();
 
             if($tenantContractsExpired > 0){
                 DB::table('tenant_contracts')
                     ->where('company_id','=',$companyId)
-                    ->whereDate('contract_date_to','=',Carbon::now()->addDays(90)->format('Y-m-d'))
+                    ->whereDate('contract_date_to','=',Carbon::now()->addDays(2)->format('Y-m-d'))
                     ->update(['is_expired' => 1]);
                 $this->sendFirebaseForCompany( ['title' => 'اشعار جديد لديك','body' => ' يجب عليك الاطلاع علي جميع العقود المنتهيه ' ], $companyId, 'expired_contracts');
 

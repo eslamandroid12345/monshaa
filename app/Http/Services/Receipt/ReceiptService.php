@@ -71,7 +71,6 @@ class ReceiptService
             Gate::authorize('check-company-auth',$tenantContract);
 
             $cashCount = $this->cashRepository->countCash($tenantContract->id);
-            $receiptCount = $this->receiptRepository->receiptCount($tenantContract->id);
 
             if($cashCount == 0){
                 return $this->responseFail(data: null, code: 415, message: 'غير مسموح بصرف سند لمالك بسبب لا يوجد سندات قبض لهذا العقد!');
