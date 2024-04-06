@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Admin\Auth;
+namespace App\Http\Requests\Company;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class AdminAuthRequest extends FormRequest
+class CompanyRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,18 +25,9 @@ class AdminAuthRequest extends FormRequest
     {
         return [
 
-            'email' => 'required',
-            'password' => 'required'
-        ];
-    }
-
-
-    public function messages(): array
-    {
-        return [
-
-            'email.required' => 'البريد الالكتروني للدخول مطلوب',
-            'password.required' => 'كلمه مرور الدخول مطلوبه'
+            'number_of_employees' => 'required|integer',
+            'is_package' => 'required|boolean',
+            'is_active' => 'required|boolean',
         ];
     }
 }

@@ -79,7 +79,7 @@ class ClientService
 
             $client = $this->clientRepository->create($inputs);
 
-            $this->sendFirebaseNotification(data:['title' => 'اشعار جديد لديك','body' => ' تم اضافه عميل لمعاينه لديك بواسطه   ' . employee() ],userId: employeeId(),permission: 'clients');
+            $this->sendFirebaseNotification(data:['title' => 'اشعار جديد لديك','body' => ' تم اضافه عميل لمعاينه لديك بواسطه ' . employee() ],userId: employeeId(),permission: 'clients');
 
             return $this->getService->handle(resource: ClientShowResource::class,repository: $this->clientRepository,method: 'getById',parameters: [$client->id],is_instance: true,message:'تم اضافه البيانات بنجاح' );
 

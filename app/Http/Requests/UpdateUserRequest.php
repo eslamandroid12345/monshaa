@@ -34,6 +34,7 @@ class UpdateUserRequest extends FormRequest
             'company_phone' => 'required|numeric|unique:companies,company_phone,'. auth('user-api')->user()->company_id,
             'phone' => 'required|numeric|unique:users,phone,'. auth('user-api')->id(),
             'password' => 'nullable|min:8',
+            'old_password' => 'required_with:password',
         ];
     }
 
@@ -52,6 +53,7 @@ class UpdateUserRequest extends FormRequest
             'phone.required' => 'هاتف صاحب الشركه العقاريه مطلوب',
             'phone.unique' => 'هذا الرقم مسجل لدينا من قبل',
             'phone.numeric' => 'الهاتف يجب ان يكون رقم وليس شيء اخر',
+            'old_password.required_with' => 'كلمه المرور القديمه يجب ادخالها في حاله اضافه كلمه مرور جديده',
             'company_phone.required' => 'هاتف  الشركه العقاريه مطلوب',
             'company_phone.unique' => 'رقم الشركه مسجل لدينا من قبل',
             'company_phone.numeric' => 'رقم هاتف الشركه يجب ان يكون رقم',

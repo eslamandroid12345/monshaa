@@ -3,7 +3,8 @@
 namespace App\Http\Services\TechnicalSupport;
 
 use App\Http\Requests\TechnicalSupport\TechnicalSupportRequest;
-use App\Http\Resources\ExpenseResource;
+use App\Http\Resources\Company\CompanyResource;
+use App\Http\Resources\TechnicalSupport\TechnicalSupportResource;
 use App\Http\Services\Mutual\GetService;
 use App\Http\Traits\Responser;
 use App\Repository\TechnicalSupportRepositoryInterface;
@@ -25,6 +26,13 @@ class TechnicalSupportService
        $this->getService = $getService;
     }
 
+    public function getAllMessages(): JsonResponse
+    {
+
+
+        return $this->getService->handle(resource: TechnicalSupportResource::class,repository: $this->technicalSupportRepository,method: 'getAllMessages',message: 'تم الحصول علي جميع رسائل الدعم الفني بنجاح');
+
+    }
 
     public function create(TechnicalSupportRequest $request): JsonResponse
     {

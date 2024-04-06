@@ -26,9 +26,9 @@ class CheckEmployeePermissions
 
             $permissions = json_decode($user->employee_permissions, true);
 
-            foreach ($permissions as $permission){
+            foreach ($permissions as $per){
 
-                $array[] = $permission;
+                $array[] = $per;
             }
             $array[] = 'home_page';
             $array[] = 'setting';

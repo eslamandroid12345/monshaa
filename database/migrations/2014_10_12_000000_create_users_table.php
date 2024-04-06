@@ -27,6 +27,7 @@ class CreateUsersTable extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->boolean('is_active')->default(1);
             $table->boolean('is_admin')->default(0);
+            $table->boolean('is_administrator')->comment('مشرف التطبيق')->default(0);
             $table->text('employee_image')->comment('صوره الموظف')->nullable();
             $table->string('block_reason')->nullable()->comment('سبب الغاء تفعيل الموظف');
             $table->string('employee_address')->nullable();

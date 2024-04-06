@@ -252,5 +252,37 @@ class Company extends Model
             }
         );
     }
+    public function messagesCount() : Attribute {
+        return Attribute::get(
+            get: function () {
+                return TechnicalSupport::query()->whereDate('created_at','=',Carbon::now()->format('Y-m-d'))->count();
+
+            }
+        );
+    }
+
+
+
+    public function status() : Attribute {
+        return Attribute::get(
+            get: function () {
+                return  $this->is_active === 1 ? 'مفعل' : 'غير مفعل';
+
+            }
+        );
+    }
+
+
+    public function accountType() : Attribute {
+        return Attribute::get(
+            get: function () {
+                return  $this->is_package === 1 ? 'باقه سنويه' : 'حساب تجريبي';
+
+            }
+        );
+    }
+
+
+
 
 }

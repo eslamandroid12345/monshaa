@@ -18,6 +18,7 @@ class CreateCompaniesTable extends Migration
          */
         Schema::create('companies', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->boolean('is_package')->comment('نوع الحساب اشتراك ام حساب تجريبي')->default(0);
             $table->string('logo')->nullable()->comment('لوجو المؤسسسه');
             $table->string('currency');
             $table->string('company_name');

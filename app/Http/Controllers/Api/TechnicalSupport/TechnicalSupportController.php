@@ -18,9 +18,20 @@ class TechnicalSupportController extends Controller
     }
 
 
+    public function getAllMessages(): JsonResponse
+    {
+
+        return $this->technicalSupportService->getAllMessages();
+
+
+    }
+
+
     public function create(TechnicalSupportRequest $request): JsonResponse
     {
 
         return $this->technicalSupportService->create($request);
     }
+
+
 }

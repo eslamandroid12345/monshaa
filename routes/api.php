@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\Cash\CashController;
 use App\Http\Controllers\Api\Client\ClientController;
+use App\Http\Controllers\Api\Company\CompanyController;
 use App\Http\Controllers\Api\Employee\EmployeeController;
 use App\Http\Controllers\Api\Expense\ExpenseController;
 use App\Http\Controllers\Api\Land\LandController;
@@ -160,6 +161,16 @@ Route::group(['prefix' => 'clients','middleware' => ['jwt','permission:clients']
     Route::get('show/{id}',[ClientController::class,'show']);
     Route::post('update/{id}',[ClientController::class,'update']);
     Route::post('delete/{id}',[ClientController::class,'delete']);
+});
+
+Route::group(['prefix' => 'companies','middleware' => ['jwt','permission:companies','is_administrator']], function (){
+
+    Route::get('get-all',[CompanyController::class,'getAllCompanies']);
+    Route::get('show/{id}',[CompanyController::class,'show']);
+    Route::post('update/{id}',[CompanyController::class,'update']);
+    Route::post('delete/{id}',[CompanyController::class,'delete']);
+    Route::get('get-all-messages',[TechnicalSupportController::class,'getAllMessages']);
+
 });
 
 

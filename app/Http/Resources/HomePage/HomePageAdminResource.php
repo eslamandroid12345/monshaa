@@ -21,129 +21,8 @@ class HomePageAdminResource extends JsonResource
             'name' => $this->name,
             'user_type' => 'admin',
             'company_name' => $this->company->company_name,
-            'sidebar' => [
-                [
-                    'key' => 'home_page',
-                    'name' => 'الصفحه الرئيسيه',
-                    'icon' => 'home',
-                    'count' => 0
-                ],
+            'sidebar' => $this->sidebarPermissions(),
 
-                [
-                    'key' => 'states',
-                    'name' => 'العقارات',
-                    'icon' => 'holiday_village_outlined',
-                    'count' => 0
-                ],
-
-
-                [
-                    'key' => 'lands',
-                    'name' => 'الاراضي',
-                    'icon' => 'landscape_outlined',
-                    'count' => 0
-                ],
-
-
-                [
-                    'key' => 'tenants',
-                    'name' => 'المستاجرين',
-                    'icon' => 'verified_user_outlined',
-                    'count' => 0
-                ],
-
-                [
-                    'key' => 'tenant_contracts',
-                    'name' => 'عقود الايجار',
-                    'icon' => 'book',
-                    'count' => 0
-                ],
-
-
-                [
-                    'key' => 'expired_contracts',
-                    'name' => 'العقود المنتهيه',
-                    'icon' => 'book',
-                    'count' => 0
-                ],
-
-                [
-                    'key' => 'financial_cash',
-                    'name' => 'سندات القبض',
-                    'icon' => 'receipt_long_outlined',
-                    'count' => 0
-                ],
-
-                [
-                    'key' => 'financial_receipt',
-                    'name' => 'سندات الصرف',
-                    'icon' => 'long_receipt',
-                    'count' => 0
-                ],
-
-                [
-                    'key' => 'revenue',
-                    'name' => 'الايردات',
-                    'icon' => 'price_change_outlined',
-                    'count' => 0
-                ],
-
-                [
-                    'key' => 'expenses',
-                    'name' => 'المصروفات',
-                    'icon' => 'monetization_on_outlined',
-                    'count' => 0
-                ],
-
-
-                [
-                    'key' => 'employees',
-                    'name' => 'الموظفين',
-                    'icon' => 'supervised_user_circle_rounded',
-                    'count' => 0
-                ],
-
-                [
-                    'key' => 'clients',
-                    'name' => 'العملاء',
-                    'icon' => 'people_alt_outlined',
-                    'count' => 0
-                ],
-
-
-
-                [
-                    'key' => 'notifications',
-                    'name' => 'الاشعارات',
-                    'icon' => 'notification_add',
-                    'count' => $this->company->notifications_count
-                ],
-
-
-                [
-                    'key' => 'reports',
-                    'name' => 'التقارير',
-                    'icon' => 'leaderboard_outlined',
-                    'count' => 0
-                ],
-
-                [
-                    'key' => 'setting',
-                    'name' => 'الاعدادات',
-                    'icon' => 'settings',
-                    'count' => 0
-                ],
-                [
-                    'key' => 'technical_support',
-                    'name' => 'الدعم الفني',
-                    'icon' => 'mail_contact',
-                    'count' => 0
-                ],
-
-
-
-
-            ],//end sidebar
 
             'home' =>  [
 
@@ -220,6 +99,159 @@ class HomePageAdminResource extends JsonResource
             ],//end home
 
         ];
+
+    }
+
+
+    public function sidebarPermissions(): array
+    {
+
+     $permissions =    [
+            [
+                'key' => 'home_page',
+                'name' => 'الصفحه الرئيسيه',
+                'icon' => 'home',
+                'count' => 0
+            ],
+
+            [
+                'key' => 'states',
+                'name' => 'العقارات',
+                'icon' => 'holiday_village_outlined',
+                'count' => 0
+            ],
+
+
+            [
+                'key' => 'lands',
+                'name' => 'الاراضي',
+                'icon' => 'landscape_outlined',
+                'count' => 0
+            ],
+
+
+            [
+                'key' => 'tenants',
+                'name' => 'المستاجرين',
+                'icon' => 'verified_user_outlined',
+                'count' => 0
+            ],
+
+            [
+                'key' => 'tenant_contracts',
+                'name' => 'عقود الايجار',
+                'icon' => 'book',
+                'count' => 0
+            ],
+
+
+            [
+                'key' => 'expired_contracts',
+                'name' => 'العقود المنتهيه',
+                'icon' => 'book',
+                'count' => 0
+            ],
+
+            [
+                'key' => 'financial_cash',
+                'name' => 'سندات القبض',
+                'icon' => 'receipt_long_outlined',
+                'count' => 0
+            ],
+
+            [
+                'key' => 'financial_receipt',
+                'name' => 'سندات الصرف',
+                'icon' => 'long_receipt',
+                'count' => 0
+            ],
+
+            [
+                'key' => 'revenue',
+                'name' => 'الايردات',
+                'icon' => 'price_change_outlined',
+                'count' => 0
+            ],
+
+            [
+                'key' => 'expenses',
+                'name' => 'المصروفات',
+                'icon' => 'monetization_on_outlined',
+                'count' => 0
+            ],
+
+
+            [
+                'key' => 'employees',
+                'name' => 'الموظفين',
+                'icon' => 'supervised_user_circle_rounded',
+                'count' => 0
+            ],
+
+            [
+                'key' => 'clients',
+                'name' => 'العملاء',
+                'icon' => 'people_alt_outlined',
+                'count' => 0
+            ],
+
+
+
+            [
+                'key' => 'notifications',
+                'name' => 'الاشعارات',
+                'icon' => 'notification_add',
+                'count' => $this->company->notifications_count
+            ],
+
+
+            [
+                'key' => 'reports',
+                'name' => 'التقارير',
+                'icon' => 'leaderboard_outlined',
+                'count' => 0
+            ],
+
+            [
+                'key' => 'setting',
+                'name' => 'الاعدادات',
+                'icon' => 'settings',
+                'count' => 0
+            ],
+            [
+                'key' => 'technical_support',
+                'name' => 'الدعم الفني',
+                'icon' => 'mail_contact',
+                'count' => 0
+            ],
+
+             [
+                 'key' => 'companies',
+                 'name' => 'الشركات',
+                 'icon' => 'people_alt_outlined',
+                 'count' => 0
+             ],
+
+             [
+                 'key' => 'messages',
+                 'name' => 'جميع الرسائل',
+                 'icon' => 'mail_contact',
+                 'count' => $this->company->messages_count,
+             ],
+
+        ];
+
+
+        $array = [];
+
+        foreach ($permissions as $sidebar) {
+            if (auth('user-api')->user()->is_administrator === 0 && ($sidebar['key'] === 'companies' || $sidebar['key'] === 'messages')) {
+                continue;
+            }
+
+            $array[] = $sidebar;
+        }
+        return $array;
 
     }
 }

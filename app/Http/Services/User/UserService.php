@@ -34,6 +34,7 @@ class UserService
     protected CompanyRepositoryInterface $companyRepository;
 
     protected FcmTokenRepositoryInterface $fcmTokenRepository;
+
     protected GetService $getService;
 
     public function __construct( FcmTokenRepositoryInterface $fcmTokenRepository,UserRepositoryInterface $userRepository,FileManagerService $fileManagerService,CompanyRepositoryInterface $companyRepository,GetService $getService)
@@ -56,7 +57,6 @@ class UserService
             $user = $this->createUser($request,$company);
 
             DB::commit();
-
             $token = Auth::guard('user-api')->attempt($request->only('phone', 'password'));
             $user['token'] = $token;
 
@@ -116,7 +116,6 @@ class UserService
                 $this->updateOrCreateFCMToken($auth->id, $request->only(['token', 'device_type']));
             }
 
-
             return $this->responseSuccess($resource, 200, $message);
         } catch (\Exception $exception) {
             return $this->responseFail(null, 500, $exception->getMessage(), 500);
@@ -130,43 +129,42 @@ class UserService
     }
 
 
-        public function home(): JsonResponse
-        {
+    public function home(): JsonResponse
+    {
 
-            $user = auth('user-api')->user();
+        $user = auth('user-api')->user();
 
-            $resource = $user->is_admin ? new HomePageAdminResource($user) : new HomePageEmployeeResource($user);
-            $message = $user->is_admin ? 'تم عرض بيانات الصفحه الرئيسيه بنجاح للادمن' : 'تم عرض بيانات الصفحه الرئيسيه بنجاح للموظف';
+        $resource = $user->is_admin ? new HomePageAdminResource($user) : new HomePageEmployeeResource($user);
+        $message = $user->is_admin ? 'تم عرض بيانات الصفحه الرئيسيه بنجاح للادمن' : 'تم عرض بيانات الصفحه الرئيسيه بنجاح للموظف';
 
-            return $this->responseSuccess($resource, 200, $message);
+        return $this->responseSuccess($resource, 200, $message);
 
-        }
+    }
 
-        protected function isActiveUser($auth): bool
-        {
-            return $auth->is_active == 1;
-        }
+    protected function isActiveUser($auth): bool
+    {
+        return $auth->is_active == 1;
+    }
 
-        protected function getActivationMessage($auth): string
-        {
-            return $auth->is_admin == 1 ? 'الحساب غير مفعل يرجى التواصل مع مطور البرنامج' : 'الحساب غير مفعل يرجى التواصل مع مديرك المباشر لتفعيل الحساب';
-        }
+    protected function getActivationMessage($auth): string
+    {
+        return $auth->is_admin == 1 ? 'الحساب غير مفعل يرجى التواصل مع مطور البرنامج' : 'الحساب غير مفعل يرجى التواصل مع مديرك المباشر لتفعيل الحساب';
+    }
 
-        protected function updateUserToken($userId, $token): void
-        {
-            $this->userRepository->update($userId, ['access_token' => $token]);
-        }
+    protected function updateUserToken($userId, $token): void
+    {
+        $this->userRepository->update($userId, ['access_token' => $token]);
+    }
 
-        protected function getResourceBasedOnRole($auth): UserResource|EmployeeResource
-        {
-            return $auth->is_admin == 1 ? new UserResource($auth) : new EmployeeResource($auth);
-        }
+    protected function getResourceBasedOnRole($auth): UserResource|EmployeeResource
+    {
+        return $auth->is_admin == 1 ? new UserResource($auth) : new EmployeeResource($auth);
+    }
 
-        protected function getLoginSuccessMessage($auth): string
-        {
-            return $auth->is_admin == 1 ? 'تم تسجيل دخول المدير بنجاح' : 'تم تسجيل دخول الموظف بنجاح';
-        }
-
+    protected function getLoginSuccessMessage($auth): string
+    {
+        return $auth->is_admin == 1 ? 'تم تسجيل دخول المدير بنجاح' : 'تم تسجيل دخول الموظف بنجاح';
+    }
 
 
     public function getProfile(): JsonResponse
@@ -202,6 +200,11 @@ class UserService
                 $requestOfUser['password'] = Hash::make($requestOfUser['password']);
             } else {
                 unset($requestOfUser['password']);
+            }
+
+            if ($request->filled('password') && !Hash::check($request->old_password,$user->password)) {
+
+                return $this->responseFail(null, 416, 'كلمه المرور القديمه غير صحيحه');
             }
 
             $this->updateCompanyProfile($request,$user);
@@ -242,7 +245,7 @@ class UserService
         $this->userRepository->update($auth->id,['access_token' => null]);
 
         if (request()->has('token')) {
-            $token = $this->fcmTokenRepository->getByColumn('token', request('token'));
+            $token = $this->fcmTokenRepository->getByColumn('token',request('token'));
             if ($token) {
                 $this->fcmTokenRepository->delete($token->id);
             }
@@ -251,7 +254,6 @@ class UserService
         auth('user-api')->logout();
 
         return $this->responseSuccess(null, 200, 'تم تسجيل الخروج بنجاح');
-
 
     }
 }
