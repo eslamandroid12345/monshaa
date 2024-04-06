@@ -16,6 +16,7 @@ use App\Http\Controllers\Api\TenantContract\TenantContractController;
 use App\Http\Controllers\Api\User\UserController;
 use Illuminate\Support\Facades\Route;
 
+
 /*
 |--------------------------------------------------------------------------
 | API Routes

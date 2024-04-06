@@ -76,10 +76,6 @@ class ReceiptService
             if($cashCount == 0){
                 return $this->responseFail(data: null, code: 415, message: 'غير مسموح بصرف سند لمالك بسبب لا يوجد سندات قبض لهذا العقد!');
 
-            }elseif ($receiptCount + 1 != $cashCount){
-
-                return $this->responseFail(data: null, code: 416, message: 'غير مسموح بصرف سند لمالك لهذا العقد!');
-
             }else{
 
                 $inputs = $request->validated();
