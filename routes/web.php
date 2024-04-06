@@ -20,6 +20,10 @@ use Illuminate\Support\Facades\Route;
 */
 
 
+//Route::get('/', function (){
+//  return  Carbon::now()->addDays(2)->format('Y-m-d');
+//});
+
 Route::get('/',[AuthController::class,'loginView'])->name('login')->middleware('guest:admin');
 Route::post('/loginProcess',[AuthController::class,'login'])->name('loginProcess');
 Route::get('/logout',[AuthController::class,'logout'])->name('logout');
