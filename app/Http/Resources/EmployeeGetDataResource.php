@@ -42,7 +42,7 @@ class EmployeeGetDataResource extends JsonResource
             $permissions[] = $permission;
         }
         $permissions[] = 'setting';
-        $permissions[0] = 'home_page';
+        $permissions[] = 'home_page';
 
         return $permissions;
 
