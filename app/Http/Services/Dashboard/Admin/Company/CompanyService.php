@@ -8,7 +8,6 @@ use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Tymon\JWTAuth\Facades\JWTAuth;
 
 class CompanyService
 {
@@ -98,11 +97,7 @@ class CompanyService
         $users = $this->userRepository->getAllUsersOfCompany($companyId);
         $fcmTokens = $this->fcmTokenRepository->getAllDeviceTokenBelongsToCompany($companyId);
         foreach ($users as $user) {
-            if ($user->access_token) {
-                JWTAuth::setToken($user->access_token)->invalidate();
-            }
             $this->userRepository->update($user->id, [
-                'access_token' => null,
                 'is_active' => 0,
             ]);
         }

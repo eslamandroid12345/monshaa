@@ -107,8 +107,6 @@ class UserService
                 return $this->responseFail(null, 403, $message, 403);
             }
 
-            $this->updateUserToken($auth->id,$token);//Update access_token of user
-
             $resource = $this->getResourceBasedOnRole($auth);
             $message = $this->getLoginSuccessMessage($auth);
 
@@ -151,10 +149,6 @@ class UserService
         return $auth->is_admin == 1 ? 'الحساب غير مفعل يرجى التواصل مع مطور البرنامج' : 'الحساب غير مفعل يرجى التواصل مع مديرك المباشر لتفعيل الحساب';
     }
 
-    protected function updateUserToken($userId, $token): void
-    {
-        $this->userRepository->update($userId, ['access_token' => $token]);
-    }
 
     protected function getResourceBasedOnRole($auth): UserResource|EmployeeResource
     {
@@ -240,9 +234,6 @@ class UserService
     public function logout(): JsonResponse
     {
 
-        $auth = Auth::guard('user-api')->user();
-
-        $this->userRepository->update($auth->id,['access_token' => null]);
 
         if (request()->has('token')) {
             $token = $this->fcmTokenRepository->getByColumn('token',request('token'));

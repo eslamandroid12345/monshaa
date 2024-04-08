@@ -12,7 +12,6 @@ use App\Repository\UserRepositoryInterface;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
-use Tymon\JWTAuth\Facades\JWTAuth;
 
 class CompanyService
 {
@@ -105,11 +104,7 @@ class CompanyService
         $users = $this->userRepository->getAllUsersOfCompany($companyId);
 
         foreach ($users as $user) {
-            if ($user->access_token) {
-                JWTAuth::setToken($user->access_token)->invalidate();
-            }
             $this->userRepository->update($user->id, [
-                'access_token' => null,
                 'is_active' => 0,
             ]);
         }
