@@ -62,14 +62,17 @@ class CompanyService
             $isActive = $request->input('is_active', false);
 
             $this->companyRepository->update($company->id,[
+                'is_package' => $request->one_year == 365 ? 1 : 0,
                 'date_end_subscription' => $date_end_subscription,
                 'number_of_employees' => $numberOfEmployees,
-                'is_active' =>  $isActive
+                'is_active' =>  $isActive,
             ]);
 
             ##### false ########
             if (!$isActive) {
                 $this->deactivateUsers($company->id);
+            }else{
+                $this->activateUsers($company->id);
             }
 
             DB::commit();
@@ -110,6 +113,16 @@ class CompanyService
 
     }
 
+
+    private function activateUsers($companyId): void
+    {
+
+        $users = $this->userRepository->getAllUsersOfCompany($companyId);
+        foreach ($users as $user) {
+            $this->userRepository->update($user->id, ['is_active' => 1]);
+        }
+
+    }
 
     public function destroy($id): RedirectResponse
     {

@@ -49,7 +49,6 @@ class EmployeeService
 
     }
 
-
     public function create(StoreEmployeeRequest $request): JsonResponse
     {
         try {
@@ -74,7 +73,6 @@ class EmployeeService
                return $this->getService->handle(resource: EmployeeGetDataResource::class,repository: $this->employeeRepository,method: 'getById',parameters: [$employee->id],is_instance: true,message:'تم اضافه البيانات بنجاح' );
 
            }else{
-
                return $this->responseFail(null, 411, message: 'لقد نعديت الحد الاقصي لاضافه للموظفين يرجي التواصل مع الادمن !');
            }
 
