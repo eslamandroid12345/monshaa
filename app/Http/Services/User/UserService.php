@@ -234,7 +234,6 @@ class UserService
     public function logout(): JsonResponse
     {
 
-
         if (request()->has('token')) {
             $token = $this->fcmTokenRepository->getByColumn('token',request('token'));
             if ($token) {

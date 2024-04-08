@@ -21,7 +21,7 @@ class UserResource extends JsonResource
             'name' => $this->name,
             'job_title' => 'admin',
             'currency' => $this->company->currency,
-            'user_type' => 'manger',
+            'user_type' => 'manager',
             'company_name' => $this->company->company_name,
             'company_address' => $this->company->company_address,
             'company_phone' => $this->company->company_phone,
