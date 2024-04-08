@@ -19,9 +19,9 @@ class CreateClientsTable extends Migration
             $table->unsignedBigInteger('user_id')->comment('الموظف او المدير العام');
             $table->string('name')->comment('اسم العميل');
             $table->string('phone');
-            $table->string('code');
+            $table->unsignedBigInteger('code')->nullable();
             $table->enum('department',['state_sale','state_rent','land_sale'])->comment('عقارات بيع او عقارات ايجار او ارض بيع');
-            $table->date('inspection_date')->nullable()->comment('تاريخ المعاينه');
+            $table->timestamp('inspection_date')->nullable()->comment('تاريخ المعاينه');
             $table->enum('status',['waiting','inspection','inspection_accepted','inspection_refused'])->default('waiting')->comment('حاله المعاينه');
             $table->text('notes')->comment('الملاحظات')->nullable();
             $table->timestamps();
