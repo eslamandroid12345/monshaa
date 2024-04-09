@@ -40,7 +40,7 @@ class ClientRepository  extends Repository implements ClientRepositoryInterface
             $q->where('inspection_date', '=',request()->input('inspection_date'));
         });
 
-        if(auth('user-api')->is_admin == 1){
+        if(auth('user-api')->user()->is_admin == 1){
             return $query
                 ->latest()
                 ->select(['*'])
