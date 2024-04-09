@@ -37,7 +37,7 @@ class ClientRepository  extends Repository implements ClientRepositoryInterface
 
 
         $query->when(request()->has('inspection_date') && request('inspection_date') != null, function ($q)  {
-            $q->where('inspection_date', '=',request()->input('inspection_date'));
+            $q->whereDate('inspection_date', '=',request()->input('inspection_date'));
         });
 
         if(auth('user-api')->user()->is_admin == 1){
