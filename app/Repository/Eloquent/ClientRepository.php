@@ -40,13 +40,24 @@ class ClientRepository  extends Repository implements ClientRepositoryInterface
             $q->where('inspection_date', '=',request()->input('inspection_date'));
         });
 
-        return $query
-            ->latest()
-            ->select(['*'])
-            ->with(['user','company'])
-            ->where('company_id','=',companyId())
-            ->where('user_id','=',employeeId())
-            ->paginate(16);
+        if(auth('user-api')->is_admin == 1){
+            return $query
+                ->latest()
+                ->select(['*'])
+                ->with(['user','company'])
+                ->where('company_id','=',companyId())
+                ->paginate(16);
+
+
+        }else{
+            return $query
+                ->latest()
+                ->select(['*'])
+                ->with(['user','company'])
+                ->where('company_id','=',companyId())
+                ->where('user_id','=',employeeId())
+                ->paginate(16);
+        }
 
 
     }
