@@ -37,7 +37,7 @@ class UserService
 
     protected GetService $getService;
 
-    public function __construct( FcmTokenRepositoryInterface $fcmTokenRepository,UserRepositoryInterface $userRepository,FileManagerService $fileManagerService,CompanyRepositoryInterface $companyRepository,GetService $getService)
+    public function __construct(FcmTokenRepositoryInterface $fcmTokenRepository,UserRepositoryInterface $userRepository,FileManagerService $fileManagerService,CompanyRepositoryInterface $companyRepository,GetService $getService)
     {
         $this->fcmTokenRepository = $fcmTokenRepository;
         $this->userRepository = $userRepository;

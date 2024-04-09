@@ -43,7 +43,7 @@ class HomePageAdminResource extends JsonResource
                 [
                     'key' => 'shops',
                     'name' => 'العملاء',
-                    'icon' => 'images/people.png',
+                    'icon' => 'images/employees.png',
                     'count' =>  $this->company->clients_count
                 ],
 

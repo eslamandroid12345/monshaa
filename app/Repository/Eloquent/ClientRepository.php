@@ -45,6 +45,7 @@ class ClientRepository  extends Repository implements ClientRepositoryInterface
             ->select(['*'])
             ->with(['user','company'])
             ->where('company_id','=',companyId())
+            ->where('user_id','=',employeeId())
             ->paginate(16);
 
 

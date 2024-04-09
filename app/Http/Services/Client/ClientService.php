@@ -66,9 +66,7 @@ class ClientService
 
     }
 
-
     public function create(ClientRequest $request): JsonResponse{
-
 
         try {
 

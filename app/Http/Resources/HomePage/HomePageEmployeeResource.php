@@ -223,7 +223,7 @@ class HomePageEmployeeResource extends JsonResource
             [
                 'key' => 'clients',
                 'name' => 'العملاء',
-                'icon' => 'images/people.png',
+                'icon' => 'images/employees.png',
                 'count' =>  $this->company->clients_count
             ],
 
