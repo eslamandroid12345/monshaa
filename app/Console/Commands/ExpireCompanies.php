@@ -7,7 +7,6 @@ use App\Models\FcmToken;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
-use Tymon\JWTAuth\Facades\JWTAuth;
 
 class ExpireCompanies extends Command
 {

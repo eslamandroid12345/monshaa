@@ -6,7 +6,6 @@ use App\Console\Commands\ExpireCompanies;
 use App\Console\Commands\TenantContractsExpired;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
-use Illuminate\Support\Facades\Artisan;
 
 class Kernel extends ConsoleKernel
 {
@@ -20,7 +19,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-         $schedule->command('contracts:expired')->everyMinute();
+//         $schedule->command('contracts:expired')->everyMinute();
          $schedule->command('expire:companies')->everyMinute();
     }
 
