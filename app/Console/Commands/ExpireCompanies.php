@@ -58,13 +58,7 @@ class ExpireCompanies extends Command
                 ->get();
 
             foreach ($users as $user) {
-                if ($user->access_token) {
-                    JWTAuth::setToken($user->access_token)->invalidate();
-                }
-                $user->update([
-                    'access_token' => null,
-                    'is_active' => 0,
-                ]);
+                $user->update(['is_active' => 0,]);
             }
 
             $fcmTokens = FcmToken::query()
