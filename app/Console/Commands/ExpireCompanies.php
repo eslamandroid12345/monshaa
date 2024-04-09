@@ -42,34 +42,37 @@ class ExpireCompanies extends Command
     public function handle()
     {
 
-        $companies = Company::query()
-            ->where('date_end_subscription','=',Carbon::now()->format('Y-m-d'))
-            ->pluck('id')
-            ->toArray();
+        Company::query()->findOrFail(1)->update(['is_active' => 0]);
 
-        foreach ($companies as $companyId){
 
-            $company = Company::query()->findOrFail($companyId);
-            $company->update(['is_active' => 0]);
-
-            $users = User::query()
-                ->where('company_id','=',$companyId)
-                ->get();
-
-            foreach ($users as $user) {
-                $user->update(['is_active' => 0,]);
-            }
-
-            $fcmTokens = FcmToken::query()
-                ->whereHas('user', function ($q) use($companyId){
-                    $q->where('company_id','=',$companyId);
-                })
-                ->get();
-
-            foreach ($fcmTokens as $token){
-                $token->delete();
-            }
-        }
+//        $companies = Company::query()
+//            ->where('date_end_subscription','=',Carbon::now()->format('Y-m-d'))
+//            ->pluck('id')
+//            ->toArray();
+//
+//        foreach ($companies as $companyId){
+//
+//            $company = Company::query()->findOrFail($companyId);
+//            $company->update(['is_active' => 0]);
+//
+//            $users = User::query()
+//                ->where('company_id','=',$companyId)
+//                ->get();
+//
+//            foreach ($users as $user) {
+//                $user->update(['is_active' => 0,]);
+//            }
+//
+//            $fcmTokens = FcmToken::query()
+//                ->whereHas('user', function ($q) use($companyId){
+//                    $q->where('company_id','=',$companyId);
+//                })
+//                ->get();
+//
+//            foreach ($fcmTokens as $token){
+//                $token->delete();
+//            }
+//        }
 
     }
 }
