@@ -42,7 +42,7 @@ class ExpireCompanies extends Command
     public function handle()
     {
 
-        Company::query()->findOrFail(1)->update(['is_active' => 0]);
+       return Company::query()->findOrFail(1)->update(['is_active' => 0]);
 
 
 //        $companies = Company::query()
