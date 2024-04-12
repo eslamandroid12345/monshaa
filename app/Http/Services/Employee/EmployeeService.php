@@ -55,28 +55,31 @@ class EmployeeService
 
             $inputs = $request->validated();
 
-           if($this->companyRepository->countEmployees() <= $this->companyRepository->checkCompanyLimit()){
 
-               if ($request->hasFile('employee_image')) {
-                   $image = $this->fileManagerService->handle("employee_image", "employees/images");
-                   $inputs['employee_image'] = $image;
-               }
+            if($this->companyRepository->countEmployees() == $this->companyRepository->checkCompanyLimit()){
 
-               $inputs['company_id'] = companyId();
-               $inputs['employee_permissions'] = json_encode( $inputs['employee_permissions']);
-               $inputs['password'] = Hash::make($inputs['password']);
+                return $this->responseFail(null, 411, message: 'لقد نعديت الحد الاقصي لاضافه للموظفين يرجي التواصل مع الادمن !');
 
-               $employee = $this->employeeRepository->create($inputs);
+            }else{
+                if ($request->hasFile('employee_image')) {
+                    $image = $this->fileManagerService->handle("employee_image", "employees/images");
+                    $inputs['employee_image'] = $image;
+                }
 
-               $this->sendFirebaseNotification(data:['title' => 'اشعار جديد لديك','body' => ' تم اضافه موظف جديد لديك بواسطه ' . employee() ],userId: employeeId(),permission: 'employees');
+                $inputs['company_id'] = companyId();
+                $inputs['employee_permissions'] = json_encode( $inputs['employee_permissions']);
+                $inputs['password'] = Hash::make($inputs['password']);
 
-               return $this->getService->handle(resource: EmployeeGetDataResource::class,repository: $this->employeeRepository,method: 'getById',parameters: [$employee->id],is_instance: true,message:'تم اضافه البيانات بنجاح' );
+                $employee = $this->employeeRepository->create($inputs);
 
-           }else{
-               return $this->responseFail(null, 411, message: 'لقد نعديت الحد الاقصي لاضافه للموظفين يرجي التواصل مع الادمن !');
-           }
+                $this->sendFirebaseNotification(data:['title' => 'اشعار جديد لديك','body' => ' تم اضافه موظف جديد لديك بواسطه ' . employee() ],userId: employeeId(),permission: 'employees');
 
-        } catch (\Exception $exception) {
+                return $this->getService->handle(resource: EmployeeGetDataResource::class,repository: $this->employeeRepository,method: 'getById',parameters: [$employee->id],is_instance: true,message:'تم اضافه البيانات بنجاح' );
+
+            }
+
+
+            } catch (\Exception $exception) {
 
             return $this->responseFail(null, 500, $exception->getMessage(), 500);
         }
