@@ -142,7 +142,7 @@ class Company extends Model
     public function employeesCount() : Attribute {
         return Attribute::get(
             get: function () {
-                return $this->employees()->count();
+                return $this->employees()->where('is_admin','=',0)->count();
             }
         );
     }
