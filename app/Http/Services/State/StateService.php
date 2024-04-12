@@ -117,6 +117,8 @@ class StateService
 
             Gate::authorize('check-company-auth',$state);
 
+            Gate::authorize('check-user-auth',$state);
+
             $inputs = $request->validated();
 
             $this->stateRepository->update($state->id,$inputs);
@@ -131,7 +133,7 @@ class StateService
 
         } catch (AuthorizationException $exception){
 
-            return $this->responseFail(null, 403, 'غير مصرح لك للدخول لذلك الصفحه',403);
+            return $this->responseFail(null, 403, 'ليس لديك صلاحيه علي هذا',403);
 
         } catch (\Exception $e) {
 
@@ -183,11 +185,17 @@ class StateService
 
             Gate::authorize('check-company-auth',$state);
 
+            Gate::authorize('check-user-auth',$state);
+
             $this->deleteExistingImages($state);
 
             $this->stateRepository->delete($state->id);
 
             return $this->responseSuccess(null, 200, 'تم حذف بيانات العقار  بنجاح');
+
+        } catch (AuthorizationException $exception){
+
+            return $this->responseFail(null, 403, 'ليس لديك صلاحيه علي هذا',403);
 
         } catch (ModelNotFoundException $exception){
 

@@ -29,7 +29,14 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('check-company-auth', function ($user,$model) {
             return $user->company_id == $model->company_id
                 ? Response::allow()
-                : Response::deny('You must not allowed this page');
+                : Response::deny('ليس لديك صلاحيه علي هذا');
+        });
+
+
+        Gate::define('check-user-auth', function ($user,$model) {
+            return $user->id == $model->user_id || $user->is_admin == 1
+                ? Response::allow()
+                : Response::deny('ليس لديك صلاحيه علي هذا');
         });
 
 

@@ -120,6 +120,8 @@ class LandService
 
             Gate::authorize('check-company-auth',$land);
 
+            Gate::authorize('check-user-auth',$land);
+
             $inputs = $request->validated();
 
             $this->landRepository->update($land->id, $inputs);
@@ -134,7 +136,8 @@ class LandService
             return $this->responseFail(null, 404, 'بيانات الارض غير موجوده', 404);
 
         } catch (AuthorizationException $exception){
-            return $this->responseFail(null, 403, 'غير مصرح لك للدخول لذلك الصفحه',403);
+
+            return $this->responseFail(null, 403, 'ليس لديك صلاحيه علي هذا',403);
 
         } catch (\Exception $e) {
             return $this->responseFail(null, 500, 'يوجد خطاء ما في بيانات الارسال بالسيرفر', 500);
@@ -206,6 +209,8 @@ class LandService
 
             Gate::authorize('check-company-auth',$land);
 
+            Gate::authorize('check-user-auth',$land);
+
             $this->deleteExistingImages($land);
 
             $this->landRepository->delete($land->id);
@@ -218,7 +223,7 @@ class LandService
 
         }catch (AuthorizationException $exception){
 
-            return $this->responseFail(null, 403, 'غير مصرح لك للدخول لذلك الصفحه',403);
+            return $this->responseFail(null, 403, 'ليس لديك صلاحيه علي هذا',403);
 
         }
     }

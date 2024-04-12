@@ -40,7 +40,6 @@ class ExpenseService
         } catch (\Exception $e) {
             return $this->responseFail(null, 500, 'يوجد خطاء ما في بيانات الارسال بالسيرفر', 500);
 
-
         }
 
     }
@@ -74,11 +73,17 @@ class ExpenseService
             $inputs['user_id'] = employeeId();
 
             $expense = $this->expenseRepository->create($inputs);
-            $this->sendFirebaseNotification(data:['title' => 'اشعار جديد لديك','body' => ' تم اضافه مصروف جديد لديك بواسطه '. employee() ],userId: employeeId(),permission: 'expenses');
+
+            $messageFirebase = $expense->type == 'expense' ? ' تم اضافه مصروف جديد لديك بواسطه ': ' تم اضافه ايراد جديد لديك بواسطه ';
+
+            $permission =  $expense->type == 'expense' ? 'expenses' : 'revenue';
+
+            $this->sendFirebaseNotification(data:['title' => 'اشعار جديد لديك','body' => $messageFirebase . employee() ],userId: employeeId(),permission: $permission);
 
             return $this->getService->handle(resource: ExpenseResource::class,repository: $this->expenseRepository,method: 'getById',parameters: [$expense->id],is_instance: true,message:'تم اضافه البيانات بنجاح' );
         }catch (AuthorizationException $exception){
-            return $this->responseFail(null, 403, 'غير مصرح لك للدخول لذلك الصفحه',403);
+
+            return $this->responseFail(null, 403, 'ليس لديك صلاحيه علي هذا',403);
 
         } catch (\Exception $e) {
             return $this->responseFail(null, 500, 'يوجد خطاء ما في بيانات الارسال بالسيرفر', 500);
@@ -95,10 +100,17 @@ class ExpenseService
 
             Gate::authorize('check-company-auth',$expense);
 
+            Gate::authorize('check-user-auth',$expense);
+
             $inputs = $request->validated();
+
             $this->expenseRepository->update($expense->id,$inputs);
 
-            $this->sendFirebaseNotification(data:['title' => 'اشعار جديد لديك','body' => ' تم تعديل مصروف  لديك بواسطه '. employee() ],userId:employeeId(),permission: 'expenses');
+            $messageFirebase = $expense->type == 'expense' ? 'تم تعديل مصروف لديك بواسطه ': 'تم تعديل ايراد لديك بواسطه ';
+
+            $permission =  $expense->type == 'expense' ? 'expenses' : 'revenue';
+
+            $this->sendFirebaseNotification(data:['title' => 'اشعار جديد لديك','body' => $messageFirebase . employee() ],userId:employeeId(),permission: $permission);
 
             return $this->getService->handle(resource: ExpenseResource::class,repository: $this->expenseRepository,method: 'getById',parameters: [$id],is_instance: true,message: 'تم تعديل البيانات بنجاح' );
 
@@ -106,9 +118,9 @@ class ExpenseService
 
             return $this->responseFail(null, 404, 'بيانات المصروف غير موجوده', 404);
 
-        } catch (AuthorizationException $exception){
+        }catch (AuthorizationException $exception){
 
-            return $this->responseFail(null, 403, 'غير مصرح لك للدخول لذلك الصفحه',403);
+            return $this->responseFail(null, 403, 'ليس لديك صلاحيه علي هذا',403);
 
         } catch (\Exception $e) {
 
@@ -144,9 +156,15 @@ class ExpenseService
 
             Gate::authorize('check-company-auth',$expense);
 
-            $this->expenseRepository->delete($expense->id);
+            Gate::authorize('check-user-auth',$expense);
 
-            $this->sendFirebaseNotification(data:['title' => 'اشعار جديد لديك','body' => ' تم حذف مصروف  لديك بواسطه '. employee() ],userId:employeeId(),permission: 'expenses');
+            $messageFirebase = $expense->type == 'expense' ? 'تم حذف مصروف لديك بواسطه ': 'تم حذف ايراد لديك بواسطه ';
+
+            $permission =  $expense->type == 'expense' ? 'expenses' : 'revenue';
+
+            $this->sendFirebaseNotification(data:['title' => 'اشعار جديد لديك','body' => $messageFirebase . employee() ],userId:employeeId(),permission: $permission);
+
+            $this->expenseRepository->delete($expense->id);
 
             return $this->responseSuccess(null, 200, 'تم حذف بيانات المصروف  بنجاح');
 
@@ -156,7 +174,7 @@ class ExpenseService
 
         }catch (AuthorizationException $exception){
 
-            return $this->responseFail(null, 403, 'غير مصرح لك للدخول لذلك الصفحه',403);
+            return $this->responseFail(null, 403, 'ليس لديك صلاحيه علي هذا',403);
 
         }
 
