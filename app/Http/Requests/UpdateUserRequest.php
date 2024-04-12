@@ -57,6 +57,7 @@ class UpdateUserRequest extends FormRequest
             'company_phone.required' => 'هاتف  الشركه العقاريه مطلوب',
             'company_phone.unique' => 'رقم الشركه مسجل لدينا من قبل',
             'company_phone.numeric' => 'رقم هاتف الشركه يجب ان يكون رقم',
+            'password.min' => 'كلمه المرور يجب الا تقل عن 8 ارقام',
         ];
     }
 
