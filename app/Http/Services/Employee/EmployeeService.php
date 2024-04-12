@@ -58,7 +58,7 @@ class EmployeeService
 
             if($this->companyRepository->countEmployees() == $this->companyRepository->checkCompanyLimit()){
 
-                return $this->responseFail(null, 411, message: 'لقد نعديت الحد الاقصي لاضافه للموظفين يرجي التواصل مع الادمن !');
+                return $this->responseFail(null, 411, message: 'لقد تعديت الحد الاقصي لاضافه للموظفين يرجي التواصل مع الادمن !');
 
             }else{
                 if ($request->hasFile('employee_image')) {
