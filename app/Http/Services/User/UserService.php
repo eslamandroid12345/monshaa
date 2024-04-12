@@ -86,7 +86,6 @@ class UserService
         $userData['is_admin'] = 1;
         $userData['password'] = Hash::make($userData['password']);
 
-
         return $this->userRepository->create($userData);
     }
 

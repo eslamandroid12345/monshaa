@@ -16,4 +16,6 @@ class AdminRepository  extends Repository implements AdminRepositoryInterface
         parent::__construct($model);
     }
 
+
+
 }

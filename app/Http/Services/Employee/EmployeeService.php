@@ -45,7 +45,7 @@ class EmployeeService
     public function getAllEmployees(): JsonResponse
     {
 
-        return $this->getService->handle(resource: EmployeeGetDataResource::class,repository: $this->employeeRepository,method: 'getByTwoColumns',parameters: ['company_id',companyId(),'is_admin',0],message:'تم جلب جميع الموظفين التابعه للشركه العقاريه بنجاح',dataType: 'get');
+        return $this->getService->handle(resource: EmployeeGetDataResource::class,repository: $this->employeeRepository,method: 'listOfCompanyEmployees',message:'تم جلب جميع الموظفين التابعه للشركه العقاريه بنجاح',dataType: 'get');
 
     }
 

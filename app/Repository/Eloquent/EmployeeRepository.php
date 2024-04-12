@@ -28,4 +28,25 @@ class EmployeeRepository extends Repository implements EmployeeRepositoryInterfa
             ->get();
     }
 
+    public function listOfCompanyEmployees(): \Illuminate\Database\Eloquent\Collection|array
+    {
+
+        $query = $this->model::query();
+
+        $query->when(request()->has('phone') && request('phone') != null, function ($q)  {
+            $q->where('phone', '=',request()->input('phone'));
+        });
+
+        $query->when(request()->has('card_number') && request('card_number') != null, function ($q)  {
+            $q->where('card_number', '=',request()->input('card_number'));
+        });
+
+        return $query
+        ->latest()
+            ->with(['company'])
+            ->where('company_id','=',companyId())
+            ->where('is_admin','=',0)
+            ->get();
+    }
+
 }
