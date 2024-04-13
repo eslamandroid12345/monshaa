@@ -21,6 +21,7 @@ class UserResource extends JsonResource
             'name' => $this->name,
             'job_title' => 'admin',
             'currency' => $this->company->currency,
+            'permissions' => $this->getAllPermissions(),
             'user_type' => 'manager',
             'company_name' => $this->company->company_name,
             'company_address' => $this->company->company_address,
@@ -36,5 +37,34 @@ class UserResource extends JsonResource
     }
 
 
+    private function getAllPermissions(): array
+    {
+
+        return [
+            "states",
+            "selling_states",
+            "tenant_states",
+            "lands",
+            "tenants",
+            "tenant_contracts",
+            "financial_receipt",
+            "financial_cash",
+            "expenses",
+            "employees",
+            "reports",
+            "notifications",
+            "technical_support",
+            "expired_contracts",
+            "profits",
+            "revenue",
+            "clients",
+            "setting",
+            "home_page"
+        ];
+    
+
+    }
+
+    
 
 }

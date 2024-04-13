@@ -140,8 +140,6 @@ class CashService
     }
 
 
-
-
     public function delete($id): JsonResponse
     {
         try {

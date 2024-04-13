@@ -22,6 +22,7 @@ class EmployeeResource extends JsonResource
             'name' => $this->name,
             'job_title' => $this->job_title,
             'currency' => $this->company->currency,
+            'permissions' => $this->getAllPermissions(),
             'user_type' => 'employee',
             'company_name' => $this->company->company_name,
             'company_phone' => $this->company->company_phone,
@@ -33,6 +34,21 @@ class EmployeeResource extends JsonResource
             'updated_at' => $this->updated_at->format('Y-m-d'),
 
         ];
+    }
+
+
+    private function getAllPermissions(): array
+    {
+
+        $permissions = [];
+        foreach (json_decode($this->employee_permissions,true) as $permission) {
+            $permissions[] = $permission;
+        }
+        $permissions[] = 'setting';
+        $permissions[] = 'home_page';
+
+        return $permissions;
+
     }
 
 }
