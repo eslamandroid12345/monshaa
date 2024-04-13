@@ -40,14 +40,14 @@ class TenantContract extends Model
     public function receipts(): HasMany
     {
 
-        return $this->hasMany(Receipt::class,'tenant_contract_id','id');
+        return $this->hasMany(Receipt::class,'tenant_contract_id','id')->latest();
     }
 
 
     public function cashes(): HasMany
     {
 
-        return $this->hasMany(Cash::class,'tenant_contract_id','id');
+        return $this->hasMany(Cash::class,'tenant_contract_id','id')->latest();
     }
 
 
