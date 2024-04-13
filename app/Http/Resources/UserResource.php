@@ -50,7 +50,6 @@ class UserResource extends JsonResource
             "financial_cash",
             "expenses",
             "employees",
-            "reports",
             "notifications",
             "technical_support",
             "expired_contracts",
