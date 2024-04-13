@@ -111,14 +111,14 @@ Route::middleware('check-status')->group(function (){
     });
 
 
-    Route::group(['prefix' => 'reports','middleware' => ['jwt','permission:reports']], function (){
+    Route::group(['prefix' => 'reports','middleware' => 'jwt'], function (){
 
-        Route::get('states',[ReportController::class,'states']);
-        Route::get('lands',[ReportController::class,'lands']);
-        Route::get('tenant-contracts',[ReportController::class,'tenantContracts']);
-        Route::get('revenues',[ReportController::class,'revenues']);
-        Route::get('expenses',[ReportController::class,'expenses']);
-        Route::get('profits',[ReportController::class,'profits']);
+        Route::get('states',[ReportController::class,'states'])->middleware('permission:states');
+        Route::get('lands',[ReportController::class,'lands'])->middleware('permission:lands');
+        Route::get('tenant-contracts',[ReportController::class,'tenantContracts'])->middleware('permission:tenant_contracts');
+        Route::get('revenues',[ReportController::class,'revenues'])->middleware('permission:revenue');
+        Route::get('expenses',[ReportController::class,'expenses'])->middleware('permission:expenses');
+        Route::get('profits',[ReportController::class,'profits'])->middleware('permission:profits');
 
     });
 

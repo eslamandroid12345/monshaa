@@ -39,7 +39,7 @@ class HomePageEmployeeResource extends JsonResource
         foreach ($sidebars as $sidebar){
             if(in_array($sidebar['key'],json_decode($this->employee_permissions,true) )){
                 $permissions[] = $sidebar;
-            }else if($sidebar['key'] === 'home_page' || $sidebar['key'] === 'setting'){
+            }else if($sidebar['key'] === 'home_page' || $sidebar['key'] === 'setting' || $sidebar['key'] === 'reports'){
                 $permissions[] = $sidebar;
             }
         }
