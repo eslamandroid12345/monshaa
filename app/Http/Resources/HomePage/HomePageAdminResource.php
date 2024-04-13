@@ -22,8 +22,6 @@ class HomePageAdminResource extends JsonResource
             'user_type' => 'admin',
             'company_name' => $this->company->company_name,
             'sidebar' => $this->sidebarPermissions(),
-
-
             'home' =>  [
 
                 [

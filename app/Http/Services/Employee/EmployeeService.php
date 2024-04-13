@@ -85,13 +85,12 @@ class EmployeeService
     }
 
 
-
     public function update($id,UpdateEmployeeRequest $request): JsonResponse
     {
 
         try {
 
-        $employee = $this->employeeRepository->getByIdWithCondition($id,'is_admin',0);
+         $employee = $this->employeeRepository->getByIdWithCondition($id,'is_admin',0);
 
             Gate::authorize('check-company-auth',$employee);
 
@@ -107,6 +106,8 @@ class EmployeeService
                 : null;
 
             $inputs['password'] = Hash::make($inputs['password']);
+            $inputs['is_active'] = $request->is_active ?? $employee->is_active;
+
 
           $this->employeeRepository->update($employee->id,$inputs);
 

@@ -221,7 +221,7 @@ class UserService
         $requestOfCompany = $request->only('company_phone','company_name','company_address','logo','currency');
 
         if ($request->hasFile('logo')) {
-            $image = $this->fileManagerService->handle("logo", "users/images",$user->logo);
+            $image = $this->fileManagerService->handle("logo","users/images",$user->logo);
             $requestOfCompany['logo'] = $image;
         }
 

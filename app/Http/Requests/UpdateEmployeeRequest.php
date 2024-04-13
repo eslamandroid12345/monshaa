@@ -32,6 +32,7 @@ class UpdateEmployeeRequest extends FormRequest
             'password' => 'required|min:8',
             'employee_address' => 'required',
             'card_number' => 'required|numeric',
+            'is_active' => 'nullable|boolean',
             'employee_permissions' => 'required|array|in:states,lands,employees,expenses,tenants,tenant_contracts,notifications,financial_receipt,financial_cash,technical_support,expired_contracts,revenues,profits,tenant_states,selling_states,profits,revenue,clients',
         ];
     }
@@ -53,6 +54,7 @@ class UpdateEmployeeRequest extends FormRequest
             'password.required' => 'كلمه المرور مطلوبه',
             'password.min' => 'كلمه المرور يجب ان لا تقل عن 8 احرف وارقام',
             'employee_image.mimes' => 'الصوره يحب ان تكون jpeg,png,jpg',
+            'is_active.boolean' => 'حقل تفعيل الموظف يجب ان يحتوي علي 0 او 1 وليس شئ اخر',
             'employee_permissions.required' => 'يرجي ادخال صلاحيات للموظف',
             'employee_permissions.array' => 'صلاحيات الموظف يجب ان تكون مصفوفه',
             'employee_permissions.in' => 'states,lands,employees,expenses,tenants,tenant_contracts,notifications,financial_receipt,financial_cash,technical_support,revenues,profits,tenant_stats,selling_states,profits,revenue,clients صلاحيات الموظف يجب ان تحتوي علي هذه الشاشات ',

@@ -124,7 +124,7 @@ Route::middleware('check-status')->group(function (){
 
     Route::group(['prefix' => 'technical_support','middleware' => ['jwt','permission:technical_support']], function (){
 
-        Route::post('create',[TechnicalSupportController::class,'create']);//add
+        Route::post('create',[TechnicalSupportController::class,'create']);
     });
 
     Route::group(['prefix' => 'expenses','middleware' => ['jwt','permission:expenses']], function (){
