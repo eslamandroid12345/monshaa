@@ -21,7 +21,7 @@ class Company extends Model
                 if ($value !== null) {
                     return url($value);
                 }
-                return url('logo/logo.PNG');
+                return url('logo/logo.jpg');
             }
         );
     }
