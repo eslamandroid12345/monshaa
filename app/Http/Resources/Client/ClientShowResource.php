@@ -23,7 +23,7 @@ class ClientShowResource extends JsonResource
             'department' => $this->department,
             'phone' => $this->phone,
             'inspection_date' => $this->inspection_date,
-            'inspection_time' => $this->inspection_time,
+            'inspection_time' => $this->inspection_time->format('H:i'),
             'notes' => $this->notes,
             'status' => $this->status,
 

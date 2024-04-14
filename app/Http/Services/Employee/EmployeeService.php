@@ -155,9 +155,10 @@ class EmployeeService
         DB::beginTransaction();
         try {
 
-        $employee = $this->employeeRepository->getByIdWithCondition($id,'is_admin',0);
+           $employee = $this->employeeRepository->getByIdWithCondition($id,'is_admin',0);
 
             Gate::authorize('check-company-auth',$employee);
+            
             $this->employeeRepository->update($employee->id,$request->validated());
 
            $this->employeeRepository->update($employee->id,['access_token' => null]);

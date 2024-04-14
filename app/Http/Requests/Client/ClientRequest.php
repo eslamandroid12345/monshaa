@@ -46,7 +46,7 @@ class ClientRequest extends FormRequest
             'department.in' => 'قيمة حقل القسم غير صالحة.',
             'inspection_date.date' => 'يجب أن يكون حقل تاريخ المعاينه تاريخًا صحيحًا.',
             'inspection_date.date_format' => 'تنسيق تاريخ المعاينه غير صالح. يجب أن يكون بتنسيق: Y-m-d.',
-            'inspection_time.date_format' => 'تنسيق تاريخ المعاينه غير صالح. يجب أن يكون بتنسيق: H:i.',
+            'inspection_time.date_format' => 'تنسيق تاريخ وقت المعاينه غير صالح. يجب أن يكون بتنسيق: H:i.',
             'status.in' => 'القيمة المدخلة في حقل الحالة غير صالحة.',
 
         ];
