@@ -22,13 +22,13 @@ class ReceiptResource extends JsonResource
                 'phone' => $this->user->phone,
             ],
 
-            'owner' => [
-                'name' => $this->tenant_contract->owner_name,
-                'phone' => $this->tenant_contract->owner_phone,
-                'card_number' => $this->tenant_contract->owner_card_number,
-                'address' => $this->tenant_contract->owner_card_address,
-                'job_title' => $this->tenant_contract->owner_job_title,
-                'nationality' => $this->tenant_contract->owner_nationality,
+            'tenant' => [
+                'name' => $this->tenant_contract->tenant->name,
+                'phone' => $this->tenant_contract->tenant->phone,
+                'card_number' => $this->tenant_contract->tenant->card_number,
+                'card_address' => $this->tenant_contract->tenant->card_address,
+                'job_title' => $this->tenant_contract->tenant->job_title,
+                'nationality' => $this->tenant_contract->tenant->nationality,
             ],
 
             'state' => [
