@@ -21,6 +21,25 @@ class ReceiptResource extends JsonResource
                 'name' => $this->user->name,
                 'phone' => $this->user->phone,
             ],
+
+            'owner' => [
+                'name' => $this->tenant_contract->owner_name,
+                'phone' => $this->tenant_contract->owner_phone,
+                'card_number' => $this->tenant_contract->owner_card_number,
+                'address' => $this->tenant_contract->owner_card_address,
+                'job_title' => $this->tenant_contract->owner_job_title,
+                'nationality' => $this->tenant_contract->owner_nationality,
+            ],
+
+            'state' => [
+                'real_state_type' => $this->tenant_contract->real_state_type,
+                'space' => $this->tenant_contract->real_state_space,
+                'address_details' => $this->tenant_contract->real_state_address,
+                'building_number' => $this->tenant_contract->building_number,
+                'apartment_number' => $this->tenant_contract->apartment_number,
+                'contract_total' => $this->tenant_contract->contract_total,
+                'insurance_total' => $this->tenant_contract->insurance_total,
+            ],
             'owner_name' => $this->tenant_contract->owner_name,
             'owner_phone' => $this->tenant_contract->owner_phone,
             'total_amount' => $this->total_amount,

@@ -241,7 +241,6 @@ class UserService
         }
 
         auth('user-api')->logout();
-
         return $this->responseSuccess(null, 200, 'تم تسجيل الخروج بنجاح');
 
     }
