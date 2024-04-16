@@ -32,7 +32,7 @@ class ExpenseController extends Controller
     }
 
 
-    public function create(StoreExpenseRequest $request): JsonResponse{
+    public function create(StoreExpenseRequest $request){
 
         return  $this->expenseService->create($request);
 

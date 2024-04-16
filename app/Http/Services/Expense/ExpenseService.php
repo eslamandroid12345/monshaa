@@ -62,7 +62,7 @@ class ExpenseService
     }
 
 
-    public function create(StoreExpenseRequest $request): JsonResponse{
+    public function create(StoreExpenseRequest $request){
 
 
         try {
@@ -78,15 +78,15 @@ class ExpenseService
 
             $permission =  $expense->type == 'expense' ? 'expenses' : 'revenue';
 
-            $this->sendFirebaseNotification(data:['title' => 'اشعار جديد لديك','body' => $messageFirebase . employee() ],userId: employeeId(),permission: $permission);
+           return $this->sendFirebaseNotification(data:['title' => 'اشعار جديد لديك','body' => $messageFirebase . employee() ],userId: employeeId(),permission: $permission);
 
-            return $this->getService->handle(resource: ExpenseResource::class,repository: $this->expenseRepository,method: 'getById',parameters: [$expense->id],is_instance: true,message:'تم اضافه البيانات بنجاح' );
+//            return $this->getService->handle(resource: ExpenseResource::class,repository: $this->expenseRepository,method: 'getById',parameters: [$expense->id],is_instance: true,message:'تم اضافه البيانات بنجاح' );
         }catch (AuthorizationException $exception){
 
             return $this->responseFail(null, 403, 'ليس لديك صلاحيه علي هذا',403);
 
         } catch (\Exception $e) {
-            return $this->responseFail(null, 500, 'يوجد خطاء ما في بيانات الارسال بالسيرفر', 500);
+            return $this->responseFail(null, 500, $e->getMessage(), 500);
 
         }
     }

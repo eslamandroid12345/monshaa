@@ -18,8 +18,6 @@ class CreateNotificationsTable extends Migration
             $table->unsignedBigInteger('company_id')->comment('الشركه');
             $table->string('title');
             $table->text('body');
-            $table->unsignedBigInteger('model_id')->nullable();
-            $table->enum('model_type',['STATE','LAND','CASH','RECEIPT','EXPENSE','REVENUE','CONTRACT','CLIENT','CONTRACT_EXPIRE','EMPLOYEE','TECHNICAL_SUPPORT'])->nullable();
             $table->foreign('company_id')->references('id')->on('companies')->cascadeOnUpdate()->cascadeOnDelete();
             $table->timestamps();
         });
