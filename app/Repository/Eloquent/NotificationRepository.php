@@ -28,6 +28,7 @@ class NotificationRepository extends Repository implements NotificationRepositor
         return $this->model::query()
             ->latest()
             ->where('company_id','=',companyId())
+            ->whereRelation('notificationViews','user_id','=',employeeId())
             ->paginate(16);
     }
 }
