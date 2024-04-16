@@ -78,9 +78,9 @@ class ExpenseService
 
             $permission =  $expense->type == 'expense' ? 'expenses' : 'revenue';
 
-           return $this->sendFirebaseNotification(data:['title' => 'اشعار جديد لديك','body' => $messageFirebase . employee() ],userId: employeeId(),permission: $permission);
+            $this->sendFirebaseNotification(data:['title' => 'اشعار جديد لديك','body' => $messageFirebase . employee() ],userId: employeeId(),permission: $permission);
 
-//            return $this->getService->handle(resource: ExpenseResource::class,repository: $this->expenseRepository,method: 'getById',parameters: [$expense->id],is_instance: true,message:'تم اضافه البيانات بنجاح' );
+            return $this->getService->handle(resource: ExpenseResource::class,repository: $this->expenseRepository,method: 'getById',parameters: [$expense->id],is_instance: true,message:'تم اضافه البيانات بنجاح' );
         }catch (AuthorizationException $exception){
 
             return $this->responseFail(null, 403, 'ليس لديك صلاحيه علي هذا',403);

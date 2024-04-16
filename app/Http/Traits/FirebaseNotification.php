@@ -13,7 +13,7 @@ trait FirebaseNotification
     private $serverKey = 'AAAAxbaq9XA:APA91bGEIOCAkAg4h9BD7vjWrmR9rFOFzmYNQemiyt1R0a3WyiCLaKzLFVj5vMqtknsNTjGpfCbkG7FSUx_ZxffY9gFKuF7z-SBYLCLzXQqlxV9HAQSgWu1a2o9i7lHqTSW5szy0lg4-';
 
 
-    public function sendFirebaseNotification($data, $userId,$permission)
+    public function sendFirebaseNotification($data, $userId,$permission): bool
     {
         $user = User::query()->findOrFail($userId);
 
