@@ -66,7 +66,17 @@ class EmployeeService
                 }
 
                 $inputs['company_id'] = companyId();
-                $inputs['employee_permissions'] = json_encode( $inputs['employee_permissions']);
+
+                $defaultPermissionsAssignToEmployee = ['home_page', 'setting', 'reports', 'notifications'];
+
+                $employeePermissions = is_string($inputs['employee_permissions'])
+                    ? json_decode($inputs['employee_permissions'], true)
+                    : $inputs['employee_permissions'];
+
+                $mergedPermissions = array_unique(array_merge($defaultPermissionsAssignToEmployee, $employeePermissions));
+
+                $inputs['employee_permissions'] = json_encode($mergedPermissions);
+
                 $inputs['password_show'] = $inputs['password'];
                 $inputs['password'] = Hash::make($inputs['password']);
 

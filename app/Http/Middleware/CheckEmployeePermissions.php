@@ -30,8 +30,6 @@ class CheckEmployeePermissions
 
                 $array[] = $per;
             }
-            $array[] = 'home_page';
-            $array[] = 'setting';
 
             if(!in_array($permission,$array)) {
 

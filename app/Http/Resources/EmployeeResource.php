@@ -44,9 +44,6 @@ class EmployeeResource extends JsonResource
         foreach (json_decode($this->employee_permissions,true) as $permission) {
             $permissions[] = $permission;
         }
-        $permissions[] = 'setting';
-        $permissions[] = 'home_page';
-
         return $permissions;
 
     }

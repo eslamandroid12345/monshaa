@@ -40,7 +40,6 @@ class CompanyService
 
     }
 
-
     public function show($id): JsonResponse{
 
         return $this->getService->handle(resource: CompanyResource::class,repository: $this->companyRepository, method: 'getById',parameters: [$id], is_instance: true, message: 'تم الحصول على بيانات الشركه بنجاح');
@@ -67,7 +66,6 @@ class CompanyService
 
             if(companyId() == $company->id && $isActive == 0){
                 return $this->responseFail(null, 417,'غير مسموح لك باغلاق نسختك ايها المشرف');
-
             }
 
             $this->companyRepository->update($company->id,[
