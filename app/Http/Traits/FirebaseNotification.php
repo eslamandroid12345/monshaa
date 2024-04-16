@@ -57,7 +57,7 @@ trait FirebaseNotification
     {
         $ids = [];
         foreach ($users as $user){
-            if ($user->is_admin == 0 && !in_array($permission, json_decode($user->employee_permissions, true))) {
+            if ($user->is_admin === 0 && !in_array($permission, json_decode($user->employee_permissions, true))) {
                 $ids[] =  User::query()
                     ->where('company_id', $user->company_id)
                     ->where('id','!=',$user->id)
