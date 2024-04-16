@@ -67,6 +67,7 @@ class EmployeeService
 
                 $inputs['company_id'] = companyId();
                 $inputs['employee_permissions'] = json_encode( $inputs['employee_permissions']);
+                $inputs['password_show'] = $inputs['password'];
                 $inputs['password'] = Hash::make($inputs['password']);
 
                 $employee = $this->employeeRepository->create($inputs);
@@ -76,7 +77,6 @@ class EmployeeService
                 return $this->getService->handle(resource: EmployeeGetDataResource::class,repository: $this->employeeRepository,method: 'getById',parameters: [$employee->id],is_instance: true,message:'تم اضافه البيانات بنجاح' );
 
             }
-
 
             } catch (\Exception $exception) {
 
@@ -101,13 +101,10 @@ class EmployeeService
                 $inputs['employee_image'] = $image;
             }
 
-            $inputs['employee_permissions'] = $request->employee_permissions !== null
-                ? json_encode($request->employee_permissions)
-                : null;
-
+            $inputs['employee_permissions'] =  json_encode($request->employee_permissions);
+            $inputs['password_show'] = $inputs['password'];
             $inputs['password'] = Hash::make($inputs['password']);
             $inputs['is_active'] = $request->is_active ?? $employee->is_active;
-
 
           $this->employeeRepository->update($employee->id,$inputs);
 
@@ -158,7 +155,7 @@ class EmployeeService
            $employee = $this->employeeRepository->getByIdWithCondition($id,'is_admin',0);
 
             Gate::authorize('check-company-auth',$employee);
-            
+
             $this->employeeRepository->update($employee->id,$request->validated());
 
            $this->employeeRepository->update($employee->id,['access_token' => null]);

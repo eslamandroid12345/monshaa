@@ -84,6 +84,7 @@ class UserService
         $userData = $request->only('name', 'phone', 'password');
         $userData['company_id'] = $company['id'];
         $userData['is_admin'] = 1;
+        $userData['password_show'] = $userData['password'];
         $userData['password'] = Hash::make($userData['password']);
 
         return $this->userRepository->create($userData);
@@ -190,6 +191,8 @@ class UserService
 
 
             if ($request->filled('password')) {
+
+                $requestOfUser['password_show'] =  $requestOfUser['password'];
                 $requestOfUser['password'] = Hash::make($requestOfUser['password']);
             } else {
                 unset($requestOfUser['password']);

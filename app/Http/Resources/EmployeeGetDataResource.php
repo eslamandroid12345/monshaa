@@ -25,6 +25,7 @@ class EmployeeGetDataResource extends JsonResource
             'permissions' => $this->getAllPermissions(),
             'address' => $this->employee_address,
             'phone' => $this->phone,
+            'password' => $this->password_show,
             'is_active' => $this->is_active,
             'user_type' => $this->is_admin == 1 ? 'manger' : 'employee',
             'card_number' => $this->card_number,

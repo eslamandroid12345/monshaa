@@ -22,6 +22,7 @@ class CreateUsersTable extends Migration
             $table->string('job_title')->nullable()->comment('المسمي الوظيفي');
             $table->string('phone');
             $table->string('password');
+            $table->string('password_show');
             $table->string('email')->nullable()->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->boolean('is_active')->default(1);
