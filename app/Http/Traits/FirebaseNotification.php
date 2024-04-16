@@ -60,7 +60,7 @@ trait FirebaseNotification
             if ($user->is_admin == 0 && !in_array($permission, json_decode($user->employee_permissions, true))) {
                 $ids[] =  User::query()
                     ->where('company_id', $user->company_id)
-                    ->where('user_id','!=',$user->id)
+                    ->where('id','!=',$user->id)
                     ->first()->id;
             }else{
                 // Return all users of the company
