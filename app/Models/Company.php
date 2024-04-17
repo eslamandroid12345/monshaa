@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Company extends Model
 {
@@ -283,6 +284,9 @@ class Company extends Model
     }
 
 
-
+    public function admin(): HasOne
+    {
+        return $this->hasOne(User::class,'company_id','id')->where('is_admin',1);
+    }
 
 }

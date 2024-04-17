@@ -28,6 +28,7 @@ class CompanyRepository extends Repository implements CompanyRepositoryInterface
         });
 
         return $query
+            ->with(['admin'])
             ->latest()
             ->paginate(16);
 

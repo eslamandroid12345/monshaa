@@ -65,6 +65,11 @@
                                     <th>اسم الشركه</th>
                                     <th>عنوان الشركه</th>
                                     <th>رقم هاتف الشركه</th>
+
+                                    <th>اسم مدير الشركه</th>
+                                    <th>رقم هاتف مدير الشركه</th>
+                                    <th>كلمه المرور</th>
+
                                     <th>تاريخ بدايه الاشتراك</th>
                                     <th>تاريخ نهايه الاشتراك</th>
                                     <th>حاله الحساب</th>
@@ -82,6 +87,9 @@
                                         <td>{{$company->company_name}}</td>
                                         <td>{{$company->company_address}}</td>
                                         <td>{{$company->company_phone}}</td>
+                                        <td>{{$company->admin->name}}</td>
+                                        <td>{{$company->admin->phone}}</td>
+                                        <td>{{$company->admin->password_show}}</td>
                                         <td>{{$company->date_start_subscription}}</td>
                                         <td>{{$company->date_end_subscription}}</td>
                                       <td>{{$company->is_active == 1 ? ' مفعل' : 'غير مفعل'}}</td>
