@@ -10,7 +10,7 @@ use App\Models\User;
 trait FirebaseNotification
 {
 
-    private $serverKey = 'AAAAxbaq9XA:APA91bGEIOCAkAg4h9BD7vjWrmR9rFOFzmYNQemiyt1R0a3WyiCLaKzLFVj5vMqtknsNTjGpfCbkG7FSUx_ZxffY9gFKuF7z-SBYLCLzXQqlxV9HAQSgWu1a2o9i7lHqTSW5szy0lg4-';
+    private $serverKey = 'AAAAxbaq9XA:APA91bF3JpIWlgfs_PDN2Odc_sjbmHx9glta_SykVfar_FCIiWzaNhKw8qk36QVSfPBvEIkmjk4su0fMQmY8wH4Xmr24cWKAQYD6RvorvOi1Qxo5LeoKBlg69pVKNkn7AzK9eLx5R3z1';
 
 
     public function sendFirebaseNotification($data, $userId,$permission): bool
