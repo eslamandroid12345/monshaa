@@ -221,7 +221,8 @@ class UserService
     protected function updateCompanyProfile($request,$user): bool
     {
 
-        $requestOfCompany = $request->only('company_phone','company_name','company_address','logo','currency');
+        $requestOfCompany = $request->only('company_phone','company_name','company_address','logo');
+        $requestOfCompany['currency'] = $requestOfCompany['currency'] ?? $user->company->currency;
 
         if ($request->hasFile('logo')) {
             $image = $this->fileManagerService->handle("logo","users/images",$user->logo);
