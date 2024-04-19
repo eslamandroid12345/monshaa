@@ -27,7 +27,7 @@ class UpdateUserRequest extends FormRequest
     {
         return [
             'logo' => 'nullable|mimes:jpeg,png,jpg',
-            'currency' => 'nullable|max:255',
+            'currency' => 'required|max:255',
             'name' => 'required|max:255',
             'company_name' => 'required|max:255',
             'company_address' => 'required|max:255',
@@ -44,6 +44,7 @@ class UpdateUserRequest extends FormRequest
         return [
             'logo.mimes' => 'لوجو المكتب العقاري او الشركه العقاريه يجب ان يدعم صيغه jpg,png,jpeg',
             'name.required' => 'اسم مالك الشركه او المكتب مطلوب',
+            'currency.required' => 'عمله الشركه مطلوبه',
             'currency.max' => 'عدد حروف العمله يجب ان لا يتعدي 255 حرف',
             'name.max' => 'اسم مالك الشركه او المكتب يجب ان لا يتعدي 255 حرف',
             'company_name.required' => 'اسم الشركه العقاريه مطلوب',

@@ -12,4 +12,8 @@ interface TenantContractRepositoryInterface extends RepositoryInterface
     public function TenantContractsByFinancialBonds() : LengthAwarePaginator;
     public function tenantContractsReports(): LengthAwarePaginator;
 
+    public function getAllContractsExpiredCount($companyId);
+    public function getAllContractsExpired($companyId);
+
+
 }

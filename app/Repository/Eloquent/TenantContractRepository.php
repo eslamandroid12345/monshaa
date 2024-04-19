@@ -6,6 +6,7 @@ use App\Repository\TenantContractRepositoryInterface;
 use Carbon\Carbon;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class TenantContractRepository extends Repository implements TenantContractRepositoryInterface
 {
@@ -109,6 +110,25 @@ class TenantContractRepository extends Repository implements TenantContractRepos
             ->paginate(16);
 
 
+    }
+
+    public function getAllContractsExpiredCount($companyId): int
+    {
+        return $this->model::query()
+            ->where('is_expired','=',0)
+            ->where('company_id','=',$companyId)
+            ->whereBetween('contract_date_to', [Carbon::now()->format('Y-m-d'), Carbon::now()->addDays(90)->format('Y-m-d')])
+            ->count();
+    }
+
+    public function getAllContractsExpired($companyId)
+    {
+        return $this->model::query()
+            ->select('id','company_id','contract_date_to','is_expired')
+            ->where('is_expired','=',0)
+            ->where('company_id','=',$companyId)
+            ->whereBetween('contract_date_to', [Carbon::now()->format('Y-m-d'), Carbon::now()->addDays(90)->format('Y-m-d')])
+            ->get();
     }
 
 }

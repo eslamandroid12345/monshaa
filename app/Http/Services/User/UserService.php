@@ -14,6 +14,7 @@ use App\Http\Traits\FirebaseNotification;
 use App\Http\Traits\Responser;
 use App\Repository\CompanyRepositoryInterface;
 use App\Repository\FcmTokenRepositoryInterface;
+use App\Repository\TenantContractRepositoryInterface;
 use App\Repository\UserRepositoryInterface;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
@@ -37,13 +38,16 @@ class UserService
 
     protected GetService $getService;
 
-    public function __construct(FcmTokenRepositoryInterface $fcmTokenRepository,UserRepositoryInterface $userRepository,FileManagerService $fileManagerService,CompanyRepositoryInterface $companyRepository,GetService $getService)
+    protected TenantContractRepositoryInterface $tenantContractRepository;
+
+    public function __construct(TenantContractRepositoryInterface $tenantContractRepository,FcmTokenRepositoryInterface $fcmTokenRepository,UserRepositoryInterface $userRepository,FileManagerService $fileManagerService,CompanyRepositoryInterface $companyRepository,GetService $getService)
     {
         $this->fcmTokenRepository = $fcmTokenRepository;
         $this->userRepository = $userRepository;
         $this->fileManagerService = $fileManagerService;
         $this->companyRepository = $companyRepository;
         $this->getService = $getService;
+        $this->tenantContractRepository = $tenantContractRepository;
 
     }
 
@@ -132,6 +136,19 @@ class UserService
 
         $user = auth('user-api')->user();
 
+        $contractsExpiredCount = $this->tenantContractRepository->getAllContractsExpiredCount(companyId());
+
+        if($contractsExpiredCount > 0){
+            $this->sendFirebaseForCompany( ['title' => 'اشعار جديد لديك','body' => ' يجب عليك الاطلاع علي جميع العقود المنتهيه ' ], companyId(), 'expired_contracts');
+
+        }
+
+        $contractsExpired = $this->tenantContractRepository->getAllContractsExpired(companyId());
+
+        foreach ($contractsExpired as $contractExpired) {
+            $this->tenantContractRepository->update($contractExpired->id,['is_expired' => 1]);
+        }
+
         $resource = $user->is_admin ? new HomePageAdminResource($user) : new HomePageEmployeeResource($user);
         $message = $user->is_admin ? 'تم عرض بيانات الصفحه الرئيسيه بنجاح للادمن' : 'تم عرض بيانات الصفحه الرئيسيه بنجاح للموظف';
 
@@ -192,15 +209,13 @@ class UserService
 
             if ($request->filled('password')) {
 
+                if(!Hash::check($request->old_password,$user->password)){
+                    return $this->responseFail(null, 416, 'كلمه المرور القديمه غير صحيحه');
+                }
                 $requestOfUser['password_show'] =  $requestOfUser['password'];
                 $requestOfUser['password'] = Hash::make($requestOfUser['password']);
             } else {
                 unset($requestOfUser['password']);
-            }
-
-            if ($request->filled('password') && !Hash::check($request->old_password,$user->password)) {
-
-                return $this->responseFail(null, 416, 'كلمه المرور القديمه غير صحيحه');
             }
 
             $this->updateCompanyProfile($request,$user);
@@ -208,7 +223,7 @@ class UserService
 
             DB::commit();
 
-            return $this->responseSuccess(new UserResource($auth), 200, 'تم تعديل بيانات الشركة بنجاح');
+            return $this->responseSuccess(new UserResource($this->userRepository->getById(employeeId())), 200, 'تم تعديل بيانات الشركة بنجاح');
 
         } catch (\Exception $exception) {
 
@@ -221,9 +236,7 @@ class UserService
     protected function updateCompanyProfile($request,$user): bool
     {
 
-        $requestOfCompany = $request->only('company_phone','company_name','company_address','logo');
-        $requestOfCompany['currency'] = $requestOfCompany['currency'] ?? $user->company->currency;
-
+        $requestOfCompany = $request->only('company_phone','company_name','company_address','logo','currency');
         if ($request->hasFile('logo')) {
             $image = $this->fileManagerService->handle("logo","users/images",$user->logo);
             $requestOfCompany['logo'] = $image;
