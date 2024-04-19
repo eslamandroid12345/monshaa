@@ -36,21 +36,4 @@
     <!-- CSS addons -->
     @yield('css_addons')
 
-    <style>
-        .btn-add {
-            width: 200px;
-            background-color: #79edd2;
-            border: none;
-            outline: none;
-            height: 49px;
-            border-radius:12px;
-            color: #fff;
-            text-transform: uppercase;
-            font-weight: 600;
-      }
-    </style>
-
-
-
-
 </head>

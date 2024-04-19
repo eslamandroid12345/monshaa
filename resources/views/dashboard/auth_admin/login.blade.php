@@ -1,71 +1,97 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html>
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <script src="https://kit.fontawesome.com/64d58efce2.js" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="{{asset('auth/css/login.css')}}">
-    <title>تسجيل دخول الادمن</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>دخول الادمن</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <link rel="icon" type="{{asset('logo/logo.PNG')}}" href="{{asset('logo/logo.PNG')}}" />
-
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;500;600;700;800;900&display=swap"
-          rel="stylesheet" />
-    <!-- End Google Fonts -->
-
-
-    <!-- Font Awesome Icons -->
-    <link rel="stylesheet" href="{{asset("plugins/fontawesome-free/css/all.min.css")}}">
-    <!-- end Links -->
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="{{asset('plugins/fontawesome-free/css/all.min.css')}}">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <!-- icheck bootstrap -->
+    <link rel="stylesheet" href="{{asset('plugins/icheck-bootstrap/icheck-bootstrap.min.css')}}">
+    <!-- Toastr -->
+    <link rel="stylesheet" href="{{asset('plugins/toastr/toastr.min.css')}}">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="{{asset('css/adminlte.min.css')}}">
+    <!-- Google Font: Source Sans Pro -->
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
 </head>
-
-<body>
-<div class="container">
-
-
-    <div class="forms-container">
-        <div class="signin-signup">
-            <form action="{{route('loginProcess')}}" class="sign-in-form" method="post">
+<body class="hold-transition login-page">
+<div class="login-box">
+    <div class="login-logo">
+        <a href="#"> لوحه تحكم منشاءه ترحب بكم </a>
+    </div>
+    <!-- /.login-logo -->
+    <div class="card">
+        <div class="card-body login-card-body">
+            <p class="login-box-msg">تسجيل دخول الادمن</p>
+            <form action="{{route('loginProcess')}}" method="post">
                 @csrf
-                <h2 class="title">دخول الادمن</h2>
-                <div class="input-field">
-                    <i class="fas fa-user"></i>
-                    <input class="auth-user" type="text" placeholder="البريد الالكتروني" name="email" />
+                <div class="input-group mb-3">
+                    <input name="email" type="email" class="form-control" placeholder="البريد الالكتروني">
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                            <span class="fas fa-envelope"></span>
+                        </div>
+                    </div>
                 </div>
-                <div class="input-field">
-                    <i class="fas fa-lock"></i>
-                    <input class="auth-user" type="password" placeholder="كلمةالسر" name="password" />
+                <div class="input-group mb-3">
+                    <input name="password" type="password" class="form-control" placeholder="كلمه المرور">
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                            <span class="fas fa-lock"></span>
+                        </div>
+                    </div>
                 </div>
-
-                <input type="submit" value="تسجيل الدخول" class="btn solid"/>
-
-
+                <div class="row">
+                    <div class="col-6">
+                        <div class="icheck-dark">
+                            <input name="remember_me" type="checkbox" id="remember">
+                            <label for="remember">
+                                تذكرني
+                            </label>
+                        </div>
+                    </div>
+                    <!-- /.col -->
+                    <div class="col-6">
+                        <button type="submit" class="btn btn-dark btn-block btn-flat">تسجيل الدخول</button>
+                    </div>
+                    <!-- /.col -->
+                </div>
             </form>
 
+
         </div>
-    </div>
-
-    <div class="panels-container">
-        <div class="panel left-panel">
-            <div class="content">
-                <h3>تسجيل دخول الادمن</h3>
-                <p>
-                  تطبيق منشاءه يرحب بكم
-                </p>
-
-            </div>
-            <img src="{{asset('auth/images/auth_login.svg')}}" class="image" alt="" />
-        </div>
-
-
+        <!-- /.login-card-body -->
     </div>
 </div>
+<!-- /.login-box -->
 
+<!-- jQuery -->
+<script src="{{asset('plugins/jquery/jquery.min.js')}}"></script>
+<!-- Bootstrap 4 -->
+<script src="{{asset('plugins/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
+<!-- Toastr -->
+<script src="{{asset('plugins/toastr/toastr.min.js')}}"></script>
+<!-- Validation -->
+@error('email')
+@include('dashboard.core.alerts.error', compact('message'))
+@enderror
+@error('password')
+@include('dashboard.core.alerts.error', compact('message'))
+@enderror
 
+@if(Session::has('error'))
+    @include('dashboard.core.alerts.error', ['message' => Session::get('error')])
+@elseif(Session::has('success'))
+    @include('dashboard.core.alerts.success', ['message' => Session::get('success')])
+@endif
+@foreach($errors->all() as $message)
+    @include('dashboard.core.alerts.error', compact('message'))
+@endforeach
 </body>
-
 </html>

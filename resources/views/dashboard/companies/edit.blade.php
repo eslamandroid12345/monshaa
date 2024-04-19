@@ -33,6 +33,7 @@
             <div class="row">
                 <div class="col-12">
                     <div class="card">
+
                         <form  action="{{route('admin.companies.update',$company->id)}}" method="post" autocomplete="off" enctype="multipart/form-data">
                             <div class="card-header">
                                 <h3 class="card-title">تعديل بيانات الشركه</h3>
@@ -60,6 +61,22 @@
                                       </div>
 
                                     <div class="form-group col-md-6 col-12">
+                                        <label for="exampleInputName1">اسم المدير العام للشركه </label>
+                                        <input  type="text" class="form-control" id="exampleInputName1" value="{{$company->admin->phone}}" readonly>
+                                    </div>
+
+
+                                    <div class="form-group col-md-6 col-12">
+                                        <label for="exampleInputName1">رقم هاتف الادمن للدخول* </label>
+                                        <input  type="text" class="form-control" id="exampleInputName1" value="{{$company->admin->phone}}" readonly>
+                                    </div>
+
+                                    <div class="form-group col-md-6 col-12">
+                                        <label for="exampleInputName1">كلمه المرور* </label>
+                                        <input  type="text" class="form-control" id="exampleInputName1" value="{{$company->admin->password_show}}" readonly>
+                                    </div>
+
+                                    <div class="form-group col-md-6 col-12">
                                         <label for="exampleInputName1">عنوان الشركه </label>
                                         <input  type="text" class="form-control" id="exampleInputName1" value="{{$company->company_address}}" readonly>
                                     </div>
@@ -83,22 +100,39 @@
                                         <input  type="text" class="form-control" id="exampleInputName1" value="{{$company->currency}}" readonly>
                                     </div>
 
-                                    <div class="form-group col-md-12 col-12">
+                                    <div class="form-group col-md-6 col-12">
                                         <label for="exampleInputName1">عدد موظفين المسموح باضافتهم للشركه <span class="optional">اختياري</span></label>
                                         <input name="number_of_employees" type="number" min="{{$company->number_of_employees}}" class="form-control" id="exampleInputName1" value="{{$company->number_of_employees}}">
                                     </div>
 
+                                    @if( \Carbon\Carbon::now()->format('Y-m-d') >= $company->date_end_subscription && $company->is_package == 0)
 
+                                        <div class="alert alert-info col-12" role="alert">
+                                            ملحوظه : تم الانتهاء من النسخه التجريبيه
+                                        </div>
+                                    @endif
 
-                                    @if($numberOfDays == 3)
+                                    @if(\Carbon\Carbon::now()->format('Y-m-d') >= $company->date_end_subscription && $company->is_package == 1)
+
+                                    <div class="form-group clearfix col-12">
+                                        <div class="icheck-wetasphalt d-inline">
+                                            <input name="add_new_package" type="checkbox" value="1" id="checkboxPrimary4">
+                                            <label for="checkboxPrimary4">تجديد الباقه للشركه</label>
+                                        </div>
+                                    </div>
+                                    @endif
+
+                                @if($company->is_package == 0)
                                         <div class="form-group clearfix col-12">
                                             <div class="icheck-wetasphalt d-inline">
-                                                <input name="one_year" type="checkbox" value="365" id="checkboxPrimary2">
-                                                <label for="checkboxPrimary2">تفعيل الحساب لمده سنه كامله</label>
+                                                <input name="is_package" type="checkbox" value="1" id="checkboxPrimary2">
+                                                <label for="checkboxPrimary2">تفعيل الباقه السنويه للشركه</label>
                                             </div>
                                         </div>
 
                                     @endif
+
+
 
                                     <div class="form-group clearfix col-12">
                                         <div class="icheck-wetasphalt d-inline">
@@ -108,12 +142,13 @@
                                     </div>
 
 
+
                                 </div>
 
                             </div>
                             <!-- /.card-body -->
                             <div class="card-footer">
-                                <button type="submit" class="btn-add">تعديل بيانات الشركه</button>
+                                <button type="submit" class="btn btn-dark waves-effect waves-light">تعديل بيانات الشركه</button>
                             </div>
                         </form>
                     </div>

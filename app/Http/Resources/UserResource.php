@@ -40,6 +40,7 @@ class UserResource extends JsonResource
     {
 
         return [
+            "home_page",
             "states",
             "selling_states",
             "tenant_states",
@@ -54,15 +55,15 @@ class UserResource extends JsonResource
             "technical_support",
             "expired_contracts",
             "profits",
+            "reports",
             "revenue",
             "clients",
             "setting",
-            "home_page"
         ];
-    
+
 
     }
 
-    
+
 
 }

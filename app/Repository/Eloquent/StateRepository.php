@@ -76,7 +76,6 @@ class StateRepository extends Repository implements StateRepositoryInterface
             $q->whereBetween('state_date_register', [request()->input('date_from'), request()->input('date_to')]);
         });
 
-
         return $query
             ->latest()
             ->select(['*'])

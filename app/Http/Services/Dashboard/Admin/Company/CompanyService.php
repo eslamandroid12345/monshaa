@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Services\Dashboard\Admin\Company;
+use App\Http\Requests\Admin\Company\CompanyUpdateRequest;
 use App\Repository\CompanyRepositoryInterface;
 use App\Repository\FcmTokenRepositoryInterface;
 use App\Repository\UserRepositoryInterface;
@@ -35,19 +36,14 @@ class CompanyService
     public function edit($id)
     {
 
-       $company =  $this->companyRepository->getById($id);
+        $company =  $this->companyRepository->getById($id);
 
-        $date1 = Carbon::parse($company->date_start_subscription);
-        $date2 = Carbon::parse($company->date_end_subscription);
-
-        $numberOfDays = $date1->diffInDays($date2);
-
-        return view('dashboard.companies.edit',compact('company','numberOfDays'));
+        return view('dashboard.companies.edit',compact('company'));
 
     }
 
 
-    public function update($id,Request $request): RedirectResponse
+    public function update($id,CompanyUpdateRequest $request): RedirectResponse
     {
 
         DB::beginTransaction();
@@ -56,16 +52,25 @@ class CompanyService
             $company = $this->companyRepository->getById($id);
             $numberOfEmployees = $request->input('number_of_employees');
 
-            $date_end_subscription =  $request->one_year == 365 ? $company->date_end : $company->date_end_subscription;
+            $date_end_subscription =  $request->is_package == 1 ? $company->date_end : $company->date_end_subscription;
 
             $isActive = $request->input('is_active', false);
 
-            $this->companyRepository->update($company->id,[
-                'is_package' => $request->one_year == 365 ? 1 : 0,
-                'date_end_subscription' => $date_end_subscription,
-                'number_of_employees' => $numberOfEmployees,
-                'is_active' =>  $isActive,
-            ]);
+            if($request->add_new_package == 1){
+                $this->companyRepository->update($company->id,[
+                    'date_start_subscription' => Carbon::now()->format('Y-m-d'),
+                    'date_end_subscription' => Carbon::now()->addYear()->format('Y-m-d'),
+                    'number_of_employees' => $numberOfEmployees,
+                    'is_active' =>  $isActive,
+                ]);
+            }else{
+                $this->companyRepository->update($company->id,[
+                    'is_package' => $request->is_package == 1 ? 1 : $company->is_package,
+                    'date_end_subscription' => $date_end_subscription,
+                    'number_of_employees' => $numberOfEmployees,
+                    'is_active' =>  $isActive,
+                ]);
+            }
 
             ##### false ########
             if (!$isActive) {

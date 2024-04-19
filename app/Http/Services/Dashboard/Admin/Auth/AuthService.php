@@ -17,7 +17,9 @@ class AuthService
     {
 
         $credentials = $request->validated();
-        if (auth('admin')->attempt($credentials)) {
+        $rememberMe = $request->remember_me == 'on';
+
+        if (auth('admin')->attempt($credentials,$rememberMe)) {
             toastr()->success('اهلا بك ايها الادمن في لوحه التحكم','دخول الادمن');
             return redirect()->route('admin.companies');
         } else {

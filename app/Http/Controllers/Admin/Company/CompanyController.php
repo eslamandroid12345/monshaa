@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin\Company;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\Company\CompanyUpdateRequest;
 use App\Http\Services\Dashboard\Admin\Company\CompanyService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -28,7 +29,7 @@ class CompanyController extends Controller
         return $this->companyService->edit($id);
     }
 
-    public function update($id,Request $request): RedirectResponse
+    public function update($id,CompanyUpdateRequest $request)
     {
 
         return $this->companyService->update($id,$request);
