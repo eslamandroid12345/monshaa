@@ -220,9 +220,7 @@ class UserService
             $this->userRepository->update($user->id,$requestOfUser);
 
             $auth = $this->userRepository->getById(employeeId());
-
             $auth['token'] = $request->bearerToken();
-
 
             DB::commit();
 
