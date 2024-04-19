@@ -117,7 +117,7 @@ class TenantContractRepository extends Repository implements TenantContractRepos
         return $this->model::query()
             ->where('is_expired','=',0)
             ->where('company_id','=',$companyId)
-            ->whereBetween('contract_date_to', [Carbon::now()->format('Y-m-d'), Carbon::now()->addDays(2)->format('Y-m-d')])
+            ->whereBetween('contract_date_to', [Carbon::now()->format('Y-m-d'), Carbon::now()->addDays(90)->format('Y-m-d')])
             ->count();
     }
 
@@ -127,7 +127,7 @@ class TenantContractRepository extends Repository implements TenantContractRepos
             ->select('id','company_id','contract_date_to','is_expired')
             ->where('is_expired','=',0)
             ->where('company_id','=',$companyId)
-            ->whereBetween('contract_date_to', [Carbon::now()->format('Y-m-d'), Carbon::now()->addDays(2)->format('Y-m-d')])
+            ->whereBetween('contract_date_to', [Carbon::now()->format('Y-m-d'), Carbon::now()->addDays(90)->format('Y-m-d')])
             ->get();
     }
 
