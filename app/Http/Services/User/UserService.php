@@ -200,12 +200,10 @@ class UserService
 
         try {
 
-            $auth = Auth::guard('user-api')->user();
-            $auth['token'] = $request->bearerToken();
 
             $requestOfUser = $request->only('name','phone','password');
-            $user = $this->userRepository->getById($auth->id);
 
+            $user = $this->userRepository->getById(employeeId());
 
             if ($request->filled('password')) {
 
@@ -219,11 +217,16 @@ class UserService
             }
 
             $this->updateCompanyProfile($request,$user);
-            $this->userRepository->update($auth->id,$requestOfUser);
+            $this->userRepository->update($user->id,$requestOfUser);
+
+            $auth = $this->userRepository->getById(employeeId());
+
+            $auth['token'] = $request->bearerToken();
+
 
             DB::commit();
 
-            return $this->responseSuccess(new UserResource($this->userRepository->getById(employeeId())), 200, 'تم تعديل بيانات الشركة بنجاح');
+            return $this->responseSuccess(new UserResource($auth), 200, 'تم تعديل بيانات الشركة بنجاح');
 
         } catch (\Exception $exception) {
 
