@@ -23,6 +23,7 @@
                             <h3 class="card-title">جميع الرسائل</h3>
                             <div class="card-tools">
                                 {{--start search model--}}
+                                <a href="{{route('admin.technical_support')}}" style="color: #fff" class="btn btn-dark waves-effect waves-light"><i class="fa fa-spinner"></i> </a>
                                 <button class="btn btn-dark waves-effect waves-light" data-toggle="modal" data-target="#delete-modal-0">بحث</button>
                                 <div id="delete-modal-0" class="modal fade modal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">                                                    <div class="modal-dialog">
                                         <div class="modal-content float-left">

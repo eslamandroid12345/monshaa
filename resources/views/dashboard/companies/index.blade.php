@@ -23,6 +23,7 @@
                             <h3 class="card-title">جميع الشركات</h3>
                             <div class="card-tools">
                                 {{--start search model--}}
+                                <a href="{{route('admin.companies')}}" style="color: #fff" class="btn btn-dark waves-effect waves-light"><i class="fa fa-spinner"></i> </a>
                                 <button class="btn btn-dark waves-effect waves-light" data-toggle="modal" data-target="#delete-modal-0">بحث</button>
                                 <div id="delete-modal-0" class="modal fade modal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">                                                    <div class="modal-dialog">
                                         <div class="modal-content float-left">
@@ -65,11 +66,9 @@
                                     <th>اسم الشركه</th>
                                     <th>عنوان الشركه</th>
                                     <th>رقم هاتف الشركه</th>
-
-                                    <th>اسم مدير الشركه</th>
-                                    <th>رقم هاتف مدير الشركه</th>
-                                    <th>كلمه المرور</th>
-
+                                    <th>اسم المدير</th>
+                                    <th>رقم هاتف المدير</th>
+                                    <th>كلمه السر</th>
                                     <th>تاريخ بدايه الاشتراك</th>
                                     <th>تاريخ نهايه الاشتراك</th>
                                     <th>حاله الحساب</th>
@@ -96,11 +95,8 @@
                                         <td>{{$company->number_of_employees}}</td>
                                         <td>{{$company->currency}}</td>
                                         <td>{{checkAccountType($company->id) == 3 ? 'حساب تجريبي' : 'باقه اشتراك'}}</td>
-
-
                                         <td>
                                             <div class="operations-btns" style="">
-
                                                 <a href="{{route('admin.companies.edit' , $company->id)}}"> <button class="btn btn-dark waves-effect waves-light">تعديل</button></a>
                                                         <button class="btn btn-dark waves-effect waves-light" data-toggle="modal" data-target="#delete-modal{{$company->id}}">حذف</button>
                                                         <div id="delete-modal{{$company->id}}" class="modal fade modal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">                                                    <div class="modal-dialog">

@@ -19,7 +19,7 @@ class AdminTableSeeder extends Seeder
             'name' => 'اسلام محمد',
             'image'=> 'storage/admins/admin.png',
             'email' => 'eslamemo457@gmail.com',
-            'password' => Hash::make('123456')
+            'password' => Hash::make('els**@#$01062933VCSm')
         ]);
     }
 }

@@ -61,18 +61,18 @@
                                       </div>
 
                                     <div class="form-group col-md-6 col-12">
-                                        <label for="exampleInputName1">اسم المدير العام للشركه </label>
-                                        <input  type="text" class="form-control" id="exampleInputName1" value="{{$company->admin->phone}}" readonly>
+                                        <label for="exampleInputName1">اسم المدير </label>
+                                        <input  type="text" class="form-control" id="exampleInputName1" value="{{$company->admin->name}}" readonly>
                                     </div>
 
 
                                     <div class="form-group col-md-6 col-12">
-                                        <label for="exampleInputName1">رقم هاتف الادمن للدخول* </label>
+                                        <label for="exampleInputName1">رقم هاتف المدير* </label>
                                         <input  type="text" class="form-control" id="exampleInputName1" value="{{$company->admin->phone}}" readonly>
                                     </div>
 
                                     <div class="form-group col-md-6 col-12">
-                                        <label for="exampleInputName1">كلمه المرور* </label>
+                                        <label for="exampleInputName1">كلمه السر* </label>
                                         <input  type="text" class="form-control" id="exampleInputName1" value="{{$company->admin->password_show}}" readonly>
                                     </div>
 
