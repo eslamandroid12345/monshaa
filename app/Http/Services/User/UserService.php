@@ -64,7 +64,7 @@ class UserService
             $token = Auth::guard('user-api')->attempt($request->only('phone', 'password'));
             $user['token'] = $token;
 
-            return $this->responseSuccess(new UserResource($user), 200, 'تم إضافة بيانات الشركة والمدير العام بنجاح والنسخه مفعله لمده ثلاث ايام من يوم التسجيل');
+            return $this->responseSuccess(new UserResource($user), 200, 'تم إضافة بيانات الشركة والمدير بنجاح والنسخه مفعله لمده 7 ايام من يوم التسجيل');
 
         } catch (\Exception $exception) {
             DB::rollBack();
@@ -78,7 +78,7 @@ class UserService
         $companyData = $request->only('company_phone', 'company_name', 'company_address', 'privacy_and_policy');
         $companyData['currency'] = 'الجنيه المصري';
         $companyData['date_start_subscription'] = Carbon::now()->format('Y-m-d');
-        $companyData['date_end_subscription'] = Carbon::now()->addDays(3)->format('Y-m-d');
+        $companyData['date_end_subscription'] = Carbon::now()->addDays(7)->format('Y-m-d');
 
         return $this->companyRepository->create($companyData);
     }
