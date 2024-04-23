@@ -43,7 +43,7 @@
                                 @method('PUT')
 
                                 <div class="mt-3 mb-3">
-                                    <img src="{{$company->logo}}" style="width: 100px;" />
+                                    <img src="{{$company->logo}}" style="width: 80px;height: 80px" />
                                 </div>
 
                                 <div class="row">
