@@ -91,7 +91,7 @@
                                         <td>{{$company->admin->password_show}}</td>
                                         <td>{{$company->date_start_subscription}}</td>
                                         <td>{{$company->date_end_subscription}}</td>
-                                      <td><img src="{{$company->is_active == 1 ? asset('img/icons/active.png') : asset('img/icons/un_active.png')}}" style="width: 40px;height: 40px" /></td>
+                                      <td><img src="{{$company->is_active == 1 ? asset('img/icons/active1.png') : asset('img/icons/un_active.png')}}" style="width: 40px;height: 40px" /></td>
                                         <td>{{$company->number_of_employees}}</td>
                                         <td>{{$company->currency}}</td>
                                         <td>{{$company->is_package == 1 ? 'باقه اشتراك' : 'حساب تجريبي'}}</td>
