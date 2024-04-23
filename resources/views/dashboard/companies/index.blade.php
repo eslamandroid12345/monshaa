@@ -82,7 +82,7 @@
                                 @forelse($companies as $company)
                                     <tr>
                                         <td>{{$company->id}}</td>
-                                        <td><img src="{{$company->logo}}" style="width: 60px;" /></td>
+                                        <td><img src="{{$company->logo}}" style="width: 60px;height: 60px" /></td>
                                         <td>{{$company->company_name}}</td>
                                         <td>{{$company->company_address}}</td>
                                         <td>{{$company->company_phone}}</td>
@@ -91,7 +91,7 @@
                                         <td>{{$company->admin->password_show}}</td>
                                         <td>{{$company->date_start_subscription}}</td>
                                         <td>{{$company->date_end_subscription}}</td>
-                                      <td>{{$company->is_active == 1 ? ' مفعل' : 'غير مفعل'}}</td>
+                                      <td><img src="{{$company->is_active == 1 ? asset('img/icons/active.png') : asset('img/icons/un_active.png')}}" style="width: 40px;height: 40px" /></td>
                                         <td>{{$company->number_of_employees}}</td>
                                         <td>{{$company->currency}}</td>
                                         <td>{{$company->is_package == 1 ? 'ياقه اشتراك' : 'حساب تجريبي'}}</td>
