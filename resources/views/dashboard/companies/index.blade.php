@@ -41,10 +41,11 @@
                                             </div>
 
                                                 <div class="modal-footer">
-                                                    <button type="submit" class="btn btn-danger">بحث</button>
                                                     <button type="button" data-dismiss="modal" class="btn btn-dark waves-effect waves-light m-l-5 mr-1 ml-1">
                                                         غلق النافذه
                                                     </button>
+                                                    <button type="submit" class="btn btn-danger">بحث</button>
+
                                                 </div>
                                             </form>
 
