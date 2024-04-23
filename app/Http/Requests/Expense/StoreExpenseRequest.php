@@ -24,6 +24,9 @@ class StoreExpenseRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'real_state_address' => 'nullable|required_if:type,revenue',
+            'tenant_name' => 'nullable|required_if:type,revenue',
+            'owner_name' => 'nullable|required_if:type,revenue',
             'total_money' => 'required|numeric',
             'description' => 'required|max:255',
             'transaction_date' => 'required|date|date_format:Y-m-d',
@@ -35,6 +38,10 @@ class StoreExpenseRequest extends FormRequest
     public function messages(): array
     {
         return [
+
+            'real_state_address.required_if' => 'حقل عنوان العقار مطلوب عندما يكون نوع العملية إيراد.',
+            'tenant_name.required_if' => 'حقل  اسم المستاجر مطلوب عندما يكون نوع العملية إيراد.',
+            'owner_name.required_if' => 'حقل اسم المالك مطلوب عندما يكون نوع العملية إيراد.',
             'total_money.required' => 'المبلغ الإجمالي مطلوب.',
             'total_money.numeric' => 'يجب أن يكون المبلغ الإجمالي رقمًا.',
             'description.required' => 'الوصف مطلوب.',

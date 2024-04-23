@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\Cash\CashController;
 use App\Http\Controllers\Api\Client\ClientController;
 use App\Http\Controllers\Api\Company\CompanyController;
 use App\Http\Controllers\Api\Employee\EmployeeController;
+use App\Http\Controllers\Api\EmployeeCommission\EmployeeCommissionController;
 use App\Http\Controllers\Api\Expense\ExpenseController;
 use App\Http\Controllers\Api\Land\LandController;
 use App\Http\Controllers\Api\Notification\NotificationController;
@@ -135,6 +136,16 @@ Route::middleware('check-status')->group(function (){
         Route::get('show/{id}',[ExpenseController::class,'show']);
         Route::post('update/{id}',[ExpenseController::class,'update']);
         Route::post('delete/{id}',[ExpenseController::class,'delete']);
+    });
+
+
+
+    Route::group(['prefix' => 'employee-commissions','middleware' =>  ['jwt','permission:employee_commission']], function (){
+        Route::get('get-all',[EmployeeCommissionController::class,'getAllEmployeesCommissions']);
+        Route::post('create',[EmployeeCommissionController::class,'create']);
+        Route::get('show/{id}',[EmployeeCommissionController::class,'show']);
+        Route::post('update/{id}',[EmployeeCommissionController::class,'update']);
+        Route::post('delete/{id}',[EmployeeCommissionController::class,'delete']);
     });
 
 

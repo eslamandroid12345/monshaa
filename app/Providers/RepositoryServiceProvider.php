@@ -8,6 +8,7 @@ use App\Repository\CompanyRepositoryInterface;
 use App\Repository\Eloquent\CashRepository;
 use App\Repository\Eloquent\ClientRepository;
 use App\Repository\Eloquent\CompanyRepository;
+use App\Repository\Eloquent\EmployeeCommissionRepository;
 use App\Repository\Eloquent\EmployeeRepository;
 use App\Repository\Eloquent\ExpenseRepository;
 use App\Repository\Eloquent\FcmTokenRepository;
@@ -22,6 +23,7 @@ use App\Repository\Eloquent\TechnicalSupportRepository;
 use App\Repository\Eloquent\TenantContractRepository;
 use App\Repository\Eloquent\TenantRepository;
 use App\Repository\Eloquent\UserRepository;
+use App\Repository\EmployeeCommissionRepositoryInterface;
 use App\Repository\EmployeeRepositoryInterface;
 use App\Repository\ExpenseRepositoryInterface;
 use App\Repository\FcmTokenRepositoryInterface;
@@ -64,6 +66,7 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->singleton(LandImageRepositoryInterface::class, LandImageRepository::class);
         $this->app->singleton(NotificationRepositoryInterface::class, NotificationRepository::class);
         $this->app->singleton(TechnicalSupportRepositoryInterface::class, TechnicalSupportRepository::class);
+        $this->app->singleton(EmployeeCommissionRepositoryInterface::class, EmployeeCommissionRepository::class);
 
     }
 

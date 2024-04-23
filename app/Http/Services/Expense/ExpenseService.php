@@ -5,6 +5,7 @@ namespace App\Http\Services\Expense;
 use App\Http\Requests\Expense\StoreExpenseRequest;
 use App\Http\Requests\Expense\UpdateExpenseRequest;
 use App\Http\Resources\ExpenseResource;
+use App\Http\Resources\Revenue\RevenueResource;
 use App\Http\Services\Mutual\GetService;
 use App\Http\Traits\FirebaseNotification;
 use App\Http\Traits\Responser;
@@ -61,9 +62,8 @@ class ExpenseService
 
     }
 
-
-    public function create(StoreExpenseRequest $request){
-
+    public function create(StoreExpenseRequest $request): JsonResponse
+    {
 
         try {
 
@@ -78,9 +78,11 @@ class ExpenseService
 
             $permission =  $expense->type == 'expense' ? 'expenses' : 'revenue';
 
+            $resource = $expense->type == 'expense' ? ExpenseResource::class : RevenueResource::class;
+
             $this->sendFirebaseNotification(data:['title' => 'اشعار جديد لديك','body' => $messageFirebase . employee() ],userId: employeeId(),permission: $permission);
 
-            return $this->getService->handle(resource: ExpenseResource::class,repository: $this->expenseRepository,method: 'getById',parameters: [$expense->id],is_instance: true,message:'تم اضافه البيانات بنجاح' );
+            return $this->getService->handle(resource: $resource,repository: $this->expenseRepository,method: 'getById',parameters: [$expense->id],is_instance: true,message:'تم اضافه البيانات بنجاح' );
         }catch (AuthorizationException $exception){
 
             return $this->responseFail(null, 403, 'ليس لديك صلاحيه علي هذا',403);
@@ -110,13 +112,16 @@ class ExpenseService
 
             $permission =  $expense->type == 'expense' ? 'expenses' : 'revenue';
 
+            $resource = $expense->type == 'expense' ? ExpenseResource::class : RevenueResource::class;
+
+
             $this->sendFirebaseNotification(data:['title' => 'اشعار جديد لديك','body' => $messageFirebase . employee() ],userId:employeeId(),permission: $permission);
 
-            return $this->getService->handle(resource: ExpenseResource::class,repository: $this->expenseRepository,method: 'getById',parameters: [$id],is_instance: true,message: 'تم تعديل البيانات بنجاح' );
+            return $this->getService->handle(resource: $resource,repository: $this->expenseRepository,method: 'getById',parameters: [$id],is_instance: true,message: 'تم تعديل البيانات بنجاح' );
 
         }catch (ModelNotFoundException $exception) {
 
-            return $this->responseFail(null, 404, 'بيانات المصروف غير موجوده', 404);
+            return $this->responseFail(null, 404, 'البيانات غير موجوده', 404);
 
         }catch (AuthorizationException $exception){
 
@@ -137,10 +142,13 @@ class ExpenseService
 
             $expense = $this->expenseRepository->getById($id);
             Gate::authorize('check-company-auth',$expense);
-            return $this->getService->handle(resource: ExpenseResource::class,repository: $this->expenseRepository,method: 'getById',parameters: [$id],is_instance: true,message:'تم عرض بيانات المصروف بنجاح' );
+
+            $resource = $expense->type == 'expense' ? ExpenseResource::class : RevenueResource::class;
+
+            return $this->getService->handle(resource: $resource,repository: $this->expenseRepository,method: 'getById',parameters: [$id],is_instance: true,message:'تم عرض بيانات المصروف بنجاح' );
 
         }catch (ModelNotFoundException $exception) {
-            return $this->responseFail(null, 404, 'بيانات المصروف غير موجوده', 404);
+            return $this->responseFail(null, 404, 'البيانات غير موجوده', 404);
 
         }catch (AuthorizationException $exception){
             return $this->responseFail(null, 403, 'غير مصرح لك للدخول لذلك الصفحه',403);
@@ -166,11 +174,11 @@ class ExpenseService
 
             $this->expenseRepository->delete($expense->id);
 
-            return $this->responseSuccess(null, 200, 'تم حذف بيانات المصروف  بنجاح');
+            return $this->responseSuccess(null, 200, 'تم حذف البيانات  بنجاح');
 
         } catch (ModelNotFoundException $exception) {
 
-            return $this->responseFail(null, 404, 'بيانات المصروف غير موجوده', 404);
+            return $this->responseFail(null, 404, 'البيانات غير موجوده', 404);
 
         }catch (AuthorizationException $exception){
 

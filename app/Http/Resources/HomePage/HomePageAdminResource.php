@@ -86,7 +86,6 @@ class HomePageAdminResource extends JsonResource
                     'count' => $this->company->expenses_count
                 ],
 
-
                 [
                     'key' => 'profits',
                     'name' => 'الارباح',
@@ -178,13 +177,20 @@ class HomePageAdminResource extends JsonResource
                 'count' => 0
             ],
 
+             [
+                 'key' => 'employee_commission',
+                 'name' => 'عموله الموظفين',
+                 'icon' => 'monetization_on_outlined',
+                 'count' => 0
+             ],
 
-            [
-                'key' => 'employees',
-                'name' => 'الموظفين',
-                'icon' => 'supervised_user_circle_rounded',
-                'count' => 0
-            ],
+
+              [
+                    'key' => 'employees',
+                    'name' => 'الموظفين',
+                    'icon' => 'supervised_user_circle_rounded',
+                    'count' => 0
+                ],
 
             [
                 'key' => 'clients',

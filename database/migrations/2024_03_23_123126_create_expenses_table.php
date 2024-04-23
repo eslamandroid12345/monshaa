@@ -19,6 +19,9 @@ class CreateExpensesTable extends Migration
         Schema::create('expenses', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->enum('type',['expense','revenue'])->comment('مصروف-ايراد');
+            $table->string('real_state_address')->comment('عنوان العقار في حاله اضافه ايراد جديد')->nullable();
+            $table->string('tenant_name')->comment('اسم المستاجر في حاله اضافه ايراد جديد')->nullable();
+            $table->string('owner_name')->comment('اسم المالك في حاله اضافه ايراد')->nullable();
             $table->unsignedBigInteger('company_id');
             $table->unsignedBigInteger('user_id')->comment('الموظف او المدير العام');
             $table->unsignedBigInteger('tenant_contract_id')->nullable()->comment('عقد الايجار');

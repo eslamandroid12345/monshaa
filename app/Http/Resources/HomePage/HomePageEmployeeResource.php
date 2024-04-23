@@ -124,6 +124,13 @@ class HomePageEmployeeResource extends JsonResource
                 'count' => 0
             ],
 
+            [
+                'key' => 'employee_commission',
+                'name' => 'عموله الموظفين',
+                'icon' => 'monetization_on_outlined',
+                'count' => 0
+            ],
+
 
             [
                 'key' => 'employees',
@@ -182,7 +189,6 @@ class HomePageEmployeeResource extends JsonResource
         $array = [];
 
         $tabs = $this->getHomePageTabs();
-
 
         $getAllPermissions = json_decode($this->employee_permissions,true);
 

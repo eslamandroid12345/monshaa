@@ -58,6 +58,7 @@ class UserResource extends JsonResource
             "revenue",
             "clients",
             "setting",
+            "employee_commission",
         ];
 
 
