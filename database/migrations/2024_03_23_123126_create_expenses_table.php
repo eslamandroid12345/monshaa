@@ -23,7 +23,7 @@ class CreateExpensesTable extends Migration
             $table->unsignedBigInteger('user_id')->comment('الموظف او المدير العام');
             $table->unsignedBigInteger('tenant_contract_id')->nullable()->comment('عقد الايجار');
             $table->unsignedBigInteger('receipt_id')->nullable()->comment('سند الصرف');
-            $table->double('total_money',10,2);
+            $table->double('total_money',15,2);
             $table->string('description');
             $table->date('transaction_date');
             $table->foreign('tenant_contract_id')->references('id')->on('tenant_contracts')->cascadeOnUpdate()->cascadeOnDelete();

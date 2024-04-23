@@ -47,23 +47,23 @@ class RepositoryServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->bind(RepositoryInterface::class, Repository::class);
-        $this->app->bind(UserRepositoryInterface::class, UserRepository::class);
-        $this->app->bind(EmployeeRepositoryInterface::class, EmployeeRepository::class);
-        $this->app->bind(StateRepositoryInterface::class, StateRepository::class);
-        $this->app->bind(LandRepositoryInterface::class, LandRepository::class);
-        $this->app->bind(CompanyRepositoryInterface::class, CompanyRepository::class);
-        $this->app->bind(TenantRepositoryInterface::class, TenantRepository::class);
-        $this->app->bind(TenantContractRepositoryInterface::class, TenantContractRepository::class);
-        $this->app->bind(ExpenseRepositoryInterface::class, ExpenseRepository::class);
-        $this->app->bind(ReceiptRepositoryInterface::class, ReceiptRepository::class);
-        $this->app->bind(CashRepositoryInterface::class, CashRepository::class);
-        $this->app->bind(FcmTokenRepositoryInterface::class, FcmTokenRepository::class);
-        $this->app->bind(ClientRepositoryInterface::class, ClientRepository::class);
-        $this->app->bind(StateImageRepositoryInterface::class, StateImageRepository::class);
-        $this->app->bind(LandImageRepositoryInterface::class, LandImageRepository::class);
-        $this->app->bind(NotificationRepositoryInterface::class, NotificationRepository::class);
-        $this->app->bind(TechnicalSupportRepositoryInterface::class, TechnicalSupportRepository::class);
+        $this->app->singleton(RepositoryInterface::class, Repository::class);
+        $this->app->singleton(UserRepositoryInterface::class, UserRepository::class);
+        $this->app->singleton(EmployeeRepositoryInterface::class, EmployeeRepository::class);
+        $this->app->singleton(StateRepositoryInterface::class, StateRepository::class);
+        $this->app->singleton(LandRepositoryInterface::class, LandRepository::class);
+        $this->app->singleton(CompanyRepositoryInterface::class, CompanyRepository::class);
+        $this->app->singleton(TenantRepositoryInterface::class, TenantRepository::class);
+        $this->app->singleton(TenantContractRepositoryInterface::class, TenantContractRepository::class);
+        $this->app->singleton(ExpenseRepositoryInterface::class, ExpenseRepository::class);
+        $this->app->singleton(ReceiptRepositoryInterface::class, ReceiptRepository::class);
+        $this->app->singleton(CashRepositoryInterface::class, CashRepository::class);
+        $this->app->singleton(FcmTokenRepositoryInterface::class, FcmTokenRepository::class);
+        $this->app->singleton(ClientRepositoryInterface::class, ClientRepository::class);
+        $this->app->singleton(StateImageRepositoryInterface::class, StateImageRepository::class);
+        $this->app->singleton(LandImageRepositoryInterface::class, LandImageRepository::class);
+        $this->app->singleton(NotificationRepositoryInterface::class, NotificationRepository::class);
+        $this->app->singleton(TechnicalSupportRepositoryInterface::class, TechnicalSupportRepository::class);
 
     }
 

@@ -35,17 +35,3 @@ if(!function_exists('messagesCount')){
             ->count();
     }
 }
-
-
-if(!function_exists('checkAccountType')){
-    function checkAccountType($id): int
-    {
-        $company =  Company::query()->findOrFail($id);
-
-        $date1 = Carbon::parse($company->date_start_subscription);
-        $date2 = Carbon::parse($company->date_end_subscription);
-
-        return $date1->diffInDays($date2);
-    }
-}
-

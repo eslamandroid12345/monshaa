@@ -39,11 +39,10 @@ class CreateTenantContractsTable extends Migration
             $table->date('contract_date')->comment('تاريخ تسجيل العقد');
             $table->date('contract_date_from')->comment('الايجار من');
             $table->date('contract_date_to')->comment('الايجار الي');
-            $table->double('contract_total',10,2)->comment('قيمه الايجار');
+            $table->double('contract_total',15,2)->comment('قيمه الايجار');
             $table->enum('commission_type',['per','val']);
-            $table->double('commission',10,2)->comment('عموله الشركه');
-            $table->double('insurance_total',10,2)->comment('التامين');
-            $table->integer('period_of_delay')->nullable()->comment('مده التاخير');
+            $table->double('commission',15,2)->comment('عموله الشركه');
+            $table->double('insurance_total',15,2)->comment('التامين');
             $table->enum('cash_type',['owner','company'])->comment('تحصيل الايجار من خلال المالك او الشركه العقاريه');
             $table->timestamps();
             $table->foreign('company_id')->references('id')->on('companies')->cascadeOnUpdate()->cascadeOnDelete();

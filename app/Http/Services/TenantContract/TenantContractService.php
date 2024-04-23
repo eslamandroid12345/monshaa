@@ -202,6 +202,7 @@ class TenantContractService
         try {
 
             $tenantContract = $this->tenantContractRepository->getById($id);
+
             Gate::authorize('check-company-auth',$tenantContract);
 
             return $this->getService->handle(resource: TenantContractResource::class,repository: $this->tenantContractRepository,method: 'getById',parameters: [$id],is_instance: true,message: 'تم عرض بيانات عقد الايجار بنجاح');

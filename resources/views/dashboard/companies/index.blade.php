@@ -94,7 +94,7 @@
                                       <td>{{$company->is_active == 1 ? ' مفعل' : 'غير مفعل'}}</td>
                                         <td>{{$company->number_of_employees}}</td>
                                         <td>{{$company->currency}}</td>
-                                        <td>{{checkAccountType($company->id) == 3 ? 'حساب تجريبي' : 'باقه اشتراك'}}</td>
+                                        <td>{{$company->is_package == 1 ? 'ياقه اشتراك' : 'حساب تجريبي'}}</td>
                                         <td>
                                             <div class="operations-btns" style="">
                                                 <a href="{{route('admin.companies.edit' , $company->id)}}"> <button class="btn btn-dark waves-effect waves-light">تعديل</button></a>

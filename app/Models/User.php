@@ -54,6 +54,7 @@ class User extends Authenticatable implements JWTSubject
         return $this->getKey();
     }
 
+
     public function employeeImage() : Attribute {
         return Attribute::get(
             get: function ($value) {
@@ -64,6 +65,7 @@ class User extends Authenticatable implements JWTSubject
             }
         );
     }
+
 
 
     public function getJWTCustomClaims(): array

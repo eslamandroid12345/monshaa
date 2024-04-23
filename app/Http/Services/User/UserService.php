@@ -68,7 +68,7 @@ class UserService
 
         } catch (\Exception $exception) {
             DB::rollBack();
-            return $this->responseFail(null, 500, $exception->getMessage(), 500);
+            return $this->responseFail(null, 500, 'يوجد خطاء ما في بيانات الارسال بالسيرفر', 500);
         }
     }
 
@@ -120,7 +120,7 @@ class UserService
 
             return $this->responseSuccess($resource, 200, $message);
         } catch (\Exception $exception) {
-            return $this->responseFail(null, 500, $exception->getMessage(), 500);
+            return $this->responseFail(null, 500, 'يوجد خطاء ما في بيانات الارسال بالسيرفر', 500);
 
         }
      }
@@ -144,7 +144,6 @@ class UserService
         }
 
         $contractsExpired = $this->tenantContractRepository->getAllContractsExpired(companyId());
-
         foreach ($contractsExpired as $contractExpired) {
             $this->tenantContractRepository->update($contractExpired->id,['is_expired' => 1]);
         }
@@ -200,9 +199,7 @@ class UserService
 
         try {
 
-
             $requestOfUser = $request->only('name','phone','password');
-
             $user = $this->userRepository->getById(employeeId());
 
             if ($request->filled('password')) {
@@ -229,7 +226,7 @@ class UserService
         } catch (\Exception $exception) {
 
             DB::rollBack();
-            return $this->responseFail(null, 500, $exception->getMessage(), 500);
+            return $this->responseFail(null, 500, 'يوجد خطاء ما في بيانات الارسال بالسيرفر', 500);
         }
 
     }
@@ -238,6 +235,7 @@ class UserService
     {
 
         $requestOfCompany = $request->only('company_phone','company_name','company_address','logo','currency');
+
         if ($request->hasFile('logo')) {
             $image = $this->fileManagerService->handle("logo","users/images",$user->logo);
             $requestOfCompany['logo'] = $image;
