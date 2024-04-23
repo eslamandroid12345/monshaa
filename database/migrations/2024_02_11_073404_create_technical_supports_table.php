@@ -17,6 +17,7 @@ class CreateTechnicalSupportsTable extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('user_id')->comment('الموظف او المدير العام');
             $table->string('subject');
+            $table->longText('file')->comment('صوره مرفقه بالمشكله')->nullable();
             $table->longText('message');
             $table->foreign('user_id')->references('id')->on('users')->cascadeOnUpdate()->cascadeOnDelete();
             $table->timestamps();

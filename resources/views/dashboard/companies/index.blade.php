@@ -94,7 +94,7 @@
                                       <td><img src="{{$company->is_active == 1 ? asset('img/icons/active.png') : asset('img/icons/un_active.png')}}" style="width: 40px;height: 40px" /></td>
                                         <td>{{$company->number_of_employees}}</td>
                                         <td>{{$company->currency}}</td>
-                                        <td>{{$company->is_package == 1 ? 'ياقه اشتراك' : 'حساب تجريبي'}}</td>
+                                        <td>{{$company->is_package == 1 ? 'باقه اشتراك' : 'حساب تجريبي'}}</td>
                                         <td>
                                             <div class="operations-btns" style="">
                                                 <a href="{{route('admin.companies.edit' , $company->id)}}"> <button class="btn btn-dark waves-effect waves-light">تعديل</button></a>
