@@ -45,7 +45,6 @@ class ExpenseService
 
     }
 
-
     public function getAllRevenues(): JsonResponse{
 
         try {
@@ -113,7 +112,6 @@ class ExpenseService
             $permission =  $expense->type == 'expense' ? 'expenses' : 'revenue';
 
             $resource = $expense->type == 'expense' ? ExpenseResource::class : RevenueResource::class;
-
 
             $this->sendFirebaseNotification(data:['title' => 'اشعار جديد لديك','body' => $messageFirebase . employee() ],userId:employeeId(),permission: $permission);
 
