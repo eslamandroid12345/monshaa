@@ -108,9 +108,17 @@ class TenantContractService
 
             $tenantContract = $this->tenantContractRepository->create($inputs);
 
-            $this->expenseRepository->create(['type' => 'revenue', 'company_id' => companyId(), 'user_id' => employeeId(), 'tenant_contract_id' => $tenantContract->id, 'total_money' => $tenantContract->commission, 'description' => 'عقد ايجار', 'transaction_date' => $tenantContract->contract_date,]);
+            $this->expenseRepository->create([
+                'type' => 'revenue',
+                'company_id' => companyId(),
+                'user_id' => employeeId(),
+                'tenant_contract_id' => $tenantContract->id,
+                'total_money' => $tenantContract->commission,
+                'description' => 'عقد ايجار',
+                'transaction_date' => $tenantContract->contract_date,
+                ]);
 
-            $this->sendFirebaseNotification(data:['title' => 'اشعار جديد لديك','body' => ' تم اضافه بيانات عقد ايجار لديك بواسطه ' . employee() ],userId: employeeId(),permission: 'states');
+            $this->sendFirebaseNotification(data:['title' => 'اشعار جديد لديك','body' => ' تم اضافه بيانات عقد ايجار لديك بواسطه ' . employee() ],userId: employeeId(),permission: 'tenant_contracts');
 
             DB::commit();
 
