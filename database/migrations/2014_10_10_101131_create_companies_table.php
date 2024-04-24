@@ -31,7 +31,6 @@ class CreateCompaniesTable extends Migration
             $table->string('block_reason')->nullable()->comment('سبب الغاء تفعيل المكتب العقاري');
             $table->boolean('privacy_and_policy')->default(1);
             $table->timestamps();
-            $table->softDeletes();
 
         });
     }

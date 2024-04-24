@@ -37,7 +37,6 @@ class CreateUsersTable extends Migration
             $table->unsignedBigInteger('company_id');
             $table->foreign('company_id','company_id')->references('id')->on('companies')->cascadeOnUpdate()->cascadeOnDelete();
             $table->timestamps();
-            $table->softDeletes();
 
         });
     }

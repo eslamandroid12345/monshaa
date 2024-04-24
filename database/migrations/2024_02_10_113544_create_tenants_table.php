@@ -27,7 +27,6 @@ class CreateTenantsTable extends Migration
             $table->string('nationality');
             $table->foreign('company_id')->references('id')->on('companies')->cascadeOnUpdate()->cascadeOnDelete();
             $table->timestamps();
-            $table->softDeletes();
 
         });
     }

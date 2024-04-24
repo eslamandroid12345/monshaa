@@ -34,7 +34,6 @@ class CreateLandsTable extends Migration
             $table->enum('status',['waiting','sale'])->default('waiting');
             $table->foreign('company_id')->references('id')->on('companies')->cascadeOnUpdate()->cascadeOnDelete();
             $table->foreign('user_id')->references('id')->on('users')->cascadeOnUpdate()->cascadeOnDelete();
-            $table->softDeletes();
             $table->timestamps();
         });
     }
