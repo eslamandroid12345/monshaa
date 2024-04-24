@@ -15,9 +15,9 @@ class CheckStatusUser
         $userAuth = auth('user-api')->user();
 
         if(!Auth::guard('user-api')->check()){
-            return response()->json(['message' => 'تم حذف هذا المستخدم من التطبيق' ,'code' => 401],401);
+            return response()->json(['message' => 'User Delete From App' ,'code' => 401],401);
         }elseif ($userAuth->is_active == 0){
-            return response()->json(['message' =>'تم الغاء تفعيل الشركه يرجي التواصل مع مطور التطبيق' ,'code' => 401],401);
+            return response()->json(['message' =>'User Not Active' ,'code' => 401],401);
 
         }else{
             return $next($request);
