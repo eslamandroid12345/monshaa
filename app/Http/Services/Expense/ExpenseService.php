@@ -49,7 +49,7 @@ class ExpenseService
 
         try {
 
-            return $this->getService->handle(resource: ExpenseResource::class,repository: $this->expenseRepository,method: 'getAllRevenues',message:'تم الحصول على بيانات جميع الايردات بنجاح' );
+            return $this->getService->handle(resource: RevenueResource::class,repository: $this->expenseRepository,method: 'getAllRevenues',message:'تم الحصول على بيانات جميع الايردات بنجاح' );
 
         }catch (AuthorizationException $exception){
             return $this->responseFail(null, 403, 'غير مصرح لك للدخول لذلك الصفحه',403);
