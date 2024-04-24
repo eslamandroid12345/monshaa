@@ -99,28 +99,28 @@
                                         <td>
                                             <div class="operations-btns" style="">
                                                 <a href="{{route('admin.companies.edit' , $company->id)}}"> <button class="btn btn-dark waves-effect waves-light">تعديل</button></a>
-                                                        <button class="btn btn-dark waves-effect waves-light" data-toggle="modal" data-target="#delete-modal{{$company->id}}">حذف</button>
-                                                        <div id="delete-modal{{$company->id}}" class="modal fade modal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">                                                    <div class="modal-dialog">
-                                                                <div class="modal-content float-left">
-                                                                    <div class="modal-header">
-                                                                        <h5 class="modal-title">تأكيد الحذف</h5>
-                                                                    </div>
-                                                                    <div class="modal-body">
-                                                                        <p>هل انت متاكد من حذف بيانات الشركه ؟</p>
-                                                                    </div>
-                                                                    <div class="modal-footer">
-                                                                        <button type="button" data-dismiss="modal" class="btn btn-dark waves-effect waves-light m-l-5 mr-1 ml-1">
-                                                                            غلق
-                                                                        </button>
-                                                                        <form action="{{route('admin.companies.destroy' , $company->id)}}" method="post">
-                                                                            @csrf
-                                                                            @method('DELETE')
-                                                                            <button type="submit" class="btn btn-danger">حذف</button>
-                                                                        </form>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
+{{--                                                        <button class="btn btn-dark waves-effect waves-light" data-toggle="modal" data-target="#delete-modal{{$company->id}}">حذف</button>--}}
+{{--                                                        <div id="delete-modal{{$company->id}}" class="modal fade modal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">                                                    <div class="modal-dialog">--}}
+{{--                                                                <div class="modal-content float-left">--}}
+{{--                                                                    <div class="modal-header">--}}
+{{--                                                                        <h5 class="modal-title">تأكيد الحذف</h5>--}}
+{{--                                                                    </div>--}}
+{{--                                                                    <div class="modal-body">--}}
+{{--                                                                        <p>هل انت متاكد من حذف بيانات الشركه ؟</p>--}}
+{{--                                                                    </div>--}}
+{{--                                                                    <div class="modal-footer">--}}
+{{--                                                                        <button type="button" data-dismiss="modal" class="btn btn-dark waves-effect waves-light m-l-5 mr-1 ml-1">--}}
+{{--                                                                            غلق--}}
+{{--                                                                        </button>--}}
+{{--                                                                        <form action="{{route('admin.companies.destroy' , $company->id)}}" method="post">--}}
+{{--                                                                            @csrf--}}
+{{--                                                                            @method('DELETE')--}}
+{{--                                                                            <button type="submit" class="btn btn-danger">حذف</button>--}}
+{{--                                                                        </form>--}}
+{{--                                                                    </div>--}}
+{{--                                                                </div>--}}
+{{--                                                            </div>--}}
+{{--                                                        </div>--}}
                                             </div>
                                         </td>
                                     </tr>
