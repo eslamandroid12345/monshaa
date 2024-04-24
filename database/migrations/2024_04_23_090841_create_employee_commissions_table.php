@@ -28,6 +28,8 @@ class CreateEmployeeCommissionsTable extends Migration
             $table->foreign('company_id')->references('id')->on('companies')->cascadeOnUpdate()->cascadeOnDelete();
             $table->foreign('user_id')->references('id')->on('users')->cascadeOnUpdate()->cascadeOnDelete();
             $table->foreign('employee_id')->references('id')->on('users')->cascadeOnUpdate()->cascadeOnDelete();
+            $table->softDeletes();
+
         });
     }
 

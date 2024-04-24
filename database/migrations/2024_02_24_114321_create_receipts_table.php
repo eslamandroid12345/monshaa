@@ -31,6 +31,8 @@ class CreateReceiptsTable extends Migration
             $table->foreign('company_id')->references('id')->on('companies')->cascadeOnUpdate()->cascadeOnDelete();
             $table->foreign('user_id')->references('id')->on('users')->cascadeOnUpdate()->cascadeOnDelete();
             $table->timestamps();
+            $table->softDeletes();
+
 
         });
     }
