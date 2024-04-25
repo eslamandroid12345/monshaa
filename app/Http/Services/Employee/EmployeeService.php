@@ -55,6 +55,19 @@ class EmployeeService
 
             $inputs = $request->validated();
 
+            $users = $this->employeeRepository->get('company_id',companyId());
+
+            $names = [];
+
+            foreach ($users as $user){
+                $names[] = $user->name;
+            }
+
+            if(in_array($inputs['name'],$names)){
+                return $this->responseFail(null, 422, message: 'هذا الاسم موجود من قبل يرجي ادخال الاسم رباعي');
+
+            }
+
             if($this->companyRepository->countEmployees() == $this->companyRepository->checkCompanyLimit()){
 
                 return $this->responseFail(null, 411, message: 'لقد تعديت الحد الاقصي لاضافه للموظفين يرجي التواصل مع الادمن !');
@@ -100,11 +113,24 @@ class EmployeeService
 
         try {
 
-         $employee = $this->employeeRepository->getByIdWithCondition($id,'is_admin',0);
+          $employee = $this->employeeRepository->getByIdWithCondition($id,'is_admin',0);
 
             Gate::authorize('check-company-auth',$employee);
 
             $inputs = $request->validated();
+
+            $users = $this->employeeRepository->get('company_id',companyId());
+
+            $names = [];
+
+            foreach ($users as $user){
+                $names[] = $user->name;
+            }
+
+            if(in_array($inputs['name'],$names)){
+                return $this->responseFail(null, 422, message: 'هذا الاسم موجود من قبل يرجي ادخال الاسم رباعي');
+
+            }
 
             if ($request->hasFile('employee_image')) {
                 $image = $this->fileManagerService->handle("employee_image", "employees/images",$employee->employee_image);
