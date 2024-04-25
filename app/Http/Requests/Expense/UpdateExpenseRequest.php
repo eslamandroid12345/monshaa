@@ -27,7 +27,7 @@ class UpdateExpenseRequest extends FormRequest
             'real_state_address' => 'nullable|required_if:type,revenue',
             'tenant_name' => 'nullable|required_if:type,revenue',
             'owner_name' => 'nullable|required_if:type,revenue',
-            'total_money' => 'required|numeric',
+            'total_money' => 'required|numeric|regex:/^\d{1,15}(\.\d{1,2})?$/',
             'description' => 'required|max:255',
             'transaction_date' => 'required|date|date_format:Y-m-d',
             'type' => 'nullable|in:expense,revenue'
@@ -43,6 +43,7 @@ class UpdateExpenseRequest extends FormRequest
             'owner_name.required_if' => 'حقل اسم المالك مطلوب عندما يكون نوع العملية إيراد.',
             'total_money.required' => 'المبلغ الإجمالي مطلوب.',
             'total_money.numeric' => 'يجب أن يكون المبلغ الإجمالي رقمًا.',
+            'total_money.regex' => 'المبلغ الإجمالي كبير جدا.',
             'description.required' => 'الوصف مطلوب.',
             'description.max' => 'يجب ألا يتجاوز الوصف 255 حرفًا.',
             'transaction_date.required' => 'تاريخ المعاملة مطلوب.',

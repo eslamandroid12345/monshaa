@@ -24,9 +24,9 @@ class ReceiptRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'total_amount' => 'required|numeric|min:0',
+            'total_amount' => 'required|numeric|min:1|regex:/^\d{1,15}(\.\d{1,2})?$/',
             'commission_type' => 'required|in:per,val',
-            'commission' => 'required|numeric|min:0',
+            'commission' => 'required|numeric|min:1|regex:/^\d{1,15}(\.\d{1,2})?$/',
             'transaction_date' => 'required|date|date_format:Y-m-d',
             'contract_date_from' => 'required|date|date_format:Y-m-d',
             'contract_date_to' => 'required|date|date_format:Y-m-d|after_or_equal:contract_date_from',
@@ -38,12 +38,14 @@ class ReceiptRequest extends FormRequest
         return [
             'total_amount.required' => 'المبلغ الإجمالي مطلوب.',
             'total_amount.numeric' => 'المبلغ الإجمالي يجب أن يكون رقمًا.',
-            'total_amount.min' => 'المبلغ الإجمالي يجب أن لا يكون أقل من 0.',
+            'total_amount.regex' => 'المبلغ الإجمالي رقم كبير جدا.',
+            'total_amount.min' => 'المبلغ الإجمالي يجب أن لا يكون أقل من 1.',
             'commission_type.required' => 'نوع العمولة مطلوب.',
             'commission_type.in' => 'نوع العمولة يجب أن يكون "per" أو "val".',
             'commission.required' => 'العمولة مطلوبة".',
             'commission.numeric' => 'العمولة يجب أن تكون رقمًا.',
-            'commission.min' => 'العمولة يجب ألا تكون أقل من 0.',
+            'commission.regex' => 'قيمه العموله مبلغ كبير جدا.',
+            'commission.min' => 'العمولة يجب ألا تكون أقل من 1.',
             'transaction_date.required' => 'تاريخ العملية مطلوب.',
             'transaction_date.date' => 'تاريخ العملية يجب أن يكون تاريخًا صالحًا.',
             'transaction_date.date_format' => 'تنسيق تاريخ العملية يجب أن يكون Y-m-d.',

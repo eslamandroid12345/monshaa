@@ -26,7 +26,7 @@ class EmployeeCommissionRequest extends FormRequest
         return [
 
             'employee_id' => 'required|exists:users,id',
-            'total_money' => 'required|numeric',
+            'total_money' => 'required|numeric|regex:/^\d{1,15}(\.\d{1,2})?$/',
             'description' => 'required|max:255',
             'real_state_address' => 'required|max:255',
             'tenant_name' => 'required|max:255',
@@ -42,6 +42,7 @@ class EmployeeCommissionRequest extends FormRequest
             'employee_id.exists' => 'رقم معرف الموظف غير موجود.',
             'total_money.required' => 'حقل المبلغ الإجمالي مطلوب.',
             'total_money.numeric' => 'يجب أن يكون الحقل المالي عددًا.',
+            'total_money.regex' => 'قيمه عموله الموظف كبير جدا.',
             'description.required' => 'حقل الوصف مطلوب.',
             'description.max' => 'يجب ألا يتجاوز حقل الوصف 255 حرفًا.',
             'real_state_address.required' => 'حقل عنوان العقار مطلوب.',

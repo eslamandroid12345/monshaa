@@ -24,7 +24,7 @@ class CashRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'total_amount' => 'required|numeric|min:0',
+            'total_amount' => 'required|numeric|min:1|regex:/^\d{1,15}(\.\d{1,2})?$/',
             'transaction_date' => 'required|date|date_format:Y-m-d',
             'contract_date_from' => 'required|date|date_format:Y-m-d',
             'contract_date_to' => 'required|date|date_format:Y-m-d|after_or_equal:contract_date_from',
@@ -37,7 +37,8 @@ class CashRequest extends FormRequest
         return [
             'total_amount.required' => 'المبلغ الإجمالي مطلوب.',
             'total_amount.numeric' => 'المبلغ الإجمالي يجب أن يكون رقمًا.',
-            'total_amount.min' => 'المبلغ الإجمالي يجب أن لا يكون أقل من 0.',
+            'total_amount.regex' => 'المبلغ الإجمالي كبير جدا.',
+            'total_amount.min' => 'المبلغ الإجمالي يجب أن لا يكون أقل من 1.',
             'transaction_date.required' => 'تاريخ العملية مطلوب.',
             'transaction_date.date' => 'تاريخ العملية يجب أن يكون تاريخًا صالحًا.',
             'transaction_date.date_format' => 'تنسيق تاريخ العملية يجب أن يكون Y-m-d.',
