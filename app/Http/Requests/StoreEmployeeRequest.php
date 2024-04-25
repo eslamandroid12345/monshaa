@@ -50,6 +50,7 @@ class StoreEmployeeRequest extends FormRequest
             'phone.numeric' => 'الهاتف يجب ان يكون رقم وليس شيء اخر',
             'card_number.required' => 'رقم البطاقه مطلوب',
             'card_number.numeric' => 'رقم البطاقه يجب ان يكون رقم',
+            'card_number.unique' => 'رقم البطاقه موجوده من قبل',
             'password.required' => 'كلمه المرور مطلوبه',
             'password.min' => 'كلمه المرور يجب ان لا تقل عن 8 احرف وارقام',
             'employee_permissions.required' => 'يرجي ادخال صلاحيات للموظف',
