@@ -64,7 +64,8 @@ class EmployeeService
             }
 
             if(in_array($inputs['name'],$names)){
-                return $this->responseFail(data: null, code: 422, message: 'هذا الاسم موجود من قبل يرجي ادخال الاسم رباعي');
+                return $this->responseFail(data: ['هذا الاسم موجود من قبل يرجي ادخال الاسم رباعي'], code: 422, message:"Validation error");
+
 
             }
 
@@ -128,7 +129,7 @@ class EmployeeService
             }
 
             if(in_array($inputs['name'],$names)){
-                return $this->responseFail(data: null, code: 422, message: 'هذا الاسم موجود من قبل يرجي ادخال الاسم رباعي');
+                return $this->responseFail(data: ['هذا الاسم موجود من قبل يرجي ادخال الاسم رباعي'], code: 422, message:"Validation error");
 
 
             }
