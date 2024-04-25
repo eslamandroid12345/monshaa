@@ -120,19 +120,6 @@ class EmployeeService
 
             $inputs = $request->validated();
 
-            $users = $this->employeeRepository->get('company_id',companyId());
-
-            $names = [];
-
-            foreach ($users as $user){
-                $names[] = $user->name;
-            }
-
-            if(in_array($inputs['name'],$names)){
-                return $this->responseFail(data: ['هذا الاسم موجود من قبل يرجي ادخال الاسم رباعي'], code: 422, message:"Validation error");
-
-
-            }
 
             if ($request->hasFile('employee_image')) {
                 $image = $this->fileManagerService->handle("employee_image", "employees/images",$employee->employee_image);
