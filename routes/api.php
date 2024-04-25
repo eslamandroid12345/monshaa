@@ -180,6 +180,11 @@ Route::middleware('check-status')->group(function (){
         Route::post('delete/{id}',[ClientController::class,'delete']);
     });
 
+    Route::group(['prefix' => 'clients','middleware' => 'jwt'], function (){
+        Route::get('get-all-employees',[ClientController::class,'getAllEmployees']);
+
+    });
+
     Route::group(['prefix' => 'companies','middleware' => ['jwt','permission:companies','is_administrator']], function (){
 
         Route::get('get-all',[CompanyController::class,'getAllCompanies']);
@@ -194,7 +199,6 @@ Route::middleware('check-status')->group(function (){
     Route::group(['prefix' => 'notifications','middleware' => ['jwt','permission:notifications']], function (){
 
         Route::get('all',[NotificationController::class,'all']);
-
     });
 });
 

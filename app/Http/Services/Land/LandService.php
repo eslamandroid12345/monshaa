@@ -52,7 +52,6 @@ class LandService
 
     public function create(LandRequest $request): JsonResponse
     {
-
         try {
 
             $inputs = $request->validated();

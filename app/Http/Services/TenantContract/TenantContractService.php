@@ -109,6 +109,9 @@ class TenantContractService
             $tenantContract = $this->tenantContractRepository->create($inputs);
 
             $this->expenseRepository->create([
+                'real_state_address' => $tenantContract->real_state_address,
+                'tenant_name' => $tenantContract->tenant->name,
+                'owner_name' => $tenantContract->owner_name,
                 'type' => 'revenue',
                 'company_id' => companyId(),
                 'user_id' => employeeId(),
@@ -182,7 +185,12 @@ class TenantContractService
            $this->tenantContractRepository->update($tenantContract->id,$tenantContractRequests);
 
             $revenue = $this->expenseRepository->getByColumn('tenant_contract_id',$id);
-            $this->expenseRepository->update($revenue->id,['total_money' => $tenantContract->commission]);
+            $this->expenseRepository->update($revenue->id,[
+                'real_state_address' => $tenantContract->real_state_address,
+                'tenant_name' => $tenantContract->tenant->name,
+                'owner_name' => $tenantContract->owner_name,
+                'total_money' => $tenantContract->commission
+            ]);
 
             DB::commit();
             return $this->getService->handle(resource: TenantContractResource::class,repository: $this->tenantContractRepository,method: 'getById',parameters: [$id],is_instance: true,message: 'تم تعديل بيانات عقد الايجار  بنجاح');

@@ -85,7 +85,18 @@ class ReceiptService
 
                 $receipt = $this->receiptRepository->create($inputs);
 
-                $this->expenseRepository->create(['type' => 'revenue', 'company_id' => companyId(), 'user_id' => employeeId(), 'receipt_id' => $receipt->id, 'total_money' => $receipt->commission, 'description' => 'سند صرف', 'transaction_date' => $receipt->transaction_date,]);
+                $this->expenseRepository->create([
+                    'real_state_address' => $receipt->tenant_contract->real_state_address,
+                    'tenant_name' => $receipt->tenant_contract->tenant->name,
+                    'owner_name' => $receipt->tenant_contract->owner_name,
+                    'type' => 'revenue',
+                    'company_id' => companyId(),
+                    'user_id' => employeeId(),
+                    'receipt_id' => $receipt->id,
+                    'total_money' => $receipt->commission,
+                    'description' => 'سند صرف',
+                    'transaction_date' => $receipt->transaction_date,
+                    ]);
 
 
                 $this->sendFirebaseNotification(data:['title' => 'اشعار جديد لديك','body' => ' تم اضافه سند صرف لمالك لديك بواسطه ' . employee() ],userId: employeeId(),permission: 'financial_receipt');
@@ -126,7 +137,12 @@ class ReceiptService
             $this->receiptRepository->update($receipt->id,$inputs);
 
             $revenue = $this->expenseRepository->getByColumn('receipt_id',$id);
-            $this->expenseRepository->update($revenue->id,['total_money' => $request->commission]);
+            $this->expenseRepository->update($revenue->id,[
+                'real_state_address' => $receipt->tenant_contract->real_state_address,
+                'tenant_name' => $receipt->tenant_contract->tenant->name,
+                'owner_name' => $receipt->tenant_contract->owner_name,
+                'total_money' => $request->commission
+            ]);
 
             $this->sendFirebaseNotification(data:['title' => 'اشعار جديد لديك','body' => ' تم تعديل سند صرف لمالك لديك بواسطه ' . employee() ],userId: employeeId(),permission: 'financial_receipt');
 
