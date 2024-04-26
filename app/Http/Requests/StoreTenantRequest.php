@@ -28,7 +28,7 @@ class StoreTenantRequest extends FormRequest
 
             'name' => 'required|max:255',
             'phone' => ['required', 'numeric', new UniqueTenantData(request('tenant_id'), 'phone')],
-            'card_number' => ['required', 'numeric', new UniqueTenantData(request('tenant_id'), 'card_number')],
+            'card_number' => ['required', 'numeric',new UniqueTenantData(request('tenant_id'), 'card_number')],
             'card_address' => 'required|max:255',
             'job_title' => 'required|max:255',
             'nationality' => 'required|max:255',

@@ -136,7 +136,10 @@ class ReceiptService
 
             $this->receiptRepository->update($receipt->id,$inputs);
 
-            $revenue = $this->expenseRepository->getByColumn('receipt_id',$id);
+            $receipt = $this->receiptRepository->getById($id);
+
+            $revenue = $this->expenseRepository->getByColumn('receipt_id',$receipt->id);//get receipt after update
+
             $this->expenseRepository->update($revenue->id,[
                 'real_state_address' => $receipt->tenant_contract->real_state_address,
                 'tenant_name' => $receipt->tenant_contract->tenant->name,
