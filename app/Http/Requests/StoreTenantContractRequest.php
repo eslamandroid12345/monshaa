@@ -25,7 +25,7 @@ class StoreTenantContractRequest extends FormRequest
     {
         return [
             'owner_name' => 'required|max:255',
-            'owner_phone' => 'required|max:255',
+            'owner_phone' => 'required|max:255|numeric',
             'owner_card_number' => 'required|max:255',
             'owner_card_address' => 'required|max:255',
             'owner_job_title' => 'required|max:255',
@@ -57,6 +57,7 @@ class StoreTenantContractRequest extends FormRequest
             'owner_name.max' => 'يجب ألا يزيد اسم المالك عن 255 حرفًا.',
             'owner_phone.required' => 'رقم هاتف المالك مطلوب ولا يمكن أن يكون فارغًا.',
             'owner_phone.max' => 'يجب ألا يزيد رقم هاتف المالك عن 255 حرفًا.',
+            'owner_phone.numeric' => 'رقم هاتف المالك يجب ان يكون رقم.',
             'owner_card_number.required' => 'رقم بطاقة المالك مطلوب ولا يمكن أن يكون فارغًا.',
             'owner_card_number.max' => 'يجب ألا يزيد رقم بطاقة المالك عن 255 حرفًا.',
             'owner_card_address.required' => 'عنوان بطاقة المالك مطلوب ولا يمكن أن يكون فارغًا.',
