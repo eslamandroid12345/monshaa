@@ -25,7 +25,7 @@ class StoreTenantContractRequest extends FormRequest
     {
         return [
             'owner_name' => 'required|max:255',
-            'owner_phone' => 'required|max:255|numeric',
+            'owner_phone' => 'required|numeric',
             'owner_card_number' => 'required|max:255',
             'owner_card_address' => 'required|max:255',
             'owner_job_title' => 'required|max:255',
