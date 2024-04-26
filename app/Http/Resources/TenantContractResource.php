@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use Carbon\Carbon;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class TenantContractResource extends JsonResource
@@ -14,8 +15,10 @@ class TenantContractResource extends JsonResource
      */
     public function toArray($request)
     {
+
         return [
             'id' => $this->id,
+            'day' => $this->contract_day,
             'tenant' => new TenantResource($this->tenant),
             'owner_name' => $this->owner_name,
             'owner_phone' => $this->owner_phone,

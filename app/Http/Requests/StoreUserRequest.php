@@ -48,7 +48,7 @@ class StoreUserRequest extends FormRequest
             'company_phone.required' => 'رقم هاتف الشركه العقاريه او المكتب العقاري مطلوب',
             'phone.required' => 'هاتف صاحب الشركه العقاريه مطلوب',
             'company_phone.unique' => 'رقم الشركه العقاريه مسجل من قبل',
-            'phone.unique' => 'هذا الرقم مسجل لدينا من قبل',
+            'phone.unique' => 'رقم هاتف المدير مسجل لدينا من قبل',
             'company_phone.numeric' => 'هاتف الشركه يجب ان يكون رقم',
             'phone.numeric' => 'الهاتف يجب ان يكون رقم وليس شيء اخر',
             'tax_number.numeric' => 'الرقم الضريبي يجب ان يكون رقم',
