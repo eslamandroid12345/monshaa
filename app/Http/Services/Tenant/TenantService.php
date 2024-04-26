@@ -50,11 +50,13 @@ class TenantService
 
             $inputs = $request->validated();
 
+
             $inputs['company_id'] = companyId();
 
             $tenant = $this->tenantRepository->create($inputs);
 
             return $this->getService->handle(resource: TenantResource::class,repository: $this->tenantRepository,method: 'getById',parameters: [$tenant->id],is_instance: true,message:'تم اضافه البيانات بنجاح' );
+
 
         }catch (AuthorizationException $exception){
 

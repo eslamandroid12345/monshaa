@@ -46,6 +46,16 @@ interface RepositoryInterface
         array $relations = [],
     ): \Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
+
+    public function getBy(
+        $byColumn1,
+        $value1,
+        $byColumn2,
+        $value2,
+        array $columns = ['*'],
+        array $relations = [],
+    );
+
     public function first(
         $byColumn,
         $value,

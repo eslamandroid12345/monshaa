@@ -21,7 +21,7 @@ class CreateTenantsTable extends Migration
             $table->unsignedBigInteger('company_id');
             $table->string('name')->comment('اسم المستاجر');
             $table->string('phone');
-            $table->string('card_number')->unique();
+            $table->string('card_number');
             $table->string('card_address');
             $table->string('job_title');
             $table->string('nationality');

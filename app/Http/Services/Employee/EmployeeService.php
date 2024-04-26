@@ -66,7 +66,6 @@ class EmployeeService
             if(in_array($inputs['name'],$names)){
                 return $this->responseFail(data: ['هذا الاسم موجود من قبل يرجي ادخال الاسم رباعي'], code: 422, message:"Validation error");
 
-
             }
 
             if($this->companyRepository->countEmployees() == $this->companyRepository->checkCompanyLimit()){

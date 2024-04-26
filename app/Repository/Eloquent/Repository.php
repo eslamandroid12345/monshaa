@@ -85,6 +85,18 @@ abstract class Repository implements RepositoryInterface
         return $this->model::query()->latest()->select($columns)->with($relations)->where($byColumn1, $value1)->where($byColumn2, $value2)->paginate(10);
     }
 
+    public function getBy(
+        $byColumn1,
+        $value1,
+        $byColumn2,
+        $value2,
+        array $columns = ['*'],
+        array $relations = [],
+    )
+    {
+        return $this->model::query()->latest()->select($columns)->with($relations)->where($byColumn1, $value1)->where($byColumn2, $value2)->first();
+    }
+
 
     public function first(
         $byColumn,

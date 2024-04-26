@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\UniqueTenantData;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreTenantRequest extends FormRequest
@@ -26,8 +27,8 @@ class StoreTenantRequest extends FormRequest
         return [
 
             'name' => 'required|max:255',
-            'phone' => 'required|numeric|unique:tenants,phone,' . request('tenant_id'),
-            'card_number' => 'required|numeric|unique:tenants,card_number,' . request('tenant_id'),
+            'phone' => ['required', 'numeric', new UniqueTenantData(request('tenant_id'), 'phone')],
+            'card_number' => ['required', 'numeric', new UniqueTenantData(request('tenant_id'), 'card_number')],
             'card_address' => 'required|max:255',
             'job_title' => 'required|max:255',
             'nationality' => 'required|max:255',
