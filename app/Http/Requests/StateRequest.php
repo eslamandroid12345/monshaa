@@ -37,7 +37,7 @@ class StateRequest extends FormRequest
             'real_state_space' => 'required|numeric',
             'real_state_price' => 'required|numeric|regex:/^\d{1,15}(\.\d{1,2})?$/',
             'number_of_bathrooms' => 'nullable|integer',
-            'number_of_rooms' => 'required_if:real_state_type,furnished_apartment,empty_apartment,furnished_villa,empty_villa|integer',
+            'number_of_rooms' => 'required|integer',
             'advertise_details' => 'nullable|max:20000',
             'state_date_register' => 'required|date|date_format:Y-m-d',
         ];
@@ -63,7 +63,7 @@ class StateRequest extends FormRequest
             'real_state_price.in' => 'سعر العقار يحب ان يكون رقم وليس شئ اخر',
             'real_state_price.regex' => 'سعر العقار كبير جدا',
             'number_of_bathrooms.integer' => 'عدد الحمامات يجب ان يكون رقم',
-            'number_of_rooms.required_if' => 'عدد الغرف مطلوب',
+            'number_of_rooms.required' => 'عدد الغرف مطلوب',
             'number_of_rooms.integer' => 'عدد الغرف يجب ان يكون رقم',
             'advertise_details' => 'تفاصيل الاعلان (عدد الاحرف القصوي 20000)',
             'state_date_register.required' => 'تاريخ تسجيل العقار مطلوب',
