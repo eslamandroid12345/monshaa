@@ -42,7 +42,9 @@ class EmployeeCommission extends Model
                 ->when(request()->has('date_from') && request()->has('date_to') && request('date_from') != null && request('date_to') != null, function ($q) {
                     $q->whereBetween('transaction_date',[request('date_from'), request('date_to')]);
                 })
-
+                  ->when(request()->has('employee_id')  && request('employee_id') != null, function ($q) {
+                      $q->where('employee_id', request()->input('employee_id'));
+                  })
                 ->where('company_id','=',companyId())
                 ->sum('total_money');
 
