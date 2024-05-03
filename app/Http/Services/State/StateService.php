@@ -60,6 +60,8 @@ class StateService
         $inputs['user_id'] = employeeId();
         $inputs['company_id'] = companyId();
 
+        $inputs['real_state_space_price'] = $inputs['department'] == 'sale' ? ($inputs['real_state_price'] / $inputs['real_state_space']) : 0;
+
         $state = $this->stateRepository->create($inputs);
 
         $this->uploadImages($request,$state);
@@ -121,6 +123,9 @@ class StateService
             Gate::authorize('check-user-auth',$state);
 
             $inputs = $request->validated();
+
+            $inputs['real_state_space_price'] = $inputs['department'] == 'sale' ? ($inputs['real_state_price'] / $inputs['real_state_space']) : 0;
+
 
             $this->stateRepository->update($state->id,$inputs);
 
@@ -191,6 +196,9 @@ class StateService
             $this->deleteExistingImages($state);
 
             $this->stateRepository->delete($state->id);
+
+            $this->sendFirebaseNotification(data:['title' => 'اشعار جديد لديك','body' => ' تم حذف عقار لديك بواسطه ' . employee() ],userId: employeeId(),permission: 'states');
+
 
             return $this->responseSuccess(null, 200, 'تم حذف بيانات العقار  بنجاح');
 

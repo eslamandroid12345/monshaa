@@ -63,15 +63,19 @@ class ReportService
 
     public function revenues(): JsonResponse
     {
+        $data = $this->expenseRepository->revenuesReports();
 
-        return $this->getService->handle(resource: ExpenseResource::class,repository: $this->expenseRepository,method: 'revenuesReports',message:'تم الحصول علي جميع الايردات بنجاح' );
+        return $this->responseSuccess(data: ExpenseResource::collection($data)->response()->getData(true),code: 200,message: 'تم الحصول على بيانات جميع الايردات بنجاح',status: 200,newAttributeName: 'total',newAttributeValue: $this->expenseRepository->getCurrentRevenuesTotal());
+
 
     }
 
     public function expenses(): JsonResponse
     {
 
-        return $this->getService->handle(resource: ExpenseResource::class,repository: $this->expenseRepository,method: 'expensesReports',message:'تم الحصول علي جميع المصروفات بنجاح' );
+        $data = $this->expenseRepository->expensesReports();
+
+        return $this->responseSuccess(data: ExpenseResource::collection($data)->response()->getData(true),code: 200,message: 'تم الحصول على بيانات جميع المصروفات بنجاح',status: 200,newAttributeName: 'total',newAttributeValue: $this->expenseRepository->getCurrentExpensesTotal());
 
     }
 

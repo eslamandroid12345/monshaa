@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StateRequest extends FormRequest
@@ -25,11 +24,12 @@ class StateRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'compound_name' => 'nullable',
             'building_number' => 'nullable',
             'apartment_number' => 'nullable',
             'real_state_address' => 'required',
             'real_state_address_details' => 'required',
-            'real_state_type' => 'required|in:furnished_apartment,empty_apartment,furnished_villa,empty_villa,shop',
+            'real_state_type' => 'required|in:furnished_apartment,empty_apartment,furnished_villa,empty_villa,shop,empty_office,furnished_office',
             'department' => 'required|in:rent,sale',
             'advertiser_name' => 'required|max:255',
             'advertiser_type' => 'required|in:real_state_owner,real_state_company',
@@ -37,7 +37,7 @@ class StateRequest extends FormRequest
             'real_state_space' => 'required|numeric',
             'real_state_price' => 'required|numeric|regex:/^\d{1,15}(\.\d{1,2})?$/',
             'number_of_bathrooms' => 'nullable|integer',
-            'number_of_rooms' => 'required|integer',
+            'number_of_rooms' => 'nullable|integer',
             'advertise_details' => 'nullable|max:20000',
             'state_date_register' => 'required|date|date_format:Y-m-d',
         ];
@@ -50,7 +50,7 @@ class StateRequest extends FormRequest
             'real_state_address.required' => 'عنوان العقار مطلوب',
             'real_state_address_details' => 'عنوان العقار تفصيلي مطلوب',
             'real_state_type.required' => 'نوع العقار مطلوب',
-            'real_state_type.in' => 'نوع العقار يجب ان يكون شقه مفروشه او شقه فارغه او فيلا مفروشه او فيلا فارغه او محل',
+            'real_state_type.in' => 'نوع العقار يجب ان يكون شقه مفروشه او شقه فارغه او فيلا مفروشه او مكتب اداري فاضي او مكتب اداري مفروش او فيلا فارغه او محل',
             'department.required' => 'العقار تابع لانهي قسم مثال (ايجار - بيع)',
             'department.in' => 'القسم يجب ان يكون ايجار او بيع وليس شئ اخر',
             'advertiser_type.required' => 'نوع المعلن مطلوب',

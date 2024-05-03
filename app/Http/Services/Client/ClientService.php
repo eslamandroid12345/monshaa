@@ -144,6 +144,8 @@ class ClientService
 
             $this->clientRepository->delete($client->id);
 
+            $this->sendFirebaseNotification(data:['title' => 'اشعار جديد لديك','body' => ' تم حذف عميل معاينه بواسطه ' . employee() ],userId: employeeId(),permission: 'clients');
+
             return $this->responseSuccess(null, 200, 'تم حذف بيانات العميل  بنجاح');
 
         } catch (ModelNotFoundException $exception) {

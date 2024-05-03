@@ -29,7 +29,6 @@ class EmployeeCommissionRequest extends FormRequest
             'total_money' => 'required|numeric|regex:/^\d{1,15}(\.\d{1,2})?$/',
             'description' => 'required|max:255',
             'real_state_address' => 'required|max:255',
-            'tenant_name' => 'required|max:255',
             'owner_name' => 'required|max:255',
             'transaction_date' => 'required|date|date_format:Y-m-d',
         ];
@@ -47,8 +46,6 @@ class EmployeeCommissionRequest extends FormRequest
             'description.max' => 'يجب ألا يتجاوز حقل الوصف 255 حرفًا.',
             'real_state_address.required' => 'حقل عنوان العقار مطلوب.',
             'real_state_address.max' => 'يجب ألا يتجاوز حقل عنوان العقار 255 حرفًا.',
-            'tenant_name.required' => 'حقل اسم المستأجر مطلوب.',
-            'tenant_name.max' => 'يجب ألا يتجاوز حقل اسم المستأجر 255 حرفًا.',
             'owner_name.required' => 'حقل اسم المالك مطلوب.',
             'owner_name.max' => 'يجب ألا يتجاوز حقل اسم المالك 255 حرفًا.',
             'transaction_date.required' => 'حقل تاريخ العملية مطلوب.',

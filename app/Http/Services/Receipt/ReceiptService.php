@@ -87,7 +87,6 @@ class ReceiptService
 
                 $this->expenseRepository->create([
                     'real_state_address' => $receipt->tenant_contract->real_state_address,
-                    'tenant_name' => $receipt->tenant_contract->tenant->name,
                     'owner_name' => $receipt->tenant_contract->owner_name,
                     'type' => 'revenue',
                     'company_id' => companyId(),
@@ -142,7 +141,6 @@ class ReceiptService
 
             $this->expenseRepository->update($revenue->id,[
                 'real_state_address' => $receipt->tenant_contract->real_state_address,
-                'tenant_name' => $receipt->tenant_contract->tenant->name,
                 'owner_name' => $receipt->tenant_contract->owner_name,
                 'total_money' => $request->commission
             ]);

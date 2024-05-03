@@ -37,4 +37,9 @@ class EmployeeCommissionRepository extends Repository implements EmployeeCommiss
 
     }
 
+    public function getCurrentTotalCommission()
+    {
+        return $this->model::query()->first()->total_commission;
+    }
+
 }

@@ -28,7 +28,6 @@ class EmployeeCommissionResource extends JsonResource
             'total_money' => $this->total_money,
             'description' => $this->description,
             'real_state_address' => $this->real_state_address,
-            'tenant_name' => $this->tenant_name,
             'owner_name' => $this->owner_name,
             'transaction_date' => $this->transaction_date,
         ];

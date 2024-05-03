@@ -25,6 +25,7 @@ class CreateClientsTable extends Migration
             $table->time('inspection_time')->nullable()->comment('وقت المعاينه');
             $table->enum('status',['waiting','inspection','inspection_accepted','inspection_refused'])->default('waiting')->comment('حاله المعاينه');
             $table->text('notes')->comment('الملاحظات')->nullable();
+            $table->enum('client_type',['client','company']);
             $table->timestamps();
             $table->foreign('company_id')->references('id')->on('companies')->cascadeOnUpdate()->cascadeOnDelete();
             $table->foreign('user_id')->references('id')->on('users')->cascadeOnUpdate()->cascadeOnDelete();

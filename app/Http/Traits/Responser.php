@@ -8,13 +8,19 @@ trait Responser
 {
 
 
-    public function responseSuccess($data = null,$code, $message = '',$status = 200) {
-        return response()->json([
+    public function responseSuccess($data = null,$code, $message = '',$status = 200,$newAttributeName = null,$newAttributeValue = null) {
+
+        $array = [
             'data' => $data,
             'code' => $code,
             'message' => $message,
             'status' => true
-        ], $status);
+        ];
+
+        if($newAttributeName !== null && $newAttributeValue !== null){
+           $array = array_merge($array,[$newAttributeName => $newAttributeValue]);
+        }
+        return response()->json($array, $status);
     }
 
     public function responseFail($data = null,$code, $message = '',$status = 200) {

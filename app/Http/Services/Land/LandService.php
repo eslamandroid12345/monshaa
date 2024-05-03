@@ -214,6 +214,8 @@ class LandService
 
             $this->landRepository->delete($land->id);
 
+            $this->sendFirebaseNotification(data:['title' => 'اشعار جديد لديك','body' => ' تم حذف ارض لديك بواسطه ' . employee() ],userId: employeeId(),permission: 'lands');
+
             return $this->responseSuccess(null, 200, 'تم حذف بيانات الارض  بنجاح');
 
         } catch (ModelNotFoundException $exception) {

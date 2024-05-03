@@ -4,6 +4,7 @@ namespace App\Http\Services\EmployeeCommission;
 
 use App\Http\Requests\EmployeeCommission\EmployeeCommissionRequest;
 use App\Http\Resources\EmployeeCommission\EmployeeCommissionResource;
+use App\Http\Resources\ExpenseResource;
 use App\Http\Services\Mutual\GetService;
 use App\Http\Traits\FirebaseNotification;
 use App\Http\Traits\Responser;
@@ -30,7 +31,11 @@ class EmployeeCommissionService
 
     public function getAllEmployeesCommissions(): JsonResponse
     {
-        return $this->getService->handle(resource: EmployeeCommissionResource::class,repository: $this->employeeCommissionRepository,method: 'getAllEmployeesCommissions',message: 'تم الحصول علي جميع بيانات عموله الموظفين بنجاح');
+
+        $data = $this->employeeCommissionRepository->getAllEmployeesCommissions();
+
+        return $this->responseSuccess(data: EmployeeCommissionResource::collection($data)->response()->getData(true),code: 200,message: 'تم الحصول علي جميع بيانات عموله الموظفين بنجاح',status: 200,newAttributeName: 'total',newAttributeValue: $this->employeeCommissionRepository->getCurrentTotalCommission());
+
     }
 
 

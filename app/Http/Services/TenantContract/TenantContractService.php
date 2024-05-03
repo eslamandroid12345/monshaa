@@ -110,7 +110,6 @@ class TenantContractService
 
             $this->expenseRepository->create([
                 'real_state_address' => $tenantContract->real_state_address,
-                'tenant_name' => $tenantContract->tenant->name,
                 'owner_name' => $tenantContract->owner_name,
                 'type' => 'revenue',
                 'company_id' => companyId(),
@@ -190,7 +189,6 @@ class TenantContractService
 
             $this->expenseRepository->update($revenue->id,[
                 'real_state_address' => $tenantContract->real_state_address,
-                'tenant_name' => $tenantContract->tenant->name,
                 'owner_name' => $tenantContract->owner_name,
                 'total_money' => $tenantContract->commission
             ]);//update revenue

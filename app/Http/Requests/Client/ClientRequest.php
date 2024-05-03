@@ -32,6 +32,7 @@ class ClientRequest extends FormRequest
             'inspection_time' => 'nullable',
             'notes' => 'nullable',
             'status' => 'nullable|in:waiting,inspection,inspection_accepted,inspection_refused',
+            'client_type' => 'required|in:client,company',
         ];
     }
 
@@ -47,6 +48,8 @@ class ClientRequest extends FormRequest
             'inspection_date.date' => 'يجب أن يكون حقل تاريخ المعاينه تاريخًا صحيحًا.',
             'inspection_date.date_format' => 'تنسيق تاريخ المعاينه غير صالح. يجب أن يكون بتنسيق: Y-m-d.',
             'status.in' => 'القيمة المدخلة في حقل الحالة غير صالحة.',
+            'client_type.required' => 'نوع العميل مطلوب',
+            'client_type.in' => 'نوع العميل يجب ان يكون عميل مباشر او شركه عقارات',
 
         ];
     }

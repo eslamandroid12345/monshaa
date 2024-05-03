@@ -25,7 +25,6 @@ class StoreExpenseRequest extends FormRequest
     {
         return [
             'real_state_address' => 'nullable|required_if:type,revenue',
-            'tenant_name' => 'nullable|required_if:type,revenue',
             'owner_name' => 'nullable|required_if:type,revenue',
             'total_money' => 'required|numeric|regex:/^\d{1,15}(\.\d{1,2})?$/',
             'description' => 'required|max:255',
@@ -40,7 +39,6 @@ class StoreExpenseRequest extends FormRequest
         return [
 
             'real_state_address.required_if' => 'حقل عنوان العقار مطلوب عندما يكون نوع العملية إيراد.',
-            'tenant_name.required_if' => 'حقل  اسم المستاجر مطلوب عندما يكون نوع العملية إيراد.',
             'owner_name.required_if' => 'حقل اسم المالك مطلوب عندما يكون نوع العملية إيراد.',
             'total_money.required' => 'المبلغ الإجمالي مطلوب.',
             'total_money.numeric' => 'يجب أن يكون المبلغ الإجمالي رقمًا.',

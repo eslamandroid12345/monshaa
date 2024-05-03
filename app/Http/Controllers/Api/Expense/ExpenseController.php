@@ -19,7 +19,8 @@ class ExpenseController extends Controller
     }
 
 
-    public function getAllRevenues(): JsonResponse{
+    public function getAllRevenues(): JsonResponse
+    {
 
 
         return  $this->expenseService->getAllRevenues();

@@ -15,6 +15,7 @@ class ExpenseRepository  extends Repository implements ExpenseRepositoryInterfac
 {
 
     use Responser;
+
     protected Model $model;
 
     public function __construct(Expense $model)
@@ -64,6 +65,16 @@ class ExpenseRepository  extends Repository implements ExpenseRepositoryInterfac
 
     }
 
+    public function getCurrentRevenuesTotal()
+    {
+        return $this->model::query()->first()->total_revenue;
+    }
+
+
+    public function getCurrentExpensesTotal()
+    {
+        return $this->model::query()->first()->total_expense;
+    }
 
 
     public function revenuesReports(): LengthAwarePaginator
@@ -87,8 +98,6 @@ class ExpenseRepository  extends Repository implements ExpenseRepositoryInterfac
 
 
     }
-
-
 
     public function expensesReports(): LengthAwarePaginator
     {

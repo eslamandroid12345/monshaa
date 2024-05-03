@@ -33,7 +33,9 @@ class ExpenseService
 
         try {
 
-            return $this->getService->handle(resource: ExpenseResource::class,repository: $this->expenseRepository,method: 'getAllExpenses',message:'تم الحصول على بيانات جميع المصروفات بنجاح' );
+            $data = $this->expenseRepository->getAllExpenses();
+
+            return $this->responseSuccess(data: ExpenseResource::collection($data)->response()->getData(true),code: 200,message: 'تم الحصول على بيانات جميع المصروفات بنجاح',status: 200,newAttributeName: 'total',newAttributeValue: $this->expenseRepository->getCurrentExpensesTotal());
 
         }catch (AuthorizationException $exception){
             return $this->responseFail(null, 403, 'غير مصرح لك للدخول لذلك الصفحه',403);
@@ -45,11 +47,14 @@ class ExpenseService
 
     }
 
-    public function getAllRevenues(): JsonResponse{
+    public function getAllRevenues(): JsonResponse
+    {
 
         try {
 
-            return $this->getService->handle(resource: RevenueResource::class,repository: $this->expenseRepository,method: 'getAllRevenues',message:'تم الحصول على بيانات جميع الايردات بنجاح' );
+            $data = $this->expenseRepository->getAllRevenues();
+
+            return $this->responseSuccess(data: RevenueResource::collection($data)->response()->getData(true),code: 200,message: 'تم الحصول على بيانات جميع الايردات بنجاح',status: 200,newAttributeName: 'total',newAttributeValue: $this->expenseRepository->getCurrentRevenuesTotal());
 
         }catch (AuthorizationException $exception){
             return $this->responseFail(null, 403, 'غير مصرح لك للدخول لذلك الصفحه',403);

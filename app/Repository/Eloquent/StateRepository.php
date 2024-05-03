@@ -50,6 +50,10 @@ class StateRepository extends Repository implements StateRepositoryInterface
             $q->where('id', '=',  request()->input('code'));
         });
 
+        $query->when(request()->has('compound_name') && request()->input('compound_name') != null, function ($q)  {
+            $q->where('compound_name', 'like', '%' . request()->input('compound_name') . '%');
+        });
+
         $query->when(request()->has('user_id') && request()->input('user_id') != null, function ($q)  {
             $q->where('user_id', '=',  request()->input('user_id'));
         });

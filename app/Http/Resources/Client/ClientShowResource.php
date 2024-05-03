@@ -25,6 +25,7 @@ class ClientShowResource extends JsonResource
             'inspection_date' => $this->inspection_date,
             'inspection_time' => $this->inspection_time,
             'notes' => $this->notes,
+            'client_type' => $this->client_type,
             'status' => $this->status,
 
 

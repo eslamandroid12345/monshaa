@@ -16,6 +16,7 @@ class GetService
         try {
 
             $data = $repository->$method(...$parameters);
+
             $records = $is_instance ? new $resource($data) : ($dataType == 'pagination' ? $resource::collection($data)->response()->getData(true) : $resource::collection($data));
             return $this->responseSuccess(data: $records, code: 200, message: $message);
         }

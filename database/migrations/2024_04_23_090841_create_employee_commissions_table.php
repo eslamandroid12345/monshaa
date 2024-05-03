@@ -21,7 +21,6 @@ class CreateEmployeeCommissionsTable extends Migration
             $table->double('total_money',15,2);
             $table->string('description');
             $table->string('real_state_address')->comment('عنوان العقار');
-            $table->string('tenant_name')->comment('اسم المستاجر');
             $table->string('owner_name')->comment('اسم المالك');
             $table->date('transaction_date')->comment('تاريخ الحركه');
             $table->timestamps();

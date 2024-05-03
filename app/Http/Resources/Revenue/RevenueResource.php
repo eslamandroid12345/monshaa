@@ -15,9 +15,9 @@ class RevenueResource extends JsonResource
     public function toArray($request)
     {
         return [
+
             'id' => $this->id,
             'real_state_address' => $this->real_state_address,
-            'tenant_name' => $this->tenant_name,
             'owner_name' => $this->owner_name,
             'total_money' => $this->total_money,
             'user' => [
