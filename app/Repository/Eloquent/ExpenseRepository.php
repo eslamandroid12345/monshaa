@@ -67,13 +67,13 @@ class ExpenseRepository  extends Repository implements ExpenseRepositoryInterfac
 
     public function getCurrentRevenuesTotal()
     {
-        return $this->model::query()->first()->total_revenue;
+        return $this->model::query()->first()->total_revenue ?? 0;
     }
 
 
     public function getCurrentExpensesTotal()
     {
-        return $this->model::query()->first()->total_expense;
+        return $this->model::query()->first()->total_expense ?? 0;
     }
 
 
