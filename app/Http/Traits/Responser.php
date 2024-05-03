@@ -20,8 +20,7 @@ trait Responser
         if($newAttributeName !== null && $newAttributeValue !== null){
            $array = array_merge($array,[$newAttributeName => $newAttributeValue]);
         }
-        return response()->json($array, $status)->header('Access-Control-Allow-Origin', 'https://mymonshaa.web.app')
-            ->header('Access-Control-Allow-Headers', '*');
+        return response()->json($array, $status);
     }
 
     public function responseFail($data = null,$code, $message = '',$status = 200) {
@@ -31,8 +30,7 @@ trait Responser
             'message' => $message,
             'status' => false
 
-        ], $status)->header('Access-Control-Allow-Origin', 'https://mymonshaa.web.app')
-            ->header('Access-Control-Allow-Headers', '*');
+        ], $status);
     }
 
 
