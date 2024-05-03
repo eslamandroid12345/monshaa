@@ -30,10 +30,9 @@ use Illuminate\Support\Facades\Route;
 */
 
 
-Route::group(['middleware' => 'cors'],function () {
 
 
-Route::post('login',[UserController::class,'login']);
+Route::post('login',[UserController::class,'login'])->middleware('cors');
 Route::post('register',[UserController::class,'register']);
 
 Route::group(['prefix' => 'auth','middleware' => ['jwt']], function (){
@@ -206,4 +205,3 @@ Route::middleware('check-status')->group(function (){
 });
 
 
-});
