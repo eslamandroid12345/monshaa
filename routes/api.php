@@ -32,7 +32,7 @@ use Illuminate\Support\Facades\Route;
 
 
 
-Route::post('login',[UserController::class,'login'])->middleware('cors');
+Route::post('login',[UserController::class,'login']);
 Route::post('register',[UserController::class,'register']);
 
 Route::group(['prefix' => 'auth','middleware' => ['jwt']], function (){
