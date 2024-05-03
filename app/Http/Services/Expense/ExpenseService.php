@@ -60,7 +60,7 @@ class ExpenseService
             return $this->responseFail(null, 403, 'غير مصرح لك للدخول لذلك الصفحه',403);
 
         } catch (\Exception $e) {
-            return $this->responseFail(null, 500, $e->getMessage(), 500);
+            return $this->responseFail(null, 500, 'يوجد خطاء ما في بيانات الارسال بالسيرفر', 500);
 
         }
 
