@@ -19,7 +19,7 @@ return [
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => ['https://front.monshaa-crm.com'],
+    'allowed_origins' => ['https://front.monshaa-crm.com','https://monshaa-crm.com'],
 
     'allowed_origins_patterns' => [],
 
