@@ -16,10 +16,28 @@ class CorsMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        return $next($request)
-        ->header('Access-Control-Allow-Origin', '*')
-        ->header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
-        ->header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+//        return $next($request)
+//        ->header('Access-Control-Allow-Origin', '*')
+//        ->header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
+//        ->header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+
+        // Define the allowed origins
+        $allowedOrigins = [
+            'https://front.monshaa-crm.com',
+            // Add more origins as needed
+        ];
+
+        // Check if the request origin is in the list of allowed origins
+        if (in_array($request->header('Origin'), $allowedOrigins)) {
+            // Set the CORS headers
+            return $next($request)
+                ->header('Access-Control-Allow-Origin', $request->header('Origin'))
+                ->header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
+                ->header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+        }
+
+        // Return the response without CORS headers for disallowed origins
+        return $next($request);
 
     }
 }
