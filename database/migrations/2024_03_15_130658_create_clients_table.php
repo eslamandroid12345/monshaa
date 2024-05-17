@@ -16,6 +16,7 @@ class CreateClientsTable extends Migration
         Schema::create('clients', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('company_id');
+            $table->boolean('inspection_notification_send')->default(0);
             $table->unsignedBigInteger('user_id')->comment('الموظف او المدير العام');
             $table->string('name')->comment('اسم العميل');
             $table->string('phone');

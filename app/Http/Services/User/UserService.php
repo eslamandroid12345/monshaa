@@ -138,14 +138,15 @@ class UserService
     {
 
         $user = auth('user-api')->user();
-//
-//        $clientsInspections = $this->clientRepository->getAllClientsInspectionToday();
-//
-//        foreach ($clientsInspections as $client){
-//
-//            $this->sendFirebaseForCompany( ['title' => 'اشعار جديد لديك','body' => 'تذكير مهم للموظف ' . $client->user->name . ' لديك معاينة اليوم مع العميل ' . $client->name . ' الساعة 14:2'], companyId(), 'clients');
-//
-//        }
+
+        $clientsInspections = $this->clientRepository->getAllClientsInspectionToday();
+
+        foreach ($clientsInspections as $client){
+
+            $this->clientRepository->update($client->id,['inspection_notification_send' => 1]);
+            $this->sendFirebaseForCompany( ['title' => 'اشعار جديد لديك','body' => 'تذكير مهم للموظف ' . $client->user->name . ' لديك معاينة اليوم مع العميل ' . $client->name . ' الساعة 14:2'], companyId(), 'clients');
+
+        }
 
         $contractsExpiredCount = $this->tenantContractRepository->getAllContractsExpiredCount(companyId());
 

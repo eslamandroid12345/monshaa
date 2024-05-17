@@ -48,9 +48,7 @@ class ClientRepository  extends Repository implements ClientRepositoryInterface
             ->where('company_id','=',companyId())
             ->paginate(16);
 
-
     }
-
 
 
     public function getAllClientsInspectionToday()
@@ -61,6 +59,7 @@ class ClientRepository  extends Repository implements ClientRepositoryInterface
             ->with(['user','company'])
             ->where('company_id','=',companyId())
             ->where('status','=','inspection')
+            ->where('inspection_notification_send',0)
             ->whereDate('inspection_date','=',Carbon::now()->format('Y-m-d'))
             ->get();
 
