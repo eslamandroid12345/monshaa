@@ -27,7 +27,7 @@ class NotificationRepository extends Repository implements NotificationRepositor
             ->update(['is_view' => 1]);
 
         return $this->model::query()
-            ->whereBetween('created_at', [Carbon::now()->startOfWeek(),Carbon::now()->endOfWeek()])
+            ->whereMonth('created_at', Carbon::now()->format('m'))
             ->latest()
             ->where('company_id','=',companyId())
             ->whereRelation('notificationViews','user_id','=',employeeId())
