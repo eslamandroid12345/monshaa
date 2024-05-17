@@ -59,8 +59,6 @@ class UserResource extends JsonResource
             "clients",
             "setting",
             "employee_commission",
-            "owner_phone_hidden",
-            "client_phone_hidden"
         ];
 
 
