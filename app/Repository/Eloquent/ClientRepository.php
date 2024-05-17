@@ -4,6 +4,7 @@ namespace App\Repository\Eloquent;
 
 use App\Models\Client;
 use App\Repository\ClientRepositoryInterface;
+use Carbon\Carbon;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Model;
 
@@ -46,6 +47,22 @@ class ClientRepository  extends Repository implements ClientRepositoryInterface
             ->with(['user','company'])
             ->where('company_id','=',companyId())
             ->paginate(16);
+
+
+    }
+
+
+
+    public function getAllClientsInspectionToday()
+    {
+
+        return  $this->model::query()
+            ->select(['*'])
+            ->with(['user','company'])
+            ->where('company_id','=',companyId())
+            ->where('status','=','inspection')
+            ->whereDate('inspection_date','=',Carbon::now()->format('Y-m-d'))
+            ->get();
 
 
     }
