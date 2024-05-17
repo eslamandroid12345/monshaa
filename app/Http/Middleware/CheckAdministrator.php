@@ -5,6 +5,7 @@ namespace App\Http\Middleware;
 use App\Http\Traits\Responser;
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CheckAdministrator
 {

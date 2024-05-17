@@ -1,27 +1,27 @@
 <?php
 
 namespace App\Http\Services\User;
+use Carbon\Carbon;
+use App\Http\Traits\Responser;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\DB;
+use App\Http\Resources\UserResource;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\LoginUserRequest;
 use App\Http\Requests\StoreUserRequest;
+use Illuminate\Database\Eloquent\Model;
 use App\Http\Requests\UpdateUserRequest;
 use App\Http\Resources\EmployeeResource;
-use App\Http\Resources\HomePage\HomePageAdminResource;
-use App\Http\Resources\HomePage\HomePageEmployeeResource;
-use App\Http\Resources\UserResource;
-use App\Http\Services\Mutual\FileManagerService;
 use App\Http\Services\Mutual\GetService;
 use App\Http\Traits\FirebaseNotification;
-use App\Http\Traits\Responser;
+use App\Repository\UserRepositoryInterface;
 use App\Repository\CompanyRepositoryInterface;
 use App\Repository\FcmTokenRepositoryInterface;
+use App\Http\Services\Mutual\FileManagerService;
 use App\Repository\TenantContractRepositoryInterface;
-use App\Repository\UserRepositoryInterface;
-use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
+use App\Http\Resources\HomePage\HomePageAdminResource;
+use App\Http\Resources\HomePage\HomePageEmployeeResource;
 
 
 class UserService
@@ -144,6 +144,7 @@ class UserService
         }
 
         $contractsExpired = $this->tenantContractRepository->getAllContractsExpired(companyId());
+
         foreach ($contractsExpired as $contractExpired) {
             $this->tenantContractRepository->update($contractExpired->id,['is_expired' => 1]);
         }
@@ -250,7 +251,7 @@ class UserService
     {
 
         if (request()->has('token')) {
-            $token = $this->fcmTokenRepository->getByColumn('token',request('token'));
+            $token = $this->fcmTokenRepository->first('token',request('token'));
             if ($token) {
                 $this->fcmTokenRepository->delete($token->id);
             }

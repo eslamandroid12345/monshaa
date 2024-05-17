@@ -33,7 +33,7 @@ class UpdateEmployeeRequest extends FormRequest
             'employee_address' => 'required',
             'card_number' => 'required|numeric',
             'is_active' => 'nullable|boolean',
-            'employee_permissions' => 'required|array|in:states,lands,employees,expenses,tenants,tenant_contracts,financial_receipt,financial_cash,technical_support,expired_contracts,revenues,profits,tenant_states,selling_states,profits,revenue,clients,employee_commission',
+            'employee_permissions' => 'required|array|in:states,lands,employees,expenses,tenants,tenant_contracts,financial_receipt,financial_cash,technical_support,expired_contracts,revenues,profits,tenant_states,selling_states,profits,revenue,clients,employee_commission,owner_phone_hidden,client_phone_hidden',
         ];
     }
 
@@ -57,7 +57,7 @@ class UpdateEmployeeRequest extends FormRequest
             'is_active.boolean' => 'حقل تفعيل الموظف يجب ان يحتوي علي 0 او 1 وليس شئ اخر',
             'employee_permissions.required' => 'يرجي ادخال صلاحيات للموظف',
             'employee_permissions.array' => 'صلاحيات الموظف يجب ان تكون مصفوفه',
-            'employee_permissions.in' => 'states,lands,employees,expenses,tenants,tenant_contracts,financial_receipt,financial_cash,technical_support,revenues,profits,tenant_stats,selling_states,profits,revenue,clients,employee_commission صلاحيات الموظف يجب ان تحتوي علي هذه الشاشات ',
+            'employee_permissions.in' => 'states,lands,employees,expenses,tenants,tenant_contracts,financial_receipt,financial_cash,technical_support,revenues,profits,tenant_stats,selling_states,profits,revenue,clients,employee_commission,owner_phone_hidden,client_phone_hidden صلاحيات الموظف يجب ان تحتوي علي هذه الشاشات ',
 
         ];
     }
