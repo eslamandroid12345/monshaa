@@ -99,7 +99,7 @@
                                         <td>
                                             <div class="operations-btns" style="">
                                                 <a href="{{route('admin.companies.edit' , $company->id)}}"> <button class="btn btn-dark waves-effect waves-light">تعديل</button></a>
-                                                        <button class="btn btn-dark waves-effect waves-light" data-toggle="modal" data-target="#delete-modal{{$company->id}}">حذف</button>
+                                                        <button class="btn btn-dark waves-effect waves-light" data-toggle="modal" data-target="#delete-modal{{$company->id}}" {{$company->is_package == 1 ? 'disabled' : ''}}>حذف</button>
                                                         <div id="delete-modal{{$company->id}}" class="modal fade modal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">                                                    <div class="modal-dialog">
                                                                 <div class="modal-content float-left">
                                                                     <div class="modal-header">
