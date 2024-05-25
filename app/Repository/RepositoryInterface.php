@@ -71,9 +71,12 @@ interface RepositoryInterface
 
     public function update($modelId, array $payload): bool;
 
+    public function updateOrCreate(array $keysUnique, array $payload);
+
     public function delete($modelId, array $filesFields = []): bool;
 
     public function deleteWithMultipleFiles($modelId,$oldPath): bool;
+
     public function forceDelete($modelId, array $filesFields = []);
 
     public function paginate(int $perPage = 8, array $relations = [], $orderBy = 'ASC', $columns = ['*']);

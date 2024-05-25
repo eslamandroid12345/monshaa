@@ -25,7 +25,6 @@ class UserController extends Controller
     }
     public function login(LoginUserRequest $request): JsonResponse{
 
-
         return $this->userService->login($request);
 
     }
@@ -47,14 +46,12 @@ class UserController extends Controller
     public function logout(): JsonResponse
     {
 
-
         return $this->userService->logout();
     }
 
 
     public function home(): JsonResponse
     {
-
 
         return $this->userService->home();
     }

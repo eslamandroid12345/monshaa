@@ -144,7 +144,7 @@ class UserService
         foreach ($clientsInspections as $client){
 
             $this->clientRepository->update($client->id,['inspection_notification_send' => 1]);
-            $this->sendFirebaseForCompany( ['title' => 'اشعار جديد لديك','body' => 'تذكير مهم للموظف ' . $client->user->name . ' لديك معاينة اليوم مع العميل ' . $client->name . ' الساعة 14:2'], companyId(), 'clients');
+            $this->sendFirebaseForCompany( ['title' => 'اشعار جديد لديك','body' => 'تذكير مهم للموظف ' . $client->user->name . ' لديك معاينة اليوم مع العميل ' . $client->name . ' الساعة ' . $client->inspection_time], companyId(), 'clients');
 
         }
 

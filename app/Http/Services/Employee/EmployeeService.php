@@ -68,9 +68,9 @@ class EmployeeService
 
             }
 
-            if($this->companyRepository->countEmployees() == $this->companyRepository->checkCompanyLimit()){
+            if(auth('user-api')->user()->company->is_package == 0 && $this->companyRepository->countEmployees() == $this->companyRepository->checkCompanyLimit()){
 
-                return $this->responseFail(null, 411, message: 'لقد تعديت الحد الاقصي لاضافه للموظفين يرجي التواصل مع الادمن !');
+                return $this->responseFail(null, 411, message: 'لقد تعديت الحد الاقصي لاضافه للموظفين يرجي الانتقال لمرحله الاشتراك !');
 
             }else{
                 if ($request->hasFile('employee_image')) {
