@@ -25,7 +25,6 @@ class CompanyUpdateRequest extends FormRequest
     {
         return [
 
-            'number_of_employees' => 'required|integer',
             'add_new_package' => 'nullable',
             'is_package' => 'nullable',
             'is_active' => 'required_with:add_new_package,is_package',
@@ -37,7 +36,6 @@ class CompanyUpdateRequest extends FormRequest
 
       return [
 
-          'number_of_employees.required' => 'حقل عدد موظفين الشركه مطلوب',
           'number_of_employees.integer' => 'حقل عدد موظفين الشركه يجب ان يحتوي علي رقم وليس شئ اخر',
           'is_active.required_with' => 'يجب تفعيل الشركه في حاله اختيار الباقه السنويه او تجديد باقه الاشتراك',
 
