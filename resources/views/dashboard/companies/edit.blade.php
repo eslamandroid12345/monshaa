@@ -95,14 +95,9 @@
 
 
 
-                                    <div class="form-group col-md-6 col-12">
+                                    <div class="form-group col-md-12 col-12">
                                         <label for="exampleInputName1">عمله الشركه </label>
                                         <input  type="text" class="form-control" id="exampleInputName1" value="{{$company->currency}}" readonly>
-                                    </div>
-
-                                    <div class="form-group col-md-6 col-12">
-                                        <label for="exampleInputName1">عدد موظفين المسموح باضافتهم للشركه <span class="optional">اختياري</span></label>
-                                        <input name="number_of_employees" type="number" min="{{$company->number_of_employees}}" class="form-control" id="exampleInputName1" value="{{$company->number_of_employees}}">
                                     </div>
 
                                     @if( \Carbon\Carbon::now()->format('Y-m-d') >= $company->date_end_subscription && $company->is_package == 0)

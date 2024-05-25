@@ -50,8 +50,6 @@ class CompanyService
         try {
 
             $company = $this->companyRepository->getById($id);
-            $numberOfEmployees = $request->input('number_of_employees');
-
             $date_end_subscription =  $request->is_package == 1 ? $company->date_end : $company->date_end_subscription;
 
             $isActive = $request->input('is_active', false);
@@ -60,14 +58,12 @@ class CompanyService
                 $this->companyRepository->update($company->id,[
                     'date_start_subscription' => Carbon::now()->format('Y-m-d'),
                     'date_end_subscription' => Carbon::now()->addYear()->format('Y-m-d'),
-                    'number_of_employees' => $numberOfEmployees,
                     'is_active' =>  $isActive,
                 ]);
             }else{
                 $this->companyRepository->update($company->id,[
                     'is_package' => $request->is_package == 1 ? 1 : $company->is_package,
                     'date_end_subscription' => $date_end_subscription,
-                    'number_of_employees' => $numberOfEmployees,
                     'is_active' =>  $isActive,
                 ]);
             }
