@@ -1,64 +1,47 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
+Some Sreen from app
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+![contracts_expire](https://github.com/eslamandroid12345/monshaa/assets/96002614/ea70af04-297b-44a0-ab9c-9f7116e109ce)
 
-## About Laravel
+![contracts](https://github.com/eslamandroid12345/monshaa/assets/96002614/befa81ef-2876-4d7c-8c62-750b17f57ff5)
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+![commissions](https://github.com/eslamandroid12345/monshaa/assets/96002614/5b909a21-0cdc-4c6c-a817-6c358b84e724)
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+![clients](https://github.com/eslamandroid12345/monshaa/assets/96002614/0ed41de2-4d78-4196-a823-025f84fdcc4b)
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+![cashes](https://github.com/eslamandroid12345/monshaa/assets/96002614/93d385b1-e5af-464a-82eb-bf8eafcfd614)
 
-## Learning Laravel
+![cash_details](https://github.com/eslamandroid12345/monshaa/assets/96002614/82adcb67-c010-4415-8eb6-fcfb2c6b5687)
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+![states_reports](https://github.com/eslamandroid12345/monshaa/assets/96002614/aaa6f678-bb54-4afa-92ed-97b54f8a45d4)
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+![states](https://github.com/eslamandroid12345/monshaa/assets/96002614/c19501f7-3e1c-4814-a964-eecb23cdc164)
 
-## Laravel Sponsors
+![state_details](https://github.com/eslamandroid12345/monshaa/assets/96002614/bac2be13-f768-4c63-aecf-eddb336f2b50)
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+![revenues](https://github.com/eslamandroid12345/monshaa/assets/96002614/e499ff4f-3052-4c71-834c-9422861e8919)
 
-### Premium Partners
+![reports](https://github.com/eslamandroid12345/monshaa/assets/96002614/d77b7692-8617-4ab2-b8b3-86d8cd4e78a6)
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+![register](https://github.com/eslamandroid12345/monshaa/assets/96002614/49e39843-be4b-4d90-9db1-54c8763e289f)
 
-## Contributing
+![recipts](https://github.com/eslamandroid12345/monshaa/assets/96002614/16ca8df4-2568-4885-a401-e6c211724e7c)
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+![receipt_details](https://github.com/eslamandroid12345/monshaa/assets/96002614/b8758a01-b299-40c3-9341-465acb04f5d9)
 
-## Code of Conduct
+![profits](https://github.com/eslamandroid12345/monshaa/assets/96002614/9f8836b3-4f5e-4ed7-a502-1cb33ed29625)
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+![profile](https://github.com/eslamandroid12345/monshaa/assets/96002614/92a928c7-6ad1-4188-b037-76308ed798dd)
 
-## Security Vulnerabilities
+![login](https://github.com/eslamandroid12345/monshaa/assets/96002614/6cfb4c9b-b6e7-45bb-ae36-f449ac0d73d5)
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+![Home](https://github.com/eslamandroid12345/monshaa/assets/96002614/844e0ad5-b5a2-415d-9e5b-517b6a08764f)
 
-## License
+![expenses](https://github.com/eslamandroid12345/monshaa/assets/96002614/04d302ae-f6a8-489f-8a76-0bbd592515ed)
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+![employees](https://github.com/eslamandroid12345/monshaa/assets/96002614/6562158d-ce50-4db2-9336-a38ea0337c65)
+
+![edit_profile](https://github.com/eslamandroid12345/monshaa/assets/96002614/943b4359-865f-4ca9-835e-9587616fa956)
+
+![home_mobile](https://github.com/eslamandroid12345/monshaa/assets/96002614/6ea5d376-c5a3-4409-b974-6c4691a27d08)
+
+
