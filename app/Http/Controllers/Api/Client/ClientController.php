@@ -10,11 +10,10 @@ use Illuminate\Http\JsonResponse;
 class ClientController extends Controller
 {
 
-    protected ClientService $clientService;
-
-    public function __construct(ClientService $clientService)
+    public function __construct(
+      private readonly ClientService $clientService
+    )
     {
-        $this->clientService = $clientService;
     }
 
     public function getAllClients(): JsonResponse{

@@ -21,15 +21,13 @@ class ClientService
 {
 
     use Responser,FirebaseNotification;
-    protected ClientRepositoryInterface $clientRepository;
-    protected EmployeeRepositoryInterface $employeeRepository;
-    protected GetService $getService;
 
-    public function __construct(ClientRepositoryInterface $clientRepository,GetService $getService, EmployeeRepositoryInterface $employeeRepository)
+    public function __construct(
+       private readonly ClientRepositoryInterface $clientRepository,
+       private readonly GetService $getService,
+       private readonly EmployeeRepositoryInterface $employeeRepository
+    )
     {
-        $this->clientRepository = $clientRepository;
-        $this->getService = $getService;
-        $this->employeeRepository = $employeeRepository;
     }
 
 

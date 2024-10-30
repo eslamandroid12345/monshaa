@@ -10,12 +10,10 @@ use Illuminate\Http\JsonResponse;
 class CompanyController extends Controller
 {
 
-    protected CompanyService $companyService;
-
-    public function __construct(CompanyService $companyService)
+    public function __construct(
+       private readonly CompanyService $companyService
+    )
     {
-
-        $this->companyService = $companyService;
     }
 
 

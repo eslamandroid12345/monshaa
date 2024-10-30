@@ -17,24 +17,16 @@ use Illuminate\Http\JsonResponse;
 class ReportService
 {
 
-
     use Responser;
 
-    protected GetService $getService;
-
-    protected StateRepositoryInterface $stateRepository;
-    protected LandRepositoryInterface $landRepository;
-    protected TenantContractRepositoryInterface $tenantContractRepository;
-    protected ExpenseRepositoryInterface $expenseRepository;
-
-    public function __construct(GetService $getService,StateRepositoryInterface $stateRepository,LandRepositoryInterface $landRepository,TenantContractRepositoryInterface $tenantContractRepository,ExpenseRepositoryInterface $expenseRepository)
+    public function __construct(
+       private readonly GetService $getService,
+       private readonly StateRepositoryInterface $stateRepository,
+       private readonly LandRepositoryInterface $landRepository,
+       private readonly TenantContractRepositoryInterface $tenantContractRepository,
+       private readonly ExpenseRepositoryInterface $expenseRepository
+    )
     {
-
-        $this->getService = $getService;
-        $this->stateRepository = $stateRepository;
-        $this->landRepository = $landRepository;
-        $this->tenantContractRepository = $tenantContractRepository;
-        $this->expenseRepository = $expenseRepository;
     }
 
 

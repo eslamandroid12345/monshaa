@@ -20,19 +20,14 @@ class StateService
 {
 
     use Responser,FirebaseNotification;
-    protected StateRepositoryInterface $stateRepository;
 
-    protected FileManagerService $fileManagerService;
-    protected GetService $getService;
-    protected StateImageRepositoryInterface $stateImageRepository;
-
-    public function __construct(StateRepositoryInterface $stateRepository,FileManagerService $fileManagerService,GetService $getService,StateImageRepositoryInterface $stateImageRepository)
+    public function __construct(
+       private readonly StateRepositoryInterface $stateRepository,
+       private readonly FileManagerService $fileManagerService,
+       private readonly GetService $getService,
+       private readonly StateImageRepositoryInterface $stateImageRepository
+    )
     {
-
-        $this->stateRepository = $stateRepository;
-        $this->fileManagerService = $fileManagerService;
-        $this->getService = $getService;
-        $this->stateImageRepository = $stateImageRepository;
     }
 
 

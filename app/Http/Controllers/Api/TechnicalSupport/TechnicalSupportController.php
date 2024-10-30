@@ -10,11 +10,11 @@ use Illuminate\Http\JsonResponse;
 class TechnicalSupportController extends Controller
 {
 
-    protected TechnicalSupportService $technicalSupportService;
-
-    public function __construct(TechnicalSupportService $technicalSupportService)
+    public function __construct(
+        private readonly TechnicalSupportService $technicalSupportService
+    )
     {
-        $this->technicalSupportService = $technicalSupportService;
+        $this->middleware('permission:technical_support')->only('create');
     }
 
 
@@ -22,7 +22,6 @@ class TechnicalSupportController extends Controller
     {
 
         return $this->technicalSupportService->getAllMessages();
-
 
     }
 

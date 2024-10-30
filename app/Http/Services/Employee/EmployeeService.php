@@ -23,22 +23,14 @@ class EmployeeService
 {
 
     use Responser,FirebaseNotification;
-    protected EmployeeRepositoryInterface $employeeRepository;
 
-    protected FileManagerService $fileManagerService;
-
-    protected GetService $getService;
-
-    protected  CompanyRepositoryInterface $companyRepository;
-
-    public function __construct(EmployeeRepositoryInterface $employeeRepository,FileManagerService $fileManagerService, GetService $getService,CompanyRepositoryInterface $companyRepository)
+    public function __construct(
+      private readonly EmployeeRepositoryInterface $employeeRepository,
+      private readonly FileManagerService $fileManagerService,
+      private readonly GetService $getService,
+      private readonly CompanyRepositoryInterface $companyRepository
+    )
     {
-
-        $this->employeeRepository = $employeeRepository;
-        $this->fileManagerService = $fileManagerService;
-        $this->getService = $getService;
-        $this->companyRepository = $companyRepository;
-
     }
 
 

@@ -6,13 +6,10 @@ use App\Repository\TechnicalSupportRepositoryInterface;
 
 class TechnicalSupportService
 {
-
-    protected  TechnicalSupportRepositoryInterface $technicalSupportRepository;
-
-    public function __construct(TechnicalSupportRepositoryInterface $technicalSupportRepository)
+    public function __construct(
+      private readonly TechnicalSupportRepositoryInterface $technicalSupportRepository
+    )
     {
-
-        $this->technicalSupportRepository = $technicalSupportRepository;
     }
 
 

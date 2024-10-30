@@ -17,14 +17,12 @@ class TenantService
 {
 
     use Responser;
-    protected TenantRepositoryInterface $tenantRepository;
-    protected GetService $getService;
 
-
-    public function __construct(TenantRepositoryInterface $tenantRepository,GetService $getService)
+    public function __construct(
+        private readonly TenantRepositoryInterface $tenantRepository,
+        private readonly GetService $getService
+    )
     {
-        $this->tenantRepository = $tenantRepository;
-        $this->getService = $getService;
     }
 
 

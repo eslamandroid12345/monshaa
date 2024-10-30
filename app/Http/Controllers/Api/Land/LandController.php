@@ -9,12 +9,11 @@ use Illuminate\Http\JsonResponse;
 
 class LandController extends Controller
 {
-    protected LandService $landService;
 
-    public function __construct(LandService $landService)
+    public function __construct(
+       private readonly LandService $landService
+    )
     {
-
-        $this->landService = $landService;
     }
 
     public function getAllLands(): JsonResponse{

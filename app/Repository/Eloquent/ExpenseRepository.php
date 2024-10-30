@@ -96,7 +96,6 @@ class ExpenseRepository  extends Repository implements ExpenseRepositoryInterfac
             ->where('type','=','revenue')
             ->paginate(16);
 
-
     }
 
     public function expensesReports(): LengthAwarePaginator

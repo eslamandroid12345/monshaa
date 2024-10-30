@@ -13,14 +13,11 @@ class NotificationService
 {
 
     use Responser;
-    protected NotificationRepositoryInterface $notificationRepository;
-
-    protected GetService $getService;
-
-    public function __construct(NotificationRepositoryInterface $notificationRepository, GetService $getService)
+    public function __construct(
+      private readonly NotificationRepositoryInterface $notificationRepository,
+      private readonly GetService $getService
+    )
     {
-        $this->notificationRepository = $notificationRepository;
-        $this->getService = $getService;
     }
 
     public function getAllNotifications(): JsonResponse

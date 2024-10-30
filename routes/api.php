@@ -114,16 +114,16 @@ Route::middleware('check-status')->group(function (){
 
     Route::group(['prefix' => 'reports','middleware' => 'jwt'], function (){
 
-        Route::get('states',[ReportController::class,'states'])->middleware('permission:states');
-        Route::get('lands',[ReportController::class,'lands'])->middleware('permission:lands');
-        Route::get('tenant-contracts',[ReportController::class,'tenantContracts'])->middleware('permission:tenant_contracts');
-        Route::get('revenues',[ReportController::class,'revenues'])->middleware('permission:revenue');
-        Route::get('expenses',[ReportController::class,'expenses'])->middleware('permission:expenses');
-        Route::get('profits',[ReportController::class,'profits'])->middleware('permission:profits');
+        Route::get('states',[ReportController::class,'states']);
+        Route::get('lands',[ReportController::class,'lands']);
+        Route::get('tenant-contracts',[ReportController::class,'tenantContracts']);
+        Route::get('revenues',[ReportController::class,'revenues']);
+        Route::get('expenses',[ReportController::class,'expenses']);
+        Route::get('profits',[ReportController::class,'profits']);
 
     });
 
-    Route::group(['prefix' => 'technical_support','middleware' => ['jwt','permission:technical_support']], function (){
+    Route::group(['prefix' => 'technical_support','middleware' => 'jwt'], function (){
 
         Route::post('create',[TechnicalSupportController::class,'create']);
     });
@@ -140,7 +140,7 @@ Route::middleware('check-status')->group(function (){
 
 
 
-    Route::group(['prefix' => 'employee-commissions','middleware' =>  ['jwt','permission:employee_commission']], function (){
+    Route::group(['prefix' => 'employee-commissions','middleware' =>  'jwt'], function (){
         Route::get('get-all',[EmployeeCommissionController::class,'getAllEmployeesCommissions']);
         Route::post('create',[EmployeeCommissionController::class,'create']);
         Route::get('show/{id}',[EmployeeCommissionController::class,'show']);
@@ -149,7 +149,7 @@ Route::middleware('check-status')->group(function (){
     });
 
 
-    Route::group(['prefix' => 'receipt','middleware' => ['jwt','permission:financial_receipt']], function (){
+    Route::group(['prefix' => 'receipt','middleware' => 'jwt'], function (){
 
         Route::get('get-all-receipts',[ReceiptController::class,'getAllReceipts']);
         Route::post('create/{id}',[ReceiptController::class,'create']);
@@ -160,7 +160,7 @@ Route::middleware('check-status')->group(function (){
 
 
 
-    Route::group(['prefix' => 'cash','middleware' => ['jwt','permission:financial_cash']], function (){
+    Route::group(['prefix' => 'cash','middleware' => 'jwt'], function (){
 
         Route::get('get-all-cashes',[CashController::class,'getAllCashes']);
         Route::post('create/{id}',[CashController::class,'create']);

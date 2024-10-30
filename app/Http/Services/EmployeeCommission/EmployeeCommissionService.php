@@ -18,15 +18,11 @@ class EmployeeCommissionService
 {
     use Responser,FirebaseNotification;
 
-    protected GetService $getService;
-
-    protected EmployeeCommissionRepositoryInterface $employeeCommissionRepository;
-
-    public function __construct(GetService $getService,EmployeeCommissionRepositoryInterface $employeeCommissionRepository)
+    public function __construct(
+       private readonly GetService $getService,
+       private readonly EmployeeCommissionRepositoryInterface $employeeCommissionRepository
+    )
     {
-
-        $this->getService = $getService;
-        $this->employeeCommissionRepository = $employeeCommissionRepository;
     }
 
     public function getAllEmployeesCommissions(): JsonResponse

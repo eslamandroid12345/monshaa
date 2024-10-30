@@ -10,12 +10,10 @@ use Illuminate\Http\JsonResponse;
 
 class ExpenseController extends Controller
 {
-    protected ExpenseService $expenseService;
-
-    public function __construct(ExpenseService $expenseService)
+    public function __construct(
+       private readonly ExpenseService $expenseService
+    )
     {
-        $this->expenseService = $expenseService;
-
     }
 
 

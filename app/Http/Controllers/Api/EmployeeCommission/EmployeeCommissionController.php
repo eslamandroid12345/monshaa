@@ -10,12 +10,11 @@ use Illuminate\Http\JsonResponse;
 class EmployeeCommissionController extends Controller
 {
 
-
-    protected EmployeeCommissionService $employeeCommissionService;
-
-    public function __construct(EmployeeCommissionService $employeeCommissionService)
+    public function __construct(
+       private readonly EmployeeCommissionService $employeeCommissionService
+    )
     {
-        $this->employeeCommissionService = $employeeCommissionService;
+        $this->middleware('permission:employee_commission');
     }
 
     public function getAllEmployeesCommissions(): JsonResponse

@@ -9,12 +9,12 @@ use Illuminate\Http\JsonResponse;
 class NotificationController extends Controller
 {
 
-    protected NotificationService $notificationService;
 
-    public function __construct(NotificationService $notificationService)
+    public function __construct(
+       private readonly NotificationService $notificationService
+    )
     {
 
-        $this->notificationService = $notificationService;
     }
 
 

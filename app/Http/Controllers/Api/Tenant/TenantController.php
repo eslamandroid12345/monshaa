@@ -11,12 +11,11 @@ use Illuminate\Http\JsonResponse;
 class TenantController extends Controller
 {
 
-    protected TenantService $tenantService;
 
-    public function __construct(TenantService $tenantService)
+    public function __construct(
+        private readonly TenantService $tenantService
+    )
     {
-        $this->tenantService = $tenantService;
-
     }
 
 

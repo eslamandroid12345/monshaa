@@ -24,20 +24,14 @@ class TenantContractService
 {
 
     use Responser,FirebaseNotification;
-    protected TenantContractRepositoryInterface $tenantContractRepository;
-    protected TenantRepositoryInterface $tenantRepository;
 
-    protected GetService $getService;
-
-    protected ExpenseRepositoryInterface $expenseRepository;
-
-
-    public function __construct(TenantContractRepositoryInterface $tenantContractRepository,TenantRepositoryInterface $tenantRepository,GetService $getService,ExpenseRepositoryInterface $expenseRepository)
+    public function __construct(
+        private readonly TenantContractRepositoryInterface $tenantContractRepository,
+        private readonly TenantRepositoryInterface $tenantRepository,
+        private readonly GetService $getService,
+        private readonly ExpenseRepositoryInterface $expenseRepository
+    )
     {
-        $this->tenantContractRepository = $tenantContractRepository;
-        $this->tenantRepository = $tenantRepository;
-        $this->getService = $getService;
-        $this->expenseRepository = $expenseRepository;
     }
 
 
@@ -185,7 +179,7 @@ class TenantContractService
 
             $tenantContract = $this->tenantContractRepository->getById($id);//tenant contract last update
 
-            $revenue = $this->expenseRepository->getByColumn('tenant_contract_id',$tenantContract->id);//get revenue belongs to tenant contract
+            $revenue = $this->expenseRepository->first('tenant_contract_id',$tenantContract->id);//get revenue belongs to tenant contract
 
             $this->expenseRepository->update($revenue->id,[
                 'real_state_address' => $tenantContract->real_state_address,

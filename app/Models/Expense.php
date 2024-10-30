@@ -29,16 +29,13 @@ class Expense extends Model
     public function totalRevenue(): Attribute
     {
         return Attribute::get(function (){
-
             return Expense::query()
                 ->when(request()->has('date_from') && request()->has('date_to') && request('date_from') != null && request('date_to') != null, function ($q) {
                     $q->whereBetween('transaction_date',[request('date_from'), request('date_to')]);
                 })
-
                 ->where('company_id','=',companyId())
                 ->where('type','=','revenue')
                 ->sum('total_money');
-
         });
     }
 
@@ -46,16 +43,13 @@ class Expense extends Model
     public function totalExpense(): Attribute
     {
         return Attribute::get(function (){
-
             return Expense::query()
                 ->when(request()->has('date_from') && request()->has('date_to') && request('date_from') != null && request('date_to') != null, function ($q) {
                     $q->whereBetween('transaction_date',[request('date_from'), request('date_to')]);
                 })
-
                 ->where('company_id','=',companyId())
                 ->where('type','=','expense')
                 ->sum('total_money');
-
         });
     }
 

@@ -10,12 +10,10 @@ use Illuminate\Http\JsonResponse;
 class StateController extends Controller
 {
 
-    protected StateService $stateService;
-
-    public function __construct( StateService $stateService)
+    public function __construct(
+       private readonly StateService $stateService
+    )
     {
-
-        $this->stateService = $stateService;
     }
 
     public function getAllStates(): JsonResponse{

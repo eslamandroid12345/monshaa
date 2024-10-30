@@ -10,13 +10,12 @@ use Illuminate\Http\JsonResponse;
 
 class ReceiptController extends Controller
 {
-    protected ReceiptService $receiptService;
 
-
-    public function __construct(ReceiptService $receiptService)
+    public function __construct(
+      private readonly ReceiptService $receiptService
+    )
     {
-
-        $this->receiptService = $receiptService;
+        $this->middleware('permission:financial_receipt');
     }
 
 

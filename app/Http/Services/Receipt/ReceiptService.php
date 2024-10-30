@@ -22,24 +22,15 @@ class ReceiptService
 {
 
     use Responser,FirebaseNotification;
-    protected ReceiptRepositoryInterface $receiptRepository;
-    protected CashRepositoryInterface $cashRepository;
 
-    protected TenantContractRepositoryInterface $tenantContractRepository;
-
-    protected GetService $getService;
-
-    protected ExpenseRepositoryInterface $expenseRepository;
-
-
-    public function __construct(ReceiptRepositoryInterface $receiptRepository,TenantContractRepositoryInterface $tenantContractRepository,GetService $getService,CashRepositoryInterface $cashRepository,ExpenseRepositoryInterface $expenseRepository)
+    public function __construct(
+       private readonly ReceiptRepositoryInterface $receiptRepository,
+       private readonly TenantContractRepositoryInterface $tenantContractRepository,
+       private readonly GetService $getService,
+       private readonly CashRepositoryInterface $cashRepository,
+       private readonly ExpenseRepositoryInterface $expenseRepository
+    )
     {
-
-        $this->receiptRepository = $receiptRepository;
-        $this->tenantContractRepository = $tenantContractRepository;
-        $this->getService = $getService;
-        $this->cashRepository = $cashRepository;
-        $this->expenseRepository = $expenseRepository;
     }
 
 

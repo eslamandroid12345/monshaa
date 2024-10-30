@@ -17,19 +17,14 @@ class CompanyService
 {
 
     use Responser;
-    protected CompanyRepositoryInterface $companyRepository;
 
-    protected GetService $getService;
-
-    protected UserRepositoryInterface $userRepository;
-    protected FcmTokenRepositoryInterface $fcmTokenRepository;
-
-    public function __construct(CompanyRepositoryInterface $companyRepository,GetService $getService,UserRepositoryInterface $userRepository,FcmTokenRepositoryInterface $fcmTokenRepository)
+    public function __construct(
+       private readonly CompanyRepositoryInterface $companyRepository,
+       private readonly GetService $getService,
+       private readonly UserRepositoryInterface $userRepository,
+       private readonly FcmTokenRepositoryInterface $fcmTokenRepository
+    )
     {
-        $this->companyRepository = $companyRepository;
-        $this->getService = $getService;
-        $this->userRepository = $userRepository;
-        $this->fcmTokenRepository = $fcmTokenRepository;
     }
 
 

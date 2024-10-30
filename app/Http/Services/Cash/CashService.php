@@ -21,18 +21,13 @@ class CashService
 
 
     use Responser,FirebaseNotification;
-    protected CashRepositoryInterface $cashRepository;
 
-    protected TenantContractRepositoryInterface $tenantContractRepository;
-
-    protected GetService $getService;
-
-    public function __construct(CashRepositoryInterface $cashRepository,TenantContractRepositoryInterface $tenantContractRepository,GetService $getService)
+    public function __construct(
+       private readonly CashRepositoryInterface $cashRepository,
+       private readonly TenantContractRepositoryInterface $tenantContractRepository,
+       private readonly GetService $getService
+    )
     {
-
-        $this->cashRepository = $cashRepository;
-        $this->tenantContractRepository = $tenantContractRepository;
-        $this->getService = $getService;
     }
 
 

@@ -12,11 +12,10 @@ use Illuminate\Http\JsonResponse;
 class UserController extends Controller
 {
 
-    protected UserService $userService;
-
-    public function __construct(UserService $userService)
+    public function __construct(
+       private readonly UserService $userService
+    )
     {
-        $this->userService = $userService;
     }
 
     public function register(StoreUserRequest $request): JsonResponse{

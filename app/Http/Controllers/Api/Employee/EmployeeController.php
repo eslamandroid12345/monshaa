@@ -12,13 +12,10 @@ use Illuminate\Http\JsonResponse;
 class EmployeeController extends Controller
 {
 
-
-    protected EmployeeService $employeeService;
-
-    public function __construct(EmployeeService $employeeService)
+    public function __construct(
+      private readonly EmployeeService $employeeService
+    )
     {
-
-        $this->employeeService = $employeeService;
     }
 
     public function getAllEmployees(): JsonResponse

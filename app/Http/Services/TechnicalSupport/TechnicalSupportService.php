@@ -15,15 +15,12 @@ class TechnicalSupportService
 {
 
     use Responser;
-    protected TechnicalSupportRepositoryInterface $technicalSupportRepository;
 
-    protected GetService $getService;
-
-    public function __construct(TechnicalSupportRepositoryInterface $technicalSupportRepository,GetService $getService)
+    public function __construct(
+        private readonly TechnicalSupportRepositoryInterface $technicalSupportRepository,
+        private readonly GetService $getService
+    )
     {
-
-        $this->technicalSupportRepository = $technicalSupportRepository;
-       $this->getService = $getService;
     }
 
     public function getAllMessages(): JsonResponse

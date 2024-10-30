@@ -9,14 +9,11 @@ use Illuminate\Http\JsonResponse;
 
 class CashController extends Controller
 {
-    protected CashService $cashService;
-
-
-
-    public function __construct(CashService $cashService)
+    public function __construct(
+      private readonly CashService $cashService
+    )
     {
-
-        $this->cashService = $cashService;
+        $this->middleware('permission:financial_cash');
     }
 
 

@@ -30,34 +30,23 @@ class UserService
 
     use Responser,FirebaseNotification;
 
-    protected UserRepositoryInterface $userRepository;
 
-    protected FileManagerService $fileManagerService;
-    protected CompanyRepositoryInterface $companyRepository;
 
-    protected FcmTokenRepositoryInterface $fcmTokenRepository;
-
-    protected GetService $getService;
-
-    protected TenantContractRepositoryInterface $tenantContractRepository;
-    protected ClientRepositoryInterface $clientRepository;
-
-    public function __construct(ClientRepositoryInterface $clientRepository,TenantContractRepositoryInterface $tenantContractRepository,FcmTokenRepositoryInterface $fcmTokenRepository,UserRepositoryInterface $userRepository,FileManagerService $fileManagerService,CompanyRepositoryInterface $companyRepository,GetService $getService)
+    public function __construct(
+        private readonly ClientRepositoryInterface $clientRepository,
+        private readonly TenantContractRepositoryInterface $tenantContractRepository,
+        private readonly FcmTokenRepositoryInterface $fcmTokenRepository,
+        private readonly UserRepositoryInterface $userRepository,
+        private readonly FileManagerService $fileManagerService,
+        private readonly CompanyRepositoryInterface $companyRepository,
+        private readonly GetService $getService
+    )
     {
-        $this->fcmTokenRepository = $fcmTokenRepository;
-        $this->userRepository = $userRepository;
-        $this->fileManagerService = $fileManagerService;
-        $this->companyRepository = $companyRepository;
-        $this->getService = $getService;
-        $this->tenantContractRepository = $tenantContractRepository;
-        $this->clientRepository = $clientRepository;
-
     }
 
     public function register(StoreUserRequest $request): JsonResponse
     {
         DB::beginTransaction();
-
         try {
 
             $company = $this->createCompany($request);

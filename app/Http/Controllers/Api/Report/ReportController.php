@@ -9,11 +9,16 @@ use Illuminate\Http\JsonResponse;
 class ReportController extends Controller
 {
 
-    protected ReportService $reportService;
-
-    public function __construct(ReportService $reportService)
+    public function __construct(
+        private readonly ReportService $reportService
+    )
     {
-        $this->reportService = $reportService;
+        $this->middleware('permission:states')->only('states');
+        $this->middleware('permission:lands')->only('lands');
+        $this->middleware('permission:tenant_contracts')->only('tenantContracts');
+        $this->middleware('permission:revenue')->only('revenues');
+        $this->middleware('permission:expenses')->only('expenses');
+        $this->middleware('permission:profits')->only('profits');
 
     }
 

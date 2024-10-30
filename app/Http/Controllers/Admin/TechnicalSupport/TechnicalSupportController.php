@@ -8,12 +8,10 @@ use App\Http\Services\Dashboard\Admin\TechnicalSupport\TechnicalSupportService;
 class TechnicalSupportController extends Controller
 {
 
-
-    protected TechnicalSupportService $technicalSupportService;
-
-    public function __construct(TechnicalSupportService $technicalSupportService)
+    public function __construct(
+      private readonly TechnicalSupportService $technicalSupportService
+    )
     {
-        $this->technicalSupportService = $technicalSupportService;
     }
 
     public function getAllMessages(){

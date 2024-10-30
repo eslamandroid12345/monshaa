@@ -19,13 +19,12 @@ class ExpenseService
 {
 
     use Responser,FirebaseNotification;
-    protected ExpenseRepositoryInterface $expenseRepository;
-    protected GetService $getService;
 
-    public function __construct(ExpenseRepositoryInterface $expenseRepository,GetService $getService)
+    public function __construct(
+      private readonly ExpenseRepositoryInterface $expenseRepository,
+      private readonly GetService $getService
+    )
     {
-        $this->expenseRepository = $expenseRepository;
-        $this->getService = $getService;
     }
 
 

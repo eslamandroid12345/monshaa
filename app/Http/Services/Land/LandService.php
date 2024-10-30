@@ -19,19 +19,14 @@ class LandService
 {
 
     use Responser,FirebaseNotification;
-    protected LandRepositoryInterface $landRepository;
 
-    protected FileManagerService $fileManagerService;
-    protected GetService $getService;
-    protected LandImageRepositoryInterface $landImageRepository;
-
-    public function __construct(LandRepositoryInterface $landRepository,FileManagerService $fileManagerService,GetService $getService,LandImageRepositoryInterface $landImageRepository)
+    public function __construct(
+       private readonly LandRepositoryInterface $landRepository,
+       private readonly FileManagerService $fileManagerService,
+       private readonly GetService $getService,
+       private readonly LandImageRepositoryInterface $landImageRepository
+    )
     {
-
-        $this->landRepository = $landRepository;
-        $this->fileManagerService = $fileManagerService;
-        $this->getService = $getService;
-        $this->landImageRepository = $landImageRepository;
     }
 
 

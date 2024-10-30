@@ -5,17 +5,14 @@ namespace App\Http\Controllers\Admin\Company;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Company\CompanyUpdateRequest;
 use App\Http\Services\Dashboard\Admin\Company\CompanyService;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 
 class CompanyController extends Controller
 {
 
-    protected CompanyService $companyService;
-
-    public function __construct( CompanyService $companyService)
+    public function __construct(
+       private readonly CompanyService $companyService
+    )
     {
-        $this->companyService = $companyService;
     }
 
 
