@@ -1,21 +1,16 @@
 <?php
 
 namespace App\Http\Services\Dashboard\Admin\Auth;
-
 use App\Http\Requests\Admin\Auth\AdminAuthRequest;
 use Illuminate\Http\RedirectResponse;
 
 class AuthService
 {
-
-
     public function loginView(){
-
         return view('dashboard.auth_admin.login');
     }
     public function login(AdminAuthRequest $request): RedirectResponse
     {
-
         $credentials = $request->validated();
         $rememberMe = $request->remember_me == 'on';
 
@@ -33,9 +28,6 @@ class AuthService
     {
         auth('admin')->logout();
         toastr()->error('تم تسجيل الخروج بنجاح','تسجيل خروج');
-
         return redirect()->route('login');
     }
-
-
 }

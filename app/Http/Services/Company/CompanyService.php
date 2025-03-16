@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Http\Services\Company;
-
 use App\Http\Requests\Company\CompanyRequest;
 use App\Http\Resources\Company\CompanyResource;
 use App\Http\Services\Mutual\GetService;
@@ -17,44 +16,41 @@ class CompanyService
 {
 
     use Responser;
-
+    private CompanyRepositoryInterface $companyRepository;
+    private GetService $getService;
+    private UserRepositoryInterface $userRepository;
+    private FcmTokenRepositoryInterface $fcmTokenRepository;
     public function __construct(
-       private readonly CompanyRepositoryInterface $companyRepository,
-       private readonly GetService $getService,
-       private readonly UserRepositoryInterface $userRepository,
-       private readonly FcmTokenRepositoryInterface $fcmTokenRepository
+       CompanyRepositoryInterface $companyRepository,
+       GetService $getService,
+       UserRepositoryInterface $userRepository,
+       FcmTokenRepositoryInterface $fcmTokenRepository
     )
     {
+        $this->companyRepository = $companyRepository;
+        $this->getService = $getService;
+        $this->userRepository = $userRepository;
+        $this->fcmTokenRepository = $fcmTokenRepository;
     }
-
 
     public function getAllCompanies(): JsonResponse
     {
-
         return $this->getService->handle(resource: CompanyResource::class,repository: $this->companyRepository,method: 'getAllCompanies',message: 'تم الحصول علي جميع بيانات الشركات بنجاح');
-
     }
 
-    public function show($id): JsonResponse{
-
+    public function show($id): JsonResponse
+    {
         return $this->getService->handle(resource: CompanyResource::class,repository: $this->companyRepository, method: 'getById',parameters: [$id], is_instance: true, message: 'تم الحصول على بيانات الشركه بنجاح');
-
     }
 
 
     public function update($id,CompanyRequest $request): JsonResponse
     {
-
         DB::beginTransaction();
         try {
-
             $company = $this->companyRepository->getById($id);
-
-
             $numberOfEmployees = $request->input('number_of_employees');
-
             $isPackage = $request->is_package == 1 ? 1 :  $company->is_package;
-
             $date_end_subscription =  $request->is_package == 1 ? $company->date_end : $company->date_end_subscription;
 
             $isActive = $request->input('is_active');
@@ -77,25 +73,17 @@ class CompanyService
             }
 
             DB::commit();
-
             return $this->getService->handle(resource: CompanyResource::class,repository: $this->companyRepository,method: 'getById',parameters: [$id],is_instance: true,message: 'تم تعديل بيانات الشركه بنجاح' );
-
-
         }catch (ModelNotFoundException $exception) {
             return $this->responseFail(null, 404, 'بيانات الشركه موجوده', 404);
-
         }  catch (\Exception $e) {
             return $this->responseFail(null, 500, $e->getMessage(), 500);
-
         }
-
     }
 
     private function deactivateUsers($companyId): void
     {
-
         $users = $this->userRepository->getAllUsersOfCompany($companyId);
-
         foreach ($users as $user) {
             $this->userRepository->update($user->id, [
                 'is_active' => 0,
@@ -103,47 +91,33 @@ class CompanyService
         }
 
         $fcmTokens = $this->fcmTokenRepository->getAllDeviceTokenBelongsToCompany($companyId);
-
         foreach ($fcmTokens as $token){
             $this->fcmTokenRepository->delete($token->id);
         }
-
     }
-
 
     private function activateUsers($companyId): void
     {
-
         $users = $this->userRepository->getAllUsersOfCompany($companyId);
-
         foreach ($users as $user) {
             $this->userRepository->update($user->id, ['is_active' => 1]);
         }
-
     }
 
     public function delete($id): JsonResponse{
 
         try {
-
             $company = $this->companyRepository->getById($id);
-
             if(companyId() == $company->id){
                 return $this->responseFail(null, 417,'غير مسموح لك بحذف نسختك ايها المشرف');
-
             }
             $this->companyRepository->delete($company->id);
-
             return $this->responseSuccess(null, 200, 'تم حذف بيانات المصروف  بنجاح');
 
         } catch (ModelNotFoundException $exception) {
             return $this->responseFail(null, 404, 'بيانات المصروف غير موجوده', 404);
-
         } catch (\Exception $e) {
             return $this->responseFail(null, 500, $e->getMessage(), 500);
-
         }
-
     }
-
 }

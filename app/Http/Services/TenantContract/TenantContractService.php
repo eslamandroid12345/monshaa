@@ -24,37 +24,37 @@ class TenantContractService
 {
 
     use Responser,FirebaseNotification;
+    private TenantContractRepositoryInterface $tenantContractRepository;
+    private TenantRepositoryInterface $tenantRepository;
+    private GetService $getService;
+    private ExpenseRepositoryInterface $expenseRepository;
 
     public function __construct(
-        private readonly TenantContractRepositoryInterface $tenantContractRepository,
-        private readonly TenantRepositoryInterface $tenantRepository,
-        private readonly GetService $getService,
-        private readonly ExpenseRepositoryInterface $expenseRepository
-    )
-    {
+        TenantContractRepositoryInterface $tenantContractRepository,
+        TenantRepositoryInterface $tenantRepository,
+        GetService $getService,
+        ExpenseRepositoryInterface $expenseRepository
+    ) {
+        $this->tenantContractRepository = $tenantContractRepository;
+        $this->tenantRepository = $tenantRepository;
+        $this->getService = $getService;
+        $this->expenseRepository = $expenseRepository;
     }
-
 
     public function allTenantContracts(): JsonResponse{
 
         try {
-
             return $this->getService->handle(resource: TenantContractResource::class,repository: $this->tenantContractRepository,method: 'allTenantContracts',message:'تم الحصول على بيانات جميع عقود الايجار بنجاح' );
-
         }catch (AuthorizationException $exception){
             return $this->responseFail(null, 403, 'غير مصرح لك للدخول لذلك الصفحه',403);
-
         } catch (\Exception $e) {
             return $this->responseFail(null, 500, 'يوجد خطاء ما في بيانات الارسال بالسيرفر', 500);
-
         }
-
     }
 
     public function tenantContractsExpired(): JsonResponse{
 
         try {
-
             return $this->getService->handle(resource: TenantContractResource::class,repository: $this->tenantContractRepository,method: 'tenantContractsExpired',message:'تم الحصول على بيانات جميع عقود الايجار المنتهيه بنجاح' );
 
         }catch (AuthorizationException $exception){
@@ -62,37 +62,27 @@ class TenantContractService
 
         } catch (\Exception $e) {
             return $this->responseFail(null, 500, 'يوجد خطاء ما في بيانات الارسال بالسيرفر', 500);
-
         }
-
     }
-
 
     public function  removeFromScreen($id): JsonResponse
     {
         $tenantContract = $this->tenantContractRepository->getById($id);
-
         if($tenantContract->is_expired == 0){
-
             return $this->responseFail(null, 418, 'هذا العقد غير منتهي!');
         }
 
         $this->tenantContractRepository->update($tenantContract->id,['is_show' => 0]);
-
         return  $this->responseSuccess(data: null,code: 200,message: 'تم حذف العقد المنتهي من القائمه');
     }
 
     public function create(StoreTenantRequest $tenantRequest,StoreTenantContractRequest $request): JsonResponse{
 
-
         DB::beginTransaction();
-
         try {
 
             $inputs = $this->storeTenantContract($request);
-
             if (!is_null($request->input('tenant_id'))) {
-
                 $this->tenantRepository->getById($request->input('tenant_id'));
                 $this->setExistingTenantInputs($inputs);
             } else {
@@ -101,7 +91,6 @@ class TenantContractService
             }
 
             $tenantContract = $this->tenantContractRepository->create($inputs);
-
             $this->expenseRepository->create([
                 'real_state_address' => $tenantContract->real_state_address,
                 'owner_name' => $tenantContract->owner_name,
@@ -115,11 +104,8 @@ class TenantContractService
                 ]);
 
             $this->sendFirebaseNotification(data:['title' => 'اشعار جديد لديك','body' => ' تم اضافه بيانات عقد ايجار لديك بواسطه ' . employee() ],userId: employeeId(),permission: 'tenant_contracts');
-
             DB::commit();
-
             return $this->getService->handle(resource: TenantContractResource::class,repository: $this->tenantContractRepository,method: 'getById',parameters: [$tenantContract->id],is_instance: true,message:'تم اضافه البيانات بنجاح' );
-
 
         }catch (ModelNotFoundException $exception) {
             DB::rollBack();
@@ -145,13 +131,11 @@ class TenantContractService
     }
 
     protected function setExistingTenantInputs(array &$inputs): void{
-
         $inputs['tenant_id'] = request('tenant_id');
     }
 
 
     protected function createNewTenant(StoreTenantRequest $request): ?Model{
-
          $tenantRequests = $request->validated();
          $tenantRequests['company_id'] = companyId();
 
@@ -162,25 +146,19 @@ class TenantContractService
     public function update($id,UpdateTenantRequest $tenantRequest,UpdateTenantContractRequest $request): JsonResponse{
 
         DB::beginTransaction();
-
         try {
 
             $tenantContract = $this->tenantContractRepository->getById($id);
-
             Gate::authorize('check-company-auth',$tenantContract);
 
            $tenantRequests =  $tenantRequest->validated();
-
            $tenantContractRequests =  $request->validated();
-
             $this->tenantRepository->update($tenantContract->tenant_id,$tenantRequests);//update tenant
-
            $this->tenantContractRepository->update($tenantContract->id,$tenantContractRequests);//update tenant contract
 
             $tenantContract = $this->tenantContractRepository->getById($id);//tenant contract last update
 
             $revenue = $this->expenseRepository->first('tenant_contract_id',$tenantContract->id);//get revenue belongs to tenant contract
-
             $this->expenseRepository->update($revenue->id,[
                 'real_state_address' => $tenantContract->real_state_address,
                 'owner_name' => $tenantContract->owner_name,
@@ -189,8 +167,6 @@ class TenantContractService
 
             DB::commit();
             return $this->getService->handle(resource: TenantContractResource::class,repository: $this->tenantContractRepository,method: 'getById',parameters: [$id],is_instance: true,message: 'تم تعديل بيانات عقد الايجار  بنجاح');
-
-
         }catch (ModelNotFoundException $exception) {
             DB::rollBack();
             return $this->responseFail(null, 404, 'بيانات عقد الايجار غير موجوده', 404);
@@ -202,26 +178,18 @@ class TenantContractService
         } catch (\Exception $e) {
             DB::rollBack();
             return $this->responseFail(null, 500, 'يوجد خطاء ما في بيانات الارسال بالسيرفر', 500);
-
         }
-
     }
-
 
     public function show($id): JsonResponse{
 
         try {
-
             $tenantContract = $this->tenantContractRepository->getById($id);
-
             Gate::authorize('check-company-auth',$tenantContract);
 
             return $this->getService->handle(resource: TenantContractResource::class,repository: $this->tenantContractRepository,method: 'getById',parameters: [$id],is_instance: true,message: 'تم عرض بيانات عقد الايجار بنجاح');
-
         }catch (ModelNotFoundException $exception) {
-
             return $this->responseFail(null, 404, 'بيانات عقد الايجار غير موجوده', 404);
-
         }
 
     }
@@ -229,11 +197,9 @@ class TenantContractService
     public function delete($id): JsonResponse{
 
         DB::beginTransaction();
-
         try {
 
             $tenantContract = $this->tenantContractRepository->getById($id);
-
             Gate::authorize('check-company-auth',$tenantContract);
             $this->tenantContractRepository->delete($tenantContract->id);
 
@@ -243,12 +209,9 @@ class TenantContractService
         } catch (ModelNotFoundException $exception) {
             DB::rollBack();
             return $this->responseFail(null, 404, 'بيانات عقد الايجار غير موجوده', 404);
-
         }catch (\Exception $e) {
             DB::rollBack();
             return $this->responseFail(null, 500, 'يوجد خطاء ما في بيانات الارسال بالسيرفر', 500);
         }
-
     }
-
 }

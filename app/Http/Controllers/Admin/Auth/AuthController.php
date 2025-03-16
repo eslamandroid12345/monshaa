@@ -9,29 +9,28 @@ use Illuminate\Http\RedirectResponse;
 
 class AuthController extends Controller
 {
-
+    private AuthService $authService;
 
 
     public function __construct(
-       private readonly AuthService $authService
+      AuthService $authService
     )
     {
+        $this->authService = $authService;
     }
 
-    public function loginView(){
-
+    public function loginView()
+    {
         return $this->authService->loginView();
     }
 
-    public function login(AdminAuthRequest $request){
-
+    public function login(AdminAuthRequest $request)
+    {
         return $this->authService->login($request);
-
     }
 
     public function logout(): RedirectResponse
     {
         return $this->authService->logout();
-
     }
 }

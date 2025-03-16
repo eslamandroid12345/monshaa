@@ -19,60 +19,52 @@ class LandService
 {
 
     use Responser,FirebaseNotification;
+    private LandRepositoryInterface $landRepository;
+    private FileManagerService $fileManagerService;
+    private GetService $getService;
+    private LandImageRepositoryInterface $landImageRepository;
 
     public function __construct(
-       private readonly LandRepositoryInterface $landRepository,
-       private readonly FileManagerService $fileManagerService,
-       private readonly GetService $getService,
-       private readonly LandImageRepositoryInterface $landImageRepository
-    )
-    {
+        LandRepositoryInterface $landRepository,
+        FileManagerService $fileManagerService,
+        GetService $getService,
+        LandImageRepositoryInterface $landImageRepository
+    ) {
+        $this->landRepository = $landRepository;
+        $this->fileManagerService = $fileManagerService;
+        $this->getService = $getService;
+        $this->landImageRepository = $landImageRepository;
     }
-
 
     public function getAllLands(): JsonResponse
     {
-
         try {
             return $this->getService->handle(resource: LandResource::class,repository: $this->landRepository,method: 'getAllLandsQuery',message:'تم الحصول على بيانات جميع الاراضي بنجاح' );
-
         } catch (AuthorizationException $exception){
             return $this->responseFail(null, 403, 'غير مصرح لك للدخول لذلك الصفحه',403);
-
         } catch (\Exception $e) {
             return $this->responseFail(null, 500, 'يوجد خطاء ما في بيانات الارسال بالسيرفر', 500);
-
         }
     }
 
     public function create(LandRequest $request): JsonResponse
     {
         try {
-
             $inputs = $request->validated();
-
             $inputs['user_id'] = employeeId();
             $inputs['company_id'] = companyId();
 
             $land = $this->landRepository->create($inputs);
-
             $this->uploadImages($request,$land);
-
             $this->sendFirebaseNotification(data:['title' => 'اشعار جديد لديك','body' => ' تم اضافه بيانات ارض جديده لديك بواسطه ' . employee() ],userId: employeeId(),permission: 'lands');
 
             return $this->getService->handle(resource: LandResource::class,repository: $this->landRepository,method: 'getById',parameters: [$land->id],is_instance: true,message:'تم اضافه البيانات بنجاح' );
-
-
         }catch (AuthorizationException $exception){
-
             return $this->responseFail(null, 403, 'غير مصرح لك للدخول لذلك الصفحه',403);
-
         } catch (\Exception $e) {
             return $this->responseFail(null, 500, 'يوجد خطاء ما في بيانات الارسال بالسيرفر', 500);
-
         }
     }
-
 
     protected function uploadImages(LandRequest $request,$land): void
     {
@@ -104,125 +96,77 @@ class LandService
         }
     }
 
-
     public function update($id,LandRequest $request): JsonResponse
     {
-
         try {
 
             $land = $this->landRepository->getById($id);
-
             Gate::authorize('check-company-auth',$land);
-
             Gate::authorize('check-user-auth',$land);
-
             $inputs = $request->validated();
-
             $this->landRepository->update($land->id, $inputs);
-
-
             $this->updateImages($request,$land);
 
             return $this->getService->handle(resource: LandResource::class,repository: $this->landRepository,method: 'getById',parameters: [$id],is_instance: true,message: 'تم تعديل بيانات الارض  بنجاح' );
 
-
         }catch (ModelNotFoundException $exception) {
             return $this->responseFail(null, 404, 'بيانات الارض غير موجوده', 404);
-
         } catch (AuthorizationException $exception){
-
             return $this->responseFail(null, 403, 'ليس لديك صلاحيه علي هذا',403);
-
         } catch (\Exception $e) {
             return $this->responseFail(null, 500, 'يوجد خطاء ما في بيانات الارسال بالسيرفر', 500);
-
-
         }
     }
-
 
     public function show($id): JsonResponse
     {
-
         try {
 
             $land = $this->landRepository->getById($id);
-
             Gate::authorize('check-company-auth',$land);
-
             return $this->getService->handle(resource: LandResource::class,repository: $this->landRepository,method: 'getById',parameters: [$id],is_instance: true,message:'تم عرض بيانات الارض  بنجاح' );
 
         }catch (ModelNotFoundException $exception) {
-
             return $this->responseFail(null, 404, 'بيانات الارض غير موجوده', 404);
-
         }catch (AuthorizationException $exception){
-
             return $this->responseFail(null, 403, 'غير مصرح لك للدخول لذلك الصفحه',403);
-
         }
     }
-
 
     public function changeStatus($id): JsonResponse
     {
         try {
-
             $land = $this->landRepository->getById($id);
-
             Gate::authorize('check-company-auth',$land);
-
             $this->landRepository->update($land->id, ['status' => 'sale']);
-
 
             return $this->getService->handle(resource: LandResource::class,repository: $this->landRepository,method: 'getById',parameters: [$id],is_instance: true,message:'تم تغيير حاله الارض  بنجاح' );
 
-
         } catch (ModelNotFoundException $exception) {
-
             return $this->responseFail(null, 404, 'بيانات الارض غير موجوده', 404);
-
         } catch (AuthorizationException $exception){
-
             return $this->responseFail(null, 403, 'غير مصرح لك للدخول لذلك الصفحه',403);
-
         } catch (\Exception $e) {
             return $this->responseFail(null, 500, 'يوجد خطاء ما في بيانات الارسال بالسيرفر', 500);
-
-
         }
-
     }
-
 
     public function delete($id): JsonResponse
     {
         try {
-
             $land = $this->landRepository->getById($id);
-
             Gate::authorize('check-company-auth',$land);
-
             Gate::authorize('check-user-auth',$land);
-
             $this->deleteExistingImages($land);
 
             $this->landRepository->delete($land->id);
-
             $this->sendFirebaseNotification(data:['title' => 'اشعار جديد لديك','body' => ' تم حذف ارض لديك بواسطه ' . employee() ],userId: employeeId(),permission: 'lands');
-
             return $this->responseSuccess(null, 200, 'تم حذف بيانات الارض  بنجاح');
 
         } catch (ModelNotFoundException $exception) {
-
             return $this->responseFail(null, 404, 'بيانات الارض غير موجوده', 404);
-
         }catch (AuthorizationException $exception){
-
             return $this->responseFail(null, 403, 'ليس لديك صلاحيه علي هذا',403);
-
         }
     }
-
-
 }

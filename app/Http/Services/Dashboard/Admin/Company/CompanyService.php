@@ -7,7 +7,6 @@ use App\Repository\FcmTokenRepositoryInterface;
 use App\Repository\UserRepositoryInterface;
 use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class CompanyService
@@ -17,41 +16,35 @@ class CompanyService
     protected UserRepositoryInterface $userRepository;
     protected FcmTokenRepositoryInterface $fcmTokenRepository;
 
-    public function __construct(CompanyRepositoryInterface $companyRepository,UserRepositoryInterface $userRepository,FcmTokenRepositoryInterface $fcmTokenRepository)
+    public function __construct(
+        CompanyRepositoryInterface $companyRepository,
+        UserRepositoryInterface $userRepository,
+        FcmTokenRepositoryInterface $fcmTokenRepository
+    )
     {
         $this->companyRepository = $companyRepository;
         $this->userRepository = $userRepository;
         $this->fcmTokenRepository = $fcmTokenRepository;
     }
 
-    public function getAllCompanies(){
-
-
+    public function getAllCompanies()
+    {
         $companies = $this->companyRepository->getAllCompanies();
-
         return view('dashboard.companies.index',compact('companies'));
     }
 
-
     public function edit($id)
     {
-
         $company =  $this->companyRepository->getById($id);
-
         return view('dashboard.companies.edit',compact('company'));
-
     }
-
 
     public function update($id,CompanyUpdateRequest $request): RedirectResponse
     {
-
         DB::beginTransaction();
         try {
-
             $company = $this->companyRepository->getById($id);
             $date_end_subscription =  $request->is_package == 1 ? $company->date_end : $company->date_end_subscription;
-
             $isActive = $request->input('is_active', false);
 
             if($request->add_new_package == 1){
@@ -77,24 +70,17 @@ class CompanyService
 
             DB::commit();
             toastr()->error('نم تعديل بيانات الشركه بنجاح','تعديل');
-
             return redirect()->route('admin.companies');
 
         }catch (\Exception $e){
-
             DB::rollBack();
-
             toastr()->error('يوجد خطاء ما بالسيرفر','خطاء');
-
             return redirect()->back();
-
         }
-
     }
 
     private function deactivateUsers($companyId): void
     {
-
         $users = $this->userRepository->getAllUsersOfCompany($companyId);
         $fcmTokens = $this->fcmTokenRepository->getAllDeviceTokenBelongsToCompany($companyId);
         foreach ($users as $user) {

@@ -29,19 +29,30 @@ class UserService
 {
 
     use Responser,FirebaseNotification;
-
-
+    private ClientRepositoryInterface $clientRepository;
+    private TenantContractRepositoryInterface $tenantContractRepository;
+    private FcmTokenRepositoryInterface $fcmTokenRepository;
+    private UserRepositoryInterface $userRepository;
+    private FileManagerService $fileManagerService;
+    private CompanyRepositoryInterface $companyRepository;
+    private GetService $getService;
 
     public function __construct(
-        private readonly ClientRepositoryInterface $clientRepository,
-        private readonly TenantContractRepositoryInterface $tenantContractRepository,
-        private readonly FcmTokenRepositoryInterface $fcmTokenRepository,
-        private readonly UserRepositoryInterface $userRepository,
-        private readonly FileManagerService $fileManagerService,
-        private readonly CompanyRepositoryInterface $companyRepository,
-        private readonly GetService $getService
-    )
-    {
+        ClientRepositoryInterface $clientRepository,
+        TenantContractRepositoryInterface $tenantContractRepository,
+        FcmTokenRepositoryInterface $fcmTokenRepository,
+        UserRepositoryInterface $userRepository,
+        FileManagerService $fileManagerService,
+        CompanyRepositoryInterface $companyRepository,
+        GetService $getService
+    ) {
+        $this->clientRepository = $clientRepository;
+        $this->tenantContractRepository = $tenantContractRepository;
+        $this->fcmTokenRepository = $fcmTokenRepository;
+        $this->userRepository = $userRepository;
+        $this->fileManagerService = $fileManagerService;
+        $this->companyRepository = $companyRepository;
+        $this->getService = $getService;
     }
 
     public function register(StoreUserRequest $request): JsonResponse
@@ -90,7 +101,6 @@ class UserService
     {
         try {
             $token = auth('user-api')->attempt($request->only('phone', 'password'));
-
             if (!$token) {
                 return $this->responseFail(null, 409, 'بيانات الدخول غير صحيحة برجاء إدخال البيانات صحيحة وحاول مرة أخرى');
             }
@@ -113,7 +123,6 @@ class UserService
             return $this->responseSuccess($resource, 200, $message);
         } catch (\Exception $exception) {
             return $this->responseFail(null, 500, 'يوجد خطاء ما في بيانات الارسال بالسيرفر', 500);
-
         }
      }
 
@@ -122,30 +131,24 @@ class UserService
         $this->fcmTokenRepository->updateOrCreate(['token' => $data['token']], array_merge($data, ['user_id' => $userId]));
     }
 
-
     public function home(): JsonResponse
     {
 
         $user = auth('user-api')->user();
-
         $clientsInspections = $this->clientRepository->getAllClientsInspectionToday();
 
         foreach ($clientsInspections as $client){
-
             $this->clientRepository->update($client->id,['inspection_notification_send' => 1]);
             $this->sendFirebaseForCompany( ['title' => 'اشعار جديد لديك','body' => 'تذكير مهم للموظف ' . $client->user->name . ' لديك معاينة اليوم مع العميل ' . $client->name . ' الساعة ' . $client->inspection_time], companyId(), 'clients');
-
         }
 
         $contractsExpiredCount = $this->tenantContractRepository->getAllContractsExpiredCount(companyId());
-
         if($contractsExpiredCount > 0){
             $this->sendFirebaseForCompany( ['title' => 'اشعار جديد لديك','body' => ' يجب عليك الاطلاع علي جميع العقود المنتهيه ' ], companyId(), 'expired_contracts');
 
         }
 
         $contractsExpired = $this->tenantContractRepository->getAllContractsExpired(companyId());
-
         foreach ($contractsExpired as $contractExpired) {
             $this->tenantContractRepository->update($contractExpired->id,['is_expired' => 1]);
         }
@@ -154,7 +157,6 @@ class UserService
         $message = $user->is_admin ? 'تم عرض بيانات الصفحه الرئيسيه بنجاح للادمن' : 'تم عرض بيانات الصفحه الرئيسيه بنجاح للموظف';
 
         return $this->responseSuccess($resource, 200, $message);
-
     }
 
     protected function isActiveUser($auth): bool
@@ -178,19 +180,14 @@ class UserService
         return $auth->is_admin == 1 ? 'تم تسجيل دخول المدير بنجاح' : 'تم تسجيل دخول الموظف بنجاح';
     }
 
-
     public function getProfile(): JsonResponse
     {
-
         $auth = Auth::guard('user-api')->user();
-
         $auth['token'] = request()->bearerToken();
 
         $resource = $auth->is_admin == 1 ? new UserResource($auth) : new EmployeeResource($auth);
         $message = $auth->is_admin == 1 ? 'تم عرض بيانات المدير العام والشركه بنجاح' : 'تم عرض بيانات الموظف بنجاح';
-
         return $this->responseSuccess($resource, 200, $message);
-
     }
 
 
@@ -198,7 +195,6 @@ class UserService
     {
 
         DB::beginTransaction();
-
         try {
 
             $requestOfUser = $request->only('name','phone','password');
@@ -222,29 +218,23 @@ class UserService
             $auth['token'] = $request->bearerToken();
 
             DB::commit();
-
             return $this->responseSuccess(new UserResource($auth), 200, 'تم تعديل بيانات الشركة بنجاح');
 
         } catch (\Exception $exception) {
-
             DB::rollBack();
             return $this->responseFail(null, 500, 'يوجد خطاء ما في بيانات الارسال بالسيرفر', 500);
         }
-
     }
 
     protected function updateCompanyProfile($request,$user): bool
     {
-
         $requestOfCompany = $request->only('company_phone','company_name','company_address','logo','currency');
-
         if ($request->hasFile('logo')) {
             $image = $this->fileManagerService->handle("logo","users/images",$user->logo);
             $requestOfCompany['logo'] = $image;
         }
 
         return $this->companyRepository->update($user->company_id,$requestOfCompany);
-
     }
 
 

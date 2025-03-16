@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Http\Services\Report;
-
 use App\Http\Resources\ExpenseResource;
 use App\Http\Resources\LandResource;
 use App\Http\Resources\StateResource;
@@ -16,65 +15,58 @@ use Illuminate\Http\JsonResponse;
 
 class ReportService
 {
-
     use Responser;
+    private GetService $getService;
+    private StateRepositoryInterface $stateRepository;
+    private LandRepositoryInterface $landRepository;
+    private TenantContractRepositoryInterface $tenantContractRepository;
+    private ExpenseRepositoryInterface $expenseRepository;
 
     public function __construct(
-       private readonly GetService $getService,
-       private readonly StateRepositoryInterface $stateRepository,
-       private readonly LandRepositoryInterface $landRepository,
-       private readonly TenantContractRepositoryInterface $tenantContractRepository,
-       private readonly ExpenseRepositoryInterface $expenseRepository
-    )
-    {
+        GetService $getService,
+        StateRepositoryInterface $stateRepository,
+        LandRepositoryInterface $landRepository,
+        TenantContractRepositoryInterface $tenantContractRepository,
+        ExpenseRepositoryInterface $expenseRepository
+    ) {
+        $this->getService = $getService;
+        $this->stateRepository = $stateRepository;
+        $this->landRepository = $landRepository;
+        $this->tenantContractRepository = $tenantContractRepository;
+        $this->expenseRepository = $expenseRepository;
     }
 
 
     public function states(): JsonResponse
     {
         return $this->getService->handle(resource: StateResource::class,repository: $this->stateRepository,method: 'statesReports',message:'تم الحصول علي جميع العقارات بنجاح' );
-
     }
 
 
     public function lands(): JsonResponse
     {
-
         return $this->getService->handle(resource: LandResource::class,repository: $this->landRepository,method: 'landsReports',message:'تم الحصول علي جميع الاراضي بنجاح' );
-
-
     }
 
     public function tenantContracts(): JsonResponse
     {
-
         return $this->getService->handle(resource: TenantContractResource::class,repository: $this->tenantContractRepository,method: 'tenantContractsReports',message:'تم الحصول علي جميع عقود الايجار بنجاح' );
-
     }
-
 
     public function revenues(): JsonResponse
     {
         $data = $this->expenseRepository->revenuesReports();
-
         return $this->responseSuccess(data: ExpenseResource::collection($data)->response()->getData(true),code: 200,message: 'تم الحصول على بيانات جميع الايردات بنجاح',status: 200,newAttributeName: 'total',newAttributeValue: $this->expenseRepository->getCurrentRevenuesTotal());
-
-
     }
 
     public function expenses(): JsonResponse
     {
-
         $data = $this->expenseRepository->expensesReports();
-
         return $this->responseSuccess(data: ExpenseResource::collection($data)->response()->getData(true),code: 200,message: 'تم الحصول على بيانات جميع المصروفات بنجاح',status: 200,newAttributeName: 'total',newAttributeValue: $this->expenseRepository->getCurrentExpensesTotal());
-
     }
 
     public function profits(){
-
         return $this->expenseRepository->profits();
-
     }
 
 }

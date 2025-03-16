@@ -9,50 +9,42 @@ use Illuminate\Http\JsonResponse;
 
 class ClientController extends Controller
 {
+    private ClientService $clientService;
 
     public function __construct(
-      private readonly ClientService $clientService
+      ClientService $clientService
     )
     {
+        $this->clientService = $clientService;
     }
 
-    public function getAllClients(): JsonResponse{
-
+    public function getAllClients(): JsonResponse
+    {
        return  $this->clientService->getAllClients();
-
     }
 
-
-    public function getAllEmployees(): JsonResponse{
-
+    public function getAllEmployees(): JsonResponse
+    {
         return  $this->clientService->getAllEmployees();
-
     }
 
-
-    public function create(ClientRequest $request): JsonResponse{
-
+    public function create(ClientRequest $request): JsonResponse
+    {
         return  $this->clientService->create($request);
-
     }
 
-
-    public function update($id,ClientRequest $request): JsonResponse{
-
+    public function update($id,ClientRequest $request): JsonResponse
+    {
         return  $this->clientService->update($id,$request);
-
     }
 
-
-    public function show($id): JsonResponse{
-
+    public function show($id): JsonResponse
+    {
         return  $this->clientService->show($id);
-
     }
 
-    public function delete($id): JsonResponse{
-
+    public function delete($id): JsonResponse
+    {
         return  $this->clientService->delete($id);
-
     }
 }
