@@ -9,8 +9,7 @@ use Illuminate\Http\JsonResponse;
 
 class TenantController extends Controller
 {
-
-    private readonly TenantService $tenantService;
+    private TenantService $tenantService;
     public function __construct(
        TenantService $tenantService
     )
