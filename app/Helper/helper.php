@@ -1,13 +1,14 @@
 <?php
 
-use App\Models\Company;
 use App\Models\TechnicalSupport;
 use Carbon\Carbon;
 
 if(!function_exists('employee')){
     function employee(){
-
+        if (request()->is('api/*'))
         return auth('user-api')->user()->name;
+        return auth()->user()->name;
+
     }
 }
 
@@ -15,14 +16,19 @@ if(!function_exists('employee')){
 if(!function_exists('employeeId')){
     function employeeId()
     {
-        return auth('user-api')->id();
+        if (request()->is('api/*'))
+            return auth('user-api')->id();
+        return auth()->id();
     }
 }
 
 if(!function_exists('companyId')){
     function companyId(){
 
-        return auth('user-api')->user()->company_id;
+        if (request()->is('api/*'))
+            return auth('user-api')->user()->company_id;
+        return auth()->user()->company_id;
+
     }
 }
 

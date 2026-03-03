@@ -11,16 +11,15 @@ use App\Repository\StateImageRepositoryInterface;
 use App\Repository\StateRepositoryInterface;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Gate;
 
-class StateService
+abstract class StateService
 {
     use Responser,FirebaseNotification;
-    private StateRepositoryInterface $stateRepository;
-    private FileManagerService $fileManagerService;
-    private GetService $getService;
-    private StateImageRepositoryInterface $stateImageRepository;
+    protected StateRepositoryInterface $stateRepository;
+    protected FileManagerService $fileManagerService;
+    protected GetService $getService;
+    protected StateImageRepositoryInterface $stateImageRepository;
 
     public function __construct(
         StateRepositoryInterface $stateRepository,
@@ -34,7 +33,7 @@ class StateService
         $this->stateImageRepository = $stateImageRepository;
     }
 
-    public function getAllStates(): JsonResponse
+    public function getAllStates()
     {
         try {
             return $this->getService->handle(resource: StateResource::class,repository: $this->stateRepository,method: 'getAllStatusQuery',message:'تم الحصول على بيانات جميع العقارات بنجاح' );
@@ -45,7 +44,7 @@ class StateService
         }
     }
 
-    public function create(StateRequest $request): JsonResponse
+    public function create(StateRequest $request)
     {
         try {
         $inputs = $request->validated();
@@ -97,7 +96,7 @@ class StateService
     }
 
 
-    public function update($id,StateRequest $request): JsonResponse
+    public function update($id,StateRequest $request)
     {
         try {
 
@@ -119,7 +118,7 @@ class StateService
         }
     }
 
-    public function show($id): JsonResponse
+    public function show($id)
     {
         try {
             $state = $this->stateRepository->getById($id);
@@ -130,7 +129,7 @@ class StateService
         }
     }
 
-    public function changeStatus($id): JsonResponse
+    public function changeStatus($id)
     {
         try {
             $state = $this->stateRepository->getById($id);
@@ -144,7 +143,7 @@ class StateService
         }
     }
 
-    public function delete($id): JsonResponse
+    public function delete($id)
     {
         try {
             $state = $this->stateRepository->getById($id);

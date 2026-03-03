@@ -13,6 +13,8 @@ class State extends Model
     use HasFactory;
 
     protected $guarded = [];
+    protected $appends = ['real_state_type_label'];
+
 
 
     public function user(): BelongsTo
@@ -41,6 +43,23 @@ class State extends Model
                     $images[] = $image->image;
                 }
                 return $images;
+            }
+        );
+    }
+
+    public function realStateTypeLabel() : Attribute {
+        return Attribute::get(
+            get: function () {
+                return match ($this->real_state_type) {
+                    'furnished_apartment' => 'شقة مفروشة',
+                    'empty_apartment'     => 'شقة فارغة',
+                    'furnished_villa'     => 'فيلا مفروشة',
+                    'empty_villa'         => 'فيلا فارغة',
+                    'shop'                => 'محل',
+                    'empty_office'        => 'مكتب فارغ',
+                    'furnished_office'    => 'مكتب مفروش',
+                    default               => 'غير محدد',
+                };
             }
         );
     }

@@ -1,0 +1,358 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>العقارات</title>
+
+  <!-- Bootstrap RTL -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <style>
+    :root {
+      --topbar: #3f5564;
+      --thead: #5c87a6;
+      --panel-border: #cfd6dd;
+      --panel-bg: #ffffff;
+
+      --btn: #5c87a6;
+      --btn-hover: #4f7691;
+
+      --input-border: #8fc0ff;
+      --shadow: 0 8px 24px rgba(0, 0, 0, .08);
+      --muted: #7a8793;
+    }
+
+    body {
+      background: #fff;
+      font-family: system-ui, -apple-system, "Segoe UI", Tahoma, Arial;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    /* ===== Topbar ===== */
+    .app-topbar {
+      height: 52px;
+      background: var(--topbar);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      padding: 0 14px;
+      gap: 10px;
+      border-bottom: 1px solid rgba(255, 255, 255, .08);
+    }
+
+    .app-topbar .title {
+      flex: 1;
+      text-align: center;
+      font-weight: 700;
+      letter-spacing: .2px;
+    }
+
+    .app-topbar .icon-btn {
+      width: 34px;
+      height: 34px;
+      border: 0;
+      background: transparent;
+      color: #eaf1f7;
+      display: grid;
+      place-items: center;
+      border-radius: 8px;
+      transition: .2s;
+    }
+
+    .app-topbar .icon-btn:hover {
+      background: rgba(255, 255, 255, .10);
+    }
+
+    /* ===== Layout ===== */
+    .app {
+      height: calc(100vh - 52px);
+      display: grid;
+      grid-template-columns: 460px 1fr;
+      grid-template-areas: "panel table";
+      gap: 14px;
+      padding: 12px;
+    }
+
+    .panel {
+      grid-area: panel;
+      background: var(--panel-bg);
+      border: 2px solid var(--panel-border);
+      box-shadow: var(--shadow);
+      padding: 16px 16px 14px;
+      overflow: auto;
+    }
+
+    .table-wrap {
+      grid-area: table;
+      background: #fff;
+      border: 1px solid var(--panel-border);
+      box-shadow: var(--shadow);
+      overflow: auto;
+    }
+
+    /* ===== Table ===== */
+    table.props {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    table.props thead th {
+      position: sticky;
+      top: 0;
+      z-index: 2;
+      background: var(--thead);
+      color: #fff;
+      font-weight: 700;
+      padding: 10px 12px;
+      border-bottom: 1px solid rgba(0, 0, 0, .10);
+      white-space: nowrap;
+    }
+
+    table.props tbody td {
+      padding: 16px 12px;
+      border-bottom: 1px solid #e9eef2;
+      vertical-align: middle;
+      white-space: nowrap;
+    }
+
+    table.props tbody tr:hover {
+      background: #fafcff;
+    }
+
+    .t-action {
+      width: 90px;
+      text-align: center;
+    }
+
+    .t-action i {
+      cursor: pointer;
+      opacity: .85;
+      transition: .15s;
+    }
+
+    .t-action i:hover {
+      opacity: 1;
+      transform: translateY(-1px);
+    }
+
+    /* ===== Panel header ===== */
+    .panel-head {
+      text-align: center;
+      padding-top: 8px;
+      padding-bottom: 10px;
+    }
+
+    .panel-head .icon {
+      font-size: 44px;
+      color: #5a6b7a;
+      margin-bottom: 6px;
+    }
+
+    .panel-head .panel-title {
+      color: #2d8bd6;
+      font-weight: 700;
+      font-size: 16px;
+      margin: 0;
+    }
+
+    .form-label {
+      font-size: 13px;
+      color: #6b7785;
+      margin-top: 10px;
+      margin-bottom: 6px;
+    }
+
+    .form-control,
+    .form-select,
+    textarea {
+      border: 1px solid var(--input-border);
+      border-radius: 2px;
+      padding: 10px 12px;
+      box-shadow: none !important;
+    }
+
+    .form-control:focus,
+    .form-select:focus,
+    textarea:focus {
+      border-color: #5aa5ff;
+      box-shadow: 0 0 0 .2rem rgba(90, 165, 255, .15) !important;
+    }
+
+    .hint {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: -2px;
+    }
+
+    .btn-save {
+      background: var(--btn);
+      border: 0;
+      color: #fff;
+      width: 100%;
+      padding: 12px 14px;
+      border-radius: 4px;
+      font-weight: 700;
+      margin-top: 12px;
+      transition: .2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .btn-save:hover {
+      background: var(--btn-hover);
+    }
+
+    /* ===== Responsive ===== */
+    @media (max-width: 1100px) {
+      body { overflow: auto; }
+      .app {
+        height: auto;
+        grid-template-columns: 1fr;
+        grid-template-areas: "table";
+      }
+      .panel { display: none; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Top bar -->
+  <div class="app-topbar">
+    <button class="icon-btn" type="button" title="بحث">
+      <i class="fa-solid fa-magnifying-glass"></i>
+    </button>
+
+    <button class="icon-btn" type="button" title="تحديث" id="refreshBtn">
+      <i class="fa-solid fa-rotate-right"></i>
+    </button>
+
+    <div class="title">العقارات</div>
+
+   <button class="icon-btn" type="button" title="خروج">
+      <i class="fa-solid fa-right-from-bracket"></i>
+    </button>
+  </div>
+
+  <div class="app">
+
+    <!-- Table -->
+    <div class="table-wrap">
+      <table class="props">
+        <thead>
+          <tr>
+            <th style="width: 260px;">العنوان</th>
+            <th style="width: 180px;">القسم</th>
+            <th style="width: 160px;">السعر</th>
+            <th style="width: 200px;">النوع</th>
+            <th style="width: 200px;">نوع المعاين</th>
+            <th class="t-action">تعديل</th>
+            <th class="t-action">حذف</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <!-- صف تجريبي زي الصورة -->
+          <tr>
+            <td>التجمع الخامس</td>
+            <td>ايجار</td>
+            <td>10000</td>
+            <td>شقه فارغه</td>
+            <td>صاحب عقار</td>
+            <td class="t-action"><a href="state_details.html"><i class="fa-solid fa-pen-to-square"></i></a></td>
+            <td class="t-action"><i class="fa-solid fa-trash text-danger"></i></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Right panel -->
+    <div class="panel">
+      <div class="panel-head">
+        <div class="icon"><i class="fa-solid fa-building"></i></div>
+        <p class="panel-title">تسجيل العقارات</p>
+      </div>
+
+      <div class="mb-2">
+        <label class="form-label">اسم الكمبوند (في حالة وجود العقار داخل الكمبوند)</label>
+        <input class="form-control" type="text" placeholder="">
+      </div>
+
+      <div class="mb-2">
+        <label class="form-label">عنوان العقار (المدينة)</label>
+        <input class="form-control" type="text" placeholder="">
+      </div>
+
+      <div class="mb-2">
+        <label class="form-label">عنوان العقار بالتفصيل (الحي او الشارع)</label>
+        <input class="form-control" type="text" placeholder="">
+      </div>
+
+      <div class="mb-2">
+        <label class="form-label">نوع العقار</label>
+        <select class="form-select">
+          <option selected disabled>نوع العقار</option>
+          <option>شقه فارغه</option>
+          <option>شقه مفروشه</option>
+          <option>فيلا</option>
+          <option>محل</option>
+        </select>
+      </div>
+
+      <div class="mb-2">
+        <label class="form-label">القسم</label>
+        <select class="form-select">
+          <option selected disabled>القسم</option>
+          <option>ايجار</option>
+          <option>بيع</option>
+        </select>
+      </div>
+
+      <div class="mb-2">
+        <label class="form-label">المساحة</label>
+        <input class="form-control" type="number" placeholder="">
+      </div>
+
+      <div class="mb-2">
+        <label class="form-label">السعر</label>
+        <input class="form-control" type="number" placeholder="">
+      </div>
+
+      <div class="mb-2">
+        <label class="form-label">رقم العمارة</label>
+        <input class="form-control" type="text" placeholder="">
+      </div>
+
+      <div class="mb-2">
+        <label class="form-label">رقم الشقة</label>
+        <input class="form-control" type="text" placeholder="">
+      </div>
+
+      <div class="mb-2">
+        <label class="form-label">عدد الغرف</label>
+        <input class="form-control" type="number" placeholder="">
+      </div>
+
+      <button class="btn-save" type="button">
+        <i class="fa-solid fa-left-long"></i>
+        تسجيل البيانات
+      </button>
+    </div>
+
+  </div>
+
+  <script>
+    document.getElementById("refreshBtn").addEventListener("click", () => location.reload());
+  </script>
+
+</body>
+
+</html>

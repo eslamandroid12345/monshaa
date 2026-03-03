@@ -58,15 +58,35 @@ class Handler extends ExceptionHandler
     }
 
 
+//    protected function convertValidationExceptionToResponse(ValidationException $e, $request)
+//    {
+//        $errors = $e->validator->errors()->all();
+//
+//        if($this->isFrontend($request))
+//        {
+//            return $request->ajax() ? response()->json($errors , 422) : redirect()->back()->withInput($request->input())->withErrors($errors);
+//        }
+//        return $this->responseFail($errors,422,"Validation error");
+//    }
+
+
     protected function convertValidationExceptionToResponse(ValidationException $e, $request)
     {
-        $errors = $e->validator->errors()->all();
+        if ($this->isFrontend($request)) {
+            if ($request->ajax()) {
+                return response()->json([
+                    'message' => 'Validation error',
+                    'errors'  => $e->errors(),
+                ], 422);
+            }
 
-        if($this->isFrontend($request))
-        {
-            return $request->ajax() ? response()->json($errors , 422) : redirect()->back()->withInput($request->input())->withErrors($errors);
+            return redirect()
+                ->back()
+                ->withInput($request->input())
+                ->withErrors($e->validator);
         }
-        return $this->responseFail($errors,422,"Validation error");
+
+        return $this->responseFail($e->validator->errors()->all(), 422, "Validation error");
     }
 
 

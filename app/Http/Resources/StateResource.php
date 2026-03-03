@@ -30,6 +30,7 @@ class StateResource extends JsonResource
             'real_state_address' => $this->real_state_address,
             'real_state_address_details' => $this->real_state_address_details,
             'real_state_type' => $this->real_state_type,
+            'real_state_type_label' => $this->real_state_type_label,
             'department' => $this->department,
             'advertiser_name' => $this->advertiser_name,
             'advertiser_type' => $this->advertiser_type,

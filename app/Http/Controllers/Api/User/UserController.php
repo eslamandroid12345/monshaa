@@ -21,11 +21,11 @@ class UserController extends Controller
         $this->userService = $userService;
     }
 
-    public function register(StoreUserRequest $request): JsonResponse{
+    public function register(StoreUserRequest $request){
 
         return $this->userService->register($request);
     }
-    public function login(LoginUserRequest $request): JsonResponse{
+    public function login(LoginUserRequest $request){
 
         return $this->userService->login($request);
     }
@@ -40,7 +40,7 @@ class UserController extends Controller
         return $this->userService->updateProfile($request);
     }
 
-    public function logout(): JsonResponse
+    public function logout()
     {
         return $this->userService->logout();
     }

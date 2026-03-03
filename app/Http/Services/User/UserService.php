@@ -25,17 +25,17 @@ use App\Http\Resources\HomePage\HomePageAdminResource;
 use App\Http\Resources\HomePage\HomePageEmployeeResource;
 
 
-class UserService
+abstract class UserService
 {
 
     use Responser,FirebaseNotification;
-    private ClientRepositoryInterface $clientRepository;
-    private TenantContractRepositoryInterface $tenantContractRepository;
-    private FcmTokenRepositoryInterface $fcmTokenRepository;
-    private UserRepositoryInterface $userRepository;
-    private FileManagerService $fileManagerService;
-    private CompanyRepositoryInterface $companyRepository;
-    private GetService $getService;
+    protected ClientRepositoryInterface $clientRepository;
+    protected TenantContractRepositoryInterface $tenantContractRepository;
+    protected FcmTokenRepositoryInterface $fcmTokenRepository;
+    protected UserRepositoryInterface $userRepository;
+    protected FileManagerService $fileManagerService;
+    protected CompanyRepositoryInterface $companyRepository;
+    protected GetService $getService;
 
     public function __construct(
         ClientRepositoryInterface $clientRepository,
@@ -55,7 +55,7 @@ class UserService
         $this->getService = $getService;
     }
 
-    public function register(StoreUserRequest $request): JsonResponse
+    public function register(StoreUserRequest $request)
     {
         DB::beginTransaction();
         try {
@@ -97,7 +97,7 @@ class UserService
         return $this->userRepository->create($userData);
     }
 
-    public function login(LoginUserRequest $request): JsonResponse
+    public function login(LoginUserRequest $request)
     {
         try {
             $token = auth('user-api')->attempt($request->only('phone', 'password'));
@@ -177,7 +177,7 @@ class UserService
 
     protected function getLoginSuccessMessage($auth): string
     {
-        return $auth->is_admin == 1 ? 'تم تسجيل دخول المدير بنجاح' : 'تم تسجيل دخول الموظف بنجاح';
+        return $auth->is_admin == 1 ? 'تم تسجيل دخول المسؤل الرئيسي بنجاح' : 'تم تسجيل دخول الموظف بنجاح';
     }
 
     public function getProfile(): JsonResponse
@@ -238,7 +238,7 @@ class UserService
     }
 
 
-    public function logout(): JsonResponse
+    public function logout()
     {
 
         if (request()->has('token')) {

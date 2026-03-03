@@ -25,10 +25,10 @@ class StoreUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|max:255',
             'company_name' => 'required|max:255',
             'company_address' => 'required|max:255',
             'company_phone' => 'required|numeric|unique:companies,company_phone',
+            'name' => 'required|max:255',
             'phone' => 'required|numeric|unique:users,phone',
             'password' => 'required|min:8',
             'privacy_and_policy' => 'required|boolean',
@@ -39,8 +39,8 @@ class StoreUserRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'name.required' => 'اسم مالك الشركه او المكتب مطلوب',
-            'name.max' => 'اسم مالك الشركه او المكتب يجب ان لا يتعدي 255 حرف',
+            'name.required' => 'اسم مدير الشركه او المكتب مطلوب',
+            'name.max' => 'اسم مدير الشركه او المكتب يجب ان لا يتعدي 255 حرف',
             'company_name.required' => 'اسم الشركه العقاريه مطلوب',
             'company_name.max' => 'اسم الشركه العقاريه يجب ان لا يتعدي عن 255 حرف',
             'company_address.required' => 'عنوان الشركه مطلوب',

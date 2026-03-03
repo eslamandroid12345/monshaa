@@ -1,0 +1,306 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>عقارك | إنشاء حساب</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <style>
+    :root{
+      --brand:#3f5564;
+      --brand2:#5c87a6;
+      --bg:#f6f7fb;
+      --card:#fff;
+      --text:#0f172a;
+      --muted:#64748b;
+      --border:rgba(15,23,42,.10);
+      --shadow:0 10px 26px rgba(15,23,42,.08);
+      --radius:16px;
+    }
+
+    body{
+      margin:0;
+      background:var(--bg);
+      color:var(--text);
+      font-family:system-ui,-apple-system,"Segoe UI",Tahoma,Arial;
+    }
+
+    /* Topbar */
+    .topbar{
+      position:sticky; top:0; z-index:1000;
+      background:rgba(255,255,255,.88);
+      backdrop-filter:blur(12px);
+      border-bottom:1px solid rgba(15,23,42,.08);
+    }
+    .topbar .wrap{
+      display:flex; align-items:center; gap:12px;
+      padding:10px 14px;
+    }
+    .brand{
+      display:flex; align-items:center; gap:10px;
+      text-decoration:none; color:var(--text);
+      font-weight:900;
+      white-space:nowrap;
+    }
+    .brand .logo{
+      width:38px;height:38px;border-radius:12px;
+      background:linear-gradient(135deg,var(--brand),var(--brand2));
+      display:grid;place-items:center;color:#fff;
+      box-shadow:0 8px 20px rgba(63,85,100,.25);
+    }
+    .top-actions{
+      margin-inline-start:auto;
+      display:flex; align-items:center; gap:10px;
+      flex-wrap:wrap;
+    }
+    .top-actions a{
+      text-decoration:none;
+      font-weight:700;
+      font-size:13px;
+      color:#0f172a;
+      padding:8px 10px;
+      border-radius:12px;
+    }
+    .top-actions a:hover{ background:rgba(15,23,42,.05); }
+
+    .page{
+      max-width:1100px;
+      margin:18px auto;
+      padding:0 14px 30px;
+    }
+
+    .card-auth{
+      background:var(--card);
+      border:1px solid var(--border);
+      border-radius:18px;
+      box-shadow:var(--shadow);
+      padding:18px;
+      max-width: 720px;
+      margin: 0 auto;
+    }
+    .card-auth h1{
+      margin:0 0 6px;
+      font-weight:900;
+      font-size:20px;
+    }
+    .card-auth .sub{
+      margin:0 0 14px;
+      color:var(--muted);
+      font-size:13px;
+      line-height:1.8;
+    }
+
+    .grid-2{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:12px;
+    }
+    @media(max-width: 768px){
+      .grid-2{ grid-template-columns:1fr; }
+    }
+
+    .form-label{
+      font-size:13px;
+      font-weight:800;
+      color:#334155;
+      margin-bottom:6px;
+    }
+
+    .input-wrap{ position:relative; }
+    .input-wrap i.prefix{
+      position:absolute;
+      right:12px;
+      top:50%;
+      transform:translateY(-50%);
+      color:#94a3b8;
+      pointer-events:none;
+    }
+    .form-control, .form-select{
+      height:46px;
+      border-radius:14px;
+      border:1px solid rgba(15,23,42,.12);
+      box-shadow:none!important;
+      padding-right:42px;
+      background:#fff;
+    }
+    .form-control:focus, .form-select:focus{
+      border-color:rgba(37,99,235,.45);
+      box-shadow:0 0 0 .2rem rgba(37,99,235,.12)!important;
+    }
+
+    .btn-main{
+      height:46px;
+      border:0;
+      border-radius:14px;
+      background:linear-gradient(135deg,#2563eb,#1d4ed8);
+      color:#fff;
+      font-weight:900;
+      width:100%;
+      box-shadow:0 14px 28px rgba(37,99,235,.25);
+    }
+
+    footer{
+      background:#1f2937;
+      color:#cbd5e1;
+      padding:40px 14px 20px;
+      margin-top:18px;
+    }
+    footer a{ color:#cbd5e1; text-decoration:none; }
+    footer a:hover{ color:#fff; text-decoration:underline; }
+  </style>
+</head>
+
+<body>
+
+  <!-- Topbar -->
+  <div class="topbar">
+    <div class="wrap">
+      <a class="brand" href="home.html">
+        <span class="logo"><i class="fa-solid fa-house"></i></span>
+        <span>عقارك</span>
+      </a>
+
+      <div class="top-actions">
+        <a href="#">للبيع</a>
+        <a href="#">للإيجار</a>
+        <a href="#">مشاريع</a>
+        <a href="#">خدمات</a>
+        <a class="btn btn-sm btn-outline-secondary" href="client_login.html" style="border-radius:12px;font-weight:800;">تسجيل الدخول</a>
+      </div>
+    </div>
+  </div>
+
+  <main class="page">
+    <section class="card-auth">
+      <h1>إنشاء حساب جديد</h1>
+      <p class="sub">أنشئ حسابك خلال دقيقة وابدأ في نشر الإعلانات أو حفظ المفضلة.</p>
+
+      <form>
+        <div class="grid-2">
+          <div class="mb-3">
+            <label class="form-label">الاسم بالكامل</label>
+            <div class="input-wrap">
+              <i class="fa-solid fa-user prefix"></i>
+              <input class="form-control" type="text" placeholder="مثال: محمد أحمد" required>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">رقم الهاتف</label>
+            <div class="input-wrap">
+              <i class="fa-solid fa-phone prefix"></i>
+              <input class="form-control" type="text" placeholder="01000000000" required>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">البريد الإلكتروني (اختياري)</label>
+            <div class="input-wrap">
+              <i class="fa-solid fa-envelope prefix"></i>
+              <input class="form-control" type="email" placeholder="example@email.com">
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">نوع الحساب</label>
+            <div class="input-wrap">
+              <i class="fa-solid fa-id-card prefix"></i>
+              <select class="form-select" required>
+                <option value="" selected disabled>اختر</option>
+                <option>عميل</option>
+                <option>مالك</option>
+                <option>وسيط</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">كلمة المرور</label>
+            <div class="input-wrap">
+              <i class="fa-solid fa-lock prefix"></i>
+              <input class="form-control" id="pass1" type="password" placeholder="••••••••" required>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">تأكيد كلمة المرور</label>
+            <div class="input-wrap">
+              <i class="fa-solid fa-lock prefix"></i>
+              <input class="form-control" id="pass2" type="password" placeholder="••••••••" required>
+            </div>
+          </div>
+        </div>
+
+        <label class="d-flex align-items-start gap-2 mt-1" style="font-size:13px;color:#334155;font-weight:800;">
+          <input type="checkbox" style="width:18px;height:18px;accent-color:#2563eb;margin-top:2px;" required>
+          أوافق على <a href="terms_and_condition.html" style="color:#2563eb;text-decoration:none;">الشروط والأحكام</a> وسياسة الخصوصية
+        </label>
+
+        <button class="btn-main mt-3" type="submit">
+          <i class="fa-solid fa-user-plus me-2"></i> إنشاء الحساب
+        </button>
+
+        <div class="text-center mt-3" style="font-size:13px;color:#64748b;">
+          لديك حساب بالفعل؟ <a href="client_login.html" style="color:#2563eb;font-weight:900;text-decoration:none;">تسجيل الدخول</a>
+        </div>
+      </form>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container" style="max-width:1100px;">
+      <div class="row g-4">
+
+        <div class="col-md-4">
+          <h6 style="font-weight:900;color:#fff;">عقارك</h6>
+          <p style="font-size:13px;line-height:1.8;margin:0;">
+            منصة متكاملة للبحث عن العقارات للبيع والإيجار في جميع أنحاء مصر.
+          </p>
+        </div>
+
+        <div class="col-md-2">
+          <h6 style="font-weight:800;color:#fff;">روابط سريعة</h6>
+          <ul style="list-style:none;padding:0;font-size:13px;margin:0;display:grid;gap:8px;">
+            <li><a href="#">للبيع</a></li>
+            <li><a href="#">للإيجار</a></li>
+            <li><a href="#">المشاريع</a></li>
+            <li><a href="#">الخدمات</a></li>
+          </ul>
+        </div>
+
+        <div class="col-md-3">
+          <h6 style="font-weight:800;color:#fff;">تواصل معنا</h6>
+          <p style="font-size:13px;margin:0;">info@aqark.com</p>
+          <p style="font-size:13px;margin:8px 0 0;">+20 100 000 0000</p>
+          <p style="font-size:13px;margin:8px 0 0;">القاهرة، مصر</p>
+        </div>
+
+        <div class="col-md-3">
+          <h6 style="font-weight:800;color:#fff;">تابعنا</h6>
+          <div style="display:flex;gap:10px;align-items:center;">
+            <a href="#" style="color:#fff;font-size:18px;"><i class="fa-brands fa-facebook"></i></a>
+            <a href="#" style="color:#fff;font-size:18px;"><i class="fa-brands fa-instagram"></i></a>
+            <a href="#" style="color:#fff;font-size:18px;"><i class="fa-brands fa-linkedin"></i></a>
+            <a href="#" style="color:#fff;font-size:18px;"><i class="fa-brands fa-x-twitter"></i></a>
+          </div>
+        </div>
+
+      </div>
+
+      <hr style="border-color:rgba(255,255,255,.1);margin:25px 0;">
+
+      <div style="text-align:center;font-size:12px;">
+        © <span id="year"></span> عقارك — جميع الحقوق محفوظة
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>

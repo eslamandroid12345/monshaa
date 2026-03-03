@@ -2,31 +2,40 @@
 
 namespace App\Http\Requests;
 
-use App\Rules\UniqueTenantData;
-use App\Rules\UniqueTenantUpdate;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
 class UpdateTenantRequest extends FormRequest
 {
 
-
-
     public function rules(): array
     {
 
-        return [
+        $tenantId = $this->route('id');
 
+        return [
             'name' => 'required|max:255',
-            'phone' => ['required', 'numeric', new UniqueTenantUpdate(request('id'), 'phone')],
-            'card_number' => ['required', 'numeric', new UniqueTenantUpdate(request('id'), 'card_number')],
+            'phone' => [
+                'required',
+                'numeric',
+                Rule::unique('tenants', 'phone')
+                    ->ignore($tenantId)
+                    ->where(fn ($q) => $q->where('company_id', companyId())),
+            ],
+
+            'card_number' => [
+                'required',
+                'numeric',
+                Rule::unique('tenants', 'card_number')
+                    ->ignore($tenantId)
+                    ->where(fn ($q) => $q->where('company_id', companyId())),
+            ],
             'card_address' => 'required|max:255',
             'job_title' => 'required|max:255',
             'nationality' => 'required|max:255',
 
         ];
     }
-
 
     public function messages(): array
     {

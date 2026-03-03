@@ -1,0 +1,394 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>عقارك | تفاصيل العقار</title>
+
+    <!-- Bootstrap RTL -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        :root{
+            --brand:#3f5564;
+            --brand2:#5c87a6;
+            --bg:#f6f7fb;
+            --card:#fff;
+            --text:#0f172a;
+            --muted:#64748b;
+            --border:rgba(15,23,42,.10);
+            --shadow:0 10px 26px rgba(15,23,42,.08);
+            --radius:16px;
+
+            --topbar:#3f5564;
+            --panel-border:#cfd6dd;
+        }
+
+        body{
+            margin:0;
+            background:var(--bg);
+            color:var(--text);
+            font-family:system-ui,-apple-system,"Segoe UI",Tahoma,Arial;
+        }
+
+        /* ===== Navbar (same home) ===== */
+        .topbar{
+            position:sticky; top:0; z-index:1000;
+            background:rgba(255,255,255,.88);
+            backdrop-filter:blur(12px);
+            border-bottom:1px solid rgba(15,23,42,.08);
+        }
+        .topbar .wrap{
+            display:flex; align-items:center; gap:12px;
+            padding:10px 14px;
+        }
+        .brand-link{
+            display:flex; align-items:center; gap:10px;
+            text-decoration:none; color:var(--text);
+            font-weight:900;
+            white-space:nowrap;
+        }
+        .brand-link .logo{
+            width:38px;height:38px;border-radius:12px;
+            background:linear-gradient(135deg,var(--brand),var(--brand2));
+            display:grid;place-items:center;color:#fff;
+            box-shadow:0 8px 20px rgba(63,85,100,.25);
+        }
+        .top-actions{
+            margin-inline-start:auto;
+            display:flex; align-items:center; gap:10px;
+            flex-wrap:wrap;
+        }
+        .top-actions a{
+            text-decoration:none;
+            font-weight:700;
+            font-size:13px;
+            color:#0f172a;
+            padding:8px 10px;
+            border-radius:12px;
+        }
+        .top-actions a:hover{ background:rgba(15,23,42,.05); }
+
+        /* ===== Page header bar (inside details) ===== */
+        .page-head{
+            max-width:1100px;
+            margin:14px auto 0;
+            padding:0 14px;
+            display:flex;
+            align-items:center;
+            gap:10px;
+        }
+        .page-title{
+            flex:1;
+            font-weight:900;
+            font-size:16px;
+            color:#0f172a;
+        }
+        .icon-btn{
+            width:38px;height:38px;
+            border:1px solid rgba(15,23,42,.10);
+            background:#fff;
+            border-radius:12px;
+            display:grid;
+            place-items:center;
+            color:#334155;
+            box-shadow:0 10px 22px rgba(15,23,42,.06);
+            transition:.15s;
+        }
+        .icon-btn:hover{ transform:translateY(-1px); }
+
+        /* ===== Details Layout ===== */
+        .details-wrap{
+            max-width:1100px;
+            margin:12px auto 26px;
+            padding:0 14px;
+            display:grid;
+            grid-template-columns: 1fr 360px;
+            gap:14px;
+        }
+
+        .gallery{
+            background:#fff;
+            border:1px solid rgba(15,23,42,.10);
+            box-shadow:var(--shadow);
+            border-radius:14px;
+            overflow:hidden;
+        }
+
+        .hero-img{
+            height:380px;
+            background:linear-gradient(135deg,#e2e8f0,#f8fafc);
+        }
+        .hero-img img{
+            width:100%;
+            height:100%;
+            object-fit:cover;
+            display:block;
+        }
+
+        .thumbs{
+            display:grid;
+            grid-template-columns: repeat(4,1fr);
+            gap:8px;
+            padding:10px;
+            border-top:1px solid rgba(15,23,42,.06);
+            background:#fff;
+        }
+        .thumbs img{
+            width:100%;
+            height:86px;
+            object-fit:cover;
+            border-radius:10px;
+            cursor:pointer;
+            border:2px solid transparent;
+            transition:.15s;
+        }
+        .thumbs img:hover{ transform:translateY(-1px); }
+        .thumbs img.active{ border-color:rgba(37,99,235,.55); }
+
+        .side{
+            background:#fff;
+            border:1px solid rgba(15,23,42,.10);
+            box-shadow:var(--shadow);
+            border-radius:14px;
+            padding:14px;
+            height:fit-content;
+            position:sticky;
+            top:78px; /* تحت الـ navbar */
+        }
+
+        .price{
+            font-weight:900;
+            font-size:20px;
+        }
+        .muted{
+            color:var(--muted);
+            font-size:13px;
+            line-height:1.8;
+        }
+        .line{
+            border-top:1px solid #eef2f7;
+            margin:12px 0;
+        }
+
+        .meta{
+            display:flex;
+            gap:10px;
+            flex-wrap:wrap;
+            font-size:13px;
+            color:#334155;
+        }
+        .meta span{
+            background:#f1f5f9;
+            padding:8px 10px;
+            border-radius:999px;
+            font-weight:700;
+        }
+
+        .desc{
+            margin-top:12px;
+            background:#fff;
+            border:1px solid rgba(15,23,42,.10);
+            box-shadow:var(--shadow);
+            border-radius:14px;
+            padding:14px;
+        }
+        .desc h6{
+            font-weight:900;
+            margin:0 0 8px;
+        }
+
+        .contact-btn{
+            border-radius:12px;
+            font-weight:900;
+            height:46px;
+        }
+
+        /* ===== Footer (same home) ===== */
+        footer.site-footer{
+            background:#1f2937;
+            color:#cbd5e1;
+            padding:40px 14px 20px;
+            margin-top:0;
+        }
+        footer.site-footer a{ color:#cbd5e1; text-decoration:none; }
+        footer.site-footer a:hover{ color:#fff; text-decoration:underline; }
+
+        /* Responsive */
+        @media(max-width: 992px){
+            .details-wrap{ grid-template-columns:1fr; }
+            .thumbs{ grid-template-columns: repeat(3,1fr); }
+            .side{ position:relative; top:auto; }
+        }
+        @media(max-width: 576px){
+            .thumbs{ grid-template-columns: repeat(2,1fr); }
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- Navbar (same as home) -->
+<div class="topbar">
+    <div class="wrap">
+        <a class="brand-link" href="home.html">
+            <span class="logo"><i class="fa-solid fa-house"></i></span>
+            <span>عقارك</span>
+        </a>
+
+        <div class="top-actions">
+            <a href="#">للبيع</a>
+            <a href="#">للإيجار</a>
+            <a href="#">مشاريع</a>
+            <a href="#">خدمات</a>
+            <a class="btn btn-sm btn-outline-secondary" href="client_login.html" style="border-radius:12px;font-weight:800;">تسجيل الدخول</a>
+        </div>
+    </div>
+</div>
+
+<!-- Page Head (buttons + title) -->
+<div class="page-head">
+    <button class="icon-btn" type="button" onclick="history.back()" title="رجوع">
+        <i class="fa-solid fa-right-long"></i>
+    </button>
+
+    <div class="page-title">تفاصيل العقار</div>
+
+    <button class="icon-btn" type="button" title="مشاركة">
+        <i class="fa-solid fa-share-nodes"></i>
+    </button>
+</div>
+
+<!-- Details -->
+<div class="details-wrap">
+
+    <!-- Gallery -->
+    <div>
+        <div class="gallery">
+            <div class="hero-img">
+                <img id="mainImg" src="https://images.unsplash.com/photo-1523217582562-09d0def993a6?q=80&w=1200&auto=format&fit=crop" alt="">
+            </div>
+
+            <div class="thumbs" id="thumbs">
+                <img class="active" src="https://images.unsplash.com/photo-1523217582562-09d0def993a6?q=80&w=1200&auto=format&fit=crop" alt="">
+                <img src="https://images.unsplash.com/photo-1502005229762-cf1b2da7c5d6?q=80&w=600&auto=format&fit=crop" alt="">
+                <img src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?q=80&w=600&auto=format&fit=crop" alt="">
+                <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=600&auto=format&fit=crop" alt="">
+                <img src="https://images.unsplash.com/photo-1570129477492-45c003edd2be?q=80&w=600&auto=format&fit=crop" alt="">
+                <img src="https://images.unsplash.com/photo-1564013799919-ab600027ffc6?q=80&w=600&auto=format&fit=crop" alt="">
+                <img src="https://images.unsplash.com/photo-1523217582562-09d0def993a6?q=80&w=600&auto=format&fit=crop" alt="">
+                <img src="https://images.unsplash.com/photo-1502005229762-cf1b2da7c5d6?q=80&w=600&auto=format&fit=crop" alt="">
+            </div>
+        </div>
+
+        <!-- Description Card -->
+        <div class="desc">
+            <h6>وصف العقار</h6>
+            <p class="muted mb-0">
+                شقة مميزة في موقع استراتيجي بالقرب من الخدمات والمواصلات، تشطيب سوبر لوكس،
+                مناسبة للسكن أو الاستثمار. (Demo)
+            </p>
+        </div>
+    </div>
+
+    <!-- Side Card -->
+    <aside class="side">
+        <div class="price">3,250,000 ج.م</div>
+        <div class="muted mt-1">
+            <i class="fa-solid fa-location-dot"></i>
+            القاهرة الجديدة – التجمع الخامس
+        </div>
+
+        <div class="line"></div>
+
+        <div class="meta">
+            <span><i class="fa-solid fa-bed"></i> 3 غرف</span>
+            <span><i class="fa-solid fa-bath"></i> 2 حمام</span>
+            <span><i class="fa-solid fa-maximize"></i> 160 م²</span>
+            <span><i class="fa-solid fa-building"></i> شقة</span>
+        </div>
+
+        <div class="line"></div>
+
+        <button class="btn btn-primary w-100 contact-btn">
+            <i class="fa-solid fa-phone me-2"></i> تواصل الآن
+        </button>
+
+        <button class="btn btn-primary w-100 contact-btn mt-2">
+            <i class="fa-solid fa-circle-exclamation"></i> ارسال طلب
+        </button>
+        <p class="muted mt-2 mb-0">سيتم إظهار رقم الهاتف بعد التأكيد (Demo).</p>
+    </aside>
+
+</div>
+
+<!-- Footer (same as home) -->
+<footer class="site-footer">
+    <div class="container" style="max-width:1100px;">
+        <div class="row g-4">
+
+            <div class="col-md-4">
+                <h6 style="font-weight:900;color:#fff;">عقارك</h6>
+                <p style="font-size:13px;line-height:1.8;margin:0;">
+                    منصة متكاملة للبحث عن العقارات للبيع والإيجار في جميع أنحاء مصر.
+                </p>
+            </div>
+
+            <div class="col-md-2">
+                <h6 style="font-weight:800;color:#fff;">روابط سريعة</h6>
+                <ul style="list-style:none;padding:0;font-size:13px;margin:0;display:grid;gap:8px;">
+                    <li><a href="#">للبيع</a></li>
+                    <li><a href="#">للإيجار</a></li>
+                    <li><a href="#">المشاريع</a></li>
+                    <li><a href="#">الخدمات</a></li>
+                </ul>
+            </div>
+
+            <div class="col-md-3">
+                <h6 style="font-weight:800;color:#fff;">تواصل معنا</h6>
+                <p style="font-size:13px;margin:0;">info@aqark.com</p>
+                <p style="font-size:13px;margin:8px 0 0;">+20 100 000 0000</p>
+                <p style="font-size:13px;margin:8px 0 0;">القاهرة، مصر</p>
+            </div>
+
+            <div class="col-md-3">
+                <h6 style="font-weight:800;color:#fff;">تابعنا</h6>
+                <div style="display:flex;gap:10px;align-items:center;">
+                    <a href="#" style="color:#fff;font-size:18px;"><i class="fa-brands fa-facebook"></i></a>
+                    <a href="#" style="color:#fff;font-size:18px;"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#" style="color:#fff;font-size:18px;"><i class="fa-brands fa-linkedin"></i></a>
+                    <a href="#" style="color:#fff;font-size:18px;"><i class="fa-brands fa-x-twitter"></i></a>
+                </div>
+            </div>
+
+        </div>
+
+        <hr style="border-color:rgba(255,255,255,.1);margin:25px 0;">
+
+        <div style="text-align:center;font-size:12px;">
+            © <span id="year"></span> عقارك — جميع الحقوق محفوظة
+        </div>
+    </div>
+</footer>
+
+<script>
+    // footer year
+    document.getElementById("year").textContent = new Date().getFullYear();
+
+    // thumbs swap + active border
+    const mainImg = document.getElementById("mainImg");
+    const thumbs = document.getElementById("thumbs");
+
+    thumbs.querySelectorAll("img").forEach(img=>{
+        img.addEventListener("click", ()=>{
+            mainImg.src = img.src;
+            thumbs.querySelectorAll("img").forEach(x=>x.classList.remove("active"));
+            img.classList.add("active");
+        });
+    });
+</script>
+
+</body>
+</html>

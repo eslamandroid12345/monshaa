@@ -17,54 +17,53 @@ class StateRepository extends Repository implements StateRepositoryInterface
         parent::__construct($model);
     }
 
-    public function getAllStatusQuery(): LengthAwarePaginator
+    public function getAllStatusQuery()
     {
-
         $query = $this->model::query();
 
-        $query->when(request()->has('real_state_address') && request('real_state_address') != null, function ($q)  {
+        $query->when(request()->filled('real_state_address'), function ($q)  {
             $q->where('real_state_address', 'like', '%' . request()->input('real_state_address') . '%');
         });
 
-        $query->when(request()->has('department') && request('department') != null, function ($q)  {
+        $query->when(request()->filled('department'), function ($q)  {
             $q->where('department', '=',  request()->input('department'));
         });
 
-        $query->when(request()->has('real_state_type') && request('real_state_type') != null, function ($q)  {
+        $query->when(request()->filled('real_state_type'), function ($q)  {
             $q->where('real_state_type', '=', request()->input('real_state_type'));
         });
 
-        $query->when(request()->has('lowest_price') && request()->has('highest_price') && request('lowest_price') != null && request('highest_price') != null, function ($q) {
+        $query->when(request()->filled('lowest_price') && request()->filled('highest_price') , function ($q) {
             $q->whereBetween('real_state_price', [request()->input('lowest_price'), request()->input('highest_price')]);
         });
 
-        $query->when(request()->has('lowest_space') && request()->has('highest_space') && request('lowest_space') != null&& request('highest_space') != null, function ($q) {
+        $query->when(request()->filled('lowest_space') && request()->filled('highest_space'), function ($q) {
             $q->whereBetween('real_state_space', [request()->input('lowest_space'), request()->input('highest_space')]);
         });
 
-        $query->when(request()->has('advertiser_type') && request('advertiser_type') != null, function ($q)  {
+        $query->when(request()->filled('advertiser_type'), function ($q)  {
             $q->where('advertiser_type', '=',  request()->input('advertiser_type'));
         });
 
-        $query->when(request()->has('code') && request()->input('code') != null, function ($q)  {
+        $query->when(request()->filled('code'), function ($q)  {
             $q->where('id', '=',  request()->input('code'));
         });
 
-        $query->when(request()->has('compound_name') && request()->input('compound_name') != null, function ($q)  {
+        $query->when(request()->filled('compound_name'), function ($q)  {
             $q->where('compound_name', 'like', '%' . request()->input('compound_name') . '%');
         });
 
-        $query->when(request()->has('user_id') && request()->input('user_id') != null, function ($q)  {
+        $query->when(request()->filled('user_id'), function ($q)  {
             $q->where('user_id', '=',  request()->input('user_id'));
         });
 
         return $query
-            ->latest()
+            ->orderByDesc('id')
             ->select(['*'])
             ->with(['user','company'])
             ->where('company_id','=',companyId())
             ->where('status','=','waiting')
-            ->paginate(16);
+            ->paginate(50);
 
 
     }
@@ -76,7 +75,7 @@ class StateRepository extends Repository implements StateRepositoryInterface
         $query = $this->model::query();
 
 
-        $query->when(request()->has('date_from') && request()->has('date_to') && request('date_from') != null&& request('date_to') != null, function ($q) {
+        $query->when(request()->filled('date_from') && request()->filled('date_to') && request('date_from') != null&& request('date_to') != null, function ($q) {
             $q->whereBetween('state_date_register', [request()->input('date_from'), request()->input('date_to')]);
         });
 

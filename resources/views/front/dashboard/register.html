@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>تسجيل الدخول</title>
+
+  <!-- Bootstrap RTL -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
+
+  <!-- Cairo Font -->
+  <!-- <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&display=swap" rel="stylesheet"> -->
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+
+  <style>
+    :root{
+      /* غيّر الألوان دي لو عايزها مطابقة 100% للصفحة الأصلية */
+      --bg: #f6f7fb;
+      --panel: #ffffff;
+      --text: #0f172a;
+      --muted: #64748b;
+      --border: rgba(15,23,42,.10);
+
+      /* ألوان قريبة من ستايل SAAS Egypt + نفس روح الـ sidebar */
+      --brand: #475569;     /* نفس لون الـ sidebar عندك */
+      --brand2: #334155;    /* أغمق شوية */
+      --primary: #2563eb;   /* زر الدخول */
+      --primaryHover: #1d4ed8;
+
+      --shadow: 0 18px 45px rgba(15,23,42,.10);
+      --radius: 18px;
+    }
+
+    *{       font-family:system-ui,-apple-system,"Segoe UI",Tahoma,Arial;
+ }
+    body{
+      background: var(--bg);
+      color: var(--text);
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 18px;
+    font-family:system-ui,-apple-system,"Segoe UI",Tahoma,Arial;
+
+    }
+
+    .login-shell{
+      width: min(1100px, 100%);
+      background: transparent;
+    }
+
+    .login-card{
+      display: grid;
+      grid-template-columns: 1.05fr .95fr; /* شمال/يمين */
+      gap: 0;
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(15,23,42,.08);
+      background: var(--panel);
+      min-height: 620px;
+    }
+
+    /* Left / Brand side */
+    .brand-side{
+      position: relative;
+      padding: 42px 42px 34px;
+      background: linear-gradient(135deg, var(--brand), var(--brand2));
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .brand-top{
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-logo{
+      width: 46px;
+      height: 46px;
+      border-radius: 14px;
+      background: rgba(255,255,255,.14);
+      display: grid;
+      place-items: center;
+      border: 1px solid rgba(255,255,255,.18);
+    }
+
+    .brand-logo i{ font-size: 20px; }
+
+    .brand-name{
+      font-weight: 900;
+      font-size: 18px;
+      line-height: 1.2;
+    }
+    .brand-sub{
+      font-size: 13px;
+      opacity: .85;
+      margin-top: 3px;
+    }
+
+    .brand-mid{
+      margin-top: 26px;
+    }
+
+    .brand-mid h2{
+      margin: 0 0 10px;
+      font-size: 26px;
+      font-weight: 900;
+      letter-spacing: .2px;
+    }
+    .brand-mid p{
+      margin: 0;
+      font-size: 14px;
+      opacity: .9;
+      max-width: 420px;
+      line-height: 1.9;
+    }
+
+    .brand-illustration{
+      margin-top: 26px;
+      background: rgba(255,255,255,.10);
+      border: 1px solid rgba(255,255,255,.16);
+      border-radius: 18px;
+      padding: 22px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      align-items: center;
+    }
+
+    .mini-stat{
+      background: rgba(255,255,255,.12);
+      border: 1px solid rgba(255,255,255,.14);
+      border-radius: 16px;
+      padding: 14px;
+    }
+    .mini-stat .v{
+      font-weight: 900;
+      font-size: 18px;
+      margin-bottom: 4px;
+    }
+    .mini-stat .t{
+      font-size: 12px;
+      opacity: .85;
+    }
+
+    .brand-footer{
+      font-size: 12px;
+      opacity: .85;
+      margin-top: 18px;
+    }
+
+    /* Right / Form side */
+    .form-side{
+      padding: 42px 42px 34px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      background: #fff;
+    }
+
+    .form-title{
+      margin-bottom: 18px;
+    }
+    .form-title h1{
+      margin: 0 0 6px;
+      font-size: 22px;
+      font-weight: 900;
+    }
+    .form-title p{
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .field{
+      margin-top: 12px;
+    }
+
+    .input-wrap{
+      position: relative;
+    }
+
+    .input-wrap i.prefix{
+      position: absolute;
+      right: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #94a3b8;
+      font-size: 14px;
+      pointer-events: none;
+    }
+
+    .input-wrap .toggle-pass{
+      position: absolute;
+      left: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      border: 0;
+      background: transparent;
+      color: #64748b;
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      cursor: pointer;
+    }
+    .input-wrap .toggle-pass:hover{
+      background: rgba(15,23,42,.06);
+    }
+
+    .form-control.custom{
+      height: 48px;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      padding-right: 42px;  /* space for icon */
+      padding-left: 46px;   /* space for eye */
+      box-shadow: 0 10px 22px rgba(15,23,42,.04);
+      font-size: 14px;
+    }
+    .form-control.custom:focus{
+      box-shadow: 0 0 0 4px rgba(37,99,235,.14);
+      border-color: rgba(37,99,235,.55);
+    }
+
+    .row-actions{
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: 14px;
+      flex-wrap: wrap;
+    }
+
+    .form-check-label{
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .link{
+      color: var(--primary);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 700;
+    }
+    .link:hover{ text-decoration: underline; }
+
+    .btn-login{
+      margin-top: 16px;
+      height: 48px;
+      border-radius: 14px;
+      background: var(--primary);
+      border: 0;
+      font-weight: 800;
+      font-size: 14px;
+      box-shadow: 0 14px 28px rgba(37,99,235,.22);
+    }
+    .btn-login:hover{ background: var(--primaryHover); }
+
+    .divider{
+      margin: 18px 0 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #94a3b8;
+      font-size: 12px;
+    }
+    .divider:before, .divider:after{
+      content: "";
+      height: 1px;
+      flex: 1;
+      background: rgba(15,23,42,.10);
+    }
+
+    .help{
+      margin-top: 10px;
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.8;
+    }
+
+    /* Responsive */
+    @media (max-width: 992px){
+      .login-card{
+        grid-template-columns: 1fr;
+        min-height: auto;
+      }
+      .brand-side{
+        padding: 28px 22px;
+      }
+      .form-side{
+        padding: 28px 22px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="login-shell">
+    <div class="login-card">
+
+      <!-- LEFT: Branding -->
+      <section class="brand-side">
+        <div>
+          <div class="brand-top">
+            <div class="brand-logo">
+              <i class="fa-solid fa-hospital"></i>
+            </div>
+            <div>
+              <div class="brand-name">عقارك</div>
+              <div class="brand-sub">اداره عقاراتك بكل سهوله</div>
+            </div>
+          </div>
+
+          <div class="brand-mid">
+            <h2>اهلا بك في تطبيق عقارك</h2>👋</h2>
+            <p>
+             سجّل حساب شركتك الآن وابدأ إدارة عقاراتك بكفاءة وسهولة تامة.
+            </p>
+
+            <div class="brand-illustration">
+
+              <div class="mini-stat">
+                <div class="v"><i class="fa-solid fa-city"></i></div>
+                <div class="t">العقارات</div>
+              </div>
+
+              <div class="mini-stat">
+                <div class="v"><i class="fa-solid fa-map-location-dot"></i></div>
+                <div class="t">الاراضي</div>
+              </div>
+
+              <div class="mini-stat">
+                <div class="v"><i class="fa-solid fa-user-check"></i></div>
+                <div class="t">المستاجرين</div>
+              </div>
+
+             <div class="mini-stat">
+                <div class="v"><i class="fa-solid fa-file-signature"></i></div>
+                <div class="t">عقود الايجار</div>
+              </div>
+
+               <div class="mini-stat">
+                <div class="v"><i class="fa-solid fa-file-circle-xmark"></i></div>
+                <div class="t">العقود المنتهيه</div>
+              </div>
+
+               <div class="mini-stat">
+                <div class="v"><i class="fa-solid fa-receipt"></i></div>
+                <div class="t">سندات القبض</div>
+              </div>
+
+                <div class="mini-stat">
+                <div class="v"><i class="fa-solid fa-money-bill-transfer"></i></div>
+                <div class="t">سندات الصرف</div>
+              </div>
+
+            <div class="mini-stat">
+                <div class="v"><i class="fa-solid fa-wallet"></i></div>
+                <div class="t">الايردات</div>
+              </div>
+
+            <div class="mini-stat">
+                <div class="v"><i class="fa-solid fa-sack-dollar"></i></div>
+                <div class="t">المصروفات</div>
+              </div>
+
+
+               <div class="mini-stat">
+                <div class="v"><i class="fa-solid fa-percent"></i></div>
+                <div class="t">عموله الموظفين</div>
+              </div>
+
+               <div class="mini-stat">
+                <div class="v"><i class="fa-solid fa-user-group"></i></div>
+                <div class="t">العملاء</div>
+              </div>
+
+               <div class="mini-stat">
+                <div class="v"><i class="fa-solid fa-chart-column"></i></div>
+                <div class="t">التقارير</div>
+              </div>
+
+
+            </div>
+          </div>
+        </div>
+
+       <div class="brand-footer">
+        © <span id="y"></span> عقارك - جميع الحقوق محفوظة
+        </div>
+      </section>
+
+      <!-- RIGHT: Form -->
+      <section class="form-side">
+        <div class="form-title">
+          <h1>تسجيل حساب تجريبي</h1>
+          <p>أنشئ حساب شركتك اليوم واستمتع بإدارة عقاراتك بكل احترافية وسلاسة.</p>
+        </div>
+
+        <!-- form -->
+        <form action="login.php" method="post" autocomplete="on">
+
+            
+         <div class="field">
+        <label class="form-label fw-bold mb-2">اسم الشركة</label>
+        <div class="input-wrap">
+            <i class="fa-solid fa-building prefix"></i>
+            <input class="form-control custom" type="text" name="company_name" placeholder="اسم الشركة" required>
+        </div>
+        </div>
+
+        <div class="field">
+        <label class="form-label fw-bold mb-2">عنوان الشركة</label>
+        <div class="input-wrap">
+            <i class="fa-solid fa-location-dot prefix"></i>
+            <input class="form-control custom" type="text" name="company_address" placeholder="عنوان الشركة" required>
+        </div>
+        </div>
+
+        <div class="field">
+        <label class="form-label fw-bold mb-2">رقم هاتف الشركة</label>
+        <div class="input-wrap">
+            <i class="fa-solid fa-phone prefix"></i>
+            <input class="form-control custom" type="text" name="company_phone" placeholder="رقم هاتف الشركة" required>
+        </div>
+        </div>
+
+        <div class="field">
+        <label class="form-label fw-bold mb-2">اسم المدير</label>
+        <div class="input-wrap">
+            <i class="fa-solid fa-user-tie prefix"></i>
+            <input class="form-control custom" type="text" name="manager_name" placeholder="اسم المدير" required>
+        </div>
+        </div>
+
+        <div class="field">
+        <label class="form-label fw-bold mb-2">رقم هاتف المدير</label>
+        <div class="input-wrap">
+            <i class="fa-solid fa-mobile-screen-button prefix"></i>
+            <input class="form-control custom" type="text" name="manager_phone" placeholder="رقم هاتف المدير" required>
+        </div>
+        </div>
+
+            <div class="field">
+                <label class="form-label fw-bold mb-2">كلمة المرور</label>
+                <div class="input-wrap">
+                <i class="fa-solid fa-lock prefix"></i>
+                <input class="form-control custom" id="password" type="password" name="password" placeholder="أدخل كلمة المرور" required>
+                <button type="button" class="toggle-pass" id="togglePass" aria-label="show password">
+                    <i class="fa-regular fa-eye"></i>
+                </button>
+                </div>
+            </div>
+
+             <div class="field">
+                <label class="form-label fw-bold mb-2">تاكيد كلمه المرور</label>
+                <div class="input-wrap">
+                <i class="fa-solid fa-lock prefix"></i>
+                <input class="form-control custom" id="password" type="password" name="password" placeholder="تاكيد كلمه المرور" required>
+                <button type="button" class="toggle-pass" id="togglePass" aria-label="show password">
+                    <i class="fa-regular fa-eye"></i>
+                </button>
+                </div>
+            </div>
+
+
+          <button class="btn btn-primary w-100 btn-login" type="submit">
+           تسجيل حساب تجريبي
+          </button>
+
+          <div class="divider">أو</div>
+
+          <div class="help">
+           لديك حساب بالفعل
+            <a class="link" href="login.html">تسجيل الدخول</a>
+          </div>
+
+          <div class="help">
+            لو عندك مشكلة في تسجيل الحساب التجريبي تواصل مع الدعم الفني.
+            <a class="link" href="https://wa.me/201062933188">تواصل مع الدعم</a>
+          </div>
+        </form>
+      </section>
+
+    </div>
+  </div>
+
+  <script>
+    // year
+    document.getElementById("y").textContent = new Date().getFullYear();
+
+    // show/hide password
+    const pass = document.getElementById("password");
+    const toggle = document.getElementById("togglePass");
+    toggle.addEventListener("click", () => {
+      const isPass = pass.type === "password";
+      pass.type = isPass ? "text" : "password";
+      toggle.innerHTML = isPass
+        ? '<i class="fa-regular fa-eye-slash"></i>'
+        : '<i class="fa-regular fa-eye"></i>';
+    });
+  </script>
+</body>
+</html>

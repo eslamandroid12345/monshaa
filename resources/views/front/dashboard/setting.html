@@ -1,0 +1,304 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>الإعدادات</title>
+
+  <!-- Bootstrap RTL -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <style>
+    :root {
+      --topbar: #3f5564;
+      --line: #8fc0ff; /* نفس لون حدود الحقول */
+      --muted: #6b7785;
+      --shadow: 0 8px 24px rgba(0, 0, 0, .08);
+    }
+
+    body {
+      margin: 0;
+      height: 100vh;
+      overflow: hidden;
+      background: #fff;
+      font-family: system-ui, -apple-system, "Segoe UI", Tahoma, Arial;
+    }
+
+    /* ===== Topbar ===== */
+    .app-topbar {
+      height: 52px;
+      background: var(--topbar);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      padding: 0 14px;
+      gap: 10px;
+      border-bottom: 1px solid rgba(255, 255, 255, .08);
+    }
+
+    .app-topbar .title {
+      flex: 1;
+      text-align: center;
+      font-weight: 700;
+    }
+
+    .app-topbar .icon-btn {
+      width: 34px;
+      height: 34px;
+      border: 0;
+      background: transparent;
+      color: #eaf1f7;
+      display: grid;
+      place-items: center;
+      border-radius: 8px;
+      transition: .2s;
+    }
+
+    .app-topbar .icon-btn:hover {
+      background: rgba(255, 255, 255, .10);
+    }
+
+    /* ===== Page Wrapper ===== */
+    .page {
+      height: calc(100vh - 52px);
+      overflow: auto;
+      padding: 40px 12px 60px;
+    }
+
+    .center-box {
+      width: min(650px, 100%);
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .logo-wrap {
+      width: 110px;
+      height: 110px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      display: grid;
+      place-items: center;
+      margin: 10px auto 10px;
+    }
+
+    .logo {
+      width: 82px;
+      height: 82px;
+      border-radius: 999px;
+      overflow: hidden;
+      display: grid;
+      place-items: center;
+      background: #fff;
+    }
+
+    .logo img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+    }
+
+    .page-title {
+      margin: 4px 0 16px;
+      font-weight: 700;
+      color: #2d3a45;
+    }
+
+    /* ===== rows ===== */
+    .rows {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .row-item {
+      border: 1px solid var(--line);
+      border-radius: 2px;
+      background: #fff;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      padding: 0 10px;
+      gap: 10px;
+      justify-content: space-between;
+    }
+
+    .row-item input {
+      border: 0;
+      outline: 0;
+      width: 100%;
+      height: 100%;
+      background: transparent;
+      font-size: 13px;
+      color: #111827;
+      padding: 0 6px;
+    }
+
+    .row-label {
+      white-space: nowrap;
+      font-size: 13px;
+      color: #1f2937;
+      font-weight: 600;
+      min-width: 110px;
+      text-align: right;
+    }
+
+    .left-icon {
+      width: 26px;
+      height: 26px;
+      display: grid;
+      place-items: center;
+      color: #e74c3c;
+      flex: 0 0 auto;
+    }
+
+    /* ===== Sound Toggle ===== */
+    .toggle-wrap {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      justify-content: flex-start;
+      width: 100%;
+    }
+
+    .switch {
+      position: relative;
+      width: 56px;
+      height: 28px;
+      background: #d1d5db;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: .2s;
+      flex: 0 0 auto;
+      border: 1px solid rgba(0,0,0,.08);
+    }
+
+    .switch::after {
+      content: "";
+      position: absolute;
+      top: 3px;
+      right: 3px; /* RTL: البداية من اليمين */
+      width: 22px;
+      height: 22px;
+      background: #fff;
+      border-radius: 999px;
+      box-shadow: 0 6px 14px rgba(0,0,0,.15);
+      transition: .2s;
+    }
+
+    input#soundToggle {
+      display: none;
+    }
+
+    input#soundToggle:checked + .switch {
+      background: #9ca3af;
+    }
+
+    input#soundToggle:checked + .switch::after {
+      right: 31px;
+    }
+
+    .action-row {
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .action-row:hover {
+      background: #f8fbff;
+    }
+
+    @media (max-width: 520px) {
+      .row-label { min-width: 90px; font-size: 12px; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Topbar -->
+  <div class="app-topbar">
+    <button class="icon-btn" title="رجوع" onclick="history.back()">
+      <i class="fa-solid fa-right-long"></i>
+    </button>
+
+    <div class="title">الإعدادات</div>
+
+    <button class="icon-btn" title="خروج" onclick="alert('Demo خروج')">
+      <i class="fa-solid fa-right-from-bracket"></i>
+    </button>
+  </div>
+
+  <div class="page">
+    <div class="center-box">
+
+      <!-- Logo circle -->
+      <div class="logo-wrap">
+        <div class="logo">
+          <!-- حط لوجو شركتك هنا -->
+          <img src="logo.png" alt="Logo" onerror="this.style.display='none'; this.parentElement.innerHTML='<i class=&quot;fa-solid fa-building-columns&quot; style=&quot;font-size:34px;color:#2d8bd6&quot;></i>';">
+        </div>
+      </div>
+
+      <div class="page-title">الإعدادات</div>
+
+      <div class="rows">
+
+        <div class="row-item">
+          <div class="row-label">اسم الشركة</div> 
+          <input type="text" value="نمم العقاريه" placeholder="اسم الشركة" dir="ltr">
+        </div>
+
+        <div class="row-item">
+          <div class="row-label">عنوان الشركة</div>
+          <input type="text" value="المملكة العربية السعودية" placeholder="عنوان الشركة" dir="ltr">
+        </div>
+
+        <div class="row-item">
+          <div class="row-label">هاتف الشركة</div>
+          <input type="text" value="01062933144" placeholder="هاتف الشركة" dir="ltr">
+        </div>
+
+        <div class="row-item">
+          <div class="row-label">الاسم</div>
+          <input type="text" value="اسلام محمد" placeholder="الاسم" dir="ltr">
+        </div>
+
+        <div class="row-item">
+          <div class="row-label">الهاتف</div>
+          <input type="text" value="01062933199" placeholder="الهاتف" dir="ltr">
+        </div>
+
+        <!-- Sound toggle -->
+        <!-- <div class="row-item">
+          <div class="row-label">تفعيل الصوت</div>
+
+          <div class="toggle-wrap">
+            <input type="checkbox" id="soundToggle">
+            <label class="switch" for="soundToggle" aria-label="sound toggle"></label>
+          </div>
+        </div> -->
+
+        <!-- Edit account -->
+        <div class="row-item action-row" id="editAccount">
+          <div class="row-label">تعديل الحساب</div>
+          <div class="left-icon"><a href="edit_profile.html"><i class="fa-solid fa-pen"></i></a></div>
+        </div>
+
+        <!-- Logout -->
+        <div class="row-item action-row" id="logoutBtn">
+          <div class="row-label">تسجيل الخروج</div>
+          <div class="left-icon"><i class="fa-solid fa-right-from-bracket"></i></div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+ 
+</body>
+</html>
