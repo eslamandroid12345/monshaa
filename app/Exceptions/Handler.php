@@ -34,23 +34,19 @@ class Handler extends ExceptionHandler
         'password_confirmation',
     ];
 
-    /**
-     * Register the exception handling callbacks for the application.
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
+
 
     public function render($request, Throwable $exception)
     {
 
 
     if($exception instanceof  AuthorizationException){
-        return $this->responseFail(null,403,'غير مصرح لك للدخول لذلك الصفحه',403);
+        return request()->is('api/*') ?  $this->responseFail(null,403,'غير مصرح لك للدخول لذلك الصفحه',403) : response()->view('admin.errors.403', [], 403);
 
     }
 
         if($exception instanceof  ModelNotFoundException){
-            return $this->responseFail(null,404,'البيانات غير موجوده',404);
+            return request()->is('api/*') ?  $this->responseFail(null,404,'البيانات غير موجوده',404) : response()->view('admin.errors.404', [], 404);
 
         }
 

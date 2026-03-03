@@ -69,3 +69,7 @@ Route::group(['prefix' => 'admin'], function (){
     Route::delete('state/destroy/{id}',[StateController::class,'delete'])->name('admin.state.destroy');
     Route::get('state/show/{id}',[StateController::class,'showView'])->name('admin.state.show');
 });
+
+//Route::get('not-found', function (){
+//    return view('admin.errors.404');
+//});

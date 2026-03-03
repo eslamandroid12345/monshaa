@@ -41,4 +41,28 @@ class AuthServiceProvider extends ServiceProvider
 
 
     }
+
+    /*
+     public function boot()
+    {
+        $this->registerPolicies();
+
+        Gate::define('check-company-auth', function ($user,$model) {
+            $response = request()->is('api/*') ?  Response::deny('ليس لديك صلاحيه علي هذا') : view('admin.errors.403');
+            return $user->company_id == $model->company_id
+                ? Response::allow()
+                : $response;
+        });
+
+
+        Gate::define('check-user-auth', function ($user,$model) {
+            $response = request()->is('api/*') ?  Response::deny('ليس لديك صلاحيه علي هذا') : view('admin.errors.403');
+            return $user->id == $model->user_id || $user->is_admin == 1
+                ? Response::allow()
+                : $response;
+        });
+
+
+    }
+     */
 }
