@@ -2,6 +2,9 @@
 
 use App\Http\Controllers\Admin\Company\CompanyController;
 use App\Http\Controllers\Admin\TechnicalSupport\TechnicalSupportController;
+use App\Http\Controllers\Api\Client\ClientController;
+use App\Http\Controllers\Api\Land\LandController;
+use App\Http\Controllers\Api\Report\ReportController;
 use App\Http\Controllers\Api\State\StateController;
 use App\Http\Controllers\Api\User\UserController;
 use App\Http\Controllers\Dashboard\AuthController as AdminAuthController;
@@ -68,8 +71,25 @@ Route::group(['prefix' => 'admin'], function (){
     Route::get('states/edit/{id}',[StateController::class,'edit'])->name('admin.states.edit');
     Route::delete('state/destroy/{id}',[StateController::class,'delete'])->name('admin.state.destroy');
     Route::get('state/show/{id}',[StateController::class,'showView'])->name('admin.state.show');
+    Route::get('get-all-clients',[ClientController::class,'getAllClients'])->name('clients.index');
+    Route::post('client/create',[ClientController::class,'create'])->name('clients.create');
+    Route::get('client/show/{id}',[ClientController::class,'show'])->name('clients.show');
+    Route::post('client/update/{id}',[ClientController::class,'update'])->name('clients.update');
+    Route::delete('client/delete/{id}',[ClientController::class,'delete'])->name('clients.delete');
+    Route::get('client/edit/{id}',[ClientController::class,'edit'])->name('admin.clients.edit');
+    Route::get('reports',[ReportController::class,'index'])->name('admin.reports.index');
+    Route::get('report/states',[ReportController::class,'states'])->name('admin.reports.states');
+    Route::get('report/lands',[ReportController::class,'lands'])->name('admin.reports.lands');
+    Route::get('tenant-contracts',[ReportController::class,'tenantContracts'])->name('admin.reports.contracts');
+
+    //Lands
+    Route::get('all-lands',[LandController::class,'getAllLands'])->name('lands.index');
+    Route::post('land/create',[LandController::class,'create'])->name('lands.create');
+    Route::get('land/show/{id}',[LandController::class,'show'])->name('lands.show');
+    Route::get('land/edit/{id}',[LandController::class,'edit'])->name('lands.edit');
+    Route::post('land/update/{id}',[LandController::class,'update'])->name('lands.update');
+    Route::post('land/change-status/{id}',[LandController::class,'changeStatus'])->name('lands.changeStatus');
+    Route::delete('land/delete/{id}',[LandController::class,'delete'])->name('lands.delete');
 });
 
-//Route::get('not-found', function (){
-//    return view('admin.errors.404');
-//});
+

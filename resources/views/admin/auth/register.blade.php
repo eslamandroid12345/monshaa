@@ -15,6 +15,26 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
     <link rel="stylesheet" href="{{ asset('css/admin/register.css') }}">
 
+    <style>
+        .btn-login{
+            background-color: #3f5564 !important;
+            border-color: #3f5564 !important;
+            color: #fff;
+        }
+
+        .btn-login:hover{
+            background-color: #1e293b !important;
+            border-color: #1e293b !important;
+        }
+
+        .btn-login:focus,
+        .btn-login:active{
+            background-color: #1e293b !important;
+            border-color: #1e293b !important;
+            box-shadow: 0 0 0 0.2rem rgba(51,65,85,0.25);
+        }
+
+    </style>
 </head>
 
 <body>

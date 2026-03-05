@@ -8,7 +8,6 @@ interface LandRepositoryInterface extends RepositoryInterface
 {
 
     public function getAllLandsQuery() : LengthAwarePaginator;
-
     public function landsReports(): LengthAwarePaginator;
 
 

@@ -25,25 +25,34 @@ class LandRepository extends Repository implements LandRepositoryInterface
             $q->where('address', 'like', '%' . request()->input('address') . '%');
         });
 
-
-        $query->when(request()->has('lowest_price') && request()->has('highest_price') && request('lowest_price') != null && request('highest_price') != null, function ($q) {
-            $q->whereBetween('price_of_one_meter', [request()->input('lowest_price'), request()->input('highest_price')]);
+        $query->when(request()->filled('lowest_price'), function ($q) {
+            $q->where('price_of_one_meter', '>=', request()->input('lowest_price'));
         });
 
 
-        $query->when(request()->has('lowest_space') && request()->has('highest_space') && request('lowest_space') != null&& request('highest_space') != null, function ($q) {
-            $q->whereBetween('size_in_metres', [request()->input('lowest_space'), request()->input('highest_space')]);
+        $query->when(request()->filled('highest_price'), function ($q) {
+            $q->where('price_of_one_meter', '<=', request()->input('highest_price'));
         });
 
-        $query->when(request()->has('advertiser_type') && request('advertiser_type') != null, function ($q)  {
+        $query->when(request()->filled('lowest_space'), function ($q) {
+            $q->where('size_in_metres', '>=', request()->input('lowest_space'));
+        });
+
+
+        $query->when(request()->filled('highest_space'), function ($q) {
+            $q->where('size_in_metres', '<=', request()->input('highest_space'));
+        });
+
+
+        $query->when(request()->filled('advertiser_type'), function ($q)  {
             $q->where('advertiser_type', '=',  request()->input('advertiser_type'));
         });
 
-        $query->when(request()->has('code') && request()->input('code') != null, function ($q)  {
+        $query->when(request()->filled('code'), function ($q)  {
             $q->where('id', '=',  request()->input('code'));
         });
 
-        $query->when(request()->has('user_id') && request()->input('user_id') != null, function ($q)  {
+        $query->when(request()->filled('user_id'), function ($q)  {
             $q->where('user_id', '=',  request()->input('user_id'));
         });
 
@@ -53,7 +62,7 @@ class LandRepository extends Repository implements LandRepositoryInterface
             ->with(['user','company'])
             ->where('company_id','=',companyId())
             ->where('status','=','waiting')
-            ->paginate(16);
+            ->paginate(50);
 
 
     }
@@ -64,11 +73,13 @@ class LandRepository extends Repository implements LandRepositoryInterface
 
         $query = $this->model::query();
 
-
-        $query->when(request()->has('date_from') && request()->has('date_to') && request('date_from') != null&& request('date_to') != null, function ($q) {
-            $q->whereBetween('land_date_register', [request()->input('date_from'), request()->input('date_to')]);
+        $query->when(request()->filled('date_from'), function ($q) {
+            $q->where('land_date_register', '>=', request()->input('date_from'));
         });
 
+        $query->when(request()->filled('date_to'), function ($q) {
+            $q->where('land_date_register', '<=', request()->input('date_to'));
+        });
 
         return $query
             ->latest()
@@ -76,7 +87,7 @@ class LandRepository extends Repository implements LandRepositoryInterface
             ->with(['user','company'])
             ->where('company_id','=',companyId())
             ->where('status','=','waiting')
-            ->paginate(16);
+            ->paginate(50);
 
 
     }

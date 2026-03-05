@@ -75,9 +75,14 @@ class StateRepository extends Repository implements StateRepositoryInterface
         $query = $this->model::query();
 
 
-        $query->when(request()->filled('date_from') && request()->filled('date_to') && request('date_from') != null&& request('date_to') != null, function ($q) {
-            $q->whereBetween('state_date_register', [request()->input('date_from'), request()->input('date_to')]);
+        $query->when(request()->filled('date_from'), function ($q) {
+            $q->where('state_date_register', '>=', request()->input('date_from'));
         });
+
+        $query->when(request()->filled('date_to'), function ($q) {
+            $q->where('state_date_register', '<=', request()->input('date_to'));
+        });
+
 
         return $query
             ->latest()
@@ -85,7 +90,7 @@ class StateRepository extends Repository implements StateRepositoryInterface
             ->with(['user','company'])
             ->where('company_id','=',companyId())
             ->where('status','=','waiting')
-            ->paginate(16);
+            ->paginate(50);
 
 
     }

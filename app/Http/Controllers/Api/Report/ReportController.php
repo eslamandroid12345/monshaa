@@ -23,27 +23,33 @@ class ReportController extends Controller
         $this->reportService = $reportService;
     }
 
-    public function states(): JsonResponse
+    public function index()
+    {
+        return view('admin.reports.index');
+    }
+
+
+    public function states()
     {
         return $this->reportService->states();
     }
 
-    public function lands(): JsonResponse
+    public function lands()
     {
         return $this->reportService->lands();
     }
 
-    public function tenantContracts(): JsonResponse
+    public function tenantContracts()
     {
         return $this->reportService->tenantContracts();
     }
 
-    public function revenues(): JsonResponse
+    public function revenues()
     {
         return $this->reportService->revenues();
     }
 
-    public function expenses(): JsonResponse
+    public function expenses()
     {
         return $this->reportService->expenses();
     }

@@ -336,6 +336,29 @@
         }
 
 
+        .notify-btn{
+            position:relative;
+        }
+
+        .notify-badge{
+            position:absolute;
+            top:-5px;
+            right:-5px;
+            background:#ef4444;
+            color:#fff;
+            font-size:11px;
+            font-weight:700;
+            min-width:18px;
+            height:18px;
+            padding:0 5px;
+            border-radius:20px;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            box-shadow:0 2px 6px rgba(0,0,0,.2);
+        }
+
+
     </style>
 </head>
 
@@ -363,53 +386,63 @@
                 <span>العقارات</span>
             </a>
 
-            <a href="lands.html" class="nav-item">
+            <a href="{{route('lands.index')}}" class="nav-item">
                 <i class="fa-solid fa-map-location-dot"></i>
                 <span>الأراضي</span>
             </a>
 
-            <a href="tenants.html" class="nav-item">
-                <i class="fa-solid fa-user-check"></i>
+            <a href="{{route('clients.index')}}" class="nav-item">
+                <i class="fa-solid fa-users"></i>
+                <span>العملاء</span>
+            </a>
+
+            <a href="#" class="nav-item">
+                <i class="fa-solid fa-house-user"></i>
                 <span>المستأجرين</span>
             </a>
 
-            <a href="rent-contracts.html" class="nav-item">
+            <a href="#" class="nav-item">
                 <i class="fa-solid fa-file-signature"></i>
                 <span>عقود الإيجار</span>
             </a>
 
-            <a href="expire_contracts.html" class="nav-item">
+            <a href="#" class="nav-item">
                 <i class="fa-solid fa-file-circle-xmark"></i>
                 <span>العقود المنتهية</span>
             </a>
 
-            <a href="cashes.html" class="nav-item">
+            <a href="#" class="nav-item">
                 <i class="fa-solid fa-receipt"></i>
                 <span>سندات القبض</span>
             </a>
 
-            <a href="recipts.html" class="nav-item">
+            <a href="#" class="nav-item">
                 <i class="fa-solid fa-money-bill-transfer"></i>
                 <span>سندات الصرف</span>
             </a>
 
-            <a href="revenues.html" class="nav-item">
+            <a href="#" class="nav-item">
                 <i class="fa-solid fa-wallet"></i>
                 <span>الإيرادات</span>
             </a>
 
-            <a href="expences.html" class="nav-item">
+            <a href="#" class="nav-item">
                 <i class="fa-solid fa-sack-dollar"></i>
                 <span>المصروفات</span>
             </a>
 
-            <a href="commession.html" class="nav-item">
+            <a href="#" class="nav-item">
+                <i class="fa-solid fa-people-group"></i>
+                <span>الموظفين</span>
+            </a>
+
+            <a href="#" class="nav-item">
                 <i class="fa-solid fa-percent"></i>
                 <span>عمولة الموظفين</span>
             </a>
 
             <!-- الإشعارات -->
-            <a href="notifications.html" class="nav-item nav-notif">
+            <a href="#" class="nav-item nav-notif">
                 <i class="fa-regular fa-bell"></i>
                 <span>الإشعارات</span>
 
@@ -417,24 +450,15 @@
                 <span class="nav-badge" id="sideNotifCount">3</span>
             </a>
 
-            <a href="employees.html" class="nav-item">
-                <i class="fa-solid fa-users"></i>
-                <span>الموظفين</span>
-            </a>
 
-            <a href="client.html" class="nav-item">
-                <i class="fa-solid fa-user-group"></i>
-                <span>العملاء</span>
-            </a>
-
-            <a href="reports.html" class="nav-item">
+            <a href="{{route('admin.reports.index')}}" class="nav-item">
                 <i class="fa-solid fa-chart-column"></i>
                 <span>التقارير</span>
             </a>
 
 
             <!-- طلبات العملاء -->
-            <a href="notifications.html" class="nav-item nav-notif">
+            <a href="#" class="nav-item nav-notif">
                 <i class="fa-solid fa-clipboard-list"></i>
                 <span>طلبات العملاء</span>
 
@@ -443,25 +467,25 @@
             </a>
 
 
-            <a href="setting.html" class="nav-item">
+            <a href="#" class="nav-item">
                 <i class="fa-solid fa-gear"></i>
                 <span>الإعدادات</span>
             </a>
 
-            <a href="support.html" class="nav-item">
+            <a href="#" class="nav-item">
                 <i class="fa-solid fa-headset"></i>
                 <span>الدعم الفني</span>
             </a>
 
             <!--      Admin            -->
             <!-- شكاوي العملاء -->
-            <a href="complaints.html" class="nav-item">
+            <a href="#" class="nav-item">
                 <i class="fa-solid fa-circle-exclamation"></i>
                 <span>شكاوي العملاء</span>
             </a>
 
             <!-- الشركات -->
-            <a href="companies.html" class="nav-item">
+            <a href="#" class="nav-item">
                 <i class="fa-solid fa-building"></i>
                 <span>الشركات</span>
             </a>
@@ -484,6 +508,9 @@
 
             <!-- LEFT ACTIONS (in RTL) -->
             <div class="header-actions">
+
+                <!-- Notification dropdown -->
+
 
                 <!-- Profile dropdown -->
                 <div class="profile-wrap">
@@ -634,6 +661,8 @@
 
     // Prevent closing when clicking inside menu
     profileMenu.addEventListener("click", (e) => e.stopPropagation());
+
+
 
     // (اختياري) تأكيد تسجيل الخروج
     const logoutLink = document.getElementById("logoutLink");

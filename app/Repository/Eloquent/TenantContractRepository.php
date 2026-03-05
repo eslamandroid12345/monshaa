@@ -96,9 +96,12 @@ class TenantContractRepository extends Repository implements TenantContractRepos
 
         $query = $this->model::query();
 
+        $query->when(request()->filled('date_from'), function ($q) {
+            $q->where('contract_date', '>=', request()->input('date_from'));
+        });
 
-        $query->when(request()->has('date_from') && request()->has('date_to') && request('date_from') != null&& request('date_to') != null, function ($q) {
-            $q->whereBetween('contract_date', [request()->input('date_from'), request()->input('date_to')]);
+        $query->when(request()->filled('date_to'), function ($q) {
+            $q->where('contract_date', '<=', request()->input('date_to'));
         });
 
 

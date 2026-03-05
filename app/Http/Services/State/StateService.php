@@ -9,6 +9,7 @@ use App\Http\Traits\FirebaseNotification;
 use App\Http\Traits\Responser;
 use App\Repository\StateImageRepositoryInterface;
 use App\Repository\StateRepositoryInterface;
+use App\Repository\UserRepositoryInterface;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Gate;
@@ -20,17 +21,20 @@ abstract class StateService
     protected FileManagerService $fileManagerService;
     protected GetService $getService;
     protected StateImageRepositoryInterface $stateImageRepository;
+    protected UserRepositoryInterface $userRepository;
 
     public function __construct(
         StateRepositoryInterface $stateRepository,
         FileManagerService $fileManagerService,
         GetService $getService,
-        StateImageRepositoryInterface $stateImageRepository
+        StateImageRepositoryInterface $stateImageRepository,
+        UserRepositoryInterface $userRepository
     ) {
         $this->stateRepository = $stateRepository;
         $this->fileManagerService = $fileManagerService;
         $this->getService = $getService;
         $this->stateImageRepository = $stateImageRepository;
+        $this->userRepository = $userRepository;
     }
 
     public function getAllStates()

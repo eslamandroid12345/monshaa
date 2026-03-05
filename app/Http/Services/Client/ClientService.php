@@ -11,31 +11,35 @@ use App\Http\Traits\FirebaseNotification;
 use App\Http\Traits\Responser;
 use App\Repository\ClientRepositoryInterface;
 use App\Repository\EmployeeRepositoryInterface;
+use App\Repository\UserRepositoryInterface;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 
-class ClientService
+abstract class ClientService
 {
     use Responser,FirebaseNotification;
-    private ClientRepositoryInterface $clientRepository;
-    private GetService $getService;
-    private EmployeeRepositoryInterface $employeeRepository;
+    protected ClientRepositoryInterface $clientRepository;
+    protected GetService $getService;
+    protected EmployeeRepositoryInterface $employeeRepository;
+    protected UserRepositoryInterface $userRepository;
 
     public function __construct(
        ClientRepositoryInterface $clientRepository,
        GetService $getService,
-       EmployeeRepositoryInterface $employeeRepository
+       EmployeeRepositoryInterface $employeeRepository,
+       UserRepositoryInterface $userRepository
     )
     {
         $this->clientRepository = $clientRepository;
         $this->getService = $getService;
         $this->employeeRepository = $employeeRepository;
+        $this->userRepository = $userRepository;
     }
 
-    public function getAllClients(): JsonResponse{
+    public function getAllClients(){
 
         try {
             return $this->getService->handle(resource: ClientResource::class,repository: $this->clientRepository,method: 'getAllClients',message: 'تم الحصول على بيانات جميع العملاء بنجاح');
@@ -47,7 +51,7 @@ class ClientService
     }
 
 
-    public function getAllEmployees(): JsonResponse{
+    public function getAllEmployees(){
 
         try {
             return $this->getService->handle(resource: ListEmployeeResource::class,repository: $this->employeeRepository,method: 'getAllEmployees',message: 'تم الحصول على بيانات جميع موظفين الشركه بنجاح',dataType: 'get');
@@ -59,7 +63,7 @@ class ClientService
         }
     }
 
-    public function create(ClientRequest $request): JsonResponse{
+    public function create(ClientRequest $request){
 
         try {
             $inputs = $request->validated();
@@ -77,7 +81,7 @@ class ClientService
         }
     }
 
-    public function update($id,ClientRequest $request): JsonResponse{
+    public function update($id,ClientRequest $request){
 
         DB::beginTransaction();
         try {
@@ -101,7 +105,7 @@ class ClientService
         }
     }
 
-    public function show($id): JsonResponse{
+    public function show($id){
 
     $client = $this->clientRepository->getById($id);
     Gate::authorize('check-company-auth',$client);
@@ -109,7 +113,7 @@ class ClientService
     return $this->getService->handle(resource: ClientShowResource::class,repository: $this->clientRepository, method: 'getById',parameters: [$id], is_instance: true, message: 'تم الحصول على بيانات العميل بنجاح');
     }
 
-    public function delete($id): JsonResponse{
+    public function delete($id){
 
         try {
 

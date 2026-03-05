@@ -23,21 +23,25 @@ class ClientRepository  extends Repository implements ClientRepositoryInterface
 
         $query = $this->model::query();
 
-        $query->when(request()->has('phone') && request('phone') != null, function ($q)  {
+        $query->when(request()->filled('phone'), function ($q)  {
             $q->where('phone', '=',request()->input('phone'));
         });
 
 
-        $query->when(request()->has('status') && request('status') != null, function ($q)  {
+        $query->when(request()->filled('status'), function ($q)  {
             $q->where('status', '=',request()->input('status'));
         });
 
-        $query->when(request()->has('user_id') && request('user_id') != null, function ($q)  {
+        $query->when(request()->filled('user_id'), function ($q)  {
             $q->where('user_id', '=',request()->input('user_id'));
         });
 
+        $query->when(request()->filled('code'), function ($q)  {
+            $q->where('code', '=',request()->input('code'));
+        });
 
-        $query->when(request()->has('inspection_date') && request('inspection_date') != null, function ($q)  {
+
+        $query->when(request()->filled('inspection_date'), function ($q)  {
             $q->whereDate('inspection_date', '=',request()->input('inspection_date'));
         });
 
@@ -46,7 +50,7 @@ class ClientRepository  extends Repository implements ClientRepositoryInterface
             ->select(['*'])
             ->with(['user','company'])
             ->where('company_id','=',companyId())
-            ->paginate(16);
+            ->paginate(50);
 
     }
 

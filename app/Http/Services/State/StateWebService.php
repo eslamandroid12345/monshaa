@@ -15,7 +15,9 @@ class StateWebService extends StateService
         try {
             $states = $this->stateRepository->getAllStatusQuery();
 
-            return view('admin.states.index', compact('states'));
+            $employees = $this->userRepository->usersSelect();
+
+            return view('admin.states.index', compact('states','employees'));
         }  catch (AuthorizationException $exception){
             toastr()->error('غير مصرح لك للدخول لذلك الصفحه');
         } catch (\Exception $e) {

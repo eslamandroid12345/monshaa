@@ -21,4 +21,12 @@ class UserRepository extends Repository implements UserRepositoryInterface
             ->where('company_id','=',$companyId)
             ->get();
     }
+
+    public function usersSelect(){
+
+        return $this->model::query()
+            ->select('id','name','company_id')
+            ->where('company_id','=',companyId())
+            ->get();
+    }
 }

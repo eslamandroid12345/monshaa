@@ -10,33 +10,36 @@ use App\Http\Traits\FirebaseNotification;
 use App\Http\Traits\Responser;
 use App\Repository\LandImageRepositoryInterface;
 use App\Repository\LandRepositoryInterface;
+use App\Repository\UserRepositoryInterface;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Gate;
 
-class LandService
+abstract class LandService
 {
 
     use Responser,FirebaseNotification;
-    private LandRepositoryInterface $landRepository;
-    private FileManagerService $fileManagerService;
-    private GetService $getService;
-    private LandImageRepositoryInterface $landImageRepository;
+    protected LandRepositoryInterface $landRepository;
+    protected FileManagerService $fileManagerService;
+    protected GetService $getService;
+    protected LandImageRepositoryInterface $landImageRepository;
+    protected UserRepositoryInterface $userRepository;
 
     public function __construct(
         LandRepositoryInterface $landRepository,
         FileManagerService $fileManagerService,
         GetService $getService,
-        LandImageRepositoryInterface $landImageRepository
+        LandImageRepositoryInterface $landImageRepository,
+        UserRepositoryInterface $userRepository
     ) {
         $this->landRepository = $landRepository;
         $this->fileManagerService = $fileManagerService;
         $this->getService = $getService;
         $this->landImageRepository = $landImageRepository;
+        $this->userRepository = $userRepository;
     }
 
-    public function getAllLands(): JsonResponse
+    public function getAllLands()
     {
         try {
             return $this->getService->handle(resource: LandResource::class,repository: $this->landRepository,method: 'getAllLandsQuery',message:'تم الحصول على بيانات جميع الاراضي بنجاح' );
@@ -47,7 +50,7 @@ class LandService
         }
     }
 
-    public function create(LandRequest $request): JsonResponse
+    public function create(LandRequest $request)
     {
         try {
             $inputs = $request->validated();
@@ -96,7 +99,7 @@ class LandService
         }
     }
 
-    public function update($id,LandRequest $request): JsonResponse
+    public function update($id,LandRequest $request)
     {
         try {
 
@@ -118,7 +121,7 @@ class LandService
         }
     }
 
-    public function show($id): JsonResponse
+    public function show($id)
     {
         try {
 
@@ -133,7 +136,7 @@ class LandService
         }
     }
 
-    public function changeStatus($id): JsonResponse
+    public function changeStatus($id)
     {
         try {
             $land = $this->landRepository->getById($id);
@@ -151,7 +154,7 @@ class LandService
         }
     }
 
-    public function delete($id): JsonResponse
+    public function delete($id)
     {
         try {
             $land = $this->landRepository->getById($id);

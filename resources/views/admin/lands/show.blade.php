@@ -140,7 +140,7 @@
 <body>
 
 <div class="app-topbar">
-    <div class="title">بيانات العقار</div>
+    <div class="title">بيانات الارض</div>
 
     <!-- زر PDF -->
     <button id="btnPdf" class="btn btn-danger btn-sm">
@@ -149,7 +149,7 @@
     </button>
 
     <button class="icon-btn" type="button" title="رجوع"
-            onclick="window.location.href='{{ route('states.index') }}'">
+            onclick="window.location.href='{{ route('lands.index') }}'">
         <i class="fa-solid fa-arrow-left"></i>
     </button>
 </div>
@@ -159,7 +159,7 @@
 
         <!-- Gallery -->
         <div class="gallery">
-            @foreach($state->stateImages as $image)
+            @foreach($land->landImages as $image)
                 <img src="{{ $image }}" crossorigin="anonymous" />
             @endforeach
         </div>
@@ -170,87 +170,64 @@
 
             <div class="detail-item">
                 <span class="detail-label">كود الاعلان</span>
-                <span class="detail-value">{{$state->id}}</span>
+                <span class="detail-value">{{$land->id}}</span>
+            </div>
+
+
+            <div class="detail-item">
+                <span class="detail-label">العنوان</span>
+                <span class="detail-value">{{$land->address}}</span>
             </div>
 
             <div class="detail-item">
-                <span class="detail-label">اسم المجمع السكني - الكمبوند</span>
-                <span class="detail-value">{{$state->compound_name ?? 'لا يوجد'}}</span>
+                <span class="detail-label">عنوان الارض بالتفصيل (الحي او الشارع)</span>
+                <span class="detail-value">{{$land->address_details}}</span>
             </div>
 
             <div class="detail-item">
-                <span class="detail-label">نوع العقار</span>
-                <span class="detail-value">{{$state->real_state_type_label}}</span>
+                <span class="detail-label">تفاصيل الاعلان</span>
+                <span class="detail-value">{{$land->advertise_details}}</span>
             </div>
 
             <div class="detail-item">
-                <span class="detail-label">القسم</span>
-                <span class="detail-value">{{$state->department == 'rent' ? 'ايجار' : 'بيع'}}</span>
+                <span class="detail-label">المساحه</span>
+                <span class="detail-value">{{$land->size_in_metres}} م²</span>
+            </div>
+
+
+            <div class="detail-item">
+                <span class="detail-label">سعر المتر</span>
+                <span class="detail-value">{{$land->price_of_one_meter}}</span>
             </div>
 
             <div class="detail-item">
-                <span class="detail-label">عنوان العقار</span>
-                <span class="detail-value">{{$state->real_state_address}}</span>
-            </div>
-
-            <div class="detail-item">
-                <span class="detail-label">عنوان العقار بالتفصيل</span>
-                <span class="detail-value">{{$state->real_state_address_details}}</span>
-            </div>
-
-            <div class="detail-item">
-                <span class="detail-label">مساحه العقار</span>
-                <span class="detail-value">{{$state->real_state_space}} م²</span>
-            </div>
-
-            <div class="detail-item">
-                <span class="detail-label">عدد الغرف</span>
-                <span class="detail-value">{{$state->number_of_rooms}} غرف</span>
-            </div>
-
-            <div class="detail-item">
-                <span class="detail-label">عدد الحمامات</span>
-                <span class="detail-value">{{$state->number_of_bathrooms}}</span>
-            </div>
-
-            <div class="detail-item">
-                <span class="detail-label">رقم الشقه</span>
-                <span class="detail-value">{{$state->apartment_number}}</span>
-            </div>
-
-            <div class="detail-item">
-                <span class="detail-label">رقم العماره</span>
-                <span class="detail-value">{{$state->building_number ?? 'لا يوجد'}}</span>
-            </div>
-
-            <div class="detail-item">
-                <span class="detail-label">السعر</span>
-                <span class="detail-value">{{$state->real_state_price ?? 'لا يوجد'}}</span>
+                <span class="detail-label">اجمالي التكلفه</span>
+                <span class="detail-value">{{$land->total_cost}}</span>
             </div>
 
             <div class="detail-item hide-in-pdf">
                 <span class="detail-label">نوع المعلن</span>
-                <span class="detail-value">{{$state->advertiser_type == 'real_state_owner' ? 'صاحب عقار' : 'شركه عقارات'}}</span>
+                <span class="detail-value">{{$land->advertiser_type == 'real_state_owner' ? 'صاحب عقار' : 'شركه عقارات'}}</span>
             </div>
 
             <div class="detail-item hide-in-pdf">
                 <span class="detail-label">اسم المالك او الوسيط</span>
-                <span class="detail-value">{{$state->advertiser_name}}</span>
+                <span class="detail-value">{{$land->seller_name}}</span>
             </div>
 
             <div class="detail-item hide-in-pdf">
                 <span class="detail-label">رقم هاتف المالك او الوسيط</span>
-                <span class="detail-value">{{$state->advertised_phone_number}}</span>
+                <span class="detail-value">{{$land->seller_phone_number}}</span>
             </div>
 
             <div class="detail-item hide-in-pdf">
                 <span class="detail-label">اسم الموظف</span>
-                <span class="detail-value">{{$state?->user->name}}</span>
+                <span class="detail-value">{{$land?->user->name}}</span>
             </div>
 
             <div class="detail-item hide-in-pdf">
                 <span class="detail-label">التاريخ</span>
-                <span class="detail-value">{{$state->state_date_register}}</span>
+                <span class="detail-value">{{$land->land_date_register}}</span>
             </div>
         </div>
 
@@ -366,7 +343,7 @@
         }
 
         btn.style.display = "";
-        pdf.save(`state-{{$state->id}}.pdf`);
+        pdf.save(`land-{{$land->id}}.pdf`);
     });
 </script>
 

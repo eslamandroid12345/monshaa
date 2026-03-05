@@ -68,4 +68,21 @@ class TenantContract extends Model
             }
         );
     }
+
+    public function realStateTypeLabel() : Attribute {
+        return Attribute::get(
+            get: function () {
+                return match ($this->real_state_type) {
+                    'furnished_apartment' => 'شقة مفروشة',
+                    'empty_apartment'     => 'شقة فارغة',
+                    'furnished_villa'     => 'فيلا مفروشة',
+                    'empty_villa'         => 'فيلا فارغة',
+                    'shop'                => 'محل',
+                    'empty_office'        => 'مكتب فارغ',
+                    'furnished_office'    => 'مكتب مفروش',
+                    default               => 'غير محدد',
+                };
+            }
+        );
+    }
 }
