@@ -104,14 +104,12 @@ class TenantContractRepository extends Repository implements TenantContractRepos
             $q->where('contract_date', '<=', request()->input('date_to'));
         });
 
-
         return $query
             ->latest()
             ->select(['*'])
             ->with(['user','company'])
             ->where('company_id','=',companyId())
-            ->paginate(16);
-
+            ->paginate(50);
 
     }
 

@@ -140,6 +140,10 @@
 <body>
 
 <div class="app-topbar">
+    <button class="icon-btn" type="button" title="رجوع"
+            onclick="window.location.href='{{ route('states.index') }}'">
+        <i class="fa-solid fa-arrow-right"></i>
+    </button>
     <div class="title">بيانات العقار</div>
 
     <!-- زر PDF -->
@@ -148,10 +152,6 @@
         PDF
     </button>
 
-    <button class="icon-btn" type="button" title="رجوع"
-            onclick="window.location.href='{{ route('states.index') }}'">
-        <i class="fa-solid fa-arrow-left"></i>
-    </button>
 </div>
 
 <div id="pdfArea">

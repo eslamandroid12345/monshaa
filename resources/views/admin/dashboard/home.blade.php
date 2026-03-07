@@ -380,66 +380,57 @@
             </div>
         </div>
 
-        <nav class="sidebar-nav">
-            <a href="{{route('states.index')}}" class="nav-item">
-                <i class="fa-solid fa-city"></i>
-                <span>العقارات</span>
-            </a>
 
+        <nav class="sidebar-nav">
+
+            @if(auth()->user()->is_admin == 1 || in_array('states', json_decode(auth()->user()->employee_permissions, true) ?? []))
+                <a href="{{route('states.index')}}" class="nav-item">
+                    <i class="fa-solid fa-city"></i>
+                    <span>العقارات</span>
+                </a>
+            @endif
+
+
+            @if(auth()->user()->is_admin == 1 || in_array('lands', json_decode(auth()->user()->employee_permissions, true) ?? []))
             <a href="{{route('lands.index')}}" class="nav-item">
                 <i class="fa-solid fa-map-location-dot"></i>
                 <span>الأراضي</span>
             </a>
+                @endif
 
-            <a href="{{route('clients.index')}}" class="nav-item">
+                @if(auth()->user()->is_admin == 1 || in_array('clients', json_decode(auth()->user()->employee_permissions, true) ?? []))
+
+                <a href="{{route('clients.index')}}" class="nav-item">
                 <i class="fa-solid fa-users"></i>
                 <span>العملاء</span>
             </a>
+                @endif
 
-            <a href="#" class="nav-item">
+
+            @if(auth()->user()->is_admin == 1 || in_array('tenants', json_decode(auth()->user()->employee_permissions, true) ?? []))
+
+                <a href="#" class="nav-item">
                 <i class="fa-solid fa-house-user"></i>
                 <span>المستأجرين</span>
             </a>
+                @endif
 
-            <a href="#" class="nav-item">
+                @if(auth()->user()->is_admin == 1 || in_array('tenant_contracts', json_decode(auth()->user()->employee_permissions, true) ?? []))
+
+                <a href="#" class="nav-item">
                 <i class="fa-solid fa-file-signature"></i>
                 <span>عقود الإيجار</span>
             </a>
+                @endif
 
-            <a href="#" class="nav-item">
+                @if(auth()->user()->is_admin == 1 || in_array('expired_contracts', json_decode(auth()->user()->employee_permissions, true) ?? []))
+
+                <a href="#" class="nav-item">
                 <i class="fa-solid fa-file-circle-xmark"></i>
                 <span>العقود المنتهية</span>
             </a>
+                @endif
 
-            <a href="#" class="nav-item">
-                <i class="fa-solid fa-receipt"></i>
-                <span>سندات القبض</span>
-            </a>
-
-            <a href="#" class="nav-item">
-                <i class="fa-solid fa-money-bill-transfer"></i>
-                <span>سندات الصرف</span>
-            </a>
-
-            <a href="#" class="nav-item">
-                <i class="fa-solid fa-wallet"></i>
-                <span>الإيرادات</span>
-            </a>
-
-            <a href="#" class="nav-item">
-                <i class="fa-solid fa-sack-dollar"></i>
-                <span>المصروفات</span>
-            </a>
-
-            <a href="#" class="nav-item">
-                <i class="fa-solid fa-people-group"></i>
-                <span>الموظفين</span>
-            </a>
-
-            <a href="#" class="nav-item">
-                <i class="fa-solid fa-percent"></i>
-                <span>عمولة الموظفين</span>
-            </a>
 
             <!-- الإشعارات -->
             <a href="#" class="nav-item nav-notif">
@@ -450,21 +441,70 @@
                 <span class="nav-badge" id="sideNotifCount">3</span>
             </a>
 
+                @if(auth()->user()->is_admin == 1 || in_array('financial_cash', json_decode(auth()->user()->employee_permissions, true) ?? []))
 
-            <a href="{{route('admin.reports.index')}}" class="nav-item">
+                <a href="#" class="nav-item">
+                <i class="fa-solid fa-receipt"></i>
+                <span>سندات القبض</span>
+            </a>
+                @endif
+
+                @if(auth()->user()->is_admin == 1 || in_array('financial_receipt', json_decode(auth()->user()->employee_permissions, true) ?? []))
+
+                <a href="#" class="nav-item">
+                <i class="fa-solid fa-money-bill-transfer"></i>
+                <span>سندات الصرف</span>
+            </a>
+                @endif
+
+
+            @if(auth()->user()->is_admin == 1 || in_array('revenues', json_decode(auth()->user()->employee_permissions, true) ?? []))
+
+                <a href="{{route('admin.revenues.index')}}" class="nav-item">
+                    <i class="fa-solid fa-coins"></i>
+                <span>الإيرادات</span>
+            </a>
+                @endif
+
+                @if(auth()->user()->is_admin == 1 || in_array('expenses', json_decode(auth()->user()->employee_permissions, true) ?? []))
+
+                <a href="{{route('admin.expenses.index')}}" class="nav-item">
+                <i class="fa-solid fa-sack-dollar"></i>
+                <span>المصروفات</span>
+            </a>
+                @endif
+
+                @if(auth()->user()->is_admin == 1 || in_array('employees', json_decode(auth()->user()->employee_permissions, true) ?? []))
+
+                <a href="{{route('admin.employees.index')}}" class="nav-item">
+                <i class="fa-solid fa-people-group"></i>
+                <span>الموظفين</span>
+            </a>
+                @endif
+
+                @if(auth()->user()->is_admin == 1 || in_array('employee_commission', json_decode(auth()->user()->employee_permissions, true) ?? []))
+
+                <a href="#" class="nav-item">
+                <i class="fa-solid fa-percent"></i>
+                <span>عمولة الموظفين</span>
+            </a>
+                @endif
+
+                <a href="{{route('admin.reports.index')}}" class="nav-item">
                 <i class="fa-solid fa-chart-column"></i>
                 <span>التقارير</span>
-            </a>
+               </a>
 
 
             <!-- طلبات العملاء -->
-            <a href="#" class="nav-item nav-notif">
-                <i class="fa-solid fa-clipboard-list"></i>
-                <span>طلبات العملاء</span>
+{{--            <a href="#" class="nav-item nav-notif">--}}
+{{--                <i class="fa-solid fa-clipboard-list"></i>--}}
+{{--                <span>طلبات العملاء</span>--}}
 
-                <!-- الترقيم -->
-                <span class="nav-badge" id="sideNotifCount">جديد</span>
-            </a>
+{{--                <!-- الترقيم -->--}}
+{{--                <span class="nav-badge" id="sideNotifCount">جديد</span>--}}
+{{--            </a>--}}
+
 
 
             <a href="#" class="nav-item">
@@ -514,9 +554,10 @@
 
                 <!-- Profile dropdown -->
                 <div class="profile-wrap">
-                    <button class="icon-btn" id="profileBtn" type="button" aria-label="profile menu" title="الحساب">
-                        <i class="fa-regular fa-circle-user"></i>
-                    </button>
+
+                    <div class="user-avatar" id="profileBtn"  aria-label="profile menu">
+                        <img style="cursor: pointer" src="{{ asset(auth()->user()->employee_image) }}">
+                    </div>
 
                     <div class="profile-menu" id="profileMenu">
                         <div class="profile-head">
@@ -573,65 +614,91 @@
         <!-- HOME CARDS -->
         <section class="home-grid">
 
+        @if(auth()->user()->is_admin == 1 || in_array('tenants', json_decode(auth()->user()->employee_permissions, true) ?? []))
+
             <a href="#" class="home-card">
                 <div class="home-card-icon"><i class="fa-solid fa-house"></i></div>
                 <div class="home-card-title">المستأجرين</div>
                 <div class="home-card-value">{{auth()->user()->company?->tenants_count}}</div>
             </a>
+            @endif
+
+            @if(auth()->user()->is_admin == 1 || in_array('lands', json_decode(auth()->user()->employee_permissions, true) ?? []))
 
             <a href="#" class="home-card">
                 <div class="home-card-icon"><i class="fa-solid fa-map-location-dot"></i></div>
                 <div class="home-card-title">الأراضي</div>
                 <div class="home-card-value">{{auth()->user()->company?->lands_count}}</div>
             </a>
+            @endif
 
+            @if(auth()->user()->is_admin == 1 || in_array('clients', json_decode(auth()->user()->employee_permissions, true) ?? []))
             <a href="#" class="home-card">
                 <div class="home-card-icon"><i class="fa-solid fa-users"></i></div>
                 <div class="home-card-title">العملاء</div>
                 <div class="home-card-value">{{auth()->user()->company?->clients_count}}</div>
             </a>
+            @endif
 
+            @if(auth()->user()->is_admin == 1 || in_array('states', json_decode(auth()->user()->employee_permissions, true) ?? []))
             <a href="#" class="home-card">
                 <div class="home-card-icon"><i class="fa-solid fa-house-circle-check"></i></div>
                 <div class="home-card-title">عقارات الإيجار</div>
                 <div class="home-card-value">{{auth()->user()->company?->tenant_states_count}}</div>
             </a>
+            @endif
 
+            @if(auth()->user()->is_admin == 1 || in_array('states', json_decode(auth()->user()->employee_permissions, true) ?? []))
             <a href="#" class="home-card">
-                <div class="home-card-icon"><i class="fa-solid fa-building"></i></div>
+                <div class="home-card-icon"> <i class="fa-solid fa-city"></i></div>
                 <div class="home-card-title">عقارات البيع</div>
                 <div class="home-card-value">{{auth()->user()->company?->selling_states_count}}</div>
             </a>
+            @endif
+
+            @if(auth()->user()->is_admin == 1 || in_array('profits', json_decode(auth()->user()->employee_permissions, true) ?? []))
 
             <a href="#" class="home-card">
                 <div class="home-card-icon"><i class="fa-solid fa-sack-dollar"></i></div>
                 <div class="home-card-title">الأرباح</div>
                 <div class="home-card-value">{{auth()->user()->company?->profitsCount}}</div>
             </a>
+            @endif
 
+
+            @if(auth()->user()->is_admin == 1 || in_array('expenses', json_decode(auth()->user()->employee_permissions, true) ?? []))
             <a href="#" class="home-card">
                 <div class="home-card-icon"><i class="fa-solid fa-hand-holding-dollar"></i></div>
                 <div class="home-card-title">المصروفات</div>
                 <div class="home-card-value">{{auth()->user()->company?->expenses_count}}</div>
             </a>
+            @endif
 
+
+            @if(auth()->user()->is_admin == 1 || in_array('revenue', json_decode(auth()->user()->employee_permissions, true) ?? []))
             <a href="#" class="home-card">
-                <div class="home-card-icon"><i class="fa-solid fa-wallet"></i></div>
+                <div class="home-card-icon"><i class="fa-solid fa-coins"></i></div>
                 <div class="home-card-title">الإيرادات</div>
                 <div class="home-card-value">{{auth()->user()->company?->revenues_count}}</div>
             </a>
+            @endif
+
+            @if(auth()->user()->is_admin == 1 || in_array('employees', json_decode(auth()->user()->employee_permissions, true) ?? []))
 
             <a href="#" class="home-card">
                 <div class="home-card-icon"><i class="fa-solid fa-people-group"></i></div>
                 <div class="home-card-title">الموظفين</div>
                 <div class="home-card-value">{{auth()->user()->company?->employees_count}}</div>
             </a>
+            @endif
 
+            @if(auth()->user()->is_admin == 1 || in_array('tenant_contracts', json_decode(auth()->user()->employee_permissions, true) ?? []))
             <a href="#" class="home-card">
                 <div class="home-card-icon"><i class="fa-solid fa-file-signature"></i></div>
                 <div class="home-card-title">عقود الإيجار</div>
                 <div class="home-card-value">{{auth()->user()->company?->tenant_contracts_count}}</div>
             </a>
+            @endif
 
         </section>
     </main>

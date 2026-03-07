@@ -41,3 +41,4 @@ if(!function_exists('messagesCount')){
             ->count();
     }
 }
+

@@ -1,6 +1,6 @@
 <div class="p-4">
     <div class="panel-head">
-        <div class="icon"><i class="fa-solid fa-building"></i></div>
+        <div class="icon"> <i class="fa-solid fa-city"></i></div>
         <p class="panel-title">تعديل بيانات العقار</p>
     </div>
 

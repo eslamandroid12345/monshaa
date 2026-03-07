@@ -14,19 +14,18 @@ use App\Repository\CompanyRepositoryInterface;
 use App\Repository\EmployeeRepositoryInterface;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Hash;
 
-class EmployeeService
+abstract class EmployeeService
 {
 
     use Responser,FirebaseNotification;
-    private  EmployeeRepositoryInterface $employeeRepository;
-    private  FileManagerService $fileManagerService;
-    private  GetService $getService;
-    private  CompanyRepositoryInterface $companyRepository;
+    protected  EmployeeRepositoryInterface $employeeRepository;
+    protected  FileManagerService $fileManagerService;
+    protected  GetService $getService;
+    protected  CompanyRepositoryInterface $companyRepository;
     public function __construct(
       EmployeeRepositoryInterface $employeeRepository,
       FileManagerService $fileManagerService,
@@ -41,12 +40,12 @@ class EmployeeService
     }
 
 
-    public function getAllEmployees(): JsonResponse
+    public function getAllEmployees()
     {
         return $this->getService->handle(resource: EmployeeGetDataResource::class,repository: $this->employeeRepository,method: 'listOfCompanyEmployees',message:'تم جلب جميع الموظفين التابعه للشركه العقاريه بنجاح',dataType: 'get');
     }
 
-    public function create(StoreEmployeeRequest $request): JsonResponse
+    public function create(StoreEmployeeRequest $request)
     {
         try {
             $inputs = $request->validated();
@@ -78,7 +77,6 @@ class EmployeeService
 
                 $mergedPermissions = array_unique(array_merge($defaultPermissionsAssignToEmployee, $employeePermissions));
                 $inputs['employee_permissions'] = json_encode($mergedPermissions);
-
                 $inputs['password_show'] = $inputs['password'];
                 $inputs['password'] = Hash::make($inputs['password']);
                 $employee = $this->employeeRepository->create($inputs);
@@ -93,7 +91,7 @@ class EmployeeService
     }
 
 
-    public function update($id,UpdateEmployeeRequest $request): JsonResponse
+    public function update($id,UpdateEmployeeRequest $request)
     {
         try {
           $employee = $this->employeeRepository->getByIdWithCondition($id,'is_admin',0);
@@ -105,7 +103,6 @@ class EmployeeService
                 $inputs['employee_image'] = $image;
             }
 
-
             $defaultPermissionsAssignToEmployee = ['home_page', 'setting', 'reports', 'notifications'];
 
             $employeePermissions = is_string($inputs['employee_permissions'])
@@ -115,8 +112,11 @@ class EmployeeService
             $mergedPermissions = array_unique(array_merge($defaultPermissionsAssignToEmployee, $employeePermissions));
 
             $inputs['employee_permissions'] = json_encode($mergedPermissions);
-            $inputs['password_show'] = $inputs['password'];
-            $inputs['password'] = Hash::make($inputs['password']);
+            if(!empty($inputs['password'])){
+                $inputs['password_show'] = $inputs['password'];
+                $inputs['password'] = Hash::make($inputs['password']);
+            }
+
             $inputs['is_active'] = $request->is_active ?? $employee->is_active;
 
           $this->employeeRepository->update($employee->id,$inputs);
@@ -132,7 +132,7 @@ class EmployeeService
         }
     }
 
-    public function delete($id): JsonResponse
+    public function delete($id)
     {
 
      try {
@@ -148,7 +148,7 @@ class EmployeeService
     }
     }
 
-    public function active($id,ActiveEmployeeRequest $request): JsonResponse
+    public function active($id,ActiveEmployeeRequest $request)
     {
         DB::beginTransaction();
         try {
@@ -171,7 +171,7 @@ class EmployeeService
         }
     }
 
-    public function show($id): JsonResponse
+    public function show($id)
     {
         try {
             $employee = $this->employeeRepository->getByIdWithCondition($id,'is_admin',0);

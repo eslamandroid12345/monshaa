@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>تقارير عقود الايجار</title>
+    <title>تقارير الارباح</title>
 
     <!-- Bootstrap RTL -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
@@ -196,14 +196,14 @@
             onclick="window.location.href='{{ route('admin.reports.index') }}'">
         <i class="fa-solid fa-arrow-right"></i>
     </button>
+    <div class="title">الارباح</div>
 
-    <div class="title">عقود الايجار</div>
 
     <button class="icon-btn" type="button" title="بحث" id="searchBtn">
         <i class="fa-solid fa-magnifying-glass"></i>
     </button>
 
-    <button class="icon-btn" type="button" title="تحديث" onclick="window.location.href='{{ route('admin.reports.contracts') }}'">
+    <button class="icon-btn" type="button" title="تحديث" onclick="window.location.href='{{ route('admin.reports.profits') }}'">
         <i class="fa-solid fa-rotate-right"></i>
     </button>
 </div>
@@ -213,47 +213,24 @@
     <table class="report-table">
         <thead>
         <tr>
-            <th style="width: 260px;">اسم الموظف</th>
-            <th style="width: 260px;">نوع العقار</th>
-            <th style="width: 260px;">اسم المستاجر</th>
-            <th style="width: 260px;">رقم هاتف المستاجر</th>
-            <th style="width: 260px;">اسم المالك</th>
-            <th style="width: 260px;">رقم هاتف المالك</th>
-            <th style="width: 260px;">عنوان العقار</th>
-            <th style="width: 260px;">عنوان العقار تفصيلي</th>
-            <th style="width: 260px;">تاريخ تسجيل العقد</th>
-            <th style="width: 260px;">الايجار من</th>
-            <th style="width: 260px;">الايجار الي</th>
-            <th style="width: 260px;">قيمه الايجار</th>
-            <th style="width: 260px;">قيمه التامين</th>
+            <th style="width: 260px;">اجمالي الايرادات</th>
+            <th style="width: 260px;">اجمالي المصروفات</th>
+            <th style="width: 260px;">اجمالي الارباح</th>
+            <th style="width: 260px;">التاريخ</th>
         </tr>
         </thead>
 
         <tbody>
-
-        @foreach($contracts as $contract)
-            <tr data-id="{{ $contract->id}}" style="cursor:pointer;">
-                <td class="c-id">{{$contract->user?->name}}</td>
-                <td class="c-id">{{$contract->real_state_type_label}}</td>
-                <td class="c-id">{{$contract->tenant?->name}}</td>
-                <td class="c-id">{{$contract->tenant?->phone}}</td>
-                <td class="c-id">{{$contract->owner_name}}</td>
-                <td class="c-id">{{$contract->owner_phone}}</td>
-                <td class="c-id">{{$contract->real_state_address}}</td>
-                <td class="c-id">{{$contract->real_state_address_details}}</td>
-                <td class="c-id">{{$contract->contract_date}}</td>
-                <td class="c-id">{{$contract->contract_date_from}}</td>
-                <td class="c-id">{{$contract->contract_date_to}}</td>
-                <td class="c-id">{{$contract->contract_total}}</td>
-                <td class="c-id">{{$contract->insurance_total}}</td>
+            <tr data-id="#" style="cursor:pointer;">
+                <td class="c-id">{{ $profits['total_revenue']}}</td>
+                <td class="c-id">{{$profits['total_expense']}}</td>
+                <td class="c-id">{{$profits['total_profits']}}</td>
+                <td class="c-id">{{$profits['date']}}</td>
             </tr>
-        @endforeach
+
         </tbody>
     </table>
 
-    <div class="card-footer">
-        <div>{{ $contracts->appends(request()->query())->links() }}</div>
-    </div>
 </div>
 
 
@@ -264,24 +241,34 @@
                 <div class="panel-modal">
                     <div class="panel-head">
                         <div class="icon"><i class="fa-solid fa-magnifying-glass"></i></div>
-                        <p class="panel-title">بحث عقود الايجار</p>
+                        <p class="panel-title">بحث الارباح</p>
                     </div>
 
 
-                    <form action="{{route('admin.reports.contracts')}}" method="GET" autocomplete="off">
+                    <form action="{{route('admin.reports.profits')}}" method="GET" autocomplete="off">
 
                         <div class="mb-2">
-                            <label class="form-label">التاريخ من</label>
-                            <input name="date_from"
-                                   class="form-control"
-                                   type="date">
+                            <label class="form-label">الشهر</label>
+                            <select name="month" class="form-control">
+                                <option value="">اختر الشهر</option>
+                                <option value="1">يناير</option>
+                                <option value="2">فبراير</option>
+                                <option value="3">مارس</option>
+                                <option value="4">ابريل</option>
+                                <option value="5">مايو</option>
+                                <option value="6">يونيو</option>
+                                <option value="7">يوليو</option>
+                                <option value="8">اغسطس</option>
+                                <option value="9">سبتمبر</option>
+                                <option value="10">اكتوبر</option>
+                                <option value="11">نوفمبر</option>
+                                <option value="12">ديسمبر</option>
+                            </select>
                         </div>
 
                         <div class="mb-2">
-                            <label class="form-label">التاريخ الي</label>
-                            <input name="date_to"
-                                   class="form-control"
-                                   type="date">
+                            <label class="form-label">السنة</label>
+                            <input name="year" class="form-control" type="number" value="{{date('Y')}}" min="0">
                         </div>
 
 
@@ -319,7 +306,7 @@
 <script>
     const searchModal = new bootstrap.Modal(document.getElementById("searchModal"));
     document.getElementById("searchBtn").addEventListener("click", () => {
-        const searchForm = document.querySelector('#searchModal form[action="{{ route('admin.reports.contracts') }}"]');
+        const searchForm = document.querySelector('#searchModal form[action="{{ route('admin.reports.profits') }}"]');
         if (searchModal) searchForm.reset();
         searchModal.show();
     });
@@ -337,7 +324,7 @@
     }
 
     document
-        .querySelectorAll('form[action="{{ route('admin.reports.contracts') }}"]')
+        .querySelectorAll('form[action="{{ route('admin.reports.profits') }}"]')
         .forEach((form) => {
             form.addEventListener('submit', function () {
                 const btn = form.querySelector('.js-submit-loader');

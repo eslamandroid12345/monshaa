@@ -41,6 +41,10 @@ class EmployeeRepository extends Repository implements EmployeeRepositoryInterfa
             $q->where('card_number', '=',request()->input('card_number'));
         });
 
+        $query->when(request()->has('user_id') && request('user_id') != null, function ($q)  {
+            $q->where('id', '=',request()->input('user_id'));
+        });
+
         return $query
         ->latest()
             ->with(['company'])

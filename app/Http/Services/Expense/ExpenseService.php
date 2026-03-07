@@ -15,11 +15,11 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Gate;
 
-class ExpenseService
+abstract class ExpenseService
 {
     use Responser,FirebaseNotification;
-    private ExpenseRepositoryInterface $expenseRepository;
-    private GetService $getService;
+    protected ExpenseRepositoryInterface $expenseRepository;
+    protected GetService $getService;
 
     public function __construct(
         ExpenseRepositoryInterface $expenseRepository,
@@ -29,7 +29,7 @@ class ExpenseService
         $this->getService = $getService;
     }
 
-    public function getAllExpenses(): JsonResponse{
+    public function getAllExpenses(){
 
         try {
             $data = $this->expenseRepository->getAllExpenses();
@@ -41,7 +41,7 @@ class ExpenseService
         }
     }
 
-    public function getAllRevenues(): JsonResponse
+    public function getAllRevenues()
     {
         try {
             $data = $this->expenseRepository->getAllRevenues();
@@ -53,7 +53,7 @@ class ExpenseService
         }
     }
 
-    public function create(StoreExpenseRequest $request): JsonResponse
+    public function create(StoreExpenseRequest $request)
     {
         try {
             $inputs = $request->validated();
@@ -74,7 +74,7 @@ class ExpenseService
         }
     }
 
-    public function update($id, UpdateExpenseRequest $request): JsonResponse{
+    public function update($id, UpdateExpenseRequest $request){
 
         try {
             $expense = $this->expenseRepository->getById($id);
@@ -100,7 +100,7 @@ class ExpenseService
     }
 
 
-    public function show($id): JsonResponse{
+    public function show($id){
 
         try {
             $expense = $this->expenseRepository->getById($id);
@@ -116,7 +116,7 @@ class ExpenseService
         }
     }
 
-    public function delete($id): JsonResponse{
+    public function delete($id){
 
         try {
             $expense = $this->expenseRepository->getById($id);

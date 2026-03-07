@@ -191,19 +191,20 @@
 <body>
 
 <div class="app-topbar">
+
+    <button class="icon-btn" type="button" title="رجوع"
+            onclick="window.location.href='{{ route('admin.reports.index') }}'">
+        <i class="fa-solid fa-arrow-right"></i>
+    </button>
+    <div class="title">الاراضي</div>
+
+
     <button class="icon-btn" type="button" title="بحث" id="searchBtn">
         <i class="fa-solid fa-magnifying-glass"></i>
     </button>
 
     <button class="icon-btn" type="button" title="تحديث" onclick="window.location.href='{{ route('admin.reports.lands') }}'">
         <i class="fa-solid fa-rotate-right"></i>
-    </button>
-
-    <div class="title">الاراضي</div>
-
-    <button class="icon-btn" type="button" title="رجوع"
-            onclick="window.location.href='{{ route('admin.reports.index') }}'">
-        <i class="fa-solid fa-arrow-left"></i>
     </button>
 </div>
 

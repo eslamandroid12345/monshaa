@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>بيانات العقار</title>
+    <title>بيانات الارض</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -140,6 +140,10 @@
 <body>
 
 <div class="app-topbar">
+    <button class="icon-btn" type="button" title="رجوع"
+            onclick="window.location.href='{{ route('lands.index') }}'">
+        <i class="fa-solid fa-arrow-right"></i>
+    </button>
     <div class="title">بيانات الارض</div>
 
     <!-- زر PDF -->
@@ -148,10 +152,6 @@
         PDF
     </button>
 
-    <button class="icon-btn" type="button" title="رجوع"
-            onclick="window.location.href='{{ route('lands.index') }}'">
-        <i class="fa-solid fa-arrow-left"></i>
-    </button>
 </div>
 
 <div id="pdfArea">
@@ -159,6 +159,7 @@
 
         <!-- Gallery -->
         <div class="gallery">
+
             @foreach($land->landImages as $image)
                 <img src="{{ $image }}" crossorigin="anonymous" />
             @endforeach
@@ -186,7 +187,7 @@
 
             <div class="detail-item">
                 <span class="detail-label">تفاصيل الاعلان</span>
-                <span class="detail-value">{{$land->advertise_details}}</span>
+                <span class="detail-value">{{$land->advertise_details ?? 'لا يوجد'}}</span>
             </div>
 
             <div class="detail-item">

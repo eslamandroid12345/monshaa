@@ -11,9 +11,7 @@ interface ExpenseRepositoryInterface extends RepositoryInterface
     public function getAllRevenues();
     public function getCurrentRevenuesTotal();
     public function getCurrentExpensesTotal();
-
     public function revenuesReports(): LengthAwarePaginator;
-
     public function expensesReports(): LengthAwarePaginator;
     public function profits();
 

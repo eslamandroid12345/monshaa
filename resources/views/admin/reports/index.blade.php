@@ -108,15 +108,14 @@
 
 <!-- Top bar -->
 <div class="app-topbar">
-    <button class="icon-btn" type="button" title="تحديث" onclick="window.location.href='{{ route('admin.reports.index') }}'">
-        <i class="fa-solid fa-rotate-right"></i>
-    </button>
-
-    <div class="title">التقارير</div>
 
     <button class="icon-btn" type="button" title="رجوع"
             onclick="window.location.href='{{ route('admin.dashboard') }}'">
-        <i class="fa-solid fa-arrow-left"></i>
+        <i class="fa-solid fa-arrow-right"></i>
+    </button>
+    <div class="title">التقارير</div>
+    <button class="icon-btn" type="button" title="تحديث" onclick="window.location.href='{{ route('admin.reports.index') }}'">
+        <i class="fa-solid fa-rotate-right"></i>
     </button>
 </div>
 
@@ -131,9 +130,9 @@
         <button class="report-btn" type="button" onclick="location.href='{{route('admin.reports.states')}}'">العقارات</button>
         <button class="report-btn" type="button" onclick="location.href='{{route('admin.reports.lands')}}'">الأراضي</button>
         <button class="report-btn" type="button" onclick="location.href='{{route('admin.reports.contracts')}}'">عقود الإيجار</button>
-        <button class="report-btn" type="button" onclick="location.href='#'">الإيرادات</button>
-        <button class="report-btn" type="button" onclick="location.href='#'">المصروفات</button>
-        <button class="report-btn" type="button" onclick="location.href='#'">الارباح</button>
+        <button class="report-btn" type="button" onclick="location.href='{{route('admin.reports.revenues')}}'">الإيرادات</button>
+        <button class="report-btn" type="button" onclick="location.href='{{route('admin.reports.expenses')}}'">المصروفات</button>
+        <button class="report-btn" type="button" onclick="location.href='{{route('admin.reports.profits')}}'">الارباح</button>
 
     </div>
 </div>

@@ -5,7 +5,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Expense\StoreExpenseRequest;
 use App\Http\Requests\Expense\UpdateExpenseRequest;
 use App\Http\Services\Expense\ExpenseService;
-use Illuminate\Http\JsonResponse;
+use App\Models\Expense;
 
 class ExpenseController extends Controller
 {
@@ -19,12 +19,12 @@ class ExpenseController extends Controller
     }
 
 
-    public function getAllRevenues(): JsonResponse
+    public function getAllRevenues()
     {
         return  $this->expenseService->getAllRevenues();
     }
 
-    public function getAllExpenses(): JsonResponse{
+    public function getAllExpenses(){
         return  $this->expenseService->getAllExpenses();
     }
 
@@ -33,17 +33,31 @@ class ExpenseController extends Controller
         return  $this->expenseService->create($request);
     }
 
-    public function update($id, UpdateExpenseRequest $request): JsonResponse{
+    public function update($id, UpdateExpenseRequest $request){
 
         return  $this->expenseService->update($id,$request);
     }
 
-    public function show($id): JsonResponse{
+    public function show($id){
 
         return  $this->expenseService->show($id);
     }
 
-    public function delete($id): JsonResponse{
+    public function editRevenue($id){
+        if (request()->ajax()) {
+            $revenue = Expense::query()->findOrFail($id);
+            return view('admin.revenues.edit',compact('revenue'));
+        }
+    }
+
+    public function editExpense($id){
+        if (request()->ajax()) {
+            $revenue = Expense::query()->findOrFail($id);
+            return view('admin.expenses.edit',compact('revenue'));
+        }
+    }
+
+    public function delete($id){
 
         return  $this->expenseService->delete($id);
 

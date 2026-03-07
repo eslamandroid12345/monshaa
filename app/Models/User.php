@@ -63,7 +63,7 @@ class User extends Authenticatable implements JWTSubject
                 if ($value !== null) {
                     return url($value);
                 }
-                return null;
+                return url('logo/capimage.png');
             }
         );
     }

@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>الاراضي</title>
+    <title>الموظفين</title>
 
     <!-- Bootstrap RTL -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
@@ -296,6 +296,137 @@
             to { opacity: 1; transform: scale(1); }
         }
 
+
+        /* ===== Permissions Dropdown ===== */
+        .perm-wrap {
+            position: relative;
+        }
+
+        .perm-trigger {
+            width: 100%;
+            border: 1px solid var(--input-border);
+            border-radius: 2px;
+            padding: 10px 12px;
+            background: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .perm-trigger .placeholder {
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        .perm-trigger i {
+            color: var(--muted);
+        }
+
+        .perm-panel {
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: calc(100% + 6px);
+            background: #f2f4f7;
+            border: 1px solid #d7dee6;
+            box-shadow: 0 10px 28px rgba(0, 0, 0, .12);
+            max-height: 360px;
+            overflow: auto;
+            z-index: 50;
+            display: none;
+            padding-bottom: 10px;
+        }
+
+        .perm-panel.open { display: block; }
+
+        .perm-item {
+            display: grid;
+            grid-template-columns: 1fr 24px;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 12px;
+            border-bottom: 1px solid #e1e6eb;
+            background: transparent;
+            font-weight: 600;
+            font-size: 13px;
+            color: #2c3e50;
+            cursor: pointer;
+        }
+
+        .perm-item:last-child { border-bottom: 0; }
+
+        .perm-item input {
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+        }
+
+        .perm-footer {
+            position: sticky;
+            bottom: 0;
+            background: #f2f4f7;
+            padding: 10px 12px;
+            border-top: 1px solid #e1e6eb;
+            display: flex;
+            gap: 8px;
+        }
+
+        .perm-btn {
+            border: 0;
+            border-radius: 4px;
+            padding: 10px 12px;
+            font-weight: 700;
+            font-size: 13px;
+            cursor: pointer;
+            flex: 1;
+        }
+
+        .perm-btn.done {
+            background: var(--btn);
+            color: #fff;
+        }
+
+        .perm-btn.done:hover { background: var(--btn-hover); }
+
+        .perm-btn.clear {
+            background: #fff;
+            border: 1px solid #cfd6dd;
+            color: #3f5564;
+        }
+
+        .perm-btn.clear:hover { background: #f8fafc; }
+
+        .btn-save {
+            background: var(--btn);
+            border: 0;
+            color: #fff;
+            width: 100%;
+            padding: 12px 14px;
+            border-radius: 4px;
+            font-weight: 700;
+            margin-top: 12px;
+            transition: .2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .btn-save:hover { background: var(--btn-hover); }
+
+        /* ===== Responsive ===== */
+        @media (max-width: 1100px) {
+            body { overflow: auto; }
+            .app {
+                height: auto;
+                grid-template-columns: 1fr;
+                grid-template-areas: "table";
+            }
+            .panel { display: none; }
+        }
+
     </style>
 </head>
 
@@ -308,15 +439,17 @@
         <i class="fa-solid fa-arrow-right"></i>
     </button>
 
-    <div class="title">الاراضي</div>
+    <div class="title">الموظفين</div>
+
 
     <button class="icon-btn" type="button" title="بحث" id="searchBtn">
         <i class="fa-solid fa-magnifying-glass"></i>
     </button>
 
-    <button class="icon-btn" type="button" title="تحديث" onclick="window.location.href='{{ route('lands.index') }}'">
+    <button class="icon-btn" type="button" title="تحديث" onclick="window.location.href='{{ route('admin.employees.index') }}'">
         <i class="fa-solid fa-rotate-right"></i>
     </button>
+
 </div>
 
 <div class="app">
@@ -326,30 +459,36 @@
         <table class="props" id="propsTable">
             <thead>
             <tr>
-                <th style="width: 260px;">العنوان</th>
-                <th style="width: 160px;">سعر المتر</th>
-                <th style="width: 160px;">المساحه</th>
-                <th style="width: 160px;">التكلفه</th>
-                <th style="width: 200px;">نوع المعلن</th>
+                <th style="width: 100px;">كود الموظف</th>
+                <th style="width: 100px;">اسم الموظف</th>
+                <th style="width: 100px;">العنوان</th>
+                <th style="width: 100px;">الوظيفه</th>
+                <th style="width: 100px;">رقم الهاتف</th>
+                <th style="width: 100px;">رقم البطاقه</th>
                 <th class="t-action">تعديل</th>
                 <th class="t-action">حذف</th>
             </tr>
             </thead>
 
             <tbody>
-            @foreach($lands as $land)
-             <tr data-id="{{ $land->id}}" style="cursor:pointer;">
-                 <td class="c-id" onclick="window.location='{{ route('lands.show', $land->id) }}'">{{$land->address}}</td>
-                 <td class="c-id" onclick="window.location='{{ route('lands.show', $land->id) }}'">{{$land->price_of_one_meter}}</td>
-                 <td class="c-id" onclick="window.location='{{ route('lands.show', $land->id) }}'">{{$land->size_in_metres}}</td>
-                 <td class="c-id" onclick="window.location='{{ route('lands.show', $land->id) }}'">{{$land->total_cost}}</td>
-                 <td class="c-advertiser-type" onclick="window.location='{{ route('lands.show', $land->id) }}'">{{$land->advertiser_type == 'real_state_owner' ? 'صاحب عقار' : 'شركه عقارات'}}</td>
+            @foreach($employees as $employee)
+             <tr data-id="{{ $employee->id}}" style="cursor:pointer;">
+                <td class="c-real-state-address">{{$employee->id}}</td>
+                <td class="c-real-state-address">{{$employee->name}}</td>
+                <td class="c-real-state-price">{{$employee->employee_address}}</td>
+                <td class="c-real-state-price">{{$employee->job_title}}</td>
+                <td class="c-real-state-price">{{$employee->phone}}</td>
+                <td class="c-real-state-price">{{$employee->card_number}}</td>
+
                 <td class="t-action">
-                    <a style="color: #3f5564" href="{{route('lands.edit',$land->id)}}" class="js-edit"><i class="fa-solid fa-pen-to-square"></i></a>
+                    <a style="color: #3f5564" href="{{route('admin.employees.edit',$employee->id)}}" class="js-edit"><i class="fa-solid fa-pen-to-square"></i></a>
                 </td>
-                <td class="t-action">
-                    <i class="fa-solid fa-trash text-danger js-delete"></i>
-                </td>
+
+                 <td class="t-action">
+                     <i class="fa-solid fa-trash text-danger js-delete"></i>
+                 </td>
+
+
                 </tr>
             @endforeach
 
@@ -357,157 +496,189 @@
 
         </table>
 
-        <div class="card-footer">
-            <div>{{ $lands->appends(request()->query())->links() }}</div>
-        </div>
     </div>
 
     <!-- Right panel (Desktop Add) -->
     <div class="panel">
         <div class="panel-head">
-            <div class="icon"><i class="fa-solid fa-map-location-dot"></i></div>
-            <p class="panel-title">تسجيل الاراضي</p>
+            <div class="icon"><i class="fa-solid fa-people-group"></i></div>
+            <p class="panel-title">تسجيل الموظفين</p>
         </div>
 
 
-        <form action="{{route('lands.create')}}" method="POST" enctype="multipart/form-data" autocomplete="off">
+        <form action="{{route('admin.employees.create')}}" method="POST" enctype="multipart/form-data" autocomplete="off">
             @csrf
             @method('POST')
 
             <div class="mb-2">
-                <label class="form-label">العنوان (المدينه)</label>
-                <input name="address"
-                       class="form-control @error('address') is-invalid @enderror"
+                <label class="form-label">اسم الموظف</label>
+                <input name="name"
+                       class="form-control @error('name') is-invalid @enderror"
                        type="text">
-                @error('address')
+                @error('name')
                 <div class="invalid-feedback d-block">{{ $message }}</div>
                 @enderror
             </div>
 
-
             <div class="mb-2">
-                <label class="form-label">عنوان الارض بالتفصيل (الحي او الشارع)</label>
-                <input name="address_details"
-                       class="form-control @error('address_details') is-invalid @enderror"
+                <label class="form-label">المسمي الوظيفي</label>
+                <input name="job_title"
+                       class="form-control @error('job_title') is-invalid @enderror"
                        type="text">
-                @error('address_details')
+                @error('job_title')
                 <div class="invalid-feedback d-block">{{ $message }}</div>
                 @enderror
             </div>
 
-
             <div class="mb-2">
-                <label class="form-label">اسم المالك / الوسيط</label>
-                <input name="seller_name"
-                       class="form-control @error('seller_name') is-invalid @enderror"
+                <label class="form-label">العنوان</label>
+                <input name="employee_address"
+                       class="form-control @error('employee_address') is-invalid @enderror"
                        type="text">
-                @error('seller_name')
+                @error('employee_address')
                 <div class="invalid-feedback d-block">{{ $message }}</div>
                 @enderror
             </div>
 
             <div class="mb-2">
-                <label class="form-label">رقم هاتف المالك / الوسيط</label>
-                <input name="seller_phone_number"
-                       class="form-control @error('seller_phone_number') is-invalid @enderror"
+                <label class="form-label">رقم البطاقه</label>
+                <input name="card_number"
+                       class="form-control @error('card_number') is-invalid @enderror"
                        type="text">
-                @error('seller_phone_number')
+                @error('card_number')
                 <div class="invalid-feedback d-block">{{ $message }}</div>
                 @enderror
             </div>
 
 
             <div class="mb-2">
-                <label class="form-label">المساحة</label>
-                <input id="size_in_metres"
-                       name="size_in_metres"
-                       class="form-control @error('size_in_metres') is-invalid @enderror"
-                       type="number"
-                       min="1">
-
-                @error('size_in_metres')
+                <label class="form-label">رقم الهاتف</label>
+                <input name="phone"
+                       class="form-control @error('phone') is-invalid @enderror"
+                       type="text">
+                @error('phone')
                 <div class="invalid-feedback d-block">{{ $message }}</div>
                 @enderror
             </div>
 
 
             <div class="mb-2">
-                <label class="form-label">سعر المتر</label>
-                <input id="price_of_one_meter"
-                       name="price_of_one_meter"
-                       class="form-control @error('price_of_one_meter') is-invalid @enderror"
-                       type="number"
-                       min="1">
-
-                @error('price_of_one_meter')
-                <div class="invalid-feedback d-block">{{ $message }}</div>
-                @enderror
-            </div>
-
-            <div class="mb-2">
-                <label class="form-label">اجمالي التكلفه</label>
-                <input id="total_cost"
-                       name="total_cost"
-                       class="form-control @error('total_cost') is-invalid @enderror"
-                       type="number"
-                       readonly>
-                @error('total_cost')
-                <div class="invalid-feedback d-block">{{ $message }}</div>
-                @enderror
-            </div>
-
-            <div class="mb-2">
-                <label class="form-label">نوع المعلن</label>
-                <select name="advertiser_type" class="form-select @error('advertiser_type') is-invalid @enderror">
-                    <option disabled>نوع المعلن</option>
-                    <option value="real_state_owner">صاحب عقار</option>
-                    <option value="real_state_company">شركه عقارات</option>
-                </select>
-                @error('advertiser_type')
+                <label class="form-label">كلمه السر</label>
+                <input name="password"
+                       class="form-control @error('password') is-invalid @enderror"
+                       type="text">
+                @error('password')
                 <div class="invalid-feedback d-block">{{ $message }}</div>
                 @enderror
             </div>
 
 
             <div class="mb-2">
-                <label class="form-label">تفاصيل الارض (اختياري)</label>
-                <textarea name="advertise_details"
-                          class="form-control @error('advertise_details') is-invalid @enderror"
-                          rows="5"></textarea>
-                @error('advertise_details')
-                <div class="invalid-feedback d-block">{{ $message }}</div>
-                @enderror
-            </div>
-
-            <div class="mb-2">
-                <label class="form-label">التاريخ</label>
-                <input name="land_date_register"
-                       class="form-control @error('land_date_register') is-invalid @enderror"
-                       type="date">
-                @error('land_date_register')
-                <div class="invalid-feedback d-block">{{ $message }}</div>
-                @enderror
-            </div>
-
-            <div class="mb-2">
-                <label class="form-label">صور الارض (اختياري)</label>
+                <label class="form-label">صوره الموظف (اختياري)</label>
                 <input type="file"
-                       name="land_images[]"
-                       class="form-control @error('land_images') is-invalid @enderror @error('land_images.*') is-invalid @enderror"
-                       multiple>
-                {{-- لو عملت validation على real_state_images أو real_state_images.* --}}
-                @error('land_images')
-                <div class="invalid-feedback d-block">{{ $message }}</div>
-                @enderror
-                @error('land_images.*')
+                       name="employee_image"
+                       class="form-control @error('employee_image') is-invalid @enderror">
+                @error('employee_image')
                 <div class="invalid-feedback d-block">{{ $message }}</div>
                 @enderror
             </div>
+
+            <div class="mb-2 perm-wrap">
+                <label class="form-label">الصلاحيات</label>
+
+                    <label class="perm-item">
+                        <span>العقارات</span>
+                        <input type="checkbox" name="employee_permissions[]" value="states">
+                    </label>
+
+                    <label class="perm-item">
+                        <span>الاراضي</span>
+                        <input type="checkbox" name="employee_permissions[]" value="lands">
+                    </label>
+
+                    <label class="perm-item">
+                        <span>المستأجرين</span>
+                        <input type="checkbox" name="employee_permissions[]" value="tenants">
+                    </label>
+
+                    <label class="perm-item">
+                        <span>عقود الايجار</span>
+                        <input type="checkbox" name="employee_permissions[]" value="tenant_contracts">
+                    </label>
+
+                    <label class="perm-item">
+                        <span>سندات القبض</span>
+                        <input type="checkbox" name="employee_permissions[]" value="financial_cash">
+                    </label>
+
+                    <label class="perm-item">
+                        <span>سندات الصرف</span>
+                        <input type="checkbox" name="employee_permissions[]" value="financial_receipt">
+                    </label>
+
+                    <label class="perm-item">
+                        <span>المصروفات</span>
+                        <input type="checkbox" name="employee_permissions[]" value="expenses">
+                    </label>
+
+                    <label class="perm-item">
+                        <span>الموظفين</span>
+                        <input type="checkbox" name="employee_permissions[]" value="employees">
+                    </label>
+
+                    <label class="perm-item">
+                        <span>الدعم الفني</span>
+                        <input type="checkbox" name="employee_permissions[]" value="technical_support">
+                    </label>
+
+                    <label class="perm-item">
+                        <span>الإيرادات</span>
+                        <input type="checkbox" name="employee_permissions[]" value="revenues">
+                    </label>
+
+                    <label class="perm-item">
+                        <span>العملاء</span>
+                        <input type="checkbox" name="employee_permissions[]" value="clients">
+                    </label>
+
+                    <label class="perm-item">
+                        <span>عمولة الموظفين</span>
+                        <input type="checkbox" name="employee_permissions[]" value="employee_commission">
+                    </label>
+
+                    <label class="perm-item">
+                        <span>العقود المنتهيه</span>
+                        <input type="checkbox" name="employee_permissions[]" value="expired_contracts">
+                    </label>
+
+                    <label class="perm-item">
+                        <span>الارباح</span>
+                        <input type="checkbox" name="employee_permissions[]" value="profits">
+                    </label>
+
+                    <label class="perm-item">
+                        <span>اخفاء ارقام العملاء</span>
+                        <input type="checkbox" name="employee_permissions[]" value="client_phone_hidden">
+                    </label>
+
+                    <label class="perm-item">
+                        <span>اخفاء ارقام الملاك</span>
+                        <input type="checkbox" name="employee_permissions[]" value="owner_phone_hidden">
+                    </label>
+
+                @error('employee_permissions')
+                <div class="invalid-feedback d-block">{{ $message }}</div>
+                @enderror
+                @error('employee_permissions.*')
+                <div class="invalid-feedback d-block">{{ $message }}</div>
+                @enderror
+            </div>
+
 
             <button class="btn-save js-submit-loader" type="submit">
         <span class="btn-text">
             <i class="fa-solid fa-left-long"></i>
-            تسجيل البيانات
+           تسجيل البيانات
         </span>
 
                 <span class="btn-spinner d-none">
@@ -515,7 +686,8 @@
             جاري الحفظ...
         </span>
             </button>
-        </form>    </div>
+        </form>
+    </div>
 
 </div>
 
@@ -533,66 +705,36 @@
                 <div class="panel-modal">
                     <div class="panel-head">
                         <div class="icon"><i class="fa-solid fa-magnifying-glass"></i></div>
-                        <p class="panel-title">بحث الاراضي</p>
+                        <p class="panel-title">بحث الموظفين</p>
                     </div>
 
 
-                    <form action="{{route('lands.index')}}" method="GET" autocomplete="off">
+                    <form action="{{ route('admin.employees.index') }}" method="GET" autocomplete="off">
+
 
                         <div class="mb-2">
-                            <label class="form-label">العنوان</label>
-                            <input name="address"
+                            <label class="form-label">اسم الموظف</label>
+                            <select name="user_id" class="form-select">
+                                <option value="" selected disabled>اسم الموظف</option>
+                                @foreach($employees as $employee)
+                                    <option value="{{$employee->id}}">{{$employee->name}}</option>
+                                @endforeach
+
+                            </select>
+                        </div>
+                        <div class="mb-2">
+                            <label class="form-label">رقم الهاتف</label>
+                            <input name="phone"
                                    class="form-control"
                                    type="text">
                         </div>
 
-
                         <div class="mb-2">
-                        <label class="form-label">اسم الموظف</label>
-                        <select name="user_id" class="form-select">
-                            <option value="" selected disabled>اسم الموظف</option>
-                            @foreach($employees as $employee)
-                                <option value="{{$employee->id}}">{{$employee->name}}</option>
-
-                            @endforeach
-
-                        </select>
-                    </div>
-
-
-                    <div class="mb-2">
-                        <label class="form-label">سعر المتر من</label>
-                        <input name="lowest_price" class="form-control" type="number" placeholder="" min="0">
-                    </div>
-
-                    <div class="mb-2">
-                        <label class="form-label">سعر المتر الي</label>
-                        <input name="highest_price" class="form-control" type="number" placeholder="" min="0">
-                    </div>
-
-                    <div class="mb-2">
-                        <label class="form-label">اقل مساحة</label>
-                        <input name="lowest_space" class="form-control" type="number" placeholder="" min="0">
-                    </div>
-
-                    <div class="mb-2">
-                        <label class="form-label">اعلى مساحة</label>
-                        <input name="highest_space" class="form-control" type="number" placeholder="" min="0">
-                    </div>
-
-                        <div class="mb-2">
-                            <label class="form-label">نوع المعلن</label>
-                            <select name="advertiser_type" class="form-select">
-                                <option disabled {{ old('advertiser_type') ? '' : 'selected' }}>نوع المعلن</option>
-                                <option value="real_state_owner" {{ old('advertiser_type') == 'real_state_owner' ? 'selected' : '' }}>صاحب عقار</option>
-                                <option value="real_state_company" {{ old('advertiser_type') == 'real_state_company' ? 'selected' : '' }}>شركه عقارات</option>
-                            </select>
+                            <label class="form-label">رقم البطاقه</label>
+                            <input name="card_number"
+                                   class="form-control"
+                                   type="text">
                         </div>
-
-                    <div class="mb-2">
-                        <label class="form-label">كود الإعلان</label>
-                        <input name="code" class="form-control" type="text" placeholder="">
-                    </div>
 
 
                     <button class="btn-save js-submit-loader" type="submit">
@@ -629,150 +771,185 @@
             <div class="modal-body p-0">
                 <div class="panel-modal">
                     <div class="panel-head">
-                        <div class="icon"><i class="fa-solid fa-map-location-dot"></i></div>
-                        <p class="panel-title">تسجيل الاراضي</p>
+                        <div class="icon"><i class="fa-solid fa-people-group"></i></div>
+                        <p class="panel-title">تسجيل الموظفين</p>
                     </div>
 
 
-                    <form action="{{route('lands.create')}}" method="POST" enctype="multipart/form-data" autocomplete="off">
+                    <form action="{{route('admin.employees.create')}}" method="POST" enctype="multipart/form-data" autocomplete="off">
                         @csrf
                         @method('POST')
 
                         <div class="mb-2">
-                            <label class="form-label">العنوان (المدينه)</label>
-                            <input name="address"
-                                   class="form-control @error('address') is-invalid @enderror"
+                            <label class="form-label">اسم الموظف</label>
+                            <input name="name"
+                                   class="form-control @error('name') is-invalid @enderror"
                                    type="text">
-                            @error('address')
+                            @error('name')
                             <div class="invalid-feedback d-block">{{ $message }}</div>
                             @enderror
                         </div>
 
-
                         <div class="mb-2">
-                            <label class="form-label">عنوان الارض بالتفصيل (الحي او الشارع)</label>
-                            <input name="address_details"
-                                   class="form-control @error('address_details') is-invalid @enderror"
+                            <label class="form-label">المسمي الوظيفي</label>
+                            <input name="job_title"
+                                   class="form-control @error('job_title') is-invalid @enderror"
                                    type="text">
-                            @error('address_details')
+                            @error('job_title')
                             <div class="invalid-feedback d-block">{{ $message }}</div>
                             @enderror
                         </div>
 
-
                         <div class="mb-2">
-                            <label class="form-label">اسم المالك / الوسيط</label>
-                            <input name="seller_name"
-                                   class="form-control @error('seller_name') is-invalid @enderror"
+                            <label class="form-label">العنوان</label>
+                            <input name="employee_address"
+                                   class="form-control @error('employee_address') is-invalid @enderror"
                                    type="text">
-                            @error('seller_name')
+                            @error('employee_address')
                             <div class="invalid-feedback d-block">{{ $message }}</div>
                             @enderror
                         </div>
 
                         <div class="mb-2">
-                            <label class="form-label">رقم هاتف المالك / الوسيط</label>
-                            <input name="seller_phone_number"
-                                   class="form-control @error('seller_phone_number') is-invalid @enderror"
+                            <label class="form-label">رقم البطاقه</label>
+                            <input name="card_number"
+                                   class="form-control @error('card_number') is-invalid @enderror"
                                    type="text">
-                            @error('seller_phone_number')
+                            @error('card_number')
                             <div class="invalid-feedback d-block">{{ $message }}</div>
                             @enderror
                         </div>
 
 
                         <div class="mb-2">
-                            <label class="form-label">المساحة</label>
-                            <input id="size_in_metres"
-                                   name="size_in_metres"
-                                   class="form-control @error('size_in_metres') is-invalid @enderror"
-                                   type="number"
-                                   min="1">
-
-                            @error('size_in_metres')
+                            <label class="form-label">رقم الهاتف</label>
+                            <input name="phone"
+                                   class="form-control @error('phone') is-invalid @enderror"
+                                   type="text">
+                            @error('phone')
                             <div class="invalid-feedback d-block">{{ $message }}</div>
                             @enderror
                         </div>
 
 
                         <div class="mb-2">
-                            <label class="form-label">سعر المتر</label>
-                            <input id="price_of_one_meter"
-                                   name="price_of_one_meter"
-                                   class="form-control @error('price_of_one_meter') is-invalid @enderror"
-                                   type="number"
-                                   min="1">
-
-                            @error('price_of_one_meter')
-                            <div class="invalid-feedback d-block">{{ $message }}</div>
-                            @enderror
-                        </div>
-
-                        <div class="mb-2">
-                            <label class="form-label">اجمالي التكلفه</label>
-                            <input id="total_cost"
-                                   name="total_cost"
-                                   class="form-control @error('total_cost') is-invalid @enderror"
-                                   type="number"
-                                   readonly>
-                            @error('total_cost')
+                            <label class="form-label">كلمه السر</label>
+                            <input name="password"
+                                   class="form-control @error('password') is-invalid @enderror"
+                                   type="text">
+                            @error('password')
                             <div class="invalid-feedback d-block">{{ $message }}</div>
                             @enderror
                         </div>
 
 
                         <div class="mb-2">
-                            <label class="form-label">نوع المعلن</label>
-                            <select name="advertiser_type" class="form-select @error('advertiser_type') is-invalid @enderror">
-                                <option disabled>نوع المعلن</option>
-                                <option value="real_state_owner">صاحب عقار</option>
-                                <option value="real_state_company">شركه عقارات</option>
-                            </select>
-                            @error('advertiser_type')
-                            <div class="invalid-feedback d-block">{{ $message }}</div>
-                            @enderror
-                        </div>
-
-
-                        <div class="mb-2">
-                            <label class="form-label">تفاصيل الارض (غير مطلوب.)</label>
-                            <textarea name="advertise_details"
-                                      class="form-control @error('advertise_details') is-invalid @enderror"
-                                      rows="5"></textarea>
-                            @error('advertise_details')
-                            <div class="invalid-feedback d-block">{{ $message }}</div>
-                            @enderror
-                        </div>
-
-                        <div class="mb-2">
-                            <label class="form-label">التاريخ</label>
-                            <input name="land_date_register"
-                                   class="form-control @error('land_date_register') is-invalid @enderror"
-                                   type="date">
-                            @error('land_date_register')
-                            <div class="invalid-feedback d-block">{{ $message }}</div>
-                            @enderror
-                        </div>
-
-                        <div class="mb-2">
-                            <label class="form-label">صور الارض (اختياري)</label>
+                            <label class="form-label">صوره الموظف (اختياري)</label>
                             <input type="file"
-                                   name="land_images[]"
-                                   class="form-control @error('land_images') is-invalid @enderror @error('land_images.*') is-invalid @enderror"
-                                   multiple>
-                            {{-- لو عملت validation على real_state_images أو real_state_images.* --}}
-                            @error('land_images')
-                            <div class="invalid-feedback d-block">{{ $message }}</div>
-                            @enderror
-                            @error('land_images.*')
+                                   name="employee_image"
+                                   class="form-control @error('employee_image') is-invalid @enderror">
+                            @error('employee_image')
                             <div class="invalid-feedback d-block">{{ $message }}</div>
                             @enderror
                         </div>
+
+                        <div class="mb-2 perm-wrap">
+                            <label class="form-label">الصلاحيات</label>
+
+                             <label class="perm-item">
+                                    <span>العقارات</span>
+                                    <input type="checkbox" name="employee_permissions[]" value="states">
+                                </label>
+
+                                <label class="perm-item">
+                                    <span>الاراضي</span>
+                                    <input type="checkbox" name="employee_permissions[]" value="lands">
+                                </label>
+
+                                <label class="perm-item">
+                                    <span>المستأجرين</span>
+                                    <input type="checkbox" name="employee_permissions[]" value="tenants">
+                                </label>
+
+                                <label class="perm-item">
+                                    <span>عقود الايجار</span>
+                                    <input type="checkbox" name="employee_permissions[]" value="tenant_contracts">
+                                </label>
+
+                                <label class="perm-item">
+                                    <span>سندات القبض</span>
+                                    <input type="checkbox" name="employee_permissions[]" value="financial_cash">
+                                </label>
+
+                                <label class="perm-item">
+                                    <span>سندات الصرف</span>
+                                    <input type="checkbox" name="employee_permissions[]" value="financial_receipt">
+                                </label>
+
+                                <label class="perm-item">
+                                    <span>المصروفات</span>
+                                    <input type="checkbox" name="employee_permissions[]" value="expenses">
+                                </label>
+
+                                <label class="perm-item">
+                                    <span>الموظفين</span>
+                                    <input type="checkbox" name="employee_permissions[]" value="employees">
+                                </label>
+
+                                <label class="perm-item">
+                                    <span>الدعم الفني</span>
+                                    <input type="checkbox" name="employee_permissions[]" value="technical_support">
+                                </label>
+
+                                <label class="perm-item">
+                                    <span>الإيرادات</span>
+                                    <input type="checkbox" name="employee_permissions[]" value="revenues">
+                                </label>
+
+
+                                <label class="perm-item">
+                                    <span>العملاء</span>
+                                    <input type="checkbox" name="employee_permissions[]" value="clients">
+                                </label>
+
+                                <label class="perm-item">
+                                    <span>عمولة الموظفين</span>
+                                    <input type="checkbox" name="employee_permissions[]" value="employee_commission">
+                                </label>
+
+                                <label class="perm-item">
+                                    <span>العقود المنتهيه</span>
+                                    <input type="checkbox" name="employee_permissions[]" value="expired_contracts">
+                                </label>
+
+                                <label class="perm-item">
+                                    <span>الارباح</span>
+                                    <input type="checkbox" name="employee_permissions[]" value="profits">
+                                </label>
+
+                                <label class="perm-item">
+                                    <span>اخفاء ارقام العملاء</span>
+                                    <input type="checkbox" name="employee_permissions[]" value="client_phone_hidden">
+                                </label>
+
+                                <label class="perm-item">
+                                    <span>اخفاء ارقام الملاك</span>
+                                    <input type="checkbox" name="employee_permissions[]" value="owner_phone_hidden">
+                                </label>
+
+                            @error('employee_permissions')
+                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                            @enderror
+                            @error('employee_permissions.*')
+                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                            @enderror
+                        </div>
+
 
                         <button class="btn-save js-submit-loader" type="submit">
         <span class="btn-text">
             <i class="fa-solid fa-left-long"></i>
-            تسجيل البيانات
+           تسجيل البيانات
         </span>
 
                             <span class="btn-spinner d-none">
@@ -780,7 +957,8 @@
             جاري الحفظ...
         </span>
                         </button>
-                    </form>    </div>
+                    </form>
+
                 </div>
 
 
@@ -805,7 +983,7 @@
                 <div id="editModalLoader" class="edit-loader">
                     <div class="loader-box">
                         <div class="spinner-border text-primary"></div>
-                        <div class="loader-text">جاري تحميل بيانات الارض...</div>
+                        <div class="loader-text">جاري تحميل بيانات الموظف...</div>
                     </div>
                 </div>
                 <!-- Content -->
@@ -830,7 +1008,7 @@
                 </div>
 
                 <p class="mb-3" style="color:#64748b;font-size:13px;">
-                    هل أنت متأكد أنك تريد حذف بيان هذه الارض ؟ لا يمكن التراجع عن هذا الإجراء.
+                    هل أنت متأكد أنك تريد حذف هذا الموظف؟ لا يمكن التراجع عن هذا الإجراء.
                 </p>
 
                 <form id="deleteForm" method="POST" action="">
@@ -869,7 +1047,7 @@
     const addModal = new bootstrap.Modal(document.getElementById("addModal"));
 
     document.getElementById("openAddModalBtn").addEventListener("click", () => {
-        const addForm = document.querySelector('#addModal form[action="{{ route('lands.create') }}"]');
+        const addForm = document.querySelector('#addModal form[action="{{ route('admin.employees.create') }}"]');
         if (addForm) addForm.reset();
 
         addModal.show();
@@ -880,7 +1058,7 @@
 <script>
     const searchModal = new bootstrap.Modal(document.getElementById("searchModal"));
     document.getElementById("searchBtn").addEventListener("click", () => {
-        const searchForm = document.querySelector('#searchModal form[action="{{ route('lands.index') }}"]');
+        const searchForm = document.querySelector('#searchModal form[action="{{ route('admin.employees.index') }}"]');
         if (searchModal) searchForm.reset();
         searchModal.show();
     });
@@ -894,7 +1072,7 @@
     const propsTable  = document.getElementById("propsTable");
 
     // route فيه placeholder
-    const deleteUrlTemplate = `{{ route('lands.delete', ':id') }}`;
+    const deleteUrlTemplate = `{{ route('admin.employees.delete', ':id') }}`;
 
     propsTable.addEventListener("click", function (e) {
         const btn = e.target.closest(".js-delete");
@@ -971,7 +1149,7 @@
     }
 
     document
-        .querySelectorAll('form[action="{{ route('lands.index') }}"]')
+        .querySelectorAll('form[action="{{ route('admin.employees.index') }}"]')
         .forEach((form) => {
             form.addEventListener('submit', function () {
                 const btn = form.querySelector('.js-submit-loader');
@@ -1038,21 +1216,58 @@
     });
 </script>
 
+
 <script>
-    const sizeInput = document.getElementById("size_in_metres");
-    const priceInput = document.getElementById("price_of_one_meter");
-    const totalInput = document.getElementById("total_cost");
+    document.querySelectorAll(".perm-wrap").forEach(wrapper => {
+        const trigger = wrapper.querySelector(".perm-trigger");
+        const panel = wrapper.querySelector(".perm-panel");
+        const text = wrapper.querySelector(".perm-text");
+        const doneBtn = wrapper.querySelector(".perm-done");
+        const clearBtn = wrapper.querySelector(".perm-clear");
 
-    function calculateTotal(){
-        const size = parseFloat(sizeInput.value) || 0;
-        const price = parseFloat(priceInput.value) || 0;
+        function updatePermText() {
+            const selected = [...panel.querySelectorAll('input[type="checkbox"]:checked')]
+                .map(x => x.value);
 
-        totalInput.value = size * price;
-    }
+            text.textContent = selected.length ? selected.join(" - ") : "اختر الصلاحيات";
+            text.classList.toggle("placeholder", !selected.length);
+        }
 
-    sizeInput.addEventListener("input", calculateTotal);
-    priceInput.addEventListener("input", calculateTotal);
+        // فتح / قفل
+        trigger.addEventListener("click", (e) => {
+            panel.classList.toggle("open");
+            e.stopPropagation();
+        });
+
+        // منع القفل عند الضغط داخل القائمة
+        panel.addEventListener("click", (e) => {
+            e.stopPropagation();
+        });
+
+        // قفل عند الضغط خارجها
+        document.addEventListener("click", () => {
+            panel.classList.remove("open");
+        });
+
+        // تحديث النص
+        panel.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+            cb.addEventListener("change", updatePermText);
+        });
+
+        // زر تم
+        doneBtn.addEventListener("click", () => {
+            updatePermText();
+            panel.classList.remove("open");
+        });
+
+        // زر مسح
+        clearBtn.addEventListener("click", () => {
+            panel.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
+            updatePermText();
+        });
+
+        updatePermText();
+    });
 </script>
-
 </body>
 </html>

@@ -9,7 +9,6 @@ use App\Repository\ExpenseRepositoryInterface;
 use Carbon\Carbon;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Http\JsonResponse;
 
 class ExpenseRepository  extends Repository implements ExpenseRepositoryInterface
 {
@@ -29,9 +28,12 @@ class ExpenseRepository  extends Repository implements ExpenseRepositoryInterfac
 
         $query = $this->model::query();
 
-        $query->when(request()->has('date_from') && request('date_from') != null && request()->has('date_to') && request('date_to') != null, function ($q)  {
-            $q->whereBetween('transaction_date', [request()->input('date_from'), request()->input('date_to')]);
+        $query->when(request()->filled('date_from'), function ($q) {
+            $q->where('transaction_date', '>=', request()->input('date_from'));
+        });
 
+        $query->when(request()->filled('date_to'), function ($q) {
+            $q->where('transaction_date', '<=', request()->input('date_to'));
         });
 
         return $query
@@ -40,7 +42,7 @@ class ExpenseRepository  extends Repository implements ExpenseRepositoryInterfac
             ->select(['*'])
             ->with(['company','user'])
             ->where('company_id','=',companyId())
-            ->paginate(16);
+            ->paginate(50);
 
     }
 
@@ -50,10 +52,14 @@ class ExpenseRepository  extends Repository implements ExpenseRepositoryInterfac
 
         $query = $this->model::query();
 
-        $query->when(request()->has('date_from') && request('date_from') != null && request()->has('date_to') && request('date_to') != null, function ($q)  {
-            $q->whereBetween('transaction_date', [request()->input('date_from'), request()->input('date_to')]);
-
+        $query->when(request()->filled('date_from'), function ($q) {
+            $q->where('transaction_date', '>=', request()->input('date_from'));
         });
+
+        $query->when(request()->filled('date_to'), function ($q) {
+            $q->where('transaction_date', '<=', request()->input('date_to'));
+        });
+
 
         return $query
             ->latest()
@@ -61,7 +67,7 @@ class ExpenseRepository  extends Repository implements ExpenseRepositoryInterfac
             ->select(['*'])
             ->with(['company','user'])
             ->where('company_id','=',companyId())
-            ->paginate(16);
+            ->paginate(50);
 
     }
 
@@ -82,11 +88,13 @@ class ExpenseRepository  extends Repository implements ExpenseRepositoryInterfac
 
         $query = $this->model::query();
 
-
-        $query->when(request()->has('date_from') && request()->has('date_to') && request('date_from') != null&& request('date_to') != null, function ($q) {
-            $q->whereBetween('transaction_date', [request()->input('date_from'), request()->input('date_to')]);
+        $query->when(request()->filled('date_from'), function ($q) {
+            $q->where('transaction_date', '>=', request()->input('date_from'));
         });
 
+        $query->when(request()->filled('date_to'), function ($q) {
+            $q->where('transaction_date', '<=', request()->input('date_to'));
+        });
 
         return $query
             ->latest()
@@ -94,7 +102,7 @@ class ExpenseRepository  extends Repository implements ExpenseRepositoryInterfac
             ->with(['user','company'])
             ->where('company_id','=',companyId())
             ->where('type','=','revenue')
-            ->paginate(16);
+            ->paginate(50);
 
     }
 
@@ -104,8 +112,12 @@ class ExpenseRepository  extends Repository implements ExpenseRepositoryInterfac
         $query = $this->model::query();
 
 
-        $query->when(request()->has('date_from') && request()->has('date_to') && request('date_from') != null&& request('date_to') != null, function ($q) {
-            $q->whereBetween('transaction_date', [request()->input('date_from'), request()->input('date_to')]);
+        $query->when(request()->filled('date_from'), function ($q) {
+            $q->where('transaction_date', '>=', request()->input('date_from'));
+        });
+
+        $query->when(request()->filled('date_to'), function ($q) {
+            $q->where('transaction_date', '<=', request()->input('date_to'));
         });
 
         return $query
@@ -114,54 +126,46 @@ class ExpenseRepository  extends Repository implements ExpenseRepositoryInterfac
             ->with(['user','company'])
             ->where('company_id','=',companyId())
             ->where('type','=','expense')
-            ->paginate(16);
+            ->paginate(50);
 
     }
 
 
-    public function profits(): JsonResponse
+    public function profits()
     {
-
+        $month = request('month') ?? Carbon::now()->month;
+        $year  = request('year') ?? Carbon::now()->year;
 
         $totalRevenues = $this->model::query()
-            ->when(request()->has('month') && request()->has('year') && request('month') != null && request('year') != null, function ($q) {
-        $q->whereMonth('transaction_date','=', request()->input('month'))
-            ->whereYear('transaction_date','=', request()->input('year'));
-             })
-
-            ->when(request('month') == null && request('year') == null, function ($q) {
-                $q->whereMonth('transaction_date','=', Carbon::now()->format('m'))
-                    ->whereYear('transaction_date','=', Carbon::now()->format('Y'));
-            })
-            ->where('company_id','=',companyId())
-            ->where('type','=','revenue')
+            ->whereMonth('transaction_date', $month)
+            ->whereYear('transaction_date', $year)
+            ->where('company_id', companyId())
+            ->where('type', 'revenue')
             ->sum('total_money');
 
         $totalExpenses = $this->model::query()
-            ->when(request()->has('month') && request()->has('year') && request('month') != null && request('year') != null, function ($q) {
-                $q->whereMonth('transaction_date','=', request()->input('month'))
-                    ->whereYear('transaction_date','=', request()->input('year'));
-            })
-            ->when(request('month') == null && request('year') == null, function ($q) {
-                $q->whereMonth('transaction_date','=', Carbon::now()->format('m'))
-                    ->whereYear('transaction_date','=', Carbon::now()->format('Y'));
-            })
-            ->where('company_id','=',companyId())
-            ->where('type','=','expense')
+            ->whereMonth('transaction_date', $month)
+            ->whereYear('transaction_date', $year)
+            ->where('company_id', companyId())
+            ->where('type', 'expense')
             ->sum('total_money');
 
-        $date = request('month') == null && request('year') == null ?
-            Carbon::now()->format('Y-m') :
-            Carbon::now()->format(request('year').'-'. request('month'));
+        $response = [
+            'total_revenue' => $totalRevenues,
+            'total_expense' => $totalExpenses,
+            'total_profits' => max($totalRevenues - $totalExpenses, 0),
+            'date' => $year . '-' . str_pad($month, 2, '0', STR_PAD_LEFT),
+        ];
 
-        $response['total_revenue'] = $totalRevenues;
-        $response['total_expense'] = $totalExpenses;
-        $response['total_profits'] = $totalRevenues > $totalExpenses ? ($totalRevenues - $totalExpenses) : 0;
-        $response['date'] = $date;
+        if(request()->is('api/*')){
+            return $this->responseSuccess(
+                data: new ProfitResource($response),
+                code: 200,
+                message: 'تم الحصول علي بيانات ارباح وايرادات ومصروفات الشركه'
+            );
+        }
 
-
-        return $this->responseSuccess(data: new ProfitResource($response), code: 200, message: 'تم الحصول علي بيانات ارباح وايردات ومصروفات الشركه');
-
+        return $response;
     }
 
 

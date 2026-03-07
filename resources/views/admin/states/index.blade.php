@@ -303,6 +303,14 @@
 
 <!-- Top bar -->
 <div class="app-topbar">
+    <button class="icon-btn" type="button" title="رجوع"
+            onclick="window.location.href='{{ route('admin.dashboard') }}'">
+        <i class="fa-solid fa-arrow-right"></i>
+    </button>
+
+
+    <div class="title">العقارات</div>
+
     <button class="icon-btn" type="button" title="بحث" id="searchBtn">
         <i class="fa-solid fa-magnifying-glass"></i>
     </button>
@@ -311,12 +319,6 @@
         <i class="fa-solid fa-rotate-right"></i>
     </button>
 
-    <div class="title">العقارات</div>
-
-    <button class="icon-btn" type="button" title="رجوع"
-            onclick="window.location.href='{{ route('admin.dashboard') }}'">
-        <i class="fa-solid fa-arrow-left"></i>
-    </button>
 </div>
 
 <div class="app">
@@ -367,7 +369,7 @@
     <!-- Right panel (Desktop Add) -->
     <div class="panel">
         <div class="panel-head">
-            <div class="icon"><i class="fa-solid fa-building"></i></div>
+            <div class="icon"> <i class="fa-solid fa-city"></i></div>
             <p class="panel-title">تسجيل العقارات</p>
         </div>
 
@@ -710,7 +712,7 @@
             <div class="modal-body p-0">
                 <div class="panel-modal">
                     <div class="panel-head">
-                        <div class="icon"><i class="fa-solid fa-building"></i></div>
+                        <div class="icon"> <i class="fa-solid fa-city"></i></div>
                         <p class="panel-title">تسجيل العقارات</p>
                     </div>
 

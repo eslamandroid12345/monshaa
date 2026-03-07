@@ -21,15 +21,4 @@ class AuthController extends Controller
         return view('client.auth.password_reset');
     }
 
-    public function login()
-    {
-
-    }
-
-    public function register()
-    {
-
-    }
-
-
 }

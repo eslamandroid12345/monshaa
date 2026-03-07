@@ -29,8 +29,11 @@ class CheckEmployeePermissions
             }
 
             if(!in_array($permission,$array)) {
-                return $this->responseFail(null, 403,'ليس لديك صلاحيه للوصول لذلك الصفحه يرجي التواصل مع الوكيل او المشرف العام الخاس بك',403);
 
+                if(request()->is('api/*')){
+                    return $this->responseFail(null, 403,'ليس لديك صلاحيه للوصول لذلك الصفحه يرجي التواصل مع الوكيل او المشرف العام الخاص بك',403);
+                }
+                return response()->view('admin.errors.403', [], 403);
             }else{
                 return $next($request);
 

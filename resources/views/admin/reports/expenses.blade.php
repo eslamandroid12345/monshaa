@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>تقارير عقود الايجار</title>
+    <title>تقارير المصروفات</title>
 
     <!-- Bootstrap RTL -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
@@ -185,6 +185,18 @@
             gap:8px;
         }
 
+        .total-bar {
+            position: sticky;
+            bottom: 0;
+            background: #fff;
+            border-top: 1px solid #e9eef2;
+            padding: 12px 10px;
+            text-align: center;
+            font-size: 13px;
+            color: #2c3e50;
+            font-weight: 600;
+        }
+
     </style>
 </head>
 
@@ -196,14 +208,14 @@
             onclick="window.location.href='{{ route('admin.reports.index') }}'">
         <i class="fa-solid fa-arrow-right"></i>
     </button>
+    <div class="title">المصروفات</div>
 
-    <div class="title">عقود الايجار</div>
 
     <button class="icon-btn" type="button" title="بحث" id="searchBtn">
         <i class="fa-solid fa-magnifying-glass"></i>
     </button>
 
-    <button class="icon-btn" type="button" title="تحديث" onclick="window.location.href='{{ route('admin.reports.contracts') }}'">
+    <button class="icon-btn" type="button" title="تحديث" onclick="window.location.href='{{ route('admin.reports.expenses') }}'">
         <i class="fa-solid fa-rotate-right"></i>
     </button>
 </div>
@@ -214,45 +226,29 @@
         <thead>
         <tr>
             <th style="width: 260px;">اسم الموظف</th>
-            <th style="width: 260px;">نوع العقار</th>
-            <th style="width: 260px;">اسم المستاجر</th>
-            <th style="width: 260px;">رقم هاتف المستاجر</th>
-            <th style="width: 260px;">اسم المالك</th>
-            <th style="width: 260px;">رقم هاتف المالك</th>
-            <th style="width: 260px;">عنوان العقار</th>
-            <th style="width: 260px;">عنوان العقار تفصيلي</th>
-            <th style="width: 260px;">تاريخ تسجيل العقد</th>
-            <th style="width: 260px;">الايجار من</th>
-            <th style="width: 260px;">الايجار الي</th>
-            <th style="width: 260px;">قيمه الايجار</th>
-            <th style="width: 260px;">قيمه التامين</th>
+            <th style="width: 260px;">المبلغ</th>
+            <th style="width: 260px;">تقرير الحركه</th>
+            <th style="width: 260px;">تاريخ الحركه</th>
         </tr>
         </thead>
 
         <tbody>
 
-        @foreach($contracts as $contract)
-            <tr data-id="{{ $contract->id}}" style="cursor:pointer;">
-                <td class="c-id">{{$contract->user?->name}}</td>
-                <td class="c-id">{{$contract->real_state_type_label}}</td>
-                <td class="c-id">{{$contract->tenant?->name}}</td>
-                <td class="c-id">{{$contract->tenant?->phone}}</td>
-                <td class="c-id">{{$contract->owner_name}}</td>
-                <td class="c-id">{{$contract->owner_phone}}</td>
-                <td class="c-id">{{$contract->real_state_address}}</td>
-                <td class="c-id">{{$contract->real_state_address_details}}</td>
-                <td class="c-id">{{$contract->contract_date}}</td>
-                <td class="c-id">{{$contract->contract_date_from}}</td>
-                <td class="c-id">{{$contract->contract_date_to}}</td>
-                <td class="c-id">{{$contract->contract_total}}</td>
-                <td class="c-id">{{$contract->insurance_total}}</td>
+        @foreach($expenses as  $expense)
+            <tr data-id="{{ $expense->id}}" style="cursor:pointer;">
+                <td class="c-id">{{$expense->user?->name}}</td>
+                <td class="c-id">{{$expense->total_money}}</td>
+                <td class="c-id">{{$expense->description}}</td>
+                <td class="c-id">{{$expense->transaction_date}}</td>
+
             </tr>
         @endforeach
         </tbody>
     </table>
-
+    <!-- total -->
+    <div class="total-bar">الإجمالي : {{$total}}</div>
     <div class="card-footer">
-        <div>{{ $contracts->appends(request()->query())->links() }}</div>
+        <div>{{ $expenses->appends(request()->query())->links() }}</div>
     </div>
 </div>
 
@@ -264,11 +260,11 @@
                 <div class="panel-modal">
                     <div class="panel-head">
                         <div class="icon"><i class="fa-solid fa-magnifying-glass"></i></div>
-                        <p class="panel-title">بحث عقود الايجار</p>
+                        <p class="panel-title">بحث المصروفات</p>
                     </div>
 
 
-                    <form action="{{route('admin.reports.contracts')}}" method="GET" autocomplete="off">
+                    <form action="{{route('admin.reports.expenses')}}" method="GET" autocomplete="off">
 
                         <div class="mb-2">
                             <label class="form-label">التاريخ من</label>
@@ -319,7 +315,7 @@
 <script>
     const searchModal = new bootstrap.Modal(document.getElementById("searchModal"));
     document.getElementById("searchBtn").addEventListener("click", () => {
-        const searchForm = document.querySelector('#searchModal form[action="{{ route('admin.reports.contracts') }}"]');
+        const searchForm = document.querySelector('#searchModal form[action="{{ route('admin.reports.expenses') }}"]');
         if (searchModal) searchForm.reset();
         searchModal.show();
     });
@@ -337,7 +333,7 @@
     }
 
     document
-        .querySelectorAll('form[action="{{ route('admin.reports.contracts') }}"]')
+        .querySelectorAll('form[action="{{ route('admin.reports.expenses') }}"]')
         .forEach((form) => {
             form.addEventListener('submit', function () {
                 const btn = form.querySelector('.js-submit-loader');

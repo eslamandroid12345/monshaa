@@ -2,9 +2,6 @@
 
 namespace App\Http\Services\Report;
 
-use App\Http\Resources\ExpenseResource;
-use App\Http\Resources\TenantContractResource;
-
 class ReportWebService extends ReportService
 {
 
@@ -29,18 +26,24 @@ class ReportWebService extends ReportService
 
     public function revenues()
     {
-        $data = $this->expenseRepository->revenuesReports();
-        return $this->responseSuccess(data: ExpenseResource::collection($data)->response()->getData(true),code: 200,message: 'تم الحصول على بيانات جميع الايردات بنجاح',status: 200,newAttributeName: 'total',newAttributeValue: $this->expenseRepository->getCurrentRevenuesTotal());
+        $revenues = $this->expenseRepository->revenuesReports();
+        $total = $this->expenseRepository->getCurrentRevenuesTotal();
+        return view('admin.reports.revenue', compact('revenues','total'));
     }
 
     public function expenses()
     {
-        $data = $this->expenseRepository->expensesReports();
-        return $this->responseSuccess(data: ExpenseResource::collection($data)->response()->getData(true),code: 200,message: 'تم الحصول على بيانات جميع المصروفات بنجاح',status: 200,newAttributeName: 'total',newAttributeValue: $this->expenseRepository->getCurrentExpensesTotal());
+        $expenses = $this->expenseRepository->expensesReports();
+        $total = $this->expenseRepository->getCurrentExpensesTotal();
+        return view('admin.reports.expenses', compact('expenses','total'));
+
     }
 
     public function profits(){
-        return $this->expenseRepository->profits();
+        $profits = $this->expenseRepository->profits();
+        return view('admin.reports.profits', compact('profits'));
+
+
     }
 
 }
