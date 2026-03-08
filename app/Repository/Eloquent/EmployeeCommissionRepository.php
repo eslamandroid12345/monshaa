@@ -20,12 +20,16 @@ class EmployeeCommissionRepository extends Repository implements EmployeeCommiss
 
         $query = $this->model::query();
 
-        $query->when(request()->has('employee_id')  && request('employee_id') != null, function ($q) {
+        $query->when(request()->filled('employee_id'), function ($q) {
             $q->where('employee_id', request()->input('employee_id'));
         });
 
-        $query->when(request()->has('date_from') && request()->has('date_to') && request('date_from') != null && request('date_to') != null, function ($q) {
-            $q->whereBetween('transaction_date', [request()->input('date_from'), request()->input('date_to')]);
+        $query->when(request()->filled('date_from'), function ($q) {
+            $q->where('transaction_date', '>=', request()->input('date_from'));
+        });
+
+        $query->when(request()->filled('date_to'), function ($q) {
+            $q->where('transaction_date', '<=', request()->input('date_to'));
         });
 
         return $query
@@ -33,7 +37,7 @@ class EmployeeCommissionRepository extends Repository implements EmployeeCommiss
             ->select(['*'])
             ->with(['user','company','employee'])
             ->where('company_id','=',companyId())
-            ->paginate(16);
+            ->paginate(50);
 
     }
 

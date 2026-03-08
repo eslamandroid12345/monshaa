@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\Company\CompanyController;
 use App\Http\Controllers\Admin\TechnicalSupport\TechnicalSupportController;
 use App\Http\Controllers\Api\Client\ClientController;
 use App\Http\Controllers\Api\Employee\EmployeeController;
+use App\Http\Controllers\Api\EmployeeCommission\EmployeeCommissionController;
 use App\Http\Controllers\Api\Expense\ExpenseController;
 use App\Http\Controllers\Api\Land\LandController;
 use App\Http\Controllers\Api\Report\ReportController;
@@ -168,6 +169,13 @@ Route::group(['prefix' => 'admin'], function (){
         Route::post('tenant-contract/update/{id}',[TenantContractController::class,'update'])->name('tenant.contracts.update');
         Route::delete('tenant-contract/delete/{id}',[TenantContractController::class,'delete'])->name('tenant.contracts.delete');
     });
+
+    Route::get('employee-commissions/get-all',[EmployeeCommissionController::class,'getAllEmployeesCommissions'])->name('employee.commissions.index');
+    Route::post('employee-commissions/create',[EmployeeCommissionController::class,'create'])->name('employee.commissions.create');
+    Route::get('employee-commissions/edit/{id}',[EmployeeCommissionController::class,'edit'])->name('employee.commissions.edit');
+    Route::post('employee-commissions/update/{id}',[EmployeeCommissionController::class,'update'])->name('employee.commissions.update');
+    Route::post('employee-commissions/delete/{id}',[EmployeeCommissionController::class,'delete'])->name('employee.commissions.delete');
+
 
 });
 

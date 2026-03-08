@@ -484,7 +484,7 @@
 
                 @if(auth()->user()->is_admin == 1 || in_array('employee_commission', json_decode(auth()->user()->employee_permissions, true) ?? []))
 
-                <a href="#" class="nav-item">
+                <a href="{{route('employee.commissions.index')}}" class="nav-item">
                 <i class="fa-solid fa-percent"></i>
                 <span>عمولة الموظفين</span>
             </a>
@@ -570,12 +570,12 @@
                             </div>
                         </div>
 
-                        <a class="profile-item" href="setting.html">
+                        <a class="profile-item" href="#">
                             <i class="fa-solid fa-gear"></i>
                             <span>الإعدادات</span>
                         </a>
 
-                        <a class="profile-item" href="edit_profile.html">
+                        <a class="profile-item" href="#">
                             <i class="fa-solid fa-id-card"></i>
                             <span>الملف الشخصي</span>
                         </a>

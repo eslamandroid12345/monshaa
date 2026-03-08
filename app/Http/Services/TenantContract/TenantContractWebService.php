@@ -6,9 +6,7 @@ use App\Http\Requests\StoreTenantContractRequest;
 use App\Http\Requests\StoreTenantRequest;
 use App\Http\Requests\UpdateTenantContractRequest;
 use App\Http\Requests\UpdateTenantRequest;
-use App\Http\Resources\TenantContractResource;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 

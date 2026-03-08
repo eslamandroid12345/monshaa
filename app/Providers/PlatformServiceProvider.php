@@ -8,6 +8,9 @@ use App\Http\Services\Client\ClientWebService;
 use App\Http\Services\Employee\EmployeeMobileService;
 use App\Http\Services\Employee\EmployeeService;
 use App\Http\Services\Employee\EmployeeWebService;
+use App\Http\Services\EmployeeCommission\EmployeeCommissionMobileService;
+use App\Http\Services\EmployeeCommission\EmployeeCommissionService;
+use App\Http\Services\EmployeeCommission\EmployeeCommissionWebService;
 use App\Http\Services\Expense\ExpenseMobileService;
 use App\Http\Services\Expense\ExpenseService;
 use App\Http\Services\Expense\ExpenseWebService;
@@ -46,6 +49,7 @@ class PlatformServiceProvider extends ServiceProvider
         $this->app->singleton(EmployeeService::class,$this->detectPlatform(EmployeeWebService::class,EmployeeMobileService::class));
         $this->app->singleton(ExpenseService::class,$this->detectPlatform(ExpenseWebService::class,ExpenseMobileService::class));
         $this->app->singleton(TenantContractService::class,$this->detectPlatform(TenantContractWebService::class,TenantContractMobileService::class));
+        $this->app->singleton(EmployeeCommissionService::class,$this->detectPlatform(EmployeeCommissionWebService::class,EmployeeCommissionMobileService::class));
     }
 
 

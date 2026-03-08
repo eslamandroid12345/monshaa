@@ -8,33 +8,37 @@ use App\Http\Services\Mutual\GetService;
 use App\Http\Traits\FirebaseNotification;
 use App\Http\Traits\Responser;
 use App\Repository\EmployeeCommissionRepositoryInterface;
+use App\Repository\UserRepositoryInterface;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Gate;
 
-class EmployeeCommissionService
+abstract class EmployeeCommissionService
 {
     use Responser,FirebaseNotification;
-    private GetService $getService;
-    private EmployeeCommissionRepositoryInterface $employeeCommissionRepository;
+    protected GetService $getService;
+    protected EmployeeCommissionRepositoryInterface $employeeCommissionRepository;
+    protected UserRepositoryInterface $userRepository;
 
     public function __construct(
        GetService $getService,
-       EmployeeCommissionRepositoryInterface $employeeCommissionRepository
+       EmployeeCommissionRepositoryInterface $employeeCommissionRepository,
+       UserRepositoryInterface $userRepository
     )
     {
         $this->getService = $getService;
         $this->employeeCommissionRepository = $employeeCommissionRepository;
+        $this->userRepository = $userRepository;
     }
 
-    public function getAllEmployeesCommissions(): JsonResponse
+    public function getAllEmployeesCommissions()
     {
         $data = $this->employeeCommissionRepository->getAllEmployeesCommissions();
         return $this->responseSuccess(data: EmployeeCommissionResource::collection($data)->response()->getData(true),code: 200,message: 'تم الحصول علي جميع بيانات عموله الموظفين بنجاح',status: 200,newAttributeName: 'total',newAttributeValue: $this->employeeCommissionRepository->getCurrentTotalCommission());
     }
 
-    public function create(EmployeeCommissionRequest $request): JsonResponse
+    public function create(EmployeeCommissionRequest $request)
     {
         try {
             $inputs = $request->validated();
@@ -52,7 +56,7 @@ class EmployeeCommissionService
         }
     }
 
-    public function show($id): JsonResponse
+    public function show($id)
     {
         try {
             $employeeCommission = $this->employeeCommissionRepository->getById($id);
@@ -66,7 +70,7 @@ class EmployeeCommissionService
         }
     }
 
-    public function update($id,EmployeeCommissionRequest $request): JsonResponse
+    public function update($id,EmployeeCommissionRequest $request)
     {
         try {
             $employeeCommission = $this->employeeCommissionRepository->getById($id);
@@ -85,7 +89,7 @@ class EmployeeCommissionService
         }
     }
 
-    public function delete($id): JsonResponse
+    public function delete($id)
     {
         try {
             $employeeCommission = $this->employeeCommissionRepository->getById($id);
