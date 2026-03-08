@@ -398,14 +398,6 @@
             </a>
                 @endif
 
-                @if(auth()->user()->is_admin == 1 || in_array('clients', json_decode(auth()->user()->employee_permissions, true) ?? []))
-
-                <a href="{{route('clients.index')}}" class="nav-item">
-                <i class="fa-solid fa-users"></i>
-                <span>العملاء</span>
-            </a>
-                @endif
-
 
             @if(auth()->user()->is_admin == 1 || in_array('tenants', json_decode(auth()->user()->employee_permissions, true) ?? []))
 
@@ -474,6 +466,15 @@
             </a>
                 @endif
 
+                @if(auth()->user()->is_admin == 1 || in_array('employee_commission', json_decode(auth()->user()->employee_permissions, true) ?? []))
+
+                    <a href="{{route('employee.commissions.index')}}" class="nav-item">
+                        <i class="fa-solid fa-percent"></i>
+                        <span>عمولة الموظفين</span>
+                    </a>
+                @endif
+
+
                 @if(auth()->user()->is_admin == 1 || in_array('employees', json_decode(auth()->user()->employee_permissions, true) ?? []))
 
                 <a href="{{route('admin.employees.index')}}" class="nav-item">
@@ -482,13 +483,14 @@
             </a>
                 @endif
 
-                @if(auth()->user()->is_admin == 1 || in_array('employee_commission', json_decode(auth()->user()->employee_permissions, true) ?? []))
+                @if(auth()->user()->is_admin == 1 || in_array('clients', json_decode(auth()->user()->employee_permissions, true) ?? []))
 
-                <a href="{{route('employee.commissions.index')}}" class="nav-item">
-                <i class="fa-solid fa-percent"></i>
-                <span>عمولة الموظفين</span>
-            </a>
+                    <a href="{{route('clients.index')}}" class="nav-item">
+                        <i class="fa-solid fa-users"></i>
+                        <span>العملاء</span>
+                    </a>
                 @endif
+
 
                 <a href="{{route('admin.reports.index')}}" class="nav-item">
                 <i class="fa-solid fa-chart-column"></i>
