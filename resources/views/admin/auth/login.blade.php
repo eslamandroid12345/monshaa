@@ -12,7 +12,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
     <style>
-
         :root{
             --page-bg:#f3f3f3;
             --primary:#6e98b6;
@@ -20,10 +19,11 @@
             --border:#c3dde6;
             --text-soft:#7aa3b8;
             --placeholder:#b7b7b7;
+            --card-bg:#ffffff;
         }
 
         *{
-            box-sizing:border-box
+            box-sizing:border-box;
         }
 
         body{
@@ -31,7 +31,14 @@
             font-family:"Cairo",system-ui,-apple-system,"Segoe UI",Tahoma,Arial;
             min-height:100vh;
             color:#4b5563;
-            background:#fff;
+            background:var(--page-bg);
+            overflow-x:hidden;
+        }
+
+        img{
+            max-width:100%;
+            height:auto;
+            display:block;
         }
 
         /* splash screen */
@@ -47,8 +54,6 @@
             z-index:9999;
         }
 
-        /* logo animation */
-
         #splash img{
             width:160px;
             margin-bottom:20px;
@@ -56,7 +61,6 @@
         }
 
         @keyframes logoSpin{
-
             0%{
                 transform:scale(0.7) rotate(0deg);
                 opacity:0;
@@ -71,7 +75,6 @@
                 transform:scale(1) rotate(360deg);
                 opacity:1;
             }
-
         }
 
         /* hide main page at first */
@@ -98,19 +101,42 @@
 
         .auth-grid{
             display:grid;
-            grid-template-columns:1fr 1fr;
+            grid-template-columns:minmax(0,1fr) minmax(0,1fr);
             gap:28px;
             align-items:center;
+            background:var(--card-bg);
+            border-radius:24px;
+            padding:28px;
+            box-shadow:0 12px 35px rgba(0,0,0,.06);
+            overflow:hidden;
+        }
+
+        .illustration-side{
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            min-width:0;
+        }
+
+        .illustration-box{
+            width:100%;
+            max-width:470px;
+        }
+
+        .illustration-box img{
+            width:100%;
+            object-fit:contain;
         }
 
         .form-side{
             padding:8px 18px;
+            min-width:0;
         }
 
         .brand-icon{
-            width:64px;
-            height:64px;
-            margin:0 auto 8px;
+            width:72px;
+            height:72px;
+            margin:0 auto 10px;
             display:flex;
             align-items:center;
             justify-content:center;
@@ -118,33 +144,49 @@
         }
 
         .brand-icon img{
-            max-width:100%;
+            max-width:72px;
+            max-height:72px;
+            object-fit:contain;
         }
 
         .form-title{
             text-align:center;
             color:var(--text-soft);
-            font-size:20px;
+            font-size:22px;
             font-weight:700;
-            margin-bottom:18px;
+            margin-bottom:22px;
         }
 
         .custom-input,
         .custom-password{
             position:relative;
-            margin-bottom:18px;
+            margin-bottom:16px;
         }
 
         .custom-input .form-control,
         .custom-password .form-control{
-            height:44px;
-            border-radius:4px;
+            height:48px;
+            border-radius:10px;
             border:2px solid var(--border);
-            background:transparent;
+            background:#fff;
             padding-right:18px;
-            padding-left:42px;
+            padding-left:44px;
             font-size:15px;
             font-weight:600;
+            color:#4b5563;
+            box-shadow:none;
+        }
+
+        .custom-input .form-control::placeholder,
+        .custom-password .form-control::placeholder{
+            color:var(--placeholder);
+            font-weight:500;
+        }
+
+        .custom-input .form-control:focus,
+        .custom-password .form-control:focus{
+            border-color:var(--primary);
+            box-shadow:0 0 0 3px rgba(110,152,182,.12);
         }
 
         .field-icon,
@@ -154,10 +196,12 @@
             transform:translateY(-50%);
             color:#9b9b9b;
             font-size:14px;
+            z-index:2;
         }
 
         .field-icon{
             left:14px;
+            pointer-events:none;
         }
 
         .toggle-password{
@@ -165,26 +209,39 @@
             background:none;
             border:0;
             cursor:pointer;
+            padding:0;
+            width:20px;
+            height:20px;
+            display:flex;
+            align-items:center;
+            justify-content:center;
         }
 
         .submit-btn{
-            margin-top:18px;
-            height:44px;
+            margin-top:8px;
+            height:48px;
             border:0;
-            border-radius:4px;
+            border-radius:10px;
             background:var(--primary);
             color:#fff;
             font-weight:700;
             font-size:17px;
+            transition:.2s ease;
         }
 
         .submit-btn:hover{
             background:var(--primary-dark);
         }
 
+        .submit-btn:disabled{
+            opacity:.9;
+            cursor:not-allowed;
+        }
+
         .btn-spinner{
             display:none;
             align-items:center;
+            justify-content:center;
             gap:8px;
         }
 
@@ -196,67 +253,185 @@
             display:inline-flex;
         }
 
-        .illustration-side{
-            display:flex;
-            align-items:center;
-            justify-content:center;
-        }
-
-        .illustration-box{
-            max-width:470px;
-        }
-
-        .illustration-box img{
-            width:100%;
-        }
-
         .auth-footer{
             text-align:center;
-            margin-top:10px;
+            margin-top:16px;
             font-size:15px;
             font-weight:700;
             color:var(--text-soft);
+            line-height:1.8;
         }
 
         .auth-footer a{
             color:var(--primary);
             text-decoration:none;
         }
+
+        .auth-footer a:hover{
+            text-decoration:underline;
+        }
+
+        /* tablet */
+        @media (max-width: 991.98px){
+            .auth-wrapper{
+                padding:22px 14px;
+            }
+
+            .auth-grid{
+                grid-template-columns:1fr;
+                gap:12px;
+                padding:22px 16px;
+            }
+
+            .illustration-side{
+                order:-1;
+            }
+
+            .illustration-box{
+                max-width:320px;
+                margin:0 auto 4px;
+            }
+
+            .form-side{
+                padding:0;
+                width:100%;
+            }
+
+            .form-title{
+                font-size:20px;
+                margin-bottom:18px;
+            }
+        }
+
+        /* mobile */
+        @media (max-width: 575.98px){
+            #splash img{
+                width:120px;
+            }
+
+            .auth-wrapper{
+                padding:14px 10px;
+                align-items:flex-start;
+            }
+
+            .auth-card{
+                max-width:100%;
+            }
+
+            .auth-grid{
+                padding:16px 12px;
+                gap:10px;
+                border-radius:18px;
+            }
+
+            .illustration-box{
+                max-width:220px;
+            }
+
+            .brand-icon{
+                width:58px;
+                height:58px;
+                margin-bottom:8px;
+            }
+
+            .brand-icon img{
+                max-width:58px;
+                max-height:58px;
+            }
+
+            .form-title{
+                font-size:18px;
+                margin-bottom:16px;
+            }
+
+            .custom-input,
+            .custom-password{
+                margin-bottom:12px;
+            }
+
+            .custom-input .form-control,
+            .custom-password .form-control{
+                height:46px;
+                font-size:14px;
+                border-radius:8px;
+                padding-right:14px;
+                padding-left:40px;
+            }
+
+            .field-icon,
+            .toggle-password{
+                left:12px;
+                font-size:13px;
+            }
+
+            .submit-btn{
+                height:46px;
+                font-size:15px;
+                border-radius:8px;
+                margin-top:6px;
+            }
+
+            .auth-footer{
+                font-size:14px;
+                margin-top:14px;
+            }
+        }
+
+        /* very small phones */
+        @media (max-width: 380px){
+            .auth-wrapper{
+                padding:10px 8px;
+            }
+
+            .auth-grid{
+                padding:14px 10px;
+            }
+
+            .illustration-box{
+                max-width:180px;
+            }
+
+            .form-title{
+                font-size:17px;
+            }
+
+            .custom-input .form-control,
+            .custom-password .form-control{
+                font-size:13px;
+            }
+
+            .submit-btn{
+                font-size:14px;
+            }
+        }
     </style>
 </head>
 
 <body>
 
-<!-- splash screen -->
-
 <div id="splash">
-    <img src="{{asset('img/icons/monshaa.jpg')}}">
+    <img src="{{ asset('img/icons/monshaa.jpg') }}">
 </div>
 
-<!-- main page -->
-
 <div id="mainPage">
-
     <div class="auth-wrapper">
         <div class="auth-card">
-
             <div class="auth-grid">
 
                 <div class="illustration-side">
                     <div class="illustration-box">
-                        <img src="{{asset('img/icons/qqq.jpg')}}">
+                        <img src="{{ asset('img/icons/qqq.jpg') }}">
                     </div>
                 </div>
 
                 <div class="form-side">
-
                     <div class="brand-icon">
-                        <img src="{{asset('img/icons/employees.png')}}">
+                        <img src="{{ asset('img/icons/employees.png') }}">
                     </div>
 
                     <div class="form-title">تسجيل الدخول</div>
 
-                    <form id="registerForm" action="{{route('admin.login')}}" method="POST">
+                    <form id="registerForm" action="{{ route('admin.login') }}" method="POST">
                         @csrf
 
                         <div class="custom-input">
@@ -272,80 +447,57 @@
                         </div>
 
                         <button type="submit" class="btn w-100 submit-btn" id="registerSubmitBtn">
-
-<span class="btn-text">
-<i class="fa-solid fa-right-to-bracket"></i>
-تسجيل الدخول
-</span>
+                            <span class="btn-text">
+                                <i class="fa-solid fa-right-to-bracket"></i>
+                                تسجيل الدخول
+                            </span>
 
                             <span class="btn-spinner">
-<span class="spinner-border spinner-border-sm"></span>
-جاري تسجيل الدخول...
-</span>
-
+                                <span class="spinner-border spinner-border-sm"></span>
+                                جاري تسجيل الدخول...
+                            </span>
                         </button>
-
                     </form>
 
                     <div class="auth-footer">
                         ليس لديك حساب ؟
-                        <a href="{{route('admin.register.view')}}">تسجيل حساب</a>
+                        <a href="{{ route('admin.register.view') }}">تسجيل حساب</a>
                     </div>
-
                 </div>
 
             </div>
-
         </div>
     </div>
-
 </div>
 
 <script>
+    const splashLogo = document.querySelector('#splash img');
 
-    /* splash */
-
-    window.addEventListener("load",function(){
-
-        setTimeout(function(){
-
-            document.getElementById("splash").style.display="none";
-            document.getElementById("mainPage").style.display="block";
-
-        },2000);
-
+    splashLogo.addEventListener('animationend', function () {
+        document.getElementById("splash").style.display = "none";
+        document.getElementById("mainPage").style.display = "block";
     });
-
-    /* password toggle */
 
     document.querySelectorAll('.toggle-password').forEach(function(btn){
-
         btn.addEventListener('click',function(){
+            const input = this.previousElementSibling;
+            const isPassword = input.type === 'password';
 
-            const input=this.previousElementSibling;
+            input.type = isPassword ? 'text' : 'password';
 
-            const isPassword=input.type==='password';
-
-            input.type=isPassword?'text':'password';
-
-            this.innerHTML=isPassword
-                ?'<i class="fa-regular fa-eye"></i>'
-                :'<i class="fa-regular fa-eye-slash"></i>';
-
+            this.innerHTML = isPassword
+                ? '<i class="fa-regular fa-eye"></i>'
+                : '<i class="fa-regular fa-eye-slash"></i>';
         });
-
     });
 
-    /* button loader */
-
-    const registerForm=document.getElementById('registerForm');
-    const registerSubmitBtn=document.getElementById('registerSubmitBtn');
+    const registerForm = document.getElementById('registerForm');
+    const registerSubmitBtn = document.getElementById('registerSubmitBtn');
 
     registerForm?.addEventListener('submit',function(){
-        registerSubmitBtn.disabled=true;
+        registerSubmitBtn.disabled = true;
         registerSubmitBtn.classList.add('loading');
     });
-
 </script>
 
 </body>
