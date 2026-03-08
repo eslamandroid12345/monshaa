@@ -41,8 +41,6 @@
             display:block;
         }
 
-        /* splash screen */
-
         #splash{
             position:fixed;
             inset:0;
@@ -77,13 +75,9 @@
             }
         }
 
-        /* hide main page at first */
-
         #mainPage{
             display:none;
         }
-
-        /* layout */
 
         .auth-wrapper{
             min-height:100vh;
@@ -189,6 +183,12 @@
             box-shadow:0 0 0 3px rgba(110,152,182,.12);
         }
 
+        .custom-input .form-control.is-invalid,
+        .custom-password .form-control.is-invalid{
+            border-color:#dc3545 !important;
+            box-shadow:none !important;
+        }
+
         .field-icon,
         .toggle-password{
             position:absolute;
@@ -271,7 +271,6 @@
             text-decoration:underline;
         }
 
-        /* tablet */
         @media (max-width: 991.98px){
             .auth-wrapper{
                 padding:22px 14px;
@@ -303,7 +302,6 @@
             }
         }
 
-        /* mobile */
         @media (max-width: 575.98px){
             #splash img{
                 width:120px;
@@ -377,7 +375,6 @@
             }
         }
 
-        /* very small phones */
         @media (max-width: 380px){
             .auth-wrapper{
                 padding:10px 8px;
@@ -431,19 +428,31 @@
 
                     <div class="form-title">تسجيل الدخول</div>
 
-                    <form id="registerForm" action="{{ route('admin.login') }}" method="POST">
+                    <form id="registerForm" action="{{ route('admin.login') }}" method="POST" autocomplete="off">
                         @csrf
 
                         <div class="custom-input">
-                            <input type="text" class="form-control" placeholder="رقم هاتف المدير" name="phone">
+                            <input type="text"
+                                   class="form-control @error('phone') is-invalid @enderror"
+                                   placeholder="رقم هاتف المدير"
+                                   name="phone">
                             <span class="field-icon"><i class="fa-solid fa-phone"></i></span>
+                            @error('phone')
+                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                            @enderror
                         </div>
 
                         <div class="custom-password">
-                            <input type="password" class="form-control" placeholder="كلمة السر" name="password">
+                            <input type="password"
+                                   class="form-control @error('password') is-invalid @enderror"
+                                   placeholder="كلمة السر"
+                                   name="password">
                             <button type="button" class="toggle-password">
                                 <i class="fa-regular fa-eye-slash"></i>
                             </button>
+                            @error('password')
+                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                            @enderror
                         </div>
 
                         <button type="submit" class="btn w-100 submit-btn" id="registerSubmitBtn">

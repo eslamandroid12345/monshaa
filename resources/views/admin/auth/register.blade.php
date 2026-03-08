@@ -40,8 +40,6 @@
             display:block;
         }
 
-        /* splash screen */
-
         #splash{
             position:fixed;
             inset:0;
@@ -64,25 +62,19 @@
                 transform:scale(0.7) rotate(0deg);
                 opacity:0;
             }
-
             40%{
                 transform:scale(1.2) rotate(180deg);
                 opacity:1;
             }
-
             100%{
                 transform:scale(1) rotate(360deg);
                 opacity:1;
             }
         }
 
-        /* hide main page at first */
-
         #mainPage{
             display:none;
         }
-
-        /* layout */
 
         .auth-wrapper{
             min-height:100vh;
@@ -188,6 +180,12 @@
             box-shadow:0 0 0 3px rgba(110,152,182,.12);
         }
 
+        .custom-input .form-control.is-invalid,
+        .custom-password .form-control.is-invalid{
+            border-color:#dc3545 !important;
+            box-shadow:none !important;
+        }
+
         .field-icon,
         .toggle-password{
             position:absolute;
@@ -270,7 +268,6 @@
             text-decoration:underline;
         }
 
-        /* tablet */
         @media (max-width: 991.98px){
             .auth-wrapper{
                 padding:22px 14px;
@@ -302,7 +299,6 @@
             }
         }
 
-        /* mobile */
         @media (max-width: 575.98px){
             #splash img{
                 width:120px;
@@ -376,7 +372,6 @@
             }
         }
 
-        /* very small phones */
         @media (max-width: 380px){
             .auth-wrapper{
                 padding:10px 8px;
@@ -407,7 +402,6 @@
 </head>
 <body>
 
-<!-- splash screen -->
 <div id="splash">
     <img src="{{asset('img/icons/monshaa.jpg')}}">
 </div>
@@ -434,7 +428,11 @@
                         @method('POST')
 
                         <div class="custom-input">
-                            <input type="text" class="form-control @error('company_name') is-invalid @enderror" placeholder="اسم الشركه" name="company_name">
+                            <input type="text"
+                                   class="form-control @error('company_name') is-invalid @enderror"
+                                   placeholder="اسم الشركه"
+                                   name="company_name"
+                                   value="{{ old('company_name') }}">
                             <span class="field-icon"><i class="fa-solid fa-house"></i></span>
                             @error('company_name')
                             <div class="invalid-feedback d-block">{{ $message }}</div>
@@ -442,7 +440,11 @@
                         </div>
 
                         <div class="custom-input">
-                            <input type="text" class="form-control @error('company_address') is-invalid @enderror" placeholder="عنوان الشركه" name="company_address">
+                            <input type="text"
+                                   class="form-control @error('company_address') is-invalid @enderror"
+                                   placeholder="عنوان الشركه"
+                                   name="company_address"
+                                   value="{{ old('company_address') }}">
                             <span class="field-icon"><i class="fa-solid fa-location-dot"></i></span>
                             @error('company_address')
                             <div class="invalid-feedback d-block">{{ $message }}</div>
@@ -450,7 +452,11 @@
                         </div>
 
                         <div class="custom-input">
-                            <input type="text" class="form-control @error('company_phone') is-invalid @enderror" placeholder="رقم هاتف الشركه" name="company_phone">
+                            <input type="text"
+                                   class="form-control @error('company_phone') is-invalid @enderror"
+                                   placeholder="رقم هاتف الشركه"
+                                   name="company_phone"
+                                   value="{{ old('company_phone') }}">
                             <span class="field-icon"><i class="fa-solid fa-phone"></i></span>
                             @error('company_phone')
                             <div class="invalid-feedback d-block">{{ $message }}</div>
@@ -458,7 +464,11 @@
                         </div>
 
                         <div class="custom-input">
-                            <input type="text" class="form-control @error('name') is-invalid @enderror" placeholder="اسم المدير" name="name">
+                            <input type="text"
+                                   class="form-control @error('name') is-invalid @enderror"
+                                   placeholder="اسم المدير"
+                                   name="name"
+                                   value="{{ old('name') }}">
                             <span class="field-icon"><i class="fa-solid fa-user"></i></span>
                             @error('name')
                             <div class="invalid-feedback d-block">{{ $message }}</div>
@@ -466,7 +476,11 @@
                         </div>
 
                         <div class="custom-input">
-                            <input type="text" class="form-control @error('phone') is-invalid @enderror" placeholder="رقم هاتف المدير" name="phone">
+                            <input type="text"
+                                   class="form-control @error('phone') is-invalid @enderror"
+                                   placeholder="رقم هاتف المدير"
+                                   name="phone"
+                                   value="{{ old('phone') }}">
                             <span class="field-icon"><i class="fa-solid fa-phone"></i></span>
                             @error('phone')
                             <div class="invalid-feedback d-block">{{ $message }}</div>
@@ -474,7 +488,11 @@
                         </div>
 
                         <div class="custom-password">
-                            <input type="password" class="form-control @error('password') is-invalid @enderror" placeholder="كلمة السر" name="password" id="passwordField">
+                            <input type="password"
+                                   class="form-control @error('password') is-invalid @enderror"
+                                   placeholder="كلمة السر"
+                                   name="password"
+                                   id="passwordField">
                             <button type="button" class="toggle-password" aria-label="إظهار أو إخفاء كلمة المرور">
                                 <i class="fa-regular fa-eye-slash"></i>
                             </button>
@@ -484,7 +502,11 @@
                         </div>
 
                         <div class="custom-password">
-                            <input type="password" class="form-control @error('password_confirmation') is-invalid @enderror" placeholder="تاكيد كلمه السر" name="password_confirmation" id="passwordField2">
+                            <input type="password"
+                                   class="form-control @error('password_confirmation') is-invalid @enderror"
+                                   placeholder="تاكيد كلمه السر"
+                                   name="password_confirmation"
+                                   id="passwordField2">
                             <button type="button" class="toggle-password" aria-label="إظهار أو إخفاء كلمة المرور">
                                 <i class="fa-regular fa-eye-slash"></i>
                             </button>
@@ -493,11 +515,13 @@
                             @enderror
                         </div>
 
-                        <input style="display:none;" class="form-check-input"
+                        <input style="display:none;"
+                               class="form-check-input"
                                type="checkbox"
                                id="remember"
                                name="privacy_and_policy"
-                               value="1" checked>
+                               value="1"
+                               checked>
 
                         <button type="submit" class="btn w-100 submit-btn" id="registerSubmitBtn">
                             <span class="btn-text">
