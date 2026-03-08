@@ -10,6 +10,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800&display=swap">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="{{asset('css/admin/toast.css')}}" />
 
     <style>
         :root{
@@ -478,6 +479,25 @@
         </div>
     </div>
 </div>
+@if(session('login_failed'))
+    <div id="loginSuccessBar" class="login-success-bar show">
+        {{ session('login_failed') }}
+    </div>
+@endif
+
+@if(session('logout'))
+    <div id="loginSuccessBar" class="login-success-bar show">
+        {{ session('logout') }}
+    </div>
+@endif
+
+
+@if(session('login_fail'))
+    <div id="loginSuccessBar" class="login-success-bar show">
+        {{ session('login_fail') }}
+    </div>
+@endif
+
 
 <script>
     const splashLogo = document.querySelector('#splash img');
@@ -509,5 +529,6 @@
     });
 </script>
 
+@include('admin.layouts.toast')
 </body>
 </html>

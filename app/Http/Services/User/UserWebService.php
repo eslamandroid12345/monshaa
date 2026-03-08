@@ -17,11 +17,10 @@ class UserWebService extends UserService
 
             DB::commit();
             auth()->attempt($request->only('phone', 'password'));
-            toastr()->success('تم إضافة بيانات الشركة والمدير بنجاح والنسخه مفعله لمده 7 ايام من يوم التسجيل');
-            return redirect()->route('admin.dashboard');
+            return redirect()->route('admin.dashboard')->with('register','تم إضافة بيانات الشركة والمدير بنجاح والنسخه مفعله لمده 7 ايام من يوم التسجيل');
         } catch (\Exception $exception) {
             DB::rollBack();
-            toastr()->error('حدث خطاء اثناء تسجيل النسخه التجريبيه للشركه......');
+            return redirect()->back()->with('register_fail','حدث خطاء اثناء تسجيل النسخه التجريبيه للشركه!');
         }
     }
 
@@ -30,8 +29,7 @@ class UserWebService extends UserService
         try {
             $token = auth()->attempt($request->only('phone', 'password'));
             if (!$token) {
-                toastr()->error('بيانات الدخول غير صحيحة برجاء إدخال البيانات صحيحة وحاول مرة أخرى');
-                return redirect()->back();
+                return redirect()->back()->with('login_failed','بيانات الدخول غير صحيحة برجاء إدخال البيانات صحيحة وحاول مرة أخرى');
             }
 
             $auth = auth()->user();
@@ -43,20 +41,18 @@ class UserWebService extends UserService
             }
 
             $message = $this->getLoginSuccessMessage($auth);
-            toastr()->success($message);
-            return redirect()->route('admin.dashboard');
+            return redirect()->route('admin.dashboard')->with('login',$message);
 
         } catch (\Exception $exception) {
-            toastr()->error('يوجد خطاء ما في بيانات الارسال بالسيرفر');
-            return redirect()->back();
+            return redirect()->back()->with('login_fail','حدث خطاء اثناء تسجيل الدخول يرجي اعاده المحاوله!');
+
         }
     }
 
     public function logout()
     {
        auth()->logout();
-        toastr()->success('تم تسجيل الخروج بنجاح');
-        return redirect()->route('admin.login.view');
+        return redirect()->route('admin.login.view')->with('logout','تم تسجيل الخروج بنجاح!');
 
     }
 }

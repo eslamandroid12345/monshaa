@@ -13,6 +13,7 @@
 
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+    <link rel="stylesheet" href="{{asset('css/admin/toast.css')}}" />
 
     <style>
         body{
@@ -704,6 +705,20 @@
     </main>
 </div>
 
+<audio id="sound" src="{{ asset('sounds/eventually-590.mp3') }}"></audio>
+
+@if(session('login'))
+    <div id="loginSuccessBar" class="login-success-bar show">
+        {{ session('login') }}
+    </div>
+@endif
+
+@if(session('register'))
+    <div id="loginSuccessBar" class="login-success-bar show">
+        {{ session('register') }}
+    </div>
+@endif
+
 <script>
     // Sidebar toggle
     const layout = document.getElementById("layout");
@@ -760,5 +775,20 @@
     });
 </script>
 
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const message = document.getElementById("loginSuccessBar");
+        if(message){
+            const sound = document.getElementById("sound");
+            if(sound){
+                sound.play();
+            }
+
+        }
+
+    });
+</script>
+
+@include('admin.layouts.toast')
 </body>
 </html>
