@@ -9,7 +9,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
 
     <!-- Google Font Cairo -->
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800&display=swap"
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800&display=swap">
 
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
@@ -374,8 +374,8 @@
                 </div>
 
                 <div class="user-info">
-                    <div class="user-name">{{auth()->user()->name}}</div>
-                    <div class="user-role">{{auth()->user()->is_admin == 1 ? 'المسؤول الرئيسي' : auth()->user()->job_title}} </div>
+                    <div class="user-name">    {{ auth()->user()->company?->company_name }}</div>
+                    <div class="user-role">    {{ auth()->user()->name }} </div>
                 </div>
             </div>
         </div>
@@ -601,106 +601,104 @@
             </div>
         </header>
 
-        <!-- Page Title -->
-        <div class="page-title">
-            <h1>
-                شركة -
-                <span dir="auto">
-                {{ auth()->user()->company?->company_name }}
-            </span>
-            </h1>
-
-            <p>مرحباً بعودتك! إليك ملخص سريع للمنصة.</p>
-        </div>
 
         <!-- HOME CARDS -->
         <section class="home-grid">
 
-        @if(auth()->user()->is_admin == 1 || in_array('tenants', json_decode(auth()->user()->employee_permissions, true) ?? []))
 
-            <a href="#" class="home-card">
-                <div class="home-card-icon"><i class="fa-solid fa-house"></i></div>
-                <div class="home-card-title">المستأجرين</div>
-                <div class="home-card-value">{{auth()->user()->company?->tenants_count}}</div>
-            </a>
+            @if(auth()->user()->is_admin == 1 || in_array('states', json_decode(auth()->user()->employee_permissions, true) ?? []))
+                <a href="#" class="home-card">
+                    <div class="home-card-icon"> <img src="{{asset('img/icons/building.png')}}"></div>
+                    <div class="home-card-title">عقارات البيع</div>
+                    <div class="home-card-value">{{auth()->user()->company?->selling_states_count}}</div>
+                </a>
+            @endif
+
+
+            @if(auth()->user()->is_admin == 1 || in_array('states', json_decode(auth()->user()->employee_permissions, true) ?? []))
+                <a href="#" class="home-card">
+                    <div class="home-card-icon"><img src="{{asset('img/icons/house.png')}}"></div>
+                    <div class="home-card-title">عقارات الإيجار</div>
+                    <div class="home-card-value">{{auth()->user()->company?->tenant_states_count}}</div>
+                </a>
+            @endif
+
+
+            @if(auth()->user()->is_admin == 1 || in_array('clients', json_decode(auth()->user()->employee_permissions, true) ?? []))
+                <a href="#" class="home-card">
+                    <div class="home-card-icon"><img src="{{asset('img/icons/employees.png')}}"></div>
+                    <div class="home-card-title">العملاء</div>
+                    <div class="home-card-value">{{auth()->user()->company?->clients_count}}</div>
+                </a>
             @endif
 
             @if(auth()->user()->is_admin == 1 || in_array('lands', json_decode(auth()->user()->employee_permissions, true) ?? []))
 
             <a href="#" class="home-card">
-                <div class="home-card-icon"><i class="fa-solid fa-map-location-dot"></i></div>
+                <div class="home-card-icon"><img src="{{asset('img/icons/land.png')}}"></div>
                 <div class="home-card-title">الأراضي</div>
                 <div class="home-card-value">{{auth()->user()->company?->lands_count}}</div>
             </a>
             @endif
 
-            @if(auth()->user()->is_admin == 1 || in_array('clients', json_decode(auth()->user()->employee_permissions, true) ?? []))
-            <a href="#" class="home-card">
-                <div class="home-card-icon"><i class="fa-solid fa-users"></i></div>
-                <div class="home-card-title">العملاء</div>
-                <div class="home-card-value">{{auth()->user()->company?->clients_count}}</div>
-            </a>
-            @endif
 
-            @if(auth()->user()->is_admin == 1 || in_array('states', json_decode(auth()->user()->employee_permissions, true) ?? []))
-            <a href="#" class="home-card">
-                <div class="home-card-icon"><i class="fa-solid fa-house-circle-check"></i></div>
-                <div class="home-card-title">عقارات الإيجار</div>
-                <div class="home-card-value">{{auth()->user()->company?->tenant_states_count}}</div>
-            </a>
-            @endif
+                @if(auth()->user()->is_admin == 1 || in_array('tenants', json_decode(auth()->user()->employee_permissions, true) ?? []))
 
-            @if(auth()->user()->is_admin == 1 || in_array('states', json_decode(auth()->user()->employee_permissions, true) ?? []))
-            <a href="#" class="home-card">
-                <div class="home-card-icon"> <i class="fa-solid fa-city"></i></div>
-                <div class="home-card-title">عقارات البيع</div>
-                <div class="home-card-value">{{auth()->user()->company?->selling_states_count}}</div>
-            </a>
-            @endif
-
-            @if(auth()->user()->is_admin == 1 || in_array('profits', json_decode(auth()->user()->employee_permissions, true) ?? []))
-
-            <a href="#" class="home-card">
-                <div class="home-card-icon"><i class="fa-solid fa-sack-dollar"></i></div>
-                <div class="home-card-title">الأرباح</div>
-                <div class="home-card-value">{{auth()->user()->company?->profitsCount}}</div>
-            </a>
-            @endif
+                    <a href="#" class="home-card">
+                        <div class="home-card-icon"><img src="{{asset('img/icons/person.png')}}"></div>
+                        <div class="home-card-title">المستأجرين</div>
+                        <div class="home-card-value">{{auth()->user()->company?->tenants_count}}</div>
+                    </a>
+                @endif
 
 
-            @if(auth()->user()->is_admin == 1 || in_array('expenses', json_decode(auth()->user()->employee_permissions, true) ?? []))
-            <a href="#" class="home-card">
-                <div class="home-card-icon"><i class="fa-solid fa-hand-holding-dollar"></i></div>
-                <div class="home-card-title">المصروفات</div>
-                <div class="home-card-value">{{auth()->user()->company?->expenses_count}}</div>
-            </a>
-            @endif
 
+                @if(auth()->user()->is_admin == 1 || in_array('tenant_contracts', json_decode(auth()->user()->employee_permissions, true) ?? []))
+                    <a href="#" class="home-card">
+                        <div class="home-card-icon"><img src="{{asset('img/icons/lease.png')}}"></div>
+                        <div class="home-card-title">عقود الإيجار</div>
+                        <div class="home-card-value">{{auth()->user()->company?->tenant_contracts_count}}</div>
+                    </a>
+                @endif
 
-            @if(auth()->user()->is_admin == 1 || in_array('revenue', json_decode(auth()->user()->employee_permissions, true) ?? []))
-            <a href="#" class="home-card">
-                <div class="home-card-icon"><i class="fa-solid fa-coins"></i></div>
-                <div class="home-card-title">الإيرادات</div>
-                <div class="home-card-value">{{auth()->user()->company?->revenues_count}}</div>
-            </a>
-            @endif
 
             @if(auth()->user()->is_admin == 1 || in_array('employees', json_decode(auth()->user()->employee_permissions, true) ?? []))
 
             <a href="#" class="home-card">
-                <div class="home-card-icon"><i class="fa-solid fa-people-group"></i></div>
+                <div class="home-card-icon"><img src="{{asset('img/icons/people.png')}}"></div>
                 <div class="home-card-title">الموظفين</div>
                 <div class="home-card-value">{{auth()->user()->company?->employees_count}}</div>
             </a>
             @endif
 
-            @if(auth()->user()->is_admin == 1 || in_array('tenant_contracts', json_decode(auth()->user()->employee_permissions, true) ?? []))
-            <a href="#" class="home-card">
-                <div class="home-card-icon"><i class="fa-solid fa-file-signature"></i></div>
-                <div class="home-card-title">عقود الإيجار</div>
-                <div class="home-card-value">{{auth()->user()->company?->tenant_contracts_count}}</div>
-            </a>
-            @endif
+                @if(auth()->user()->is_admin == 1 || in_array('revenue', json_decode(auth()->user()->employee_permissions, true) ?? []))
+                    <a href="#" class="home-card">
+                        <div class="home-card-icon"><img src="{{asset('img/icons/hu.png')}}"></div>
+                        <div class="home-card-title">الإيرادات</div>
+                        <div class="home-card-value">{{auth()->user()->company?->revenues_count}}</div>
+                    </a>
+                @endif
+
+
+
+                @if(auth()->user()->is_admin == 1 || in_array('expenses', json_decode(auth()->user()->employee_permissions, true) ?? []))
+                    <a href="#" class="home-card">
+                        <div class="home-card-icon"><img src="{{asset('img/icons/give.png')}}"></div>
+                        <div class="home-card-title">المصروفات</div>
+                        <div class="home-card-value">{{auth()->user()->company?->expenses_count}}</div>
+                    </a>
+                @endif
+
+                @if(auth()->user()->is_admin == 1 || in_array('profits', json_decode(auth()->user()->employee_permissions, true) ?? []))
+
+                    <a href="#" class="home-card">
+                        <div class="home-card-icon"><img src="{{asset('img/icons/mo.png')}}"></div>
+                        <div class="home-card-title">الأرباح</div>
+                        <div class="home-card-value">{{auth()->user()->company?->profitsCount}}</div>
+                    </a>
+                @endif
+
+
 
         </section>
     </main>

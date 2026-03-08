@@ -1,6 +1,6 @@
 <div class="p-4">
     <div class="panel-head">
-        <div class="icon"><i class="fa-solid fa-users"></i></div>
+        <div class="icon"><img src="{{asset('img/icons/employees.png')}}"></div>
         <p class="panel-title">تعديل بيانات العميل</p>
     </div>
 

@@ -380,7 +380,7 @@
     <!-- Right panel (Desktop Add) -->
     <div class="panel">
         <div class="panel-head">
-            <div class="icon">  <i class="fa-solid fa-sack-dollar"></i></div>
+            <div class="icon">  <img src="{{asset('img/icons/give.png')}}"></div>
             <p class="panel-title">تسجيل المصروفات</p>
         </div>
 
@@ -508,7 +508,7 @@
             <div class="modal-body p-0">
                 <div class="panel-modal">
                     <div class="panel-head">
-                        <div class="icon">  <i class="fa-solid fa-sack-dollar"></i></div>
+                        <div class="icon">  <img src="{{asset('img/icons/give.png')}}"></div>
                         <p class="panel-title">تسجيل المصروفات</p>
                     </div>
 

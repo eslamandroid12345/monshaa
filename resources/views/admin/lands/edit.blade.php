@@ -1,6 +1,6 @@
 <div class="p-4">
     <div class="panel-head">
-        <div class="icon"><i class="fa-solid fa-map-location-dot"></i></div>
+        <div class="icon"><img src="{{asset('img/icons/land.png')}}"></div>
         <p class="panel-title">تعديل بيانات الارض</p>
     </div>
 

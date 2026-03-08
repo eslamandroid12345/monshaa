@@ -374,7 +374,7 @@
     <!-- Right panel (Desktop Add) -->
     <div class="panel">
         <div class="panel-head">
-            <div class="icon"><i class="fa-solid fa-file-signature"></i></div>
+            <div class="icon"><img src="{{asset('img/icons/lease.png')}}"></div>
             <p class="panel-title">تسجيل عقد الايجار</p>
         </div>
 
@@ -797,7 +797,7 @@
             <div class="modal-body p-0">
                 <div class="panel-modal">
                     <div class="panel-head">
-                        <div class="icon"><i class="fa-solid fa-file-signature"></i></div>
+                        <div class="icon"><img src="{{asset('img/icons/lease.png')}}"></div>
                         <p class="panel-title">تسجيل عقود الايجار</p>
                     </div>
 

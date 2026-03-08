@@ -124,7 +124,7 @@
     <div class="report-box">
 
         <div class="report-icon">
-            <i class="fa-solid fa-chart-line"></i>
+            <img src="{{asset('img/icons/analytics.png')}}">
         </div>
 
         <button class="report-btn" type="button" onclick="location.href='{{route('admin.reports.states')}}'">العقارات</button>

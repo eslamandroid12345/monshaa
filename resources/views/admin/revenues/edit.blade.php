@@ -1,6 +1,6 @@
 <div class="p-4">
     <div class="panel-head">
-        <div class="icon"> <i class="fa-solid fa-coins"></i></div>
+        <div class="icon"> <img src="{{asset('img/icons/hu.png')}}"></div>
         <p class="panel-title">تعديل بيانات الايراد</p>
     </div>
 

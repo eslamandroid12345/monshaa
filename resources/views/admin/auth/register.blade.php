@@ -1,373 +1,378 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>تسجيل حساب تجريبي</title>
-
-    <!-- Bootstrap RTL -->
+    <title>تسجيل الحساب</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
-
-    <!-- Cairo Font -->
-    <!-- <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&display=swap" rel="stylesheet"> -->
-
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
-    <link rel="stylesheet" href="{{ asset('css/admin/register.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
     <style>
-        .btn-login{
-            background-color: #3f5564 !important;
-            border-color: #3f5564 !important;
-            color: #fff;
+
+        :root{
+            --page-bg:#f3f3f3;
+            --primary:#6e98b6;
+            --primary-dark:#5a88a8;
+            --border:#c3dde6;
+            --text-soft:#7aa3b8;
+            --placeholder:#b7b7b7;
         }
 
-        .btn-login:hover{
-            background-color: #1e293b !important;
-            border-color: #1e293b !important;
+        *{
+            box-sizing:border-box
         }
 
-        .btn-login:focus,
-        .btn-login:active{
-            background-color: #1e293b !important;
-            border-color: #1e293b !important;
-            box-shadow: 0 0 0 0.2rem rgba(51,65,85,0.25);
+        body{
+            margin:0;
+            font-family:"Cairo",system-ui,-apple-system,"Segoe UI",Tahoma,Arial;
+            min-height:100vh;
+            color:#4b5563;
+            background:#fff;
         }
 
+        /* splash screen */
+
+        #splash{
+            position:fixed;
+            inset:0;
+            background:#fff;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            flex-direction:column;
+            z-index:9999;
+        }
+
+        /* logo animation */
+
+        #splash img{
+            width:160px;
+            margin-bottom:20px;
+            animation:logoSpin 2s ease-in-out forwards;
+        }
+
+        @keyframes logoSpin{
+
+            0%{
+                transform:scale(0.7) rotate(0deg);
+                opacity:0;
+            }
+
+            40%{
+                transform:scale(1.2) rotate(180deg);
+                opacity:1;
+            }
+
+            100%{
+                transform:scale(1) rotate(360deg);
+                opacity:1;
+            }
+
+        }
+
+        /* hide main page at first */
+
+        #mainPage{
+            display:none;
+        }
+
+        /* layout */
+
+        .auth-wrapper{
+            min-height:100vh;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            padding:28px 18px;
+        }
+
+        .auth-card{
+            width:100%;
+            max-width:1040px;
+            border-radius:28px;
+        }
+
+        .auth-grid{
+            display:grid;
+            grid-template-columns:1fr 1fr;
+            gap:28px;
+            align-items:center;
+        }
+
+        .form-side{
+            padding:8px 18px;
+        }
+
+        .brand-icon{
+            width:64px;
+            height:64px;
+            margin:0 auto 8px;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            font-size:46px;
+        }
+
+        .brand-icon img{
+            max-width:100%;
+        }
+
+        .form-title{
+            text-align:center;
+            color:var(--text-soft);
+            font-size:20px;
+            font-weight:700;
+            margin-bottom:18px;
+        }
+
+        .custom-input,
+        .custom-password{
+            position:relative;
+            margin-bottom:18px;
+        }
+
+        .custom-input .form-control,
+        .custom-password .form-control{
+            height:44px;
+            border-radius:4px;
+            border:2px solid var(--border);
+            background:transparent;
+            padding-right:18px;
+            padding-left:42px;
+            font-size:15px;
+            font-weight:600;
+        }
+
+        .field-icon,
+        .toggle-password{
+            position:absolute;
+            top:50%;
+            transform:translateY(-50%);
+            color:#9b9b9b;
+            font-size:14px;
+        }
+
+        .field-icon{
+            left:14px;
+        }
+
+        .toggle-password{
+            left:14px;
+            background:none;
+            border:0;
+            cursor:pointer;
+        }
+
+        .submit-btn{
+            margin-top:18px;
+            height:44px;
+            border:0;
+            border-radius:4px;
+            background:var(--primary);
+            color:#fff;
+            font-weight:700;
+            font-size:17px;
+        }
+
+        .submit-btn:hover{
+            background:var(--primary-dark);
+        }
+
+        .btn-spinner{
+            display:none;
+            align-items:center;
+            gap:8px;
+        }
+
+        .submit-btn.loading .btn-text{
+            display:none;
+        }
+
+        .submit-btn.loading .btn-spinner{
+            display:inline-flex;
+        }
+
+        .illustration-side{
+            display:flex;
+            align-items:center;
+            justify-content:center;
+        }
+
+        .illustration-box{
+            max-width:470px;
+        }
+
+        .illustration-box img{
+            width:100%;
+        }
+
+        .auth-footer{
+            text-align:center;
+            margin-top:10px;
+            font-size:15px;
+            font-weight:700;
+            color:var(--text-soft);
+        }
+
+        .auth-footer a{
+            color:var(--primary);
+            text-decoration:none;
+        }
     </style>
 </head>
-
 <body>
+<!-- splash screen -->
 
-<div class="login-shell">
-    <div class="login-card">
+<div id="splash">
+    <img src="{{asset('img/icons/monshaa.jpg')}}">
+</div>
 
-        <!-- LEFT: Branding -->
-        <section class="brand-side">
-            <div>
-                <div class="brand-top">
-                    <div class="brand-logo">
-                        <i class="fa-solid fa-hospital"></i>
-                    </div>
-                    <div>
-                        <div class="brand-name">عقارك</div>
-                        <div class="brand-sub">اداره عقاراتك بكل سهوله</div>
-                    </div>
-                </div>
+<div id="mainPage">
 
-                <div class="brand-mid">
-                    <h2>اهلا بك في تطبيق عقارك</h2>👋</h2>
-                    <p>
-                        سجّل حساب شركتك الآن وابدأ إدارة عقاراتك بكفاءة وسهولة تامة.
-                    </p>
-
-                    <div class="brand-illustration">
-
-                        <div class="mini-stat">
-                            <div class="v"><i class="fa-solid fa-city"></i></div>
-                            <div class="t">العقارات</div>
-                        </div>
-
-                        <div class="mini-stat">
-                            <div class="v"><i class="fa-solid fa-map-location-dot"></i></div>
-                            <div class="t">الاراضي</div>
-                        </div>
-
-                        <div class="mini-stat">
-                            <div class="v"><i class="fa-solid fa-user-check"></i></div>
-                            <div class="t">المستاجرين</div>
-                        </div>
-
-                        <div class="mini-stat">
-                            <div class="v"><i class="fa-solid fa-file-signature"></i></div>
-                            <div class="t">عقود الايجار</div>
-                        </div>
-
-                        <div class="mini-stat">
-                            <div class="v"><i class="fa-solid fa-file-circle-xmark"></i></div>
-                            <div class="t">العقود المنتهيه</div>
-                        </div>
-
-                        <div class="mini-stat">
-                            <div class="v"><i class="fa-solid fa-receipt"></i></div>
-                            <div class="t">سندات القبض</div>
-                        </div>
-
-                        <div class="mini-stat">
-                            <div class="v"><i class="fa-solid fa-money-bill-transfer"></i></div>
-                            <div class="t">سندات الصرف</div>
-                        </div>
-
-                        <div class="mini-stat">
-                            <div class="v"><i class="fa-solid fa-wallet"></i></div>
-                            <div class="t">الايردات</div>
-                        </div>
-
-
-                        <div class="mini-stat">
-                            <div class="v"><i class="fa-solid fa-sack-dollar"></i></div>
-                            <div class="t">المصروفات</div>
-                        </div>
-
-
-                        <div class="mini-stat">
-                            <div class="v"><i class="fa-solid fa-percent"></i></div>
-                            <div class="t">عموله الموظفين</div>
-                        </div>
-
-                        <div class="mini-stat">
-                            <div class="v"> <i class="fa-regular fa-bell"></i></div>
-                            <div class="t">الاشعارات</div>
-                        </div>
-
-                        <div class="mini-stat">
-                            <div class="v"><i class="fa-solid fa-users"></i></div>
-                            <div class="t">الموظفين</div>
-                        </div>
-
-                        <div class="mini-stat">
-                            <div class="v"><i class="fa-solid fa-user-group"></i></div>
-                            <div class="t">العملاء</div>
-                        </div>
-
-                        <div class="mini-stat">
-                            <div class="v"><i class="fa-solid fa-chart-column"></i></div>
-                            <div class="t">التقارير</div>
-                        </div>
-
-
-                    </div>
+<div class="auth-wrapper">
+    <div class="auth-card">
+        <div class="auth-grid">
+            <div class="illustration-side">
+                <div class="illustration-box">
+                    <img src="{{ asset('img/icons/qqq.jpg') }}">
                 </div>
             </div>
 
-            <div class="brand-footer">
-                © <span id="y"></span> عقارك - جميع الحقوق محفوظة
-            </div>
-        </section>
-
-        <!-- RIGHT: Form -->
-        <section class="form-side">
-            <div class="form-title">
-                <h1>تسجيل حساب تجريبي</h1>
-                <p>أنشئ حساب شركتك اليوم واستمتع بإدارة عقاراتك بكل احترافية وسلاسة.</p>
-            </div>
-
-            <form action="{{route('admin.register')}}" method="POST" autocomplete="off">
-                @csrf
-                @method('POST')
-
-                <div class="field">
-                    <label class="form-label fw-bold mb-2">اسم الشركة</label>
-                    <div class="input-wrap">
-                        <i class="fa-solid fa-building prefix"></i>
-                        <input
-                            class="form-control custom @error('company_name') is-invalid @enderror"
-                            type="text"
-                            name="company_name"
-                            value="{{ old('company_name')}}"
-                            placeholder="اسم الشركة">
-                    </div>
-                    @error('company_name')
-                    <div class="invalid-feedback d-block">{{ $message }}</div>
-                    @enderror
+            <div class="form-side">
+                <div class="brand-icon">
+                    <img src="{{ asset('img/icons/employees.png') }}">
                 </div>
 
-                <div class="field">
-                    <label class="form-label fw-bold mb-2">عنوان الشركة</label>
-                    <div class="input-wrap">
-                        <i class="fa-solid fa-location-dot prefix"></i>
-                        <input
-                            class="form-control custom @error('company_address') is-invalid @enderror"
-                            type="text"
-                            name="company_address"
-                            value="{{ old('company_address')}}"
-                            placeholder="عنوان الشركة">
-                    </div>
-                    @error('company_address')
-                    <div class="invalid-feedback d-block">{{ $message }}</div>
-                    @enderror
-                </div>
+                <div class="form-title">تسجيل الحساب</div>
 
-                <div class="field">
-                    <label class="form-label fw-bold mb-2">رقم هاتف الشركة</label>
-                    <div class="input-wrap">
-                        <i class="fa-solid fa-phone prefix"></i>
-                        <input
-                            class="form-control custom @error('company_phone') is-invalid @enderror"
-                            type="text"
-                            name="company_phone"
-                            value="{{ old('company_phone') }}"
-                            placeholder="رقم هاتف الشركة">
-                    </div>
-                    @error('company_phone')
-                    <div class="invalid-feedback d-block">{{ $message }}</div>
-                    @enderror
-                </div>
+                <form id="registerForm" novalidate action="{{ route('admin.register') }}" method="POST" autocomplete="off">
+                    @csrf
+                    @method('POST')
 
-                <div class="field">
-                    <label class="form-label fw-bold mb-2">اسم المدير</label>
-                    <div class="input-wrap">
-                        <i class="fa-solid fa-user-tie prefix"></i>
-                        <input
-                            class="form-control custom @error('name') is-invalid @enderror"
-                            type="text"
-                            name="name"
-                            value="{{ old('name') }}"
-                            placeholder="اسم المدير">
+                    <div class="custom-input">
+                        <input type="text" class="form-control @error('company_name') is-invalid @enderror" placeholder="اسم الشركه" name="company_name">
+                        <span class="field-icon"><i class="fa-solid fa-house"></i></span>
+                        @error('company_name')
+                        <div class="invalid-feedback d-block">{{ $message }}</div>
+                        @enderror
                     </div>
-                    @error('name')
-                    <div class="invalid-feedback d-block">{{ $message }}</div>
-                    @enderror
-                </div>
 
-                <div class="field">
-                    <label class="form-label fw-bold mb-2">رقم هاتف المدير</label>
-                    <div class="input-wrap">
-                        <i class="fa-solid fa-mobile-screen-button prefix"></i>
-                        <input
-                            class="form-control custom @error('phone') is-invalid @enderror"
-                            type="text"
-                            name="phone"
-                            value="{{ old('phone') }}"
-                            placeholder="رقم هاتف المدير">
+                    <div class="custom-input">
+                        <input type="text" class="form-control @error('company_address') is-invalid @enderror" placeholder="عنوان الشركه" name="company_address">
+                        <span class="field-icon"><i class="fa-solid fa-location-dot"></i></span>
+                        @error('company_address')
+                        <div class="invalid-feedback d-block">{{ $message }}</div>
+                        @enderror
                     </div>
-                    @error('phone')
-                    <div class="invalid-feedback d-block">{{ $message }}</div>
-                    @enderror
-                </div>
 
-                <div class="field">
-                    <label class="form-label fw-bold mb-2">كلمة المرور</label>
-                    <div class="input-wrap">
-                        <i class="fa-solid fa-lock prefix"></i>
-                        <input
-                            class="form-control custom @error('password') is-invalid @enderror"
-                            id="password"
-                            type="password"
-                            name="password"
-                            placeholder="أدخل كلمة المرور">
-                        <button type="button" class="toggle-pass" id="togglePass" aria-label="show password">
-                            <i class="fa-regular fa-eye"></i>
+                    <div class="custom-input">
+                        <input type="text" class="form-control @error('company_phone') is-invalid @enderror" placeholder="رقم هاتف الشركه" name="company_phone">
+                        <span class="field-icon"><i class="fa-solid fa-phone"></i></span>
+                        @error('company_phone')
+                        <div class="invalid-feedback d-block">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <div class="custom-input">
+                        <input type="text" class="form-control @error('name') is-invalid @enderror" placeholder="اسم المدير" name="name">
+                        <span class="field-icon"><i class="fa-solid fa-user"></i></span>
+                        @error('name')
+                        <div class="invalid-feedback d-block">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <div class="custom-input">
+                        <input type="text" class="form-control @error('phone') is-invalid @enderror" placeholder="رقم هاتف المدير" name="phone">
+                        <span class="field-icon"><i class="fa-solid fa-phone"></i></span>
+                        @error('phone')
+                        <div class="invalid-feedback d-block">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <div class="custom-password">
+                        <input type="password" class="form-control @error('password') is-invalid @enderror" placeholder="كلمة السر" name="password" id="passwordField">
+                        <button type="button" class="toggle-password" aria-label="إظهار أو إخفاء كلمة المرور">
+                            <i class="fa-regular fa-eye-slash"></i>
                         </button>
+                        @error('password')
+                        <div class="invalid-feedback d-block">{{ $message }}</div>
+                        @enderror
                     </div>
-                    @error('password')
-                    <div class="invalid-feedback d-block">{{ $message }}</div>
-                    @enderror
-                </div>
 
-                <div class="field">
-                    <label class="form-label fw-bold mb-2">تأكيد كلمة المرور</label>
-                    <div class="input-wrap">
-                        <i class="fa-solid fa-lock prefix"></i>
-                        <input
-                            class="form-control custom @error('password_confirmation') is-invalid @enderror"
-                            id="password_confirmation"
-                            type="password"
-                            name="password_confirmation"
-                            placeholder="تأكيد كلمة المرور">
-                        <button type="button" class="toggle-pass" id="togglePass2" aria-label="show password">
-                            <i class="fa-regular fa-eye"></i>
+                    <div class="custom-password">
+                        <input type="password" class="form-control @error('password_confirmation') is-invalid @enderror" placeholder="تاكيد كلمه السر" name="password_confirmation" id="passwordField2">
+                        <button type="button" class="toggle-password" aria-label="إظهار أو إخفاء كلمة المرور">
+                            <i class="fa-regular fa-eye-slash"></i>
                         </button>
-                    </div>
-                    @error('password_confirmation')
-                    <div class="invalid-feedback d-block">{{ $message }}</div>
-                    @enderror
-                </div>
-
-                <div class="row-actions">
-                    <div class="form-check">
-                        <input class="form-check-input @error('privacy_and_policy') is-invalid @enderror"
-                               type="checkbox"
-                               id="remember"
-                               name="privacy_and_policy"
-                               value="1"
-                            {{ old('privacy_and_policy') ? 'checked' : '' }}>
-                        <label class="form-check-label" for="remember">الموافقة على الشروط والسياسات</label>
+                        @error('password_confirmation')
+                        <div class="invalid-feedback d-block">{{ $message }}</div>
+                        @enderror
                     </div>
 
-                    @error('privacy_and_policy')
-                    <div class="invalid-feedback d-block">{{ $message }}</div>
-                    @enderror
+                    <input style="display:none;" class="form-check-input"
+                           type="checkbox"
+                           id="remember"
+                           name="privacy_and_policy"
+                           value="1" checked>
+
+                    <button type="submit" class="btn w-100 submit-btn" id="registerSubmitBtn">
+                        <span class="btn-text">
+                            <i class="fa-solid fa-right-to-bracket"></i>
+                            تسجيل الحساب
+                        </span>
+
+                        <span class="btn-spinner">
+                            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                            جاري تسجيل الحساب...
+                        </span>
+                    </button>
+                </form>
+
+                <div class="auth-footer">
+                    لديك حساب ؟
+                    <a href="{{route('admin.login.view')}}">تسجيل الدخول</a>
                 </div>
-
-                <button id="btnLogin" class="btn btn-primary w-100 btn-login" type="submit">
-                    <span class="btn-text">تسجيل الحساب</span>
-                    <span class="btn-spinner d-none">
-                    <span class="spinner-border spinner-border-sm"></span>
-                    برجاء الانتظار جاري تسجيل البيانات...
-                </span>
-                </button>
-
-                <div class="divider">أو</div>
-
-                <div class="help">
-                    لديك حساب بالفعل
-                    <a class="link" href="{{route('admin.login.view')}}">تسجيل الدخول</a>
-                </div>
-
-                <div class="help">
-                    لو عندك مشكلة في تسجيل الحساب التجريبي تواصل مع الدعم الفني.
-                    <a class="link" href="https://wa.me/201062933188">تواصل مع الدعم</a>
-                </div>
-            </form>
-        </section>
-
+            </div>
+        </div>
     </div>
+</div>
 </div>
 
 <script>
-    // year
-    document.getElementById("y").textContent = new Date().getFullYear();
+    /* splash */
 
-    // show/hide password
-    const pass = document.getElementById("password");
-    const toggle = document.getElementById("togglePass");
-    toggle.addEventListener("click", () => {
-        const isPass = pass.type === "password";
-        pass.type = isPass ? "text" : "password";
-        toggle.innerHTML = isPass
-            ? '<i class="fa-regular fa-eye-slash"></i>'
-            : '<i class="fa-regular fa-eye"></i>';
+    window.addEventListener("load",function(){
+
+        setTimeout(function(){
+
+            document.getElementById("splash").style.display="none";
+            document.getElementById("mainPage").style.display="block";
+
+        },2000);
+
     });
-</script>
+    document.querySelectorAll('.toggle-password').forEach(function(button) {
+        button.addEventListener('click', function() {
+            const input = this.previousElementSibling;
+            const isPassword = input.type === 'password';
 
-<script>
-    // show/hide confirmation password
-    const passwordConfirmation = document.getElementById("password_confirmation");
-    const togglePass2 = document.getElementById("togglePass2");
-    togglePass2.addEventListener("click", () => {
-        const isPass = passwordConfirmation.type === "password";
-        passwordConfirmation.type = isPass ? "text" : "password";
-        togglePass2.innerHTML = isPass
-            ? '<i class="fa-regular fa-eye-slash"></i>'
-            : '<i class="fa-regular fa-eye"></i>';
-    });
-</script>
+            input.type = isPassword ? 'text' : 'password';
 
-
-<script>
-    const form = document.querySelector('form');
-    const btnLogin = document.getElementById('btnLogin');
-    const btnDemo = document.getElementById('btnDemo');
-
-    function activateButtonLoader(button){
-        const text = button.querySelector('.btn-text');
-        const spinner = button.querySelector('.btn-spinner');
-
-        text.classList.add('d-none');
-        spinner.classList.remove('d-none');
-
-        button.disabled = true;
-    }
-
-    // تسجيل الدخول
-    form.addEventListener('submit', function () {
-        activateButtonLoader(btnLogin);
+            this.innerHTML = isPassword
+                ? '<i class="fa-regular fa-eye"></i>'
+                : '<i class="fa-regular fa-eye-slash"></i>';
+        });
     });
 
-    // تسجيل الحساب التجريبي
-    btnDemo.addEventListener('click', function () {
-        activateButtonLoader(btnDemo);
+    const registerForm = document.getElementById('registerForm');
+    const registerSubmitBtn = document.getElementById('registerSubmitBtn');
+
+    registerForm?.addEventListener('submit', function () {
+        registerSubmitBtn.disabled = true;
+        registerSubmitBtn.classList.add('loading');
     });
 </script>
 </body>
