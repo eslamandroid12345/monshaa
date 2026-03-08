@@ -87,7 +87,7 @@ class TenantContractRepository extends Repository implements TenantContractRepos
             ->where('is_expired','=',1)
             ->where('is_show','=',1)
             ->with(['company'])
-            ->paginate(16);
+            ->paginate(50);
     }
 
 

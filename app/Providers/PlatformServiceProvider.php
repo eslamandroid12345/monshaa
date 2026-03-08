@@ -20,6 +20,9 @@ use App\Http\Services\Report\ReportWebService;
 use App\Http\Services\State\StateMobileService;
 use App\Http\Services\State\StateService;
 use App\Http\Services\State\StateWebService;
+use App\Http\Services\TenantContract\TenantContractMobileService;
+use App\Http\Services\TenantContract\TenantContractService;
+use App\Http\Services\TenantContract\TenantContractWebService;
 use App\Http\Services\User\UserMobileService;
 use App\Http\Services\User\UserService;
 use App\Http\Services\User\UserWebService;
@@ -42,6 +45,7 @@ class PlatformServiceProvider extends ServiceProvider
         $this->app->singleton(LandService::class,$this->detectPlatform(LandWebService::class,LandMobileService::class));
         $this->app->singleton(EmployeeService::class,$this->detectPlatform(EmployeeWebService::class,EmployeeMobileService::class));
         $this->app->singleton(ExpenseService::class,$this->detectPlatform(ExpenseWebService::class,ExpenseMobileService::class));
+        $this->app->singleton(TenantContractService::class,$this->detectPlatform(TenantContractWebService::class,TenantContractMobileService::class));
     }
 
 

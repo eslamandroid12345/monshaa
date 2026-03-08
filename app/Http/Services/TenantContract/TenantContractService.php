@@ -16,18 +16,17 @@ use App\Repository\TenantRepositoryInterface;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 
-class TenantContractService
+abstract class TenantContractService
 {
 
     use Responser,FirebaseNotification;
-    private TenantContractRepositoryInterface $tenantContractRepository;
-    private TenantRepositoryInterface $tenantRepository;
-    private GetService $getService;
-    private ExpenseRepositoryInterface $expenseRepository;
+    protected TenantContractRepositoryInterface $tenantContractRepository;
+    protected TenantRepositoryInterface $tenantRepository;
+    protected GetService $getService;
+    protected ExpenseRepositoryInterface $expenseRepository;
 
     public function __construct(
         TenantContractRepositoryInterface $tenantContractRepository,
@@ -41,7 +40,7 @@ class TenantContractService
         $this->expenseRepository = $expenseRepository;
     }
 
-    public function allTenantContracts(): JsonResponse{
+    public function allTenantContracts(){
 
         try {
             return $this->getService->handle(resource: TenantContractResource::class,repository: $this->tenantContractRepository,method: 'allTenantContracts',message:'تم الحصول على بيانات جميع عقود الايجار بنجاح' );
@@ -52,7 +51,7 @@ class TenantContractService
         }
     }
 
-    public function tenantContractsExpired(): JsonResponse{
+    public function tenantContractsExpired(){
 
         try {
             return $this->getService->handle(resource: TenantContractResource::class,repository: $this->tenantContractRepository,method: 'tenantContractsExpired',message:'تم الحصول على بيانات جميع عقود الايجار المنتهيه بنجاح' );
@@ -65,7 +64,7 @@ class TenantContractService
         }
     }
 
-    public function  removeFromScreen($id): JsonResponse
+    public function  removeFromScreen($id)
     {
         $tenantContract = $this->tenantContractRepository->getById($id);
         if($tenantContract->is_expired == 0){
@@ -76,7 +75,7 @@ class TenantContractService
         return  $this->responseSuccess(data: null,code: 200,message: 'تم حذف العقد المنتهي من القائمه');
     }
 
-    public function create(StoreTenantRequest $tenantRequest,StoreTenantContractRequest $request): JsonResponse{
+    public function create(StoreTenantRequest $tenantRequest,StoreTenantContractRequest $request){
 
         DB::beginTransaction();
         try {
@@ -143,7 +142,7 @@ class TenantContractService
     }
 
 
-    public function update($id,UpdateTenantRequest $tenantRequest,UpdateTenantContractRequest $request): JsonResponse{
+    public function update($id,UpdateTenantRequest $tenantRequest,UpdateTenantContractRequest $request){
 
         DB::beginTransaction();
         try {
@@ -181,7 +180,7 @@ class TenantContractService
         }
     }
 
-    public function show($id): JsonResponse{
+    public function show($id){
 
         try {
             $tenantContract = $this->tenantContractRepository->getById($id);
@@ -194,7 +193,7 @@ class TenantContractService
 
     }
 
-    public function delete($id): JsonResponse{
+    public function delete($id){
 
         DB::beginTransaction();
         try {

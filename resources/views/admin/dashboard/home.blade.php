@@ -417,7 +417,7 @@
 
                 @if(auth()->user()->is_admin == 1 || in_array('tenant_contracts', json_decode(auth()->user()->employee_permissions, true) ?? []))
 
-                <a href="#" class="nav-item">
+                <a href="{{route('tenant.contracts.index')}}" class="nav-item">
                 <i class="fa-solid fa-file-signature"></i>
                 <span>عقود الإيجار</span>
             </a>
@@ -425,7 +425,7 @@
 
                 @if(auth()->user()->is_admin == 1 || in_array('expired_contracts', json_decode(auth()->user()->employee_permissions, true) ?? []))
 
-                <a href="#" class="nav-item">
+                <a href="{{route('admin.contracts.expired')}}" class="nav-item">
                 <i class="fa-solid fa-file-circle-xmark"></i>
                 <span>العقود المنتهية</span>
             </a>

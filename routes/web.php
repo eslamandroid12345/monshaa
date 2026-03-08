@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\Expense\ExpenseController;
 use App\Http\Controllers\Api\Land\LandController;
 use App\Http\Controllers\Api\Report\ReportController;
 use App\Http\Controllers\Api\State\StateController;
+use App\Http\Controllers\Api\TenantContract\TenantContractController;
 use App\Http\Controllers\Api\User\UserController;
 use App\Http\Controllers\Dashboard\AuthController as AdminAuthController;
 use App\Http\Controllers\Website\AuthController;
@@ -152,6 +153,21 @@ Route::group(['prefix' => 'admin'], function (){
     Route::delete('expense/revenue/delete/{id}',[ExpenseController::class,'delete'])
         ->middleware('permission:expenses|revenue')
         ->name('admin.expenses.revenue.delete');
+
+    //Expired Contracts
+    Route::get('expired-contracts',[TenantContractController::class,'tenantContractsExpired'])
+        ->middleware('permission:expired_contracts')
+        ->name('admin.contracts.expired');
+
+    Route::group(['middleware' => ['permission:tenant_contracts']], function (){
+
+        Route::get('all-tenant-contracts',[TenantContractController::class,'allTenantContracts'])->name('tenant.contracts.index');
+        Route::post('tenant-contract/create',[TenantContractController::class,'create'])->name('tenant.contracts.create');
+        Route::get('tenant-contract/show/{id}',[TenantContractController::class,'show'])->name('tenant.contracts.show');
+        Route::get('tenant-contract/edit/{id}',[TenantContractController::class,'edit'])->name('tenant.contracts.edit');
+        Route::post('tenant-contract/update/{id}',[TenantContractController::class,'update'])->name('tenant.contracts.update');
+        Route::delete('tenant-contract/delete/{id}',[TenantContractController::class,'delete'])->name('tenant.contracts.delete');
+    });
 
 });
 

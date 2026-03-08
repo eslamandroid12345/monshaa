@@ -57,12 +57,15 @@ class StateRepository extends Repository implements StateRepositoryInterface
             $q->where('user_id', '=',  request()->input('user_id'));
         });
 
+        $query->when(request()->filled('status'), function ($q)  {
+            $q->where('status', '=',  request()->input('status'));
+        });
+
         return $query
             ->orderByDesc('id')
             ->select(['*'])
             ->with(['user','company'])
             ->where('company_id','=',companyId())
-            ->where('status','=','waiting')
             ->paginate(50);
 
 

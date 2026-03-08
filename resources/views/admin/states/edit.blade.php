@@ -206,6 +206,26 @@
             @enderror
         </div>
 
+
+        <div class="mb-2">
+            <label class="form-label">الحاله</label>
+            <select name="status" class="form-select @error('status') is-invalid @enderror">
+                <option disabled {{ $state->status ? '' : 'selected' }}>الحاله</option>
+                <option value="waiting" {{ $state->status == 'waiting' ? 'selected' : '' }}>انتظار</option>
+                @if($state->department == 'rent')
+                    <option value="rent" {{ $state->status == 'rent' ? 'selected' : '' }}>تم الايجار</option>
+                @else
+                    <option value="sale" {{ $state->status == 'sale' ? 'selected' : '' }}>تم البيع</option>
+
+                @endif
+
+            </select>
+            @error('status')
+            <div class="invalid-feedback d-block">{{ $message }}</div>
+            @enderror
+        </div>
+
+
         <button class="btn-save js-submit-loader" type="submit">
             <span class="btn-text">
                 <i class="fa-solid fa-left-long"></i>

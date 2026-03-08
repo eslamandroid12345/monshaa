@@ -35,6 +35,7 @@ class StateRequest extends FormRequest
             'number_of_rooms' => 'nullable|integer',
             'advertise_details' => 'nullable|max:20000',
             'state_date_register' => 'required|date|date_format:Y-m-d',
+            'status' => 'nullable|in:waiting,rent,sale',
         ];
     }
 
@@ -65,6 +66,7 @@ class StateRequest extends FormRequest
             'state_date_register.required' => 'يرجى إدخال تاريخ تسجيل العقار.',
             'state_date_register.date' => 'يرجى إدخال تاريخ صحيح.',
             'state_date_register.date_format' => 'صيغة التاريخ يجب أن تكون (YYYY-MM-DD).',
+            'status.in' => 'حاله العقار غير صالحه!',
         ];
     }
 
@@ -87,6 +89,7 @@ class StateRequest extends FormRequest
             'number_of_rooms' => 'عدد الغرف',
             'advertise_details' => 'تفاصيل العقار',
             'state_date_register' => 'تاريخ تسجيل العقار',
+            'status' => 'حاله العقار',
         ];
     }
 

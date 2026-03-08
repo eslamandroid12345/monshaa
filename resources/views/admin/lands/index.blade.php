@@ -327,6 +327,7 @@
             <thead>
             <tr>
                 <th style="width: 260px;">العنوان</th>
+                <th style="width: 260px;">حاله الارض</th>
                 <th style="width: 160px;">سعر المتر</th>
                 <th style="width: 160px;">المساحه</th>
                 <th style="width: 160px;">التكلفه</th>
@@ -340,6 +341,13 @@
             @foreach($lands as $land)
              <tr data-id="{{ $land->id}}" style="cursor:pointer;">
                  <td class="c-id" onclick="window.location='{{ route('lands.show', $land->id) }}'">{{$land->address}}</td>
+                 <td class="c-real-state-type-label">
+                     @if($land->status == 'waiting')
+                         <span class="badge bg-danger"> لم يتم بيعها!</span>
+                     @else
+                         <span class="badge  bg-success">تم البيع</span>
+                     @endif
+                 </td>
                  <td class="c-id" onclick="window.location='{{ route('lands.show', $land->id) }}'">{{$land->price_of_one_meter}}</td>
                  <td class="c-id" onclick="window.location='{{ route('lands.show', $land->id) }}'">{{$land->size_in_metres}}</td>
                  <td class="c-id" onclick="window.location='{{ route('lands.show', $land->id) }}'">{{$land->total_cost}}</td>
@@ -593,6 +601,16 @@
                         <label class="form-label">كود الإعلان</label>
                         <input name="code" class="form-control" type="text" placeholder="">
                     </div>
+
+                        <div class="mb-2">
+                            <label class="form-label">الحاله</label>
+                            <select name="status" class="form-select">
+                                <option disabled>الحاله</option>
+                                <option value="waiting">انتظار</option>
+                                <option value="sale">تم البيع</option>
+                            </select>
+
+                        </div>
 
 
                     <button class="btn-save js-submit-loader" type="submit">

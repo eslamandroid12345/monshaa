@@ -329,6 +329,7 @@
             <thead>
             <tr>
                 <th style="width: 260px;">كود الاعلان</th>
+                <th style="width: 260px;">حاله العقار</th>
                 <th style="width: 260px;">العنوان</th>
                 <th style="width: 180px;">القسم</th>
                 <th style="width: 160px;">السعر</th>
@@ -343,6 +344,13 @@
             @foreach($states as $state)
              <tr data-id="{{ $state->id}}" style="cursor:pointer;">
                  <td class="c-id" onclick="window.location='{{ route('admin.state.show', $state->id) }}'">{{$state->id}}</td>
+                 <td class="c-real-state-type-label">
+                     @if($state->status == 'waiting')
+                         <span class="badge bg-danger"> {{$state->department == 'rent' ? 'لم يتم ايجاره!' : 'لم يتم بيعه!'}} </span>
+                     @else
+                         <span class="badge  bg-success">{{$state->department == 'rent' ? 'مستاجر' : 'تم بيعه'}}</span>
+                     @endif
+                 </td>
                 <td class="c-real-state-address" onclick="window.location='{{ route('admin.state.show', $state->id) }}'">{{$state->real_state_address}}</td>
                 <td class="c-department" onclick="window.location='{{ route('admin.state.show', $state->id) }}'">{{$state->department == 'rent' ? 'ايجار' : 'بيع'}}</td>
                 <td class="c-real-state-price" onclick="window.location='{{ route('admin.state.show', $state->id) }}'">{{$state->real_state_price}}</td>
@@ -677,6 +685,17 @@
                             <option value="real_state_company" {{ old('advertiser_type') == 'real_state_company' ? 'selected' : '' }}>شركه عقارات</option>
                         </select>
                     </div>
+
+                        <div class="mb-2">
+                            <label class="form-label">الحاله</label>
+                            <select name="status" class="form-select">
+                                <option disabled>الحاله</option>
+                                <option value="waiting">انتظار</option>
+                                <option value="rent">تم الايجار</option>
+                                <option value="sale">تم البيع</option>
+                            </select>
+
+                        </div>
 
                     <button class="btn-save js-submit-loader" type="submit">
                     <span class="btn-text">

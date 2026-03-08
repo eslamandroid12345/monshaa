@@ -56,12 +56,15 @@ class LandRepository extends Repository implements LandRepositoryInterface
             $q->where('user_id', '=',  request()->input('user_id'));
         });
 
+        $query->when(request()->filled('status'), function ($q)  {
+            $q->where('status', '=',  request()->input('status'));
+        });
+
         return $query
             ->latest()
             ->select(['*'])
             ->with(['user','company'])
             ->where('company_id','=',companyId())
-            ->where('status','=','waiting')
             ->paginate(50);
 
 

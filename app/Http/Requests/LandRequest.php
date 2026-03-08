@@ -33,6 +33,7 @@ class LandRequest extends FormRequest
             'advertiser_type' => 'required|in:real_state_owner,real_state_company',
             'advertise_details' => 'nullable|max:20000',
             'land_date_register' => 'required|date|date_format:Y-m-d',
+            'status' => 'nullable|in:waiting,sale',
         ];
     }
 
@@ -59,6 +60,7 @@ class LandRequest extends FormRequest
             'land_date_register.required' => 'تاريخ تسجيل الأرض مطلوب.',
             'land_date_register.date' => 'يجب أن يكون تاريخ تسجيل الأرض تاريخًا صحيحًا.',
             'land_date_register.date_format' => 'يجب أن يكون تاريخ تسجيل الأرض بالصيغة التالية: YYYY-MM-DD.',
+            'status.in' => 'حاله الارض غير صالحه!',
         ];
     }
 }
