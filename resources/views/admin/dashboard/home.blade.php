@@ -407,13 +407,13 @@
                 @endif
 
 
-            @if(auth()->user()->is_admin == 1 || in_array('tenants', json_decode(auth()->user()->employee_permissions, true) ?? []))
+{{--            @if(auth()->user()->is_admin == 1 || in_array('tenants', json_decode(auth()->user()->employee_permissions, true) ?? []))--}}
 
-                <a href="#" class="nav-item">
-                <i class="fa-solid fa-house-user"></i>
-                <span>المستأجرين</span>
-            </a>
-                @endif
+{{--                <a href="#" class="nav-item">--}}
+{{--                <i class="fa-solid fa-house-user"></i>--}}
+{{--                <span>المستأجرين</span>--}}
+{{--            </a>--}}
+{{--                @endif--}}
 
                 @if(auth()->user()->is_admin == 1 || in_array('tenant_contracts', json_decode(auth()->user()->employee_permissions, true) ?? []))
 
@@ -507,28 +507,28 @@
 
 
 
-            <a href="#" class="nav-item">
-                <i class="fa-solid fa-gear"></i>
-                <span>الإعدادات</span>
-            </a>
+{{--            <a href="#" class="nav-item">--}}
+{{--                <i class="fa-solid fa-gear"></i>--}}
+{{--                <span>الإعدادات</span>--}}
+{{--            </a>--}}
 
-            <a href="#" class="nav-item">
-                <i class="fa-solid fa-headset"></i>
-                <span>الدعم الفني</span>
-            </a>
+{{--            <a href="#" class="nav-item">--}}
+{{--                <i class="fa-solid fa-headset"></i>--}}
+{{--                <span>الدعم الفني</span>--}}
+{{--            </a>--}}
 
             <!--      Admin            -->
             <!-- شكاوي العملاء -->
-            <a href="#" class="nav-item">
-                <i class="fa-solid fa-circle-exclamation"></i>
-                <span>شكاوي العملاء</span>
-            </a>
+{{--            <a href="#" class="nav-item">--}}
+{{--                <i class="fa-solid fa-circle-exclamation"></i>--}}
+{{--                <span>شكاوي العملاء</span>--}}
+{{--            </a>--}}
 
-            <!-- الشركات -->
-            <a href="#" class="nav-item">
-                <i class="fa-solid fa-building"></i>
-                <span>الشركات</span>
-            </a>
+{{--            <!-- الشركات -->--}}
+{{--            <a href="#" class="nav-item">--}}
+{{--                <i class="fa-solid fa-building"></i>--}}
+{{--                <span>الشركات</span>--}}
+{{--            </a>--}}
         </nav>
     </aside>
 
