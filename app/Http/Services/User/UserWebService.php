@@ -4,6 +4,9 @@ namespace App\Http\Services\User;
 
 use App\Http\Requests\LoginUserRequest;
 use App\Http\Requests\StoreUserRequest;
+use App\Http\Resources\HomePage\HomePageAdminResource;
+use App\Http\Resources\HomePage\HomePageEmployeeResource;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 
 class UserWebService extends UserService
@@ -47,6 +50,29 @@ class UserWebService extends UserService
             return redirect()->back()->with('login_fail','حدث خطاء اثناء تسجيل الدخول يرجي اعاده المحاوله!');
 
         }
+    }
+
+    public function home()
+    {
+
+        $clientsInspections = $this->clientRepository->getAllClientsInspectionToday();
+        foreach ($clientsInspections as $client){
+            $this->clientRepository->update($client->id,['inspection_notification_send' => 1]);
+            $this->sendFirebaseForCompany( ['title' => 'اشعار جديد لديك','body' => 'تذكير مهم للموظف ' . $client->user->name . ' لديك معاينة اليوم مع العميل ' . $client->name . ' الساعة ' . $client->inspection_time], companyId(), 'clients');
+        }
+
+        $contractsExpiredCount = $this->tenantContractRepository->getAllContractsExpiredCount(companyId());
+        if($contractsExpiredCount > 0){
+            $this->sendFirebaseForCompany( ['title' => 'اشعار جديد لديك','body' => ' يجب عليك الاطلاع علي جميع العقود المنتهيه ' ], companyId(), 'expired_contracts');
+
+        }
+
+        $contractsExpired = $this->tenantContractRepository->getAllContractsExpired(companyId());
+        foreach ($contractsExpired as $contractExpired) {
+            $this->tenantContractRepository->update($contractExpired->id,['is_expired' => 1]);
+        }
+
+        return view('admin.dashboard.home');
     }
 
     public function logout()

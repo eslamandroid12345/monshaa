@@ -67,7 +67,8 @@ Route::group(['prefix' => 'admin'], function (){
     Route::post('/login',[UserController::class,'login'])->name('admin.login');
     Route::post('/register',[UserController::class,'register'])->name('admin.register');
     Route::get('/logout',[UserController::class,'logout'])->name('admin.logout')->middleware('auth');
-    Route::get('/dashboard',[AdminAuthController::class,'dashboard'])->name('admin.dashboard')->middleware('auth');
+    Route::get('/dashboard',[UserController::class,'home'])->name('admin.dashboard')->middleware('auth');
+
 
     //States
     Route::group(['middleware' => ['permission:states']], function (){

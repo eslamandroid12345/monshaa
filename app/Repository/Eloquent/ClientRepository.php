@@ -66,7 +66,5 @@ class ClientRepository  extends Repository implements ClientRepositoryInterface
             ->where('inspection_notification_send',0)
             ->whereDate('inspection_date','=',Carbon::now()->format('Y-m-d'))
             ->get();
-
-
     }
 }

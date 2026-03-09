@@ -131,7 +131,7 @@ abstract class UserService
         $this->fcmTokenRepository->updateOrCreate(['token' => $data['token']], array_merge($data, ['user_id' => $userId]));
     }
 
-    public function home(): JsonResponse
+    public function home()
     {
 
         $user = auth('user-api')->user();
