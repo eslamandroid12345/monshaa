@@ -17,8 +17,8 @@ class EmployeeCommissionWebService extends EmployeeCommissionService
             return view('admin.commissions.index',compact('commissions','total','employees'));
 
         }catch (\Exception $e) {
-            toastr()->error('يوجد خطاء اثناء عرض بيانات عموله الموظفين', 'Error');
-            return redirect()->back();
+            return redirect()->back()->with('commission_index_error','يوجد خطاء اثناء عرض بيانات عموله الموظفين يرجي اعاده المحاوله!');
+
         }
     }
 
@@ -32,11 +32,10 @@ class EmployeeCommissionWebService extends EmployeeCommissionService
             $this->employeeCommissionRepository->create($inputs);
             $this->sendFirebaseNotification(data:['title' => 'اشعار جديد لديك','body' => ' تم اضافه عموله لموظف لديك بواسطه ' . employee() ],userId: employeeId(),permission: 'employee_commission');
 
-            toastr()->success('تم اضافه بيانات عموله الموظفين بنجاح');
-            return redirect()->back();
+            return redirect()->back()->with('commission_create','تم اضافه بيانات عموله الموظفين بنجاح');
         }catch (\Exception $e) {
-            toastr()->error('يوجد خطاء اثناء تسجيل بيانات عموله الموظفين', 'Error');
-            return redirect()->back();
+            return redirect()->back()->with('commission_create_error','يوجد خطاء اثناء تسجيل بيانات عموله الموظفين يرجي اعاده المحاوله!');
+
         }
     }
 
@@ -49,11 +48,11 @@ class EmployeeCommissionWebService extends EmployeeCommissionService
             $inputs = $request->validated();
             $this->employeeCommissionRepository->update($employeeCommission->id,$inputs);
 
-            toastr()->success('تم تحديث بيانات عموله الموظفين بنجاح');
-            return redirect()->back();
+            return redirect()->back()->with('commission_update','تم تحديث بيانات عموله الموظفين بنجاح');
+
         }catch (\Exception $e) {
-            toastr()->error('يوجد خطاء اثناء تحديث بيانات عموله الموظفين', 'Error');
-            return redirect()->back();
+            return redirect()->back()->with('commission_update_error','يوجد خطاء اثناء تحديث بيانات عموله الموظفين يرجي اعاده المحاوله!');
+
         }
     }
 
@@ -64,11 +63,11 @@ class EmployeeCommissionWebService extends EmployeeCommissionService
             Gate::authorize('check-company-auth',$employeeCommission);
             $this->employeeCommissionRepository->delete($employeeCommission->id);
 
-            toastr()->success('تم حذف عموله الموظف بنجاح');
-            return redirect()->back();
+            return redirect()->back()->with('commission_delete','تم حذف عموله الموظف بنجاح');
+
         } catch (\Exception $e) {
-            toastr()->error('يوجد خطاء اثناء حذف بيانات عموله الموظفين', 'Error');
-            return redirect()->back();
+            return redirect()->back()->with('commission_delete_error','يوجد خطاء اثناء حذف بيانات عموله الموظفين يرجي اعاده المحاوله!');
+
         }
     }
 }

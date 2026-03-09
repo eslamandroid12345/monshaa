@@ -11,6 +11,7 @@
 
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="{{asset('css/admin/toast.css')}}" />
 
     <style>
         :root {
@@ -353,7 +354,7 @@
                  <td class="c-id" onclick="window.location='{{ route('lands.show', $land->id) }}'">{{$land->total_cost}}</td>
                  <td class="c-advertiser-type" onclick="window.location='{{ route('lands.show', $land->id) }}'">{{$land->advertiser_type == 'real_state_owner' ? 'صاحب عقار' : 'شركه عقارات'}}</td>
                 <td class="t-action">
-                    <a style="color: #3f5564" href="{{route('lands.edit',$land->id)}}" class="js-edit"><i class="fa-solid fa-pen-to-square"></i></a>
+                    <a style="color: #3f5564" href="{{route('lands.edit',$land->id)}}" class="js-edit"><i class="fa-solid fa-file-pen"></i></a>
                 </td>
                 <td class="t-action">
                     <i class="fa-solid fa-trash text-danger js-delete"></i>
@@ -881,6 +882,44 @@
     </div>
 </div>
 
+@if(session('land_create'))
+    <div id="loginSuccessBar" class="login-success-bar show">
+        {{ session('land_create') }}
+    </div>
+@endif
+
+@if(session('land_update'))
+    <div id="loginSuccessBar" class="login-success-bar show">
+        {{ session('land_update') }}
+    </div>
+@endif
+
+@if(session('land_delete'))
+    <div id="loginSuccessBar" class="login-success-bar show">
+        {{ session('land_delete') }}
+    </div>
+@endif
+
+@if(session('land_create_error'))
+    <div id="loginSuccessBar" class="login-success-bar show">
+        {{ session('land_create_error') }}
+    </div>
+@endif
+
+@if(session('land_update_error'))
+    <div id="loginSuccessBar" class="login-success-bar show">
+        {{ session('land_update_error') }}
+    </div>
+@endif
+
+@if(session('land_index_error'))
+    <div id="loginSuccessBar" class="login-success-bar show">
+        {{ session('land_index_error') }}
+    </div>
+@endif
+
+
+
 <!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script>
@@ -1071,6 +1110,8 @@
     sizeInput.addEventListener("input", calculateTotal);
     priceInput.addEventListener("input", calculateTotal);
 </script>
+
+@include('admin.layouts.toast')
 
 </body>
 </html>

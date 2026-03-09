@@ -20,8 +20,7 @@ class TenantContractWebService extends TenantContractService
             return view('admin.contracts.index', compact('contracts'));
 
         }catch (\Exception $e) {
-            toastr()->error('يوجد خطاء اثناء عرض بيانات عقود الايجار ');
-            return redirect()->back();
+            return redirect()->back()->with('contract_index_error','يوجد خطاء اثناء عرض بيانات عقود الايجار');
         }
     }
 
@@ -33,8 +32,7 @@ class TenantContractWebService extends TenantContractService
             return view('admin.contracts.expired',compact('contracts'));
 
         } catch (\Exception $e) {
-            toastr()->error('يوجد خطاء اثناء عرض بيانات عقود الايجار المنتهيه');
-            return redirect()->back();
+            return redirect()->back()->with('contract_expired_index_error','يوجد خطاء اثناء عرض بيانات عقود الايجار المنتهيه');
         }
     }
 
@@ -47,8 +45,9 @@ class TenantContractWebService extends TenantContractService
         }
 
         $this->tenantContractRepository->update($tenantContract->id,['is_show' => 0]);
-        toastr()->success('تم حذف العقد المنتهي من القائمه!');
-        return redirect()->back();
+
+        return redirect()->back()->with('contract_remove','تم حذف العقد المنتهي من القائمه!');
+
     }
 
     public function create(StoreTenantRequest $tenantRequest,StoreTenantContractRequest $request){
@@ -80,14 +79,11 @@ class TenantContractWebService extends TenantContractService
 
             $this->sendFirebaseNotification(data:['title' => 'اشعار جديد لديك','body' => ' تم اضافه بيانات عقد ايجار لديك بواسطه ' . employee() ],userId: employeeId(),permission: 'tenant_contracts');
             DB::commit();
+            return redirect()->back()->with('contract_create','تم اضافه بيانات عقد الايجار بنجاح!');
 
-            toastr()->success('تم اضافه بيانات عقد الايجار بنجاح');
-            return redirect()->back();
         } catch (\Exception $e) {
             DB::rollBack();
-            toastr()->error('يوجد خطاء اثناء تسجيل عقد الايجار!');
-            return redirect()->back();
-
+            return redirect()->back()->with('contract_create_error','يوجد خطاء اثناء تسجيل عقد الايجار!');
         }
     }
 
@@ -135,13 +131,11 @@ class TenantContractWebService extends TenantContractService
             ]);//update revenue
 
             DB::commit();
-
-            toastr()->success('تم تحديث بيانات عقد الايجار بنجاح');
-            return redirect()->back();
+            return redirect()->back()->with('contract_update','تم تحديث بيانات عقد الايجار بنجاح!');
         } catch (\Exception $e) {
             DB::rollBack();
-            toastr()->error('يوجد خطاء اثناء تحديث عقد الايجار!');
-            return redirect()->back();
+            return redirect()->back()->with('contract_update_error','يوجد خطاء اثناء تحديث عقد الايجار!');
+
 
         }
     }
@@ -164,13 +158,12 @@ class TenantContractWebService extends TenantContractService
             $this->tenantContractRepository->delete($tenantContract->id);
 
             DB::commit();
-            toastr()->success('تم حذف بيانات عقد الايجار بنجاح');
-            return redirect()->back();
+            return redirect()->back()->with('contract_delete','تم حذف بيانات عقد الايجار بنجاح!');
 
         } catch (\Exception $e) {
             DB::rollBack();
-            toastr()->error('يوجد خطاء اثناء حذف عقد الايجار!');
-            return redirect()->back();
+            return redirect()->back()->with('contract_delete_error','يوجد خطاء اثناء حذف عقد الايجار!');
+
         }
     }
 }

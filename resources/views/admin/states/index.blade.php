@@ -358,7 +358,7 @@
                 <td class="c-real-state-type-label" onclick="window.location='{{ route('admin.state.show', $state->id) }}'">{{$state->real_state_type_label}}</td>
                 <td class="c-advertiser-type" onclick="window.location='{{ route('admin.state.show', $state->id) }}'">{{$state->advertiser_type == 'real_state_owner' ? 'صاحب عقار' : 'شركه عقارات'}}</td>
                 <td class="t-action">
-                    <a style="color: #3f5564" href="{{route('admin.states.edit',$state->id)}}" class="js-edit"><i class="fa-solid fa-pen-to-square"></i></a>
+                    <a style="color: #3f5564" href="{{route('admin.states.edit',$state->id)}}" class="js-edit"><i class="fa-solid fa-file-pen"></i></a>
                 </td>
                 <td class="t-action">
                     <i class="fa-solid fa-trash text-danger js-delete"></i>

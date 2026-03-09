@@ -17,12 +17,9 @@ class ClientWebService extends ClientService
             $clients = $this->clientRepository->getAllClients();
             $employees = $this->userRepository->usersSelect();
             return view('admin.clients.index', compact('clients','employees'));
-        }catch (AuthorizationException $exception){
-            toastr()->error('غير مصرح لك للدخول لذلك الصفحه');
-            return redirect()->back();
         } catch (\Exception $e) {
-            toastr()->error('يوجد خطاء بعرض بيانات العملاء!');
-            return redirect()->back();
+            return redirect()->back()->with('client_index_error','يوجد خطاء اثناء عرض بيانات العملاء يرجي اعاده المحاوله!');
+
         }
     }
 
@@ -32,17 +29,14 @@ class ClientWebService extends ClientService
             $inputs = $request->validated();
             $inputs['company_id'] = companyId();
             $inputs['user_id'] = employeeId();
-            $client = $this->clientRepository->create($inputs);
+            $this->clientRepository->create($inputs);
             $this->sendFirebaseNotification(data:['title' => 'اشعار جديد لديك','body' => ' تم اضافه عميل لمعاينه لديك بواسطه ' . employee() ],userId: employeeId(),permission: 'clients');
 
-            toastr()->success('تم تسجيل بيانات العميل بنجاح');
-            return redirect()->back();
-        }catch (AuthorizationException $exception){
-            toastr()->error('غير مصرح لك للدخول لذلك الصفحه');
-            return redirect()->back();
-        } catch (\Exception $e) {
-            toastr()->error('يوجد خطاء  بيانات العميل!');
-            return redirect()->back();
+            return redirect()->back()->with('client_create','تم تسجيل بيانات العميل بنجاح!');
+
+        }catch (\Exception $e) {
+            return redirect()->back()->with('client_create_error','يوجد خطاء اثناء تسجيل بيانات العميل يرجي اعاده المحاوله!');
+
         }
     }
 
@@ -56,21 +50,11 @@ class ClientWebService extends ClientService
             $this->clientRepository->update($client->id,$inputs);
 
             DB::commit();
-            toastr()->success('تم تعديل بيانات العميل بنجاح');
-            return redirect()->back();
+            return redirect()->back()->with('client_update','تم تعديل بيانات العميل بنجاح!');
 
-        }catch (ModelNotFoundException $exception) {
-            DB::rollBack();
-            toastr()->error('بيانات العميل غير موجوده');
-            return redirect()->back();
-        } catch (AuthorizationException $exception){
-            DB::rollBack();
-            toastr()->error('غير مصرح لك بالدخول لهذه الصفحه');
-            return redirect()->back();
         } catch (\Exception $e) {
             DB::rollBack();
-            toastr()->error('حدث خطاء اثناء تحديث بيانات العميل');
-            return redirect()->back();
+            return redirect()->back()->with('client_update_error','يوجد خطاء اثناء تعديل بيانات العميل يرجي اعاده المحاوله!');
         }
     }
 
@@ -78,7 +62,6 @@ class ClientWebService extends ClientService
 
         $client = $this->clientRepository->getById($id);
         Gate::authorize('check-company-auth',$client);
-
         return view('admin.clients.show', compact('client'));
     }
 
@@ -91,17 +74,10 @@ class ClientWebService extends ClientService
             $this->clientRepository->delete($client->id);
             $this->sendFirebaseNotification(data:['title' => 'اشعار جديد لديك','body' => ' تم حذف عميل معاينه بواسطه ' . employee() ],userId: employeeId(),permission: 'clients');
 
-            toastr()->error('تم حذف بيانات العميل بنجاح');
-            return redirect()->back();
-        } catch (ModelNotFoundException $exception) {
-            toastr()->error('بيانات العميل غير موجوده');
-            return redirect()->back();
-        }catch (AuthorizationException $exception){
-            toastr()->error('غير مصرح لك بالدخول لهذه الصفحه');
-            return redirect()->back();
-        }catch (\Exception $e) {
-            toastr()->error('حدث خطاء اثناء حذف بيانات العميل');
-            return redirect()->back();
+            return redirect()->back()->with('client_delete','تم حذف بيانات العميل بنجاح!');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('client_delete_error','يوجد خطاء اثناء حذف بيانات العميل يرجي اعاده المحاوله!');
+
         }
     }
 }

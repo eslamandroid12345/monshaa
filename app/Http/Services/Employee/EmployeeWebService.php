@@ -2,10 +2,8 @@
 
 namespace App\Http\Services\Employee;
 
-use App\Http\Requests\ActiveEmployeeRequest;
 use App\Http\Requests\StoreEmployeeRequest;
 use App\Http\Requests\UpdateEmployeeRequest;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Hash;
 
@@ -35,7 +33,7 @@ class EmployeeWebService extends EmployeeService
             }
 
             if(auth()->user()->company->is_package == 0 && $this->companyRepository->countEmployees() == $this->companyRepository->checkCompanyLimit()){
-                toastr()->info('لقد تعديت الحد الاقصي لاضافه للموظفين يرجي الانتقال لمرحله الاشتراك !');
+                return redirect()->back()->with('employee_limit_error','لقد تعديت الحد الاقصي لاضافه للموظفين يرجي الانتقال لمرحله الاشتراك !');
             }else{
                 if ($request->hasFile('employee_image')) {
                     $image = $this->fileManagerService->handle("employee_image", "employees/images");
@@ -58,15 +56,10 @@ class EmployeeWebService extends EmployeeService
                 $this->employeeRepository->create($inputs);
 
                 $this->sendFirebaseNotification(data:['title' => 'اشعار جديد لديك','body' => ' تم اضافه موظف جديد لديك بواسطه ' . employee() ],userId: employeeId(),permission: 'employees');
-
-                toastr()->success('تم اضافه بيانات الموظف بنجاح');
+                return redirect()->back()->with('employee_create','تم اضافه بيانات الموظف بنجاح');
             }
-            return redirect()->back();
-
         } catch (\Exception $exception) {
-
-            toastr()->error('حدث خطاء اثناء اضافه بيانات الموظف!');
-            return redirect()->back();
+            return redirect()->back()->with('employee_create_error','حدث خطاء اثناء اضافه بيانات الموظف!');
         }
     }
 
@@ -98,12 +91,10 @@ class EmployeeWebService extends EmployeeService
             $inputs['is_active'] = $request->is_active ?? $employee->is_active;
 
             $this->employeeRepository->update($employee->id,$inputs);
-
-            toastr()->success('تم تعديل بيانات الموظف بنجاح');
-            return redirect()->back();
+            return redirect()->back()->with('employee_update','تم تعديل بيانات الموظف بنجاح!');
         }  catch (\Exception $e) {
-            toastr()->error('يوجد خطاء اثناء تعديل بيانات الموظف');
-            return redirect()->back();
+            return redirect()->back()->with('employee_update_error','يوجد خطاء اثناء تعديل بيانات الموظف');
+
         }
     }
 
@@ -113,29 +104,7 @@ class EmployeeWebService extends EmployeeService
         $employee = $this->employeeRepository->getByIdWithCondition($id,'is_admin',0);
         Gate::authorize('check-company-auth',$employee);
         $this->employeeRepository->delete($employee->id);
-
-        toastr()->success('تم حذف بيانات الموظف بنجاح');
-        return redirect()->back();
-
-    }
-
-    public function active($id,ActiveEmployeeRequest $request)
-    {
-        DB::beginTransaction();
-        try {
-            $employee = $this->employeeRepository->getByIdWithCondition($id,'is_admin',0);
-            Gate::authorize('check-company-auth',$employee);
-            $this->employeeRepository->update($employee->id,$request->validated());
-            $this->employeeRepository->update($employee->id,['access_token' => null]);
-
-            DB::commit();
-            toastr()->success('تم تحديث حاله الموظف بنجاح');
-            return redirect()->back();
-
-        }catch (\Exception $e) {
-            toastr()->error('يوجد خطاء اثناء تحديث حاله الموظف');
-            return redirect()->back();
-        }
+        return redirect()->back()->with('employee_delete','تم حذف بيانات الموظف بنجاح!');
     }
 
     public function show($id)

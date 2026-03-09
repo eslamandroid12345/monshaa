@@ -16,8 +16,7 @@ class ExpenseWebService extends ExpenseService
             $total = $this->expenseRepository->getCurrentExpensesTotal();
             return view('admin.expenses.index', compact('revenues','total'));
         }catch (\Exception $e) {
-            toastr()->error('يوجد خطاء ما في بيانات الارسال بالسيرفر');
-            return redirect()->back();
+            return redirect()->back()->with('expense_index_error','يوجد خطاء اثناء عرض بيانات المصروفات يرجي اعاده المحاوله!');
         }
     }
 
@@ -28,8 +27,8 @@ class ExpenseWebService extends ExpenseService
             $total = $this->expenseRepository->getCurrentRevenuesTotal();
             return view('admin.revenues.index', compact('revenues','total'));
         } catch (\Exception $e) {
-            toastr()->error('يوجد خطاء ما في بيانات الارسال بالسيرفر');
-            return redirect()->back();
+            return redirect()->back()->with('revenue_index_error','يوجد خطاء اثناء عرض بيانات الايرادات يرجي اعاده المحاوله!');
+
         }
     }
 
@@ -46,12 +45,11 @@ class ExpenseWebService extends ExpenseService
             $message = $expense->type == 'expense' ? 'تم اضافه المصروف بنجاح' : 'تم اضافه الايراد بنجاح';
             $this->sendFirebaseNotification(data:['title' => 'اشعار جديد لديك','body' => $messageFirebase . employee() ],userId: employeeId(),permission: $permission);
 
-            toastr()->success($message);
-            return redirect()->back();
+            return redirect()->back()->with('revenue_create',$message);
 
         } catch (\Exception $e) {
-            toastr()->error('يوجد خطاء اثناء تسجيل البيانات');
-            return redirect()->back();
+            return redirect()->back()->with('revenue_create_error','يوجد خطاء اثناء تسجيل البيانات يرجي اعاده المحاوله!');
+
         }
     }
 
@@ -69,27 +67,25 @@ class ExpenseWebService extends ExpenseService
             $message = $expense->type == 'expense' ? 'تم تحديث بيانات المصروف بنجاح' : 'تم تحديث بيانات الايراد بنجاح';
 
             $this->sendFirebaseNotification(data:['title' => 'اشعار جديد لديك','body' => $messageFirebase . employee() ],userId:employeeId(),permission: $permission);
-            toastr()->success($message);
-            return redirect()->back();
+
+            return redirect()->back()->with('revenue_update',$message);
 
         }catch (\Exception $e) {
-            toastr()->error('يوجد خطاء اثناء تحديث البيانات');
-            return redirect()->back();
+            return redirect()->back()->with('revenue_create_error','يوجد خطاء اثناء تعديل البيانات يرجي اعاده المحاوله!');
+
         }
     }
-
 
     public function show($id){
 
         try {
             $expense = $this->expenseRepository->getById($id);
             Gate::authorize('check-company-auth',$expense);
-
             return $expense->type == 'expense' ? view('admin.expenses.show', compact('expense')) : view('admin.revenues.show', compact('expense'));
 
         }catch (\Exception $e) {
-            toastr()->error('يوجد خطاء اثناء عرض البيانات');
-            return redirect()->back();
+            return redirect()->back()->with('revenue_show_error','يوجد خطاء اثناء عرض البيانات يرجي اعاده المحاوله!');
+
         }
     }
 
@@ -104,11 +100,11 @@ class ExpenseWebService extends ExpenseService
             $this->sendFirebaseNotification(data:['title' => 'اشعار جديد لديك','body' => $messageFirebase . employee() ],userId:employeeId(),permission: $permission);
             $this->expenseRepository->delete($expense->id);
 
-            toastr()->success('يوجد حذف البيانات بنجاح');
+            return redirect()->back()->with('revenue_delete','تم حذف البيانات بنجاح!');
 
         } catch (\Exception $e) {
-            toastr()->error('يوجد خطاء اثناء حذف البيانات');
-            return redirect()->back();
+            return redirect()->back()->with('revenue_delete_error','يوجد خطاء اثناء حذف البيانات!');
+
         }
     }
 }

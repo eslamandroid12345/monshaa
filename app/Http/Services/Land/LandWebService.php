@@ -3,7 +3,6 @@
 namespace App\Http\Services\Land;
 
 use App\Http\Requests\LandRequest;
-use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Support\Facades\Gate;
 
 class LandWebService extends LandService
@@ -15,12 +14,9 @@ class LandWebService extends LandService
             $lands = $this->landRepository->getAllLandsQuery();
             $employees = $this->userRepository->usersSelect();
             return view('admin.lands.index', compact('lands','employees'));
-        } catch (AuthorizationException $exception){
-            toastr()->error('غير مصرح لك للدخول لذلك الصفحه');
-            return redirect()->back();
         } catch (\Exception $e) {
-            toastr()->error('يوجد خطاء اثناء عرض بيانات الاراضي يرجي اعاده المحاوله!');
-            return redirect()->back();
+            return redirect()->back()->with('land_index_error','يوجد خطاء اثناء عرض بيانات الاراضي يرجي اعاده المحاوله!');
+
         }
     }
 
@@ -35,11 +31,11 @@ class LandWebService extends LandService
             $this->uploadImages($request,$land);
             $this->sendFirebaseNotification(data:['title' => 'اشعار جديد لديك','body' => ' تم اضافه بيانات ارض جديده لديك بواسطه ' . employee() ],userId: employeeId(),permission: 'lands');
 
-            toastr()->success('تم تسجيل بيانات الارض بنجاح');
-            return redirect()->back();
+            return redirect()->back()->with('land_create','تم تسجيل بيان الارض بنجاح!');
+
         } catch (\Exception $e) {
-            toastr()->error('يوجد خطاء اثناء اضافه بيانات الارض يرجي اعاده المحاوله!');
-            return redirect()->back();
+            return redirect()->back()->with('land_create_error','يوجد خطاء اثناء تسجيل بيانات الاراضي يرجي اعاده المحاوله!');
+
         }
     }
 
@@ -55,11 +51,11 @@ class LandWebService extends LandService
             $this->landRepository->update($land->id, $inputs);
             $this->updateImages($request,$land);
 
-            toastr()->success('تم تعديل بيانات الارض بنجاح');
-            return redirect()->back();
+            return redirect()->back()->with('land_update','تم تعديل بيان الارض بنجاح!');
+
         }catch (\Exception $e) {
-            toastr()->error('يوجد خطاء اثناء تعديل بيانات الارض يرجي اعاده المحاوله!');
-            return redirect()->back();
+            return redirect()->back()->with('land_update_error','يوجد خطاء اثناء تعديل بيانات الاراضي يرجي اعاده المحاوله!');
+
         }
     }
 
@@ -68,25 +64,10 @@ class LandWebService extends LandService
 
         $land = $this->landRepository->getById($id);
         Gate::authorize('check-company-auth',$land);
-
         return view('admin.lands.show',compact('land'));
 
     }
 
-    public function changeStatus($id)
-    {
-        try {
-            $land = $this->landRepository->getById($id);
-            Gate::authorize('check-company-auth',$land);
-            $this->landRepository->update($land->id, ['status' => 'sale']);
-
-            toastr()->success('تم تغيير حاله الارض بنجاح');
-            return redirect()->back();
-        }  catch (\Exception $e) {
-            toastr()->error('يوجد خطاء اثناء تعديل بيانات الارض يرجي اعاده المحاوله!');
-            return redirect()->back();
-        }
-    }
 
     public function delete($id)
     {
@@ -98,12 +79,11 @@ class LandWebService extends LandService
 
             $this->landRepository->delete($land->id);
             $this->sendFirebaseNotification(data:['title' => 'اشعار جديد لديك','body' => ' تم حذف ارض لديك بواسطه ' . employee() ],userId: employeeId(),permission: 'lands');
-            toastr()->success('تم حذف بيانات الارض بنجاح');
-            return redirect()->back();
+            return redirect()->back()->with('land_delete','تم حذف بيان الارض بنجاح!');
 
         }  catch (\Exception $e) {
-            toastr()->error('يوجد خطاء اثناء تعديل بيانات الارض يرجي اعاده المحاوله!');
-            return redirect()->back();
+            return redirect()->back()->with('land_delete_error','حدث خطاء اثناء حذف بيان الارض يرجي اعاده المحاوله!');
+
         }
     }
 }

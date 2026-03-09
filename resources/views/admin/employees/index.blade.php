@@ -11,6 +11,7 @@
 
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="{{asset('css/admin/toast.css')}}" />
 
     <style>
         :root {
@@ -459,12 +460,10 @@
         <table class="props" id="propsTable">
             <thead>
             <tr>
-                <th style="width: 100px;">كود الموظف</th>
                 <th style="width: 100px;">اسم الموظف</th>
                 <th style="width: 100px;">العنوان</th>
                 <th style="width: 100px;">الوظيفه</th>
                 <th style="width: 100px;">رقم الهاتف</th>
-                <th style="width: 100px;">رقم البطاقه</th>
                 <th class="t-action">تعديل</th>
                 <th class="t-action">حذف</th>
             </tr>
@@ -473,15 +472,13 @@
             <tbody>
             @foreach($employees as $employee)
              <tr data-id="{{ $employee->id}}" style="cursor:pointer;">
-                <td class="c-real-state-address">{{$employee->id}}</td>
                 <td class="c-real-state-address">{{$employee->name}}</td>
                 <td class="c-real-state-price">{{$employee->employee_address}}</td>
                 <td class="c-real-state-price">{{$employee->job_title}}</td>
                 <td class="c-real-state-price">{{$employee->phone}}</td>
-                <td class="c-real-state-price">{{$employee->card_number}}</td>
 
                 <td class="t-action">
-                    <a style="color: #3f5564" href="{{route('admin.employees.edit',$employee->id)}}" class="js-edit"><i class="fa-solid fa-pen-to-square"></i></a>
+                    <a style="color: #3f5564" href="{{route('admin.employees.edit',$employee->id)}}" class="js-edit"><i class="fa-solid fa-file-pen"></i></a>
                 </td>
 
                  <td class="t-action">
@@ -1041,6 +1038,48 @@
     </div>
 </div>
 
+
+@if(session('employee_create'))
+    <div id="loginSuccessBar" class="login-success-bar show">
+        {{ session('employee_create') }}
+    </div>
+@endif
+
+@if(session('employee_update'))
+    <div id="loginSuccessBar" class="login-success-bar show">
+        {{ session('employee_update') }}
+    </div>
+@endif
+
+@if(session('employee_delete'))
+    <div id="loginSuccessBar" class="login-success-bar show">
+        {{ session('employee_delete') }}
+    </div>
+@endif
+
+@if(session('employee_create_error'))
+    <div id="loginSuccessBar" class="login-success-bar show">
+        {{ session('employee_create_error') }}
+    </div>
+@endif
+
+@if(session('employee_limit_error'))
+    <div id="loginSuccessBar" class="login-success-bar show">
+        {{ session('employee_limit_error') }}
+    </div>
+@endif
+
+@if(session('employee_update_error'))
+    <div id="loginSuccessBar" class="login-success-bar show">
+        {{ session('employee_update_error') }}
+    </div>
+@endif
+
+@if(session('employee_index_error'))
+    <div id="loginSuccessBar" class="login-success-bar show">
+        {{ session('employee_index_error') }}
+    </div>
+@endif
 <!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script>
@@ -1269,5 +1308,8 @@
         updatePermText();
     });
 </script>
+
+@include('admin.layouts.toast')
+
 </body>
 </html>
