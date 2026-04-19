@@ -1,534 +1,590 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>تسجيل الدخول</title>
+    <title>تسجيل الدخول - منشأة</title>
 
+    <!-- Bootstrap RTL -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800&display=swap">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <!-- Google Font Cairo -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
     <link rel="stylesheet" href="{{asset('css/admin/toast.css')}}" />
 
     <style>
-        :root{
-            --page-bg:#f3f3f3;
-            --primary:#6e98b6;
-            --primary-dark:#5a88a8;
-            --border:#c3dde6;
-            --text-soft:#7aa3b8;
-            --placeholder:#b7b7b7;
-            --card-bg:#ffffff;
+        :root {
+            --primary: #3f5063;
+            --primary-dark: #22303e;
+            --accent: #38bdf8;
+            --text-dark: #1e293b;
         }
 
-        *{
-            box-sizing:border-box;
+        body {
+            font-family: 'Cairo', sans-serif;
+            margin: 0;
+            min-height: 100vh;
+            background-color: #0f172a; /* Dark sleek background */
+            background-image:
+                radial-gradient(at 0% 0%, hsla(211,40%,25%,1) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, hsla(214,32%,17%,1) 0px, transparent 50%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow-x: hidden;
+            color: var(--text-dark);
         }
 
-        body{
-            margin:0;
-            font-family:"Cairo",system-ui,-apple-system,"Segoe UI",Tahoma,Arial;
-            min-height:100vh;
-            color:#4b5563;
-            background:var(--page-bg);
-            overflow-x:hidden;
-        }
-
-        img{
-            max-width:100%;
-            height:auto;
-            display:block;
-        }
-
+        /*
+        * Splash
+        */
         #splash{
-            position:fixed;
-            inset:0;
-            background:#fff;
-            display:flex;
-            align-items:center;
-            justify-content:center;
-            flex-direction:column;
-            z-index:9999;
+            position: fixed;
+            inset: 0;
+            background: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            z-index: 9999;
         }
 
         #splash img{
-            width:160px;
-            margin-bottom:20px;
-            animation:logoSpin 2s ease-in-out forwards;
+            width: 160px;
+            margin-bottom: 20px;
+            animation: logoSpin 2s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards;
         }
 
         @keyframes logoSpin{
-            0%{
-                transform:scale(0.7) rotate(0deg);
-                opacity:0;
-            }
-
-            40%{
-                transform:scale(1.2) rotate(180deg);
-                opacity:1;
-            }
-
-            100%{
-                transform:scale(1) rotate(360deg);
-                opacity:1;
-            }
+            0%{ transform: scale(0.5) rotate(0deg); opacity: 0; }
+            40%{ transform: scale(1.1) rotate(180deg); opacity: 1; }
+            100%{ transform: scale(1) rotate(360deg); opacity: 1; }
         }
 
-        #mainPage{
-            display:none;
+        /*
+        * Layout
+        */
+        .login-shell {
+            width: 100%;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 30px 20px;
+            box-sizing: border-box;
+            backdrop-filter: blur(10px);
         }
 
-        .auth-wrapper{
-            min-height:100vh;
-            display:flex;
-            align-items:center;
-            justify-content:center;
-            padding:28px 18px;
+        .login-card {
+            display: flex;
+            width: 100%;
+            max-width: 1150px;
+            background: rgba(255, 255, 255, 0.98);
+            border-radius: 30px;
+            overflow: hidden;
+            box-shadow: 0 40px 80px rgba(0,0,0,0.5);
+            border: 1px solid rgba(255,255,255,0.1);
+            position: relative;
+            z-index: 10;
+            animation: slideUpFade 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            opacity: 0;
+            transform: translateY(40px);
         }
 
-        .auth-card{
-            width:100%;
-            max-width:1040px;
-            border-radius:28px;
+        @keyframes slideUpFade {
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        .auth-grid{
-            display:grid;
-            grid-template-columns:minmax(0,1fr) minmax(0,1fr);
-            gap:28px;
-            align-items:center;
-            background:var(--card-bg);
-            border-radius:24px;
-            padding:28px;
-            box-shadow:0 12px 35px rgba(0,0,0,.06);
-            overflow:hidden;
+        /* ----- Brand Side (LHS but Visual Right in RTL) ----- */
+        .brand-side {
+            flex: 1.2;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            padding: 70px 50px;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+            overflow: hidden;
         }
 
-        .illustration-side{
-            display:flex;
-            align-items:center;
-            justify-content:center;
-            min-width:0;
+        .brand-side::before {
+            content: '';
+            position: absolute;
+            top: -20%; right: -20%; width: 500px; height: 500px;
+            background: radial-gradient(circle, var(--accent) 0%, transparent 60%);
+            opacity: 0.15;
+            border-radius: 50%;
+            z-index: 0;
+            animation: floatOrb 10s ease-in-out infinite alternate;
         }
 
-        .illustration-box{
-            width:100%;
-            max-width:470px;
+        @keyframes floatOrb {
+            from { transform: translate(0, 0); }
+            to { transform: translate(-30px, 30px); }
         }
 
-        .illustration-box img{
-            width:100%;
-            object-fit:contain;
+        .brand-side > * { position: relative; z-index: 1; }
+
+        .brand-top { display: flex; align-items: center; gap: 15px; margin-bottom: 40px; }
+        .brand-logo {
+            width: 60px; height: 60px;
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 28px;
+            color: #fff;
+            border: 1px solid rgba(255,255,255,0.2);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        .brand-name { font-size: 28px; font-weight: 900; line-height: 1.2; }
+        .brand-sub { font-size: 14px; opacity: 0.85; font-weight: 500; }
+
+        .brand-mid h2 { font-size: 36px; font-weight: 900; margin-bottom: 15px; }
+        .brand-mid p { font-size: 16px; line-height: 1.8; opacity: 0.9; margin-bottom: 40px; font-weight: 500; }
+
+        .brand-illustration {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
         }
 
-        .form-side{
-            padding:8px 18px;
-            min-width:0;
+        .mini-stat {
+            background: rgba(255,255,255,0.06);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 15px 5px;
+            border-radius: 16px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: default;
         }
 
-        .brand-icon{
-            width:72px;
-            height:72px;
-            margin:0 auto 10px;
-            display:flex;
-            align-items:center;
-            justify-content:center;
-            font-size:46px;
+        .mini-stat:hover {
+            transform: translateY(-8px) scale(1.02);
+            background: rgba(255,255,255,0.12);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+            border-color: rgba(255,255,255,0.3);
         }
 
-        .brand-icon img{
-            max-width:72px;
-            max-height:72px;
-            object-fit:contain;
+        .mini-stat .v {
+            width: 48px; height: 48px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 20px;
+            color: #fff;
+            transition: all 0.3s;
+        }
+        .mini-stat:hover .v {
+            background: var(--accent);
+            color: var(--primary-dark);
+            transform: rotate(-10deg);
         }
 
-        .form-title{
-            text-align:center;
-            color:var(--text-soft);
-            font-size:22px;
-            font-weight:700;
-            margin-bottom:22px;
+        .mini-stat .t { font-size: 13px; font-weight: 800; }
+
+        .brand-footer { font-size: 14px; opacity: 0.6; margin-top: 40px; font-weight: 600; }
+
+        /* ----- Form Side (RHS but Visual Left in RTL) ----- */
+        .form-side {
+            flex: 1;
+            padding: 80px 60px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            background: #ffffff;
         }
 
-        .custom-input,
-        .custom-password{
-            position:relative;
-            margin-bottom:16px;
+        .form-title { margin-bottom: 40px; text-align: center; }
+        .form-title h1 {
+            font-size: 34px;
+            font-weight: 900;
+            color: var(--text-dark);
+            margin-bottom: 10px;
+        }
+        .form-title p { color: #64748b; font-size: 16px; font-weight: 600;}
+
+        .field { margin-bottom: 25px; text-align: right; }
+        .form-label { color: #334155; font-size: 15px; font-weight: 700; }
+
+        .input-wrap { position: relative; }
+        .input-wrap .prefix {
+            position: absolute;
+            right: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #94a3b8;
+            font-size: 18px;
+            transition: 0.3s;
         }
 
-        .custom-input .form-control,
-        .custom-password .form-control{
-            height:48px;
-            border-radius:10px;
-            border:2px solid var(--border);
-            background:#fff;
-            padding-right:18px;
-            padding-left:44px;
-            font-size:15px;
-            font-weight:600;
-            color:#4b5563;
-            box-shadow:none;
+        .form-control.custom {
+            height: 58px;
+            padding-right: 48px;
+            padding-left: 20px;
+            border-radius: 16px;
+            border: 2px solid #e2e8f0;
+            font-size: 15px;
+            font-weight: 700;
+            color: #1e293b;
+            background: #f8fafc;
+            transition: all 0.3s;
         }
 
-        .custom-input .form-control::placeholder,
-        .custom-password .form-control::placeholder{
-            color:var(--placeholder);
-            font-weight:500;
+        .form-control.custom:focus {
+            background: #ffffff;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(63, 80, 99, 0.15);
+            outline: none;
         }
 
-        .custom-input .form-control:focus,
-        .custom-password .form-control:focus{
-            border-color:var(--primary);
-            box-shadow:0 0 0 3px rgba(110,152,182,.12);
+        .form-control.custom:focus + .prefix,
+        .input-wrap:focus-within .prefix {
+            color: var(--primary);
         }
 
-        .custom-input .form-control.is-invalid,
-        .custom-password .form-control.is-invalid{
-            border-color:#dc3545 !important;
-            box-shadow:none !important;
+        .toggle-pass {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none; border: none; cursor: pointer;
+            color: #94a3b8; font-size: 18px;
+            transition: 0.3s;
+            padding: 0;
+        }
+        .toggle-pass:hover { color: var(--primary); }
+
+        .btn-login {
+            height: 58px;
+            font-size: 18px;
+            font-weight: 800;
+            border-radius: 16px;
+            border: none;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: #fff;
+            margin-bottom: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1;
+            box-shadow: 0 8px 20px rgba(30, 41, 59, 0.2);
         }
 
-        .field-icon,
-        .toggle-password{
-            position:absolute;
-            top:50%;
-            transform:translateY(-50%);
-            color:#9b9b9b;
-            font-size:14px;
-            z-index:2;
+        .btn-login::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(135deg, var(--primary-dark) 0%, #0f172a 100%);
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.3s;
         }
 
-        .field-icon{
-            left:14px;
-            pointer-events:none;
+        .btn-login:hover { transform: translateY(-3px); box-shadow: 0 12px 25px rgba(30, 41, 59, 0.3); color: #fff; }
+        .btn-login:hover::before { opacity: 1; }
+
+        /* Secondary Demo Button */
+        a { text-decoration: none; }
+        .btn-demo {
+            background: #f1f5f9;
+            color: var(--primary-dark);
+            border: 2px solid #e2e8f0;
+            box-shadow: none;
+        }
+        .btn-demo:hover {
+            background: #e2e8f0;
+            transform: translateY(-3px);
+            color: var(--primary-dark);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        .btn-demo::before { display: none; }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            text-align: center;
+            color: #64748b;
+            font-size: 14px;
+            font-weight: 700;
+            margin: 30px 0;
+        }
+        .divider::before, .divider::after {
+            content: '';
+            flex: 1;
+            border-bottom: 2px solid #f1f5f9;
+        }
+        .divider::before { margin-left: 20px; }
+        .divider::after { margin-right: 20px; }
+
+        .help {
+            text-align: center;
+            font-size: 15px;
+            color: #64748b;
+            line-height: 1.8;
+            font-weight: 600;
+        }
+        .help .link {
+            color: #0ea5e9;
+            font-weight: 800;
+            transition: 0.3s;
+            margin-right: 5px;
+        }
+        .help .link:hover { text-decoration: underline; color: var(--primary-dark); }
+
+
+
+
+        /* Success Bar Override */
+        .login-success-bar {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #ef4444; /* Error style for failed logic */
+            color: #fff;
+            padding: 15px 25px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            font-weight: 700;
+            z-index: 9999;
+            display: none;
+            animation: slideIn 0.4s ease-out forwards;
+        }
+        .login-success-bar.show { display: block; }
+
+        @keyframes slideIn {
+            from { transform: translateX(100px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
         }
 
-        .toggle-password{
-            left:14px;
-            background:none;
-            border:0;
-            cursor:pointer;
-            padding:0;
-            width:20px;
-            height:20px;
-            display:flex;
-            align-items:center;
-            justify-content:center;
+        /* Responsive Breakpoints */
+        @media (max-width: 1024px) {
+            .brand-side { padding: 40px; flex: none; border-radius: 24px 24px 0 0; }
+            .brand-illustration, .brand-footer, .brand-mid p { display: none; }
+            .brand-mid h2 { font-size: 28px; margin-bottom: 0px; text-align: center;}
+            .brand-top { justify-content: center; margin-bottom: 20px; }
+            .form-side { padding: 40px; border-radius: 0 0 24px 24px; }
+            .login-card { flex-direction: column; max-width: 600px; border-radius: 24px; }
         }
 
-        .submit-btn{
-            margin-top:8px;
-            height:48px;
-            border:0;
-            border-radius:10px;
-            background:var(--primary);
-            color:#fff;
-            font-weight:700;
-            font-size:17px;
-            transition:.2s ease;
-        }
-
-        .submit-btn:hover{
-            background:var(--primary-dark);
-        }
-
-        .submit-btn:disabled{
-            opacity:.9;
-            cursor:not-allowed;
-        }
-
-        .btn-spinner{
-            display:none;
-            align-items:center;
-            justify-content:center;
-            gap:8px;
-        }
-
-        .submit-btn.loading .btn-text{
-            display:none;
-        }
-
-        .submit-btn.loading .btn-spinner{
-            display:inline-flex;
-        }
-
-        .auth-footer{
-            text-align:center;
-            margin-top:16px;
-            font-size:15px;
-            font-weight:700;
-            color:var(--text-soft);
-            line-height:1.8;
-        }
-
-        .auth-footer a{
-            color:var(--primary);
-            text-decoration:none;
-        }
-
-        .auth-footer a:hover{
-            text-decoration:underline;
-        }
-
-        @media (max-width: 991.98px){
-            .auth-wrapper{
-                padding:22px 14px;
-            }
-
-            .auth-grid{
-                grid-template-columns:1fr;
-                gap:12px;
-                padding:22px 16px;
-            }
-
-            .illustration-side{
-                order:-1;
-            }
-
-            .illustration-box{
-                max-width:320px;
-                margin:0 auto 4px;
-            }
-
-            .form-side{
-                padding:0;
-                width:100%;
-            }
-
-            .form-title{
-                font-size:20px;
-                margin-bottom:18px;
-            }
-        }
-
-        @media (max-width: 575.98px){
-            #splash img{
-                width:120px;
-            }
-
-            .auth-wrapper{
-                padding:14px 10px;
-                align-items:flex-start;
-            }
-
-            .auth-card{
-                max-width:100%;
-            }
-
-            .auth-grid{
-                padding:16px 12px;
-                gap:10px;
-                border-radius:18px;
-            }
-
-            .illustration-box{
-                max-width:220px;
-            }
-
-            .brand-icon{
-                width:58px;
-                height:58px;
-                margin-bottom:8px;
-            }
-
-            .brand-icon img{
-                max-width:58px;
-                max-height:58px;
-            }
-
-            .form-title{
-                font-size:18px;
-                margin-bottom:16px;
-            }
-
-            .custom-input,
-            .custom-password{
-                margin-bottom:12px;
-            }
-
-            .custom-input .form-control,
-            .custom-password .form-control{
-                height:46px;
-                font-size:14px;
-                border-radius:8px;
-                padding-right:14px;
-                padding-left:40px;
-            }
-
-            .field-icon,
-            .toggle-password{
-                left:12px;
-                font-size:13px;
-            }
-
-            .submit-btn{
-                height:46px;
-                font-size:15px;
-                border-radius:8px;
-                margin-top:6px;
-            }
-
-            .auth-footer{
-                font-size:14px;
-                margin-top:14px;
-            }
-        }
-
-        @media (max-width: 380px){
-            .auth-wrapper{
-                padding:10px 8px;
-            }
-
-            .auth-grid{
-                padding:14px 10px;
-            }
-
-            .illustration-box{
-                max-width:180px;
-            }
-
-            .form-title{
-                font-size:17px;
-            }
-
-            .custom-input .form-control,
-            .custom-password .form-control{
-                font-size:13px;
-            }
-
-            .submit-btn{
-                font-size:14px;
-            }
+        @media (max-width: 576px) {
+            .login-shell { padding: 15px; }
+            .form-side { padding: 40px 20px; }
+            .brand-side { padding: 30px 20px; }
+            .form-title h1 { font-size: 28px; }
         }
     </style>
 </head>
 
 <body>
 
+<!-- Splash Screen -->
 <div id="splash">
-    <img src="{{ asset('img/icons/monshaa.jpg') }}">
+    <img src="{{asset('img/icons/monshaa.jpg')}}" alt="شعار منشأة">
 </div>
 
-<div id="mainPage">
-    <div class="auth-wrapper">
-        <div class="auth-card">
-            <div class="auth-grid">
+<!-- Main UI -->
+<div class="login-shell">
+    <div class="login-card">
 
-                <div class="illustration-side">
-                    <div class="illustration-box">
-                        <img src="{{ asset('img/icons/qqq.jpg') }}">
+        <!-- LEFT: Branding -->
+        <section class="brand-side">
+            <div>
+                <div class="brand-top">
+                    <div class="brand-logo">
+                        <i class="fa-solid fa-building"></i>
+                    </div>
+                    <div>
+                        <div class="brand-name">منشأة</div>
+                        <div class="brand-sub">إدارة عقاراتك بكل سهولة وذكاء</div>
                     </div>
                 </div>
 
-                <div class="form-side">
-                    <div class="brand-icon">
-                        <img src="{{ asset('img/icons/employees.png') }}">
-                    </div>
+                <div class="brand-mid">
+                    <h2>مرحباً بعودتك 👋</h2>
+                    <p>
+                        قم بتسجيل الدخول للوصول إلى لوحة التحكم المتقدمة. أدر عقاراتك، عملاءك، إيراداتك وتقاريرك المالية بشكل سريع وموثوق.
+                    </p>
 
-                    <div class="form-title">تسجيل الدخول</div>
-
-                    <form id="registerForm" action="{{ route('admin.login') }}" method="POST" autocomplete="off">
-                        @csrf
-
-                        <div class="custom-input">
-                            <input type="text"
-                                   class="form-control @error('phone') is-invalid @enderror"
-                                   placeholder="رقم هاتف المدير"
-                                   name="phone">
-                            <span class="field-icon"><i class="fa-solid fa-phone"></i></span>
-                            @error('phone')
-                            <div class="invalid-feedback d-block">{{ $message }}</div>
-                            @enderror
-                        </div>
-
-                        <div class="custom-password">
-                            <input type="password"
-                                   class="form-control @error('password') is-invalid @enderror"
-                                   placeholder="كلمة السر"
-                                   name="password">
-                            <button type="button" class="toggle-password">
-                                <i class="fa-regular fa-eye-slash"></i>
-                            </button>
-                            @error('password')
-                            <div class="invalid-feedback d-block">{{ $message }}</div>
-                            @enderror
-                        </div>
-
-                        <button type="submit" class="btn w-100 submit-btn" id="registerSubmitBtn">
-                            <span class="btn-text">
-                                <i class="fa-solid fa-right-to-bracket"></i>
-                                تسجيل الدخول
-                            </span>
-
-                            <span class="btn-spinner">
-                                <span class="spinner-border spinner-border-sm"></span>
-                                جاري تسجيل الدخول...
-                            </span>
-                        </button>
-                    </form>
-
-                    <div class="auth-footer">
-                        ليس لديك حساب ؟
-                        <a href="{{ route('admin.register.view') }}">تسجيل حساب</a>
+                    <div class="brand-illustration">
+                        <div class="mini-stat"><div class="v"><i class="fa-solid fa-city"></i></div><div class="t">العقارات</div></div>
+                        <div class="mini-stat"><div class="v"><i class="fa-solid fa-map-location-dot"></i></div><div class="t">الاراضي</div></div>
+                        <div class="mini-stat"><div class="v"><i class="fa-solid fa-user-check"></i></div><div class="t">المستاجرين</div></div>
+                        <div class="mini-stat"><div class="v"><i class="fa-solid fa-file-signature"></i></div><div class="t">عقود الايجار</div></div>
+                        <div class="mini-stat"><div class="v"><i class="fa-solid fa-file-circle-xmark"></i></div><div class="t">العقود المنتهيه</div></div>
+                        <div class="mini-stat"><div class="v"><i class="fa-solid fa-receipt"></i></div><div class="t">سندات القبض</div></div>
+                        <div class="mini-stat"><div class="v"><i class="fa-solid fa-money-bill-transfer"></i></div><div class="t">سندات الصرف</div></div>
+                        <div class="mini-stat"><div class="v"><i class="fa-solid fa-wallet"></i></div><div class="t">الايردات</div></div>
+                        <div class="mini-stat"><div class="v"><i class="fa-solid fa-sack-dollar"></i></div><div class="t">المصروفات</div></div>
                     </div>
                 </div>
-
             </div>
-        </div>
+
+            <div class="brand-footer">
+                © <span id="y"></span> جميع الحقوق محفوظة
+            </div>
+        </section>
+
+        <!-- RIGHT: Form -->
+        <section class="form-side">
+            <div class="form-title">
+                <h1>تسجيل الدخول</h1>
+                <p>أدخل بياناتك للوصول إلى لوحة التحكم</p>
+            </div>
+
+            <!-- form -->
+            <form action="{{route('admin.login')}}" method="POST" autocomplete="off">
+                @csrf
+                <div class="field">
+                    <label class="form-label">اسم المستخدم</label>
+                    <div class="input-wrap">
+                        <i class="fa-solid fa-user prefix"></i>
+                        <input
+                            class="form-control custom @error('phone') is-invalid @enderror"
+                            type="text"
+                            name="phone"
+                            value="{{ old('phone') }}"
+                            placeholder="رقم الهاتف المسجل بالنظام"
+                            required>
+                    </div>
+                    @error('phone')
+                    <div class="invalid-feedback d-block">{{ $message }}</div>
+                    @enderror
+                </div>
+
+                <div class="field">
+                    <label class="form-label">كلمة المرور</label>
+                    <div class="input-wrap">
+                        <i class="fa-solid fa-lock prefix"></i>
+                        <input
+                            class="form-control custom @error('password') is-invalid @enderror"
+                            id="password"
+                            type="password"
+                            name="password"
+                            placeholder="أدخل كلمة المرور"
+                            required>
+
+                        <button type="button" class="toggle-pass" id="togglePass" aria-label="إظهار كلمة المرور">
+                            <i class="fa-regular fa-eye"></i>
+                        </button>
+                    </div>
+                    @error('password')
+                    <div class="invalid-feedback d-block">{{ $message }}</div>
+                    @enderror
+                </div>
+
+                <button id="btnLogin" class="btn btn-primary w-100 btn-login" type="submit">
+                    <span class="btn-text">تسجيل الدخول</span>
+                    <span class="btn-spinner d-none">
+                        <span class="spinner-border spinner-border-sm" style="margin-left: 8px;"></span>
+                        جاري تسجيل الدخول...
+                    </span>
+                </button>
+
+                <a href="{{route('admin.register.view')}}">
+                    <button class="btn btn-primary w-100 btn-login btn-demo" type="button" id="btnDemo">
+                        <span class="btn-text">تسجيل حساب تجريبي</span>
+                        <span class="btn-spinner d-none">
+                            <span class="spinner-border spinner-border-sm" style="margin-left: 8px;"></span>
+                            يرجى الانتظار...
+                        </span>
+                    </button>
+                </a>
+
+                <div class="divider">أو</div>
+
+                <div class="help">
+                    هل تواجه مشكلة في تسجيل الدخول أو تريد استفساراً؟
+                    <a class="link" href="https://wa.me/201062933188" target="_blank">تواصل مع الدعم الفني</a>
+                </div>
+            </form>
+        </section>
+
     </div>
 </div>
+
 @if(session('login_failed'))
-    <div id="loginSuccessBar" class="login-success-bar show">
+    <div id="loginSuccessBar" class="login-success-bar show" style="background: #ef4444;">
         {{ session('login_failed') }}
     </div>
 @endif
 
 @if(session('logout'))
-    <div id="loginSuccessBar" class="login-success-bar show">
+    <div id="loginSuccessBar" class="login-success-bar show" style="background: #10b981;">
+        <i class="fa-solid fa-circle-check" style="margin-left: 5px;"></i>
         {{ session('logout') }}
     </div>
 @endif
 
-
-@if(session('login_fail'))
-    <div id="loginSuccessBar" class="login-success-bar show">
-        {{ session('login_fail') }}
-    </div>
-@endif
-
-
 <script>
+    // System Year
+    document.getElementById("y").textContent = new Date().getFullYear();
+
+    // Show/Hide Password functionality
+    const pass = document.getElementById("password");
+    const toggle = document.getElementById("togglePass");
+    toggle.addEventListener("click", () => {
+        const isPass = pass.type === "password";
+        pass.type = isPass ? "text" : "password";
+        toggle.innerHTML = isPass
+            ? '<i class="fa-regular fa-eye-slash"></i>'
+            : '<i class="fa-regular fa-eye"></i>';
+    });
+
+    // Form submission animation handling
+    const form = document.querySelector('form');
+    const btnLogin = document.getElementById('btnLogin');
+    const btnDemo = document.getElementById('btnDemo');
+
+    function activateButtonLoader(button){
+        const text = button.querySelector('.btn-text');
+        const spinner = button.querySelector('.btn-spinner');
+
+        text.classList.add('d-none');
+        spinner.classList.remove('d-none');
+
+        // Prevent double submit safely visually
+        button.style.pointerEvents = 'none';
+        button.style.opacity = '0.85';
+    }
+
+    form.addEventListener('submit', function () {
+        activateButtonLoader(btnLogin);
+    });
+
+    btnDemo.addEventListener('click', function () {
+        activateButtonLoader(btnDemo);
+    });
+
+    // Handle splash screen animation
     const splashLogo = document.querySelector('#splash img');
-
-    splashLogo.addEventListener('animationend', function () {
-        document.getElementById("splash").style.display = "none";
-        document.getElementById("mainPage").style.display = "block";
-    });
-
-    document.querySelectorAll('.toggle-password').forEach(function(btn){
-        btn.addEventListener('click',function(){
-            const input = this.previousElementSibling;
-            const isPassword = input.type === 'password';
-
-            input.type = isPassword ? 'text' : 'password';
-
-            this.innerHTML = isPassword
-                ? '<i class="fa-regular fa-eye"></i>'
-                : '<i class="fa-regular fa-eye-slash"></i>';
+    if(splashLogo) {
+        splashLogo.addEventListener('animationend', function () {
+            document.getElementById("splash").style.display = "none";
         });
-    });
+    }
 
-    const registerForm = document.getElementById('registerForm');
-    const registerSubmitBtn = document.getElementById('registerSubmitBtn');
-
-    registerForm?.addEventListener('submit',function(){
-        registerSubmitBtn.disabled = true;
-        registerSubmitBtn.classList.add('loading');
-    });
+    // Auto-hide alert messages after a few seconds
+    setTimeout(() => {
+        const bar = document.getElementById("loginSuccessBar");
+        if(bar) {
+            bar.style.opacity = '0';
+            setTimeout(() => bar.style.display = 'none', 300);
+        }
+    }, 5000);
 </script>
 
-@include('admin.layouts.toast')
 </body>
 </html>

@@ -16,8 +16,6 @@
     --radius: 18px;
 }
 
-*{       font-family:system-ui,-apple-system,"Segoe UI",Tahoma,Arial;
-}
 body{
     background: var(--bg);
     color: var(--text);
@@ -26,7 +24,7 @@ body{
     display: grid;
     place-items: center;
     padding: 18px;
-    font-family:system-ui,-apple-system,"Segoe UI",Tahoma,Arial;
+    font-family: "Cairo", sans-serif;
 
 }
 
