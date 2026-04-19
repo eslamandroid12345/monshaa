@@ -1040,36 +1040,42 @@
 
 @if(session('state_create'))
     <div id="loginSuccessBar" class="login-success-bar show">
+                <i class="fa-solid fa-circle-check" style="margin-left: 5px;"></i>
         {{ session('state_create') }}
     </div>
 @endif
 
 @if(session('state_update'))
     <div id="loginSuccessBar" class="login-success-bar show">
+                <i class="fa-solid fa-circle-check" style="margin-left: 5px;"></i>
         {{ session('state_update') }}
     </div>
 @endif
 
 @if(session('state_delete'))
     <div id="loginSuccessBar" class="login-success-bar show">
+                <i class="fa-solid fa-circle-check" style="margin-left: 5px;"></i>
         {{ session('state_delete') }}
     </div>
 @endif
 
 @if(session('state_create_error'))
     <div id="loginSuccessBar" class="login-success-bar show">
+                <i class="fa-solid fa-circle-check" style="margin-left: 5px;"></i>
         {{ session('state_create_error') }}
     </div>
 @endif
 
 @if(session('state_update_error'))
     <div id="loginSuccessBar" class="login-success-bar show">
+                <i class="fa-solid fa-circle-check" style="margin-left: 5px;"></i>
         {{ session('state_update_error') }}
     </div>
 @endif
 
 @if(session('state_index_error'))
     <div id="loginSuccessBar" class="login-success-bar show">
+                <i class="fa-solid fa-circle-check" style="margin-left: 5px;"></i>
         {{ session('state_index_error') }}
     </div>
 @endif

@@ -1226,36 +1226,42 @@
 
 @if(session('contract_create'))
     <div id="loginSuccessBar" class="login-success-bar show">
+                <i class="fa-solid fa-circle-check" style="margin-left: 5px;"></i>
         {{ session('contract_create') }}
     </div>
 @endif
 
 @if(session('contract_update'))
     <div id="loginSuccessBar" class="login-success-bar show">
+                <i class="fa-solid fa-circle-check" style="margin-left: 5px;"></i>
         {{ session('contract_update') }}
     </div>
 @endif
 
 @if(session('contract_delete'))
     <div id="loginSuccessBar" class="login-success-bar show">
+                <i class="fa-solid fa-circle-check" style="margin-left: 5px;"></i>
         {{ session('contract_delete') }}
     </div>
 @endif
 
 @if(session('contract_create_error'))
     <div id="loginSuccessBar" class="login-success-bar show">
+                <i class="fa-solid fa-circle-check" style="margin-left: 5px;"></i>
         {{ session('contract_create_error') }}
     </div>
 @endif
 
 @if(session('contract_update_error'))
     <div id="loginSuccessBar" class="login-success-bar show">
+                <i class="fa-solid fa-circle-check" style="margin-left: 5px;"></i>
         {{ session('contract_update_error') }}
     </div>
 @endif
 
 @if(session('contract_index_error'))
     <div id="loginSuccessBar" class="login-success-bar show">
+                <i class="fa-solid fa-circle-check" style="margin-left: 5px;"></i>
         {{ session('contract_index_error') }}
     </div>
 @endif

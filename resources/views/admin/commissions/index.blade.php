@@ -732,30 +732,40 @@
 
 @if(session('commission_create'))
     <div id="loginSuccessBar" class="login-success-bar show">
+                <i class="fa-solid fa-circle-check" style="margin-left: 5px;"></i>
+
         {{ session('commission_create') }}
     </div>
 @endif
 
 @if(session('commission_update'))
     <div id="loginSuccessBar" class="login-success-bar show">
+                <i class="fa-solid fa-circle-check" style="margin-left: 5px;"></i>
+
         {{ session('commission_update') }}
     </div>
 @endif
 
 @if(session('commission_delete'))
     <div id="loginSuccessBar" class="login-success-bar show">
+                <i class="fa-solid fa-circle-check" style="margin-left: 5px;"></i>
+
         {{ session('commission_delete') }}
     </div>
 @endif
 
 @if(session('commission_create_error'))
     <div id="loginSuccessBar" class="login-success-bar show">
+                <i class="fa-solid fa-circle-check" style="margin-left: 5px;"></i>
+
         {{ session('commission_create_error') }}
     </div>
 @endif
 
 @if(session('commission_update_error'))
     <div id="loginSuccessBar" class="login-success-bar show">
+                <i class="fa-solid fa-circle-check" style="margin-left: 5px;"></i>
+
         {{ session('commission_update_error') }}
     </div>
 @endif

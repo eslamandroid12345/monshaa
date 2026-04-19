@@ -817,37 +817,49 @@
 </div>
 
 @if(session('client_create'))
-    <div id="loginSuccessBar" class="login-success-bar show">
+        <div id="loginSuccessBar" class="login-success-bar show">
+        <i class="fa-solid fa-circle-check" style="margin-left: 5px;"></i>
+
         {{ session('client_create') }}
     </div>
 @endif
 
 @if(session('client_update'))
-    <div id="loginSuccessBar" class="login-success-bar show">
+        <div id="loginSuccessBar" class="login-success-bar show">
+        <i class="fa-solid fa-circle-check" style="margin-left: 5px;"></i>
+
         {{ session('client_update') }}
     </div>
 @endif
 
 @if(session('client_delete'))
-    <div id="loginSuccessBar" class="login-success-bar show">
+        <div id="loginSuccessBar" class="login-success-bar show">
+        <i class="fa-solid fa-circle-check" style="margin-left: 5px;"></i>
         {{ session('client_delete') }}
     </div>
 @endif
 
 @if(session('client_create_error'))
-    <div id="loginSuccessBar" class="login-success-bar show">
+        <div id="loginSuccessBar" class="login-success-bar show">
+        <i class="fa-solid fa-circle-check" style="margin-left: 5px;"></i>
         {{ session('client_create_error') }}
     </div>
 @endif
 
 @if(session('client_update_error'))
-    <div id="loginSuccessBar" class="login-success-bar show">
+        <div id="loginSuccessBar" class="login-success-bar show">
+
+        <i class="fa-solid fa-circle-check" style="margin-left: 5px;"></i>
+
         {{ session('client_update_error') }}
     </div>
 @endif
 
 @if(session('client_index_error'))
-    <div id="loginSuccessBar" class="login-success-bar show">
+        <div id="loginSuccessBar" class="login-success-bar show">
+
+        <i class="fa-solid fa-circle-check" style="margin-left: 5px;"></i>
+
         {{ session('client_index_error') }}
     </div>
 @endif

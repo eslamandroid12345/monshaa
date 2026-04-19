@@ -1045,42 +1045,49 @@
 
 @if(session('employee_create'))
     <div id="loginSuccessBar" class="login-success-bar show">
+                <i class="fa-solid fa-circle-check" style="margin-left: 5px;"></i>
         {{ session('employee_create') }}
     </div>
 @endif
 
 @if(session('employee_update'))
     <div id="loginSuccessBar" class="login-success-bar show">
+                <i class="fa-solid fa-circle-check" style="margin-left: 5px;"></i>
         {{ session('employee_update') }}
     </div>
 @endif
 
 @if(session('employee_delete'))
     <div id="loginSuccessBar" class="login-success-bar show">
+                <i class="fa-solid fa-circle-check" style="margin-left: 5px;"></i>
         {{ session('employee_delete') }}
     </div>
 @endif
 
 @if(session('employee_create_error'))
     <div id="loginSuccessBar" class="login-success-bar show">
+                <i class="fa-solid fa-circle-check" style="margin-left: 5px;"></i>
         {{ session('employee_create_error') }}
     </div>
 @endif
 
 @if(session('employee_limit_error'))
     <div id="loginSuccessBar" class="login-success-bar show">
+                <i class="fa-solid fa-circle-check" style="margin-left: 5px;"></i>
         {{ session('employee_limit_error') }}
     </div>
 @endif
 
 @if(session('employee_update_error'))
     <div id="loginSuccessBar" class="login-success-bar show">
+                <i class="fa-solid fa-circle-check" style="margin-left: 5px;"></i>
         {{ session('employee_update_error') }}
     </div>
 @endif
 
 @if(session('employee_index_error'))
     <div id="loginSuccessBar" class="login-success-bar show">
+                <i class="fa-solid fa-circle-check" style="margin-left: 5px;"></i>
         {{ session('employee_index_error') }}
     </div>
 @endif

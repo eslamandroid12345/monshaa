@@ -6,7 +6,9 @@
     width: calc(100% - 230px);
     max-width: 980px;
     min-height: 40px;
-    background: #2f363c;
+    /*background: #2f363c;*/
+    /*background: #10b981;*/
+    background: #3f5063;
     color: #ffffff;
     border-radius: 16px;
     display: flex;

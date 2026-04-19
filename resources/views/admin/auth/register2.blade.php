@@ -550,6 +550,7 @@
 
 @if(session('register_fail'))
     <div id="loginSuccessBar" class="login-success-bar show">
+        <i class="fa-solid fa-circle-check" style="margin-left: 5px;"></i>
         {{ session('register_fail') }}
     </div>
 @endif

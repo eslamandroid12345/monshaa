@@ -710,36 +710,42 @@
 
 @if(session('revenue_create'))
     <div id="loginSuccessBar" class="login-success-bar show">
+                <i class="fa-solid fa-circle-check" style="margin-left: 5px;"></i>
         {{ session('revenue_create') }}
     </div>
 @endif
 
 @if(session('revenue_update'))
     <div id="loginSuccessBar" class="login-success-bar show">
+                <i class="fa-solid fa-circle-check" style="margin-left: 5px;"></i>
         {{ session('revenue_update') }}
     </div>
 @endif
 
 @if(session('revenue_delete'))
     <div id="loginSuccessBar" class="login-success-bar show">
+                <i class="fa-solid fa-circle-check" style="margin-left: 5px;"></i>
         {{ session('revenue_delete') }}
     </div>
 @endif
 
 @if(session('revenue_create_error'))
     <div id="loginSuccessBar" class="login-success-bar show">
+                <i class="fa-solid fa-circle-check" style="margin-left: 5px;"></i>
         {{ session('revenue_create_error') }}
     </div>
 @endif
 
 @if(session('revenue_update_error'))
     <div id="loginSuccessBar" class="login-success-bar show">
+                <i class="fa-solid fa-circle-check" style="margin-left: 5px;"></i>
         {{ session('revenue_update_error') }}
     </div>
 @endif
 
 @if(session('revenue_index_error'))
     <div id="loginSuccessBar" class="login-success-bar show">
+                <i class="fa-solid fa-circle-check" style="margin-left: 5px;"></i>
         {{ session('revenue_index_error') }}
     </div>
 @endif

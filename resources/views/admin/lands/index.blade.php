@@ -887,36 +887,42 @@
 
 @if(session('land_create'))
     <div id="loginSuccessBar" class="login-success-bar show">
+                <i class="fa-solid fa-circle-check" style="margin-left: 5px;"></i>
         {{ session('land_create') }}
     </div>
 @endif
 
 @if(session('land_update'))
     <div id="loginSuccessBar" class="login-success-bar show">
+                <i class="fa-solid fa-circle-check" style="margin-left: 5px;"></i>
         {{ session('land_update') }}
     </div>
 @endif
 
 @if(session('land_delete'))
     <div id="loginSuccessBar" class="login-success-bar show">
+                <i class="fa-solid fa-circle-check" style="margin-left: 5px;"></i>
         {{ session('land_delete') }}
     </div>
 @endif
 
 @if(session('land_create_error'))
     <div id="loginSuccessBar" class="login-success-bar show">
+                <i class="fa-solid fa-circle-check" style="margin-left: 5px;"></i>
         {{ session('land_create_error') }}
     </div>
 @endif
 
 @if(session('land_update_error'))
     <div id="loginSuccessBar" class="login-success-bar show">
+                <i class="fa-solid fa-circle-check" style="margin-left: 5px;"></i>
         {{ session('land_update_error') }}
     </div>
 @endif
 
 @if(session('land_index_error'))
     <div id="loginSuccessBar" class="login-success-bar show">
+                <i class="fa-solid fa-circle-check" style="margin-left: 5px;"></i>
         {{ session('land_index_error') }}
     </div>
 @endif

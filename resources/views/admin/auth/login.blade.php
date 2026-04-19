@@ -345,25 +345,6 @@
         .help .link:hover { text-decoration: underline; color: var(--primary-dark); }
 
 
-
-
-        /* Success Bar Override */
-        .login-success-bar {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: #ef4444; /* Error style for failed logic */
-            color: #fff;
-            padding: 15px 25px;
-            border-radius: 12px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-            font-weight: 700;
-            z-index: 9999;
-            display: none;
-            animation: slideIn 0.4s ease-out forwards;
-        }
-        .login-success-bar.show { display: block; }
-
         @keyframes slideIn {
             from { transform: translateX(100px); opacity: 0; }
             to { transform: translateX(0); opacity: 1; }
@@ -517,12 +498,13 @@
 
 @if(session('login_failed'))
     <div id="loginSuccessBar" class="login-success-bar show" style="background: #ef4444;">
+        <i class="fa-solid fa-circle-check" style="margin-left: 5px;"></i>
         {{ session('login_failed') }}
     </div>
 @endif
 
 @if(session('logout'))
-    <div id="loginSuccessBar" class="login-success-bar show" style="background: #10b981;">
+    <div id="loginSuccessBar" class="login-success-bar show">
         <i class="fa-solid fa-circle-check" style="margin-left: 5px;"></i>
         {{ session('logout') }}
     </div>
